@@ -1,6 +1,5 @@
 package com.eclipserunner.views;
 
-
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.*;
 import org.eclipse.jface.viewers.*;
@@ -10,7 +9,6 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.*;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.SWT;
-
 
 /**
  * This sample class demonstrates how to plug-in a new
@@ -35,7 +33,7 @@ public class SampleView extends ViewPart {
 	/**
 	 * The ID of the view as specified by the extension.
 	 */
-	public static final String ID = "eclipserunnerpliugin.views.SampleView";
+	public static final String ID = "com.eclipserunner.views.SampleView";
 
 	private TableViewer viewer;
 	private Action action1;
