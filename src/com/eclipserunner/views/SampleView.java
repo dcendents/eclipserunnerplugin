@@ -1,14 +1,39 @@
 package com.eclipserunner.views;
 
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.part.*;
-import org.eclipse.jface.viewers.*;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.jface.action.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationListener;
+import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.ui.*;
-import org.eclipse.swt.widgets.Menu;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITableLabelProvider;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.part.ViewPart;
 
 /**
  * This sample class demonstrates how to plug-in a new
@@ -56,7 +81,19 @@ public class SampleView extends ViewPart {
 		public void dispose() {
 		}
 		public Object[] getElements(Object parent) {
-			return new String[] { "One", "Two", "Three" };
+			// INFO dummy code ...
+			List<ILaunchConfiguration> savedRunConfiguration = new ArrayList<ILaunchConfiguration>();
+			
+			ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
+			try {
+				for (ILaunchConfiguration config : manager.getLaunchConfigurations()) {
+					savedRunConfiguration.add(config);
+				}
+			} catch (CoreException e) {
+				// TODO LWA 
+			}
+			
+			return savedRunConfiguration.toArray();
 		}
 	}
 	class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
@@ -97,6 +134,26 @@ public class SampleView extends ViewPart {
 		hookContextMenu();
 		hookDoubleClickAction();
 		contributeToActionBars();
+		
+		addRunConfigurationListener();
+	}
+
+	private void addRunConfigurationListener() {
+		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
+		manager.addLaunchConfigurationListener(new ILaunchConfigurationListener() {
+			
+			public void launchConfigurationRemoved(ILaunchConfiguration arg0) {
+				viewer.refresh();
+			}
+			
+			public void launchConfigurationChanged(ILaunchConfiguration arg0) {
+				viewer.refresh();
+			}
+			
+			public void launchConfigurationAdded(ILaunchConfiguration arg0) {
+				viewer.refresh();
+			}
+		});
 	}
 
 	private void hookContextMenu() {
