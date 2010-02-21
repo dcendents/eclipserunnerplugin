@@ -5,13 +5,13 @@
    <extension
          point="org.eclipse.ui.views">
       <category
-            name="Sample Category"
-            id="EclipseRunnerPlugin">
+            name="General"
+            id="org.eclipse.ui">
       </category>
       <view
-            name="Sample View"
-            icon="icons/sample.gif"
-            category="EclipseRunnerPliugin"
+            name="Runner"
+            icon="icons/run.gif"
+            category="org.eclipse.ui"
             class="com.eclipserunner.views.SampleView"
             id="com.eclipserunner.views.SampleView">
       </view>
