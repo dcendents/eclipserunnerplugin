@@ -12,8 +12,8 @@
             name="Runner"
             icon="icons/run.gif"
             category="org.eclipse.ui"
-            class="com.eclipserunner.views.SampleView"
-            id="com.eclipserunner.views.SampleView">
+            class="com.eclipserunner.views.RunnerView"
+            id="com.eclipserunner.views.RunnerView">
       </view>
    </extension>
    <extension
@@ -24,7 +24,7 @@
                ratio="0.5"
                relative="org.eclipse.ui.views.TaskList"
                relationship="right"
-               id="com.eclipserunner.views.SampleView">
+               id="com.eclipserunner.views.RunnerView">
          </view>
       </perspectiveExtension>
    </extension>

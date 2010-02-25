@@ -88,7 +88,6 @@ public class Activator extends AbstractUIPlugin {
 		return imageDescriptor;
 	}
 
-
 	public static String getResourceString(String key) {
 		ResourceBundle bundle = Activator.getDefault().getResourceBundle();
 		try {
