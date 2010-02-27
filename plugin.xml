@@ -2,37 +2,43 @@
 <?eclipse version="3.4"?>
 <plugin>
 
-   <extension
-         point="org.eclipse.ui.views">
-      <category
-            name="General"
-            id="org.eclipse.ui">
-      </category>
-      <view
-            name="Runner"
-            icon="icons/run.gif"
-            category="org.eclipse.ui"
-            class="com.eclipserunner.views.RunnerView"
-            id="com.eclipserunner.views.RunnerView">
-      </view>
-   </extension>
-   <extension
-         point="org.eclipse.ui.perspectiveExtensions">
-      <perspectiveExtension
-            targetID="org.eclipse.jdt.ui.JavaPerspective">
-         <view
-               ratio="0.5"
-               relative="org.eclipse.ui.views.TaskList"
-               relationship="right"
-               id="com.eclipserunner.views.RunnerView">
-         </view>
-      </perspectiveExtension>
-   </extension>
-   <extension
-         point="org.eclipse.help.contexts">
-      <contexts
-            file="contexts.xml">
-      </contexts>
-   </extension>
+	<extension point="org.eclipse.ui.views">
+		<category name="General" id="org.eclipse.ui"/>
+		<view name="Runner" icon="icons/run.gif" category="org.eclipse.ui"
+            class="com.eclipserunner.views.RunnerView" id="com.eclipserunner.views.RunnerView" />
+	</extension>
+	
+	<extension point="org.eclipse.ui.perspectiveExtensions">
+		<perspectiveExtension targetID="org.eclipse.jdt.ui.JavaPerspective">
+			<view ratio="0.5" relative="org.eclipse.ui.views.TaskList"
+               relationship="right" id="com.eclipserunner.views.RunnerView" />
+		</perspectiveExtension>
+	</extension>
+	
+	<extension point="org.eclipse.help.contexts">
+		<contexts file="contexts.xml" />
+	</extension>
+
+	<extension point="org.eclipse.ui.popupMenus"> 
+		<viewerContribution id="com.eclipserunner.action.editor" 
+				targetID="#CompilationUnitEditorContext">
+			
+			<menu label="Bookmark launch configuration" path="additions" 
+					id="com.eclipserunner.ui.menu1" icon="icons/run_plus.gif" >
+				<separator name="group1" /> 
+			</menu> 
+		
+			<action id="com.eclipserunner.ui.action1" 
+				label="Add Run as to Runner View" icon="icons/run.gif" 
+				menubarPath="com.eclipserunner.ui.menu1/group1" 
+				class="com.eclipserunner.ui.menus.SaveAsRunJavaEditorAction" />
+
+			<action id="com.eclipserunner.ui.action2" 
+				label="Add Debug as to Runner View" icon="icons/debug.gif" 
+				menubarPath="com.eclipserunner.ui.menu1/group1" 
+				class="com.eclipserunner.ui.menus.SaveAsRunJavaEditorAction" />
+			
+		</viewerContribution> 
+	</extension>
 
 </plugin>
