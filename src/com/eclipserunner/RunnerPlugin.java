@@ -2,8 +2,6 @@ package com.eclipserunner;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Display;
@@ -29,21 +27,10 @@ public class RunnerPlugin extends AbstractUIPlugin {
 	// Map containing preloaded ImageDescriptors
 	private final Map<String, ImageDescriptor> imageDescriptors = new HashMap<String, ImageDescriptor>(13);
 
-	// Resource bundle
-	private ResourceBundle resourceBundle;
-
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-
-		// initialize resource strings
-		try {
-			this.resourceBundle = ResourceBundle.getBundle("com.eclipserunner.messages");
-		}
-		catch (MissingResourceException x) {
-			this.resourceBundle = null;
-		}
 	}
 
 	@Override
@@ -75,23 +62,6 @@ public class RunnerPlugin extends AbstractUIPlugin {
 			this.imageDescriptors.put(id, imageDescriptor);
 		}
 		return imageDescriptor;
-	}
-
-	public static String getResourceString(String key) {
-		ResourceBundle bundle = RunnerPlugin.getDefault().getResourceBundle();
-		try {
-			return bundle.getString(key);
-		}
-		catch (MissingResourceException e) {
-			return key;
-		}
-	}
-
-	/**
-	 * Returns the plugin's resource bundle,
-	 */
-	public ResourceBundle getResourceBundle() {
-		return this.resourceBundle;
 	}
 
 	/**
