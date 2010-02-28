@@ -21,10 +21,8 @@ public class RunnerPlugin extends AbstractUIPlugin {
 	// The shared instance
 	private static RunnerPlugin plugin;
 
-	// Icons path
 	public static final String ICON_PATH = "icons/";
 
-	// Map containing preloaded ImageDescriptors
 	private final Map<String, ImageDescriptor> imageDescriptors = new HashMap<String, ImageDescriptor>(13);
 
 	@Override
@@ -55,10 +53,10 @@ public class RunnerPlugin extends AbstractUIPlugin {
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor getImageDescriptor(String imageFileName) {
-		ImageDescriptor imageDescriptor = this.imageDescriptors.get(imageFileName);
+		ImageDescriptor imageDescriptor = imageDescriptors.get(imageFileName);
 		if (imageDescriptor == null) {
-			imageDescriptor = AbstractUIPlugin.imageDescriptorFromPlugin(RunnerPlugin.getDefault().getBundle().getSymbolicName(), ICON_PATH + imageFileName);
-			this.imageDescriptors.put(imageFileName, imageDescriptor);
+			imageDescriptor = imageDescriptorFromPlugin(getDefault().getBundle().getSymbolicName(), ICON_PATH + imageFileName);
+			imageDescriptors.put(imageFileName, imageDescriptor);
 		}
 		return imageDescriptor;
 	}

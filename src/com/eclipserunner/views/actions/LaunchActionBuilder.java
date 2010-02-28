@@ -45,25 +45,25 @@ public final class LaunchActionBuilder {
 	}
 
 	public Action createShowRunConfigurationDialogAction() {
-		Action action = new ShowLaunchConfigurationsDialogAction(this.launchConfigurationSelection, IDebugUIConstants.ID_RUN_LAUNCH_GROUP);
+		Action action = new ShowLaunchConfigurationsDialogAction(launchConfigurationSelection, IDebugUIConstants.ID_RUN_LAUNCH_GROUP);
 		configureAction(action, Message_openRunConfigurationsDialog, Message_openRunConfigurationsDialogTooltip, IMG_RUN_CONFIGURATIONS);
 		return action;
 	}
 
 	public Action createShowDebugConfigurationDialogAction() {
-		Action action = new ShowLaunchConfigurationsDialogAction(this.launchConfigurationSelection, IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP);
+		Action action = new ShowLaunchConfigurationsDialogAction(launchConfigurationSelection, IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP);
 		configureAction(action, Message_openDebugConfigurationsDialog, Message_openDebugConfigurationsDialogTooltip, IMG_DEBUG_CONFIGURATIONS);
 		return action;
 	}
 
 	public Action createRunConfigurationAction() {
-		Action action = new LaunchConfigurationAction(this.launchConfigurationSelection, IDebugUIConstants.ID_RUN_LAUNCH_GROUP);
+		Action action = new LaunchConfigurationAction(launchConfigurationSelection, IDebugUIConstants.ID_RUN_LAUNCH_GROUP);
 		configureAction(action, Message_runConfiguration, Message_runConfigurationTooltip, IMG_RUN);
 		return action;
 	}
 
 	public Action createDebugConfigurationAction() {
-		Action action = new LaunchConfigurationAction(this.launchConfigurationSelection, IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP);
+		Action action = new LaunchConfigurationAction(launchConfigurationSelection, IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP);
 		configureAction(action, Message_debugConfiguration, Message_debugConfigurationTooltip, IMG_DEBUG);
 		return action;
 	}

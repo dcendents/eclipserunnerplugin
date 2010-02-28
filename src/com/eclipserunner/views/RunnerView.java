@@ -86,8 +86,6 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 
 	@Override
 	public void createPartControl(Composite parent) {
-		// TreeViewer viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
-
 		FilteredTree tree = new FilteredTree(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL, new PatternFilter(), true);
 
 		viewer = tree.getViewer();
