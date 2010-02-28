@@ -28,8 +28,6 @@ public final class LaunchActionBuilder {
 	private static final String IMG_DEBUG                = "debug.gif";
 	private static final String IMG_DEBUG_CONFIGURATIONS = "run_configuration.gif";
 
-	private static LaunchActionBuilder builder = new LaunchActionBuilder();
-
 	private ILaunchConfigurationSelection launchConfigurationSelection;
 
 	private LaunchActionBuilder() {
@@ -37,12 +35,12 @@ public final class LaunchActionBuilder {
 	}
 
 	public static final LaunchActionBuilder newInstance() {
-		return builder;
+		return new LaunchActionBuilder();
 	}
 
 	public LaunchActionBuilder withLaunchConfigurationSelection(ILaunchConfigurationSelection launchConfigurationSelection) {
 		this.launchConfigurationSelection = launchConfigurationSelection;
-		return builder;
+		return this;
 	}
 
 	public Action createShowRunConfigurationDialogAction() {
