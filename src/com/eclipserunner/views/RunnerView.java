@@ -144,15 +144,15 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		
 		Menu menu = menuMgr.createContextMenu(getViewerControl());
 		getViewerControl().setMenu(menu);
-		getSite().registerContextMenu(menuMgr, this.viewer);
+		getSite().registerContextMenu(menuMgr, viewer);
 	}
 	
 	private void setupContextMenu(IMenuManager manager) {
-		manager.add(this.launchRunConfigurationAction);
-		manager.add(this.launchDebugConfigurationAction);
+		manager.add(launchRunConfigurationAction);
+		manager.add(launchDebugConfigurationAction);
 		manager.add(new Separator());
-		manager.add(this.showRunConfigurationsDialogAction);
-		manager.add(this.showDebugConfigurationsDialogAction);
+		manager.add(showRunConfigurationsDialogAction);
+		manager.add(showDebugConfigurationsDialogAction);
 		manager.add(new Separator());
 	}
 	
@@ -163,26 +163,26 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	}
 
 	private void setupLocalPullDown(IMenuManager manager) {
-		manager.add(this.showRunConfigurationsDialogAction);
-		manager.add(this.showDebugConfigurationsDialogAction);
+		manager.add(showRunConfigurationsDialogAction);
+		manager.add(showDebugConfigurationsDialogAction);
 		manager.add(new Separator());
-		manager.add(this.aboutAction);
+		manager.add(aboutAction);
 	}
 	
 	private void setupLocalToolBar(IToolBarManager manager) {
-		manager.add(this.showRunConfigurationsDialogAction);
-		manager.add(this.showDebugConfigurationsDialogAction);
-		manager.add(this.aboutAction);
+		manager.add(showRunConfigurationsDialogAction);
+		manager.add(showDebugConfigurationsDialogAction);
+		manager.add(aboutAction);
 	}
 
 	private void setupLaunchActions() {
 		LaunchActionBuilder builder = LaunchActionBuilder.newInstance().withLaunchConfigurationSelection(this);
 		
-		this.showRunConfigurationsDialogAction   = builder.createShowRunConfigurationDialogAction();
-		this.showDebugConfigurationsDialogAction = builder.createShowDebugConfigurationDialogAction();
-		this.launchRunConfigurationAction        = builder.createRunConfigurationAction();
-		this.launchDebugConfigurationAction      = builder.createDebugConfigurationAction();
-		this.aboutAction                         = builder.createAboutAction();
+		showRunConfigurationsDialogAction   = builder.createShowRunConfigurationDialogAction();
+		showDebugConfigurationsDialogAction = builder.createShowDebugConfigurationDialogAction();
+		launchRunConfigurationAction        = builder.createRunConfigurationAction();
+		launchDebugConfigurationAction      = builder.createDebugConfigurationAction();
+		aboutAction                         = builder.createAboutAction();
 	}
 	
 	public boolean isLaunchConfigurationSelected() {
@@ -207,7 +207,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	}
 
 	public TreeViewer getViewer() {
-		return this.viewer;
+		return viewer;
 	}
 	
 	public Control getViewerControl() {
