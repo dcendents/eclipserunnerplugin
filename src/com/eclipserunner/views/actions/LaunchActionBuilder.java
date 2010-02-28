@@ -2,6 +2,7 @@ package com.eclipserunner.views.actions;
 
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
@@ -74,20 +75,13 @@ public final class LaunchActionBuilder {
 		Action action = new Action() {
 			@Override
 			public void run() {
-				showMessage("About action executed!");
+				MessageDialog.openInformation(
+					RunnerPlugin.getShell(), "Eclipse Runner View", "About action executed!"
+				);
 			}
 		};
 		configureAction(action, "About ...", "About ...", null);
 		return action;
-	}
-
-	// TODO LWA BARY how to pass view instance to action builder
-	private void showMessage(String message) {
-		//		MessageDialog.openInformation(
-		//			this.viewer.getControl().getShell(),
-		//			"Eclipse Runner View",
-		//			message
-		//		);
 	}
 
 }

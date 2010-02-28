@@ -69,9 +69,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 			return savedRunConfiguration.toArray();
 		}
 	}
-
-	class NameSorter extends ViewerSorter {
-	}
+	
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -79,7 +77,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		viewer.setContentProvider(new ViewContentProvider());
 		viewer.setLabelProvider(DebugUITools.newDebugModelPresentation());
-		viewer.setSorter(new NameSorter());
+		viewer.setSorter(new ViewerSorter());
 		viewer.setInput(getViewSite());
 
 		// Create the help context id for the viewer's control
