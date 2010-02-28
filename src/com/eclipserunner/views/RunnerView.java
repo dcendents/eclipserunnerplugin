@@ -163,6 +163,10 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		this.aboutAction                         = builder.createAboutAction();
 	}
 	
+	public boolean isLaunchConfigurationSelected() {
+		return getViewer().getSelection().isEmpty();
+	}
+	
 	public ILaunchConfiguration getSelectedLaunchConfiguration() {
 		return (ILaunchConfiguration) ((IStructuredSelection) getViewer().getSelection()).getFirstElement();
 	}

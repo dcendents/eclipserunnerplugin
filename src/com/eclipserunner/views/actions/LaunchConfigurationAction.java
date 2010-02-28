@@ -22,8 +22,8 @@ public class LaunchConfigurationAction extends AbstractLaunchAction {
 	@Override
 	public void run() {
 		DebugUITools.launch(
-				this.launchConfigurationSelection.getSelectedLaunchConfiguration(),
-				getLaunchConfigurationManager().getLaunchGroup(getLaunchGroupId()).getMode()
+			launchConfigurationSelection.getSelectedLaunchConfiguration(),
+			getLaunchConfigurationManager().getLaunchGroup(getLaunchGroupId()).getMode()
 		);
 	}
 
