@@ -40,26 +40,25 @@ public class RunnerPlugin extends AbstractUIPlugin {
 	}
 
 	/**
-	 * Returns the shared instance
+	 * Returns the shared instance.
 	 *
-	 * @return the shared instance
+	 * @return the shared instance.
 	 */
 	public static RunnerPlugin getDefault() {
 		return plugin;
 	}
 
 	/**
-	 * Returns an image descriptor for the image file at the given
-	 * plug-in relative path (cached version)
+	 * Returns an image descriptor for the image file at the given plug-in relative path (cached version).
 	 *
-	 * @param id the id of the image descriptor or relative icon path if icon is inside of default icons folder
-	 * @return the image descriptor
+	 * @param imageId Image file name.
+	 * @return the image descriptor.
 	 */
-	public ImageDescriptor getImageDescriptor(String id) {
-		ImageDescriptor imageDescriptor = this.imageDescriptors.get(id);
+	public ImageDescriptor getImageDescriptor(String imageFileName) {
+		ImageDescriptor imageDescriptor = this.imageDescriptors.get(imageFileName);
 		if (imageDescriptor == null) {
-			imageDescriptor = AbstractUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, ICON_PATH + id);
-			this.imageDescriptors.put(id, imageDescriptor);
+			imageDescriptor = AbstractUIPlugin.imageDescriptorFromPlugin(RunnerPlugin.getDefault().getBundle().getSymbolicName(), ICON_PATH + imageFileName);
+			this.imageDescriptors.put(imageFileName, imageDescriptor);
 		}
 		return imageDescriptor;
 	}

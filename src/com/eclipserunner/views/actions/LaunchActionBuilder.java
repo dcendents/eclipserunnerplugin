@@ -26,12 +26,13 @@ public final class LaunchActionBuilder {
 	private static final String IMG_RUN                  = "run.gif";
 	private static final String IMG_RUN_CONFIGURATIONS   = "run_configuration.gif";
 	private static final String IMG_DEBUG                = "debug.gif";
-	private static final String IMG_DEBUG_CONFIGURATIONS = "run_configuration.gif";
+	private static final String IMG_DEBUG_CONFIGURATIONS = "debug_configuration.gif";
+	private static final String IMG_HELP                 = "help.gif";
 
 	private ILaunchConfigurationSelection launchConfigurationSelection;
 
 	private LaunchActionBuilder() {
-		// use factory method instead 
+		// use factory method instead
 	}
 
 	public static final LaunchActionBuilder newInstance() {
@@ -44,33 +45,33 @@ public final class LaunchActionBuilder {
 	}
 
 	public Action createShowRunConfigurationDialogAction() {
-		Action action = new ShowLaunchConfigurationsDialogAction(launchConfigurationSelection, IDebugUIConstants.ID_RUN_LAUNCH_GROUP);
+		Action action = new ShowLaunchConfigurationsDialogAction(this.launchConfigurationSelection, IDebugUIConstants.ID_RUN_LAUNCH_GROUP);
 		configureAction(action, Message_openRunConfigurationsDialog, Message_openRunConfigurationsDialogTooltip, IMG_RUN_CONFIGURATIONS);
 		return action;
 	}
 
 	public Action createShowDebugConfigurationDialogAction() {
-		Action action = new ShowLaunchConfigurationsDialogAction(launchConfigurationSelection, IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP);
+		Action action = new ShowLaunchConfigurationsDialogAction(this.launchConfigurationSelection, IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP);
 		configureAction(action, Message_openDebugConfigurationsDialog, Message_openDebugConfigurationsDialogTooltip, IMG_DEBUG_CONFIGURATIONS);
 		return action;
 	}
 
 	public Action createRunConfigurationAction() {
-		Action action = new LaunchConfigurationAction(launchConfigurationSelection, IDebugUIConstants.ID_RUN_LAUNCH_GROUP);
+		Action action = new LaunchConfigurationAction(this.launchConfigurationSelection, IDebugUIConstants.ID_RUN_LAUNCH_GROUP);
 		configureAction(action, Message_runConfiguration, Message_runConfigurationTooltip, IMG_RUN);
 		return action;
 	}
 
 	public Action createDebugConfigurationAction() {
-		Action action = new LaunchConfigurationAction(launchConfigurationSelection, IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP);
+		Action action = new LaunchConfigurationAction(this.launchConfigurationSelection, IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP);
 		configureAction(action, Message_debugConfiguration, Message_debugConfigurationTooltip, IMG_DEBUG);
 		return action;
 	}
 
-	private final void configureAction(Action action, String text, String tooltip, String imageKey) {
-		action.setText(text);
+	private final void configureAction(Action action, String title, String tooltip, String imageFileName) {
+		action.setText(title);
 		action.setToolTipText(tooltip);
-		action.setImageDescriptor(RunnerPlugin.getDefault().getImageDescriptor(imageKey));
+		action.setImageDescriptor(RunnerPlugin.getDefault().getImageDescriptor(imageFileName));
 	}
 
 	// TODO LWA BARY
@@ -79,11 +80,11 @@ public final class LaunchActionBuilder {
 			@Override
 			public void run() {
 				MessageDialog.openInformation(
-					RunnerPlugin.getShell(), "Eclipse Runner View", "About action executed!"
+						RunnerPlugin.getShell(), "Eclipse Runner View", "About action executed!"
 				);
 			}
 		};
-		configureAction(action, "About ...", "About ...", null);
+		configureAction(action, "About ...", "About ...", IMG_HELP);
 		return action;
 	}
 
