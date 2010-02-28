@@ -27,8 +27,8 @@ public class ShowLaunchConfigurationsDialogAction extends AbstractLaunchAction {
 	@Override
 	public void run() {
 		LaunchConfigurationsDialog dialog = new LaunchConfigurationsDialog(
-			RunnerPlugin.getShell(),
-			getLaunchConfigurationManager().getLaunchGroup(getLaunchGroupId())
+				RunnerPlugin.getShell(),
+				getLaunchConfigurationManager().getLaunchGroup(getLaunchGroupId())
 		);
 
 		if (selection.isLaunchConfigurationSelected()) {
