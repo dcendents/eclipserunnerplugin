@@ -31,7 +31,7 @@ public final class LaunchActionBuilder {
 	private ILaunchConfigurationSelection launchConfigurationSelection;
 
 	private LaunchActionBuilder() {
-		// singleton pattern
+		// use factory method instead 
 	}
 
 	public static final LaunchActionBuilder newInstance() {
