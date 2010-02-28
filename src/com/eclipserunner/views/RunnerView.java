@@ -37,7 +37,7 @@ import com.eclipserunner.views.actions.LaunchActionBuilder;
  * 
  * @author vachacz, bary
  */
-public class RunnerView extends ViewPart implements IConfigurationSelection {
+public class RunnerView extends ViewPart implements ILaunchConfigurationSelection {
 
 	private TableViewer viewer;
 
@@ -154,7 +154,7 @@ public class RunnerView extends ViewPart implements IConfigurationSelection {
 	}
 
 	private void setupLaunchActions() {
-		LaunchActionBuilder builder = LaunchActionBuilder.newInstance().withConfigurationSelection(this);
+		LaunchActionBuilder builder = LaunchActionBuilder.newInstance().withLaunchConfigurationSelection(this);
 		
 		this.showRunConfigurationsDialogAction   = builder.createShowRunConfigurationDialogAction();
 		this.showDebugConfigurationsDialogAction = builder.createShowDebugConfigurationDialogAction();

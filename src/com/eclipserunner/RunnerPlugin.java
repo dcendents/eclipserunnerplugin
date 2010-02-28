@@ -1,4 +1,4 @@
-package com.eclipserunner.activator;
+package com.eclipserunner;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,19 +6,21 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends AbstractUIPlugin {
+public class RunnerPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "EclipseRunnerPliugin";
 
 	// The shared instance
-	private static Activator plugin;
+	private static RunnerPlugin plugin;
 
 	// Icons path
 	public static final String ICON_PATH = "icons/";
@@ -32,7 +34,7 @@ public class Activator extends AbstractUIPlugin {
 	/**
 	 * The constructor
 	 */
-	public Activator() {
+	public RunnerPlugin() {
 	}
 
 	/*
@@ -68,7 +70,7 @@ public class Activator extends AbstractUIPlugin {
 	 *
 	 * @return the shared instance
 	 */
-	public static Activator getDefault() {
+	public static RunnerPlugin getDefault() {
 		return plugin;
 	}
 
@@ -89,7 +91,7 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	public static String getResourceString(String key) {
-		ResourceBundle bundle = Activator.getDefault().getResourceBundle();
+		ResourceBundle bundle = RunnerPlugin.getDefault().getResourceBundle();
 		try {
 			return bundle.getString(key);
 		}
@@ -103,6 +105,15 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public ResourceBundle getResourceBundle() {
 		return this.resourceBundle;
+	}
+
+	/**
+	 * Returns the SWT active Shell.
+	 * 
+	 * @return SWT active Shell.
+	 */
+	public static Shell getShell() {
+		return Display.getCurrent().getActiveShell();
 	}
 
 }

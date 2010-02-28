@@ -25,8 +25,5 @@ public abstract class AbstractLaunchAction extends Action {
 	protected LaunchConfigurationManager getLaunchConfigurationManager() {
 		return DebugUIPlugin.getDefault().getLaunchConfigurationManager();
 	}
-	
-	@Override
-	public abstract void run();
 
 }

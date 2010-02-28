@@ -5,7 +5,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 /**
  * @author vachacz
  */
-public interface IConfigurationSelection {
+public interface ILaunchConfigurationSelection {
 
 	public ILaunchConfiguration getSelectedLaunchConfiguration();
 	
