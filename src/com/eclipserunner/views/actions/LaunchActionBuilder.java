@@ -12,8 +12,6 @@ import static com.eclipserunner.Messages.Message_runConfigurationTooltip;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 
 import com.eclipserunner.RunnerPlugin;
 import com.eclipserunner.views.ILaunchConfigurationSelection;
@@ -26,8 +24,8 @@ import com.eclipserunner.views.ILaunchConfigurationSelection;
 public final class LaunchActionBuilder {
 
 	private static final String IMG_RUN                  = "run.gif";
-	private static final String IMG_RUN_CONFIGURATIONS   = "run.gif";
-	private static final String IMG_DEBUG                = "run_configuration.gif";
+	private static final String IMG_RUN_CONFIGURATIONS   = "run_configuration.gif";
+	private static final String IMG_DEBUG                = "debug.gif";
 	private static final String IMG_DEBUG_CONFIGURATIONS = "run_configuration.gif";
 
 	private static LaunchActionBuilder builder = new LaunchActionBuilder();
@@ -48,35 +46,33 @@ public final class LaunchActionBuilder {
 	}
 
 	public Action createShowRunConfigurationDialogAction() {
-		Action action = new ShowLaunchConfigurationsDialogAction(this.launchConfigurationSelection, IDebugUIConstants.ID_RUN_LAUNCH_GROUP);
+		Action action = new ShowLaunchConfigurationsDialogAction(launchConfigurationSelection, IDebugUIConstants.ID_RUN_LAUNCH_GROUP);
 		configureAction(action, Message_openRunConfigurationsDialog, Message_openRunConfigurationsDialogTooltip, IMG_RUN_CONFIGURATIONS);
 		return action;
 	}
 
 	public Action createShowDebugConfigurationDialogAction() {
-		Action action = new ShowLaunchConfigurationsDialogAction(this.launchConfigurationSelection, IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP);
+		Action action = new ShowLaunchConfigurationsDialogAction(launchConfigurationSelection, IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP);
 		configureAction(action, Message_openDebugConfigurationsDialog, Message_openDebugConfigurationsDialogTooltip, IMG_DEBUG_CONFIGURATIONS);
 		return action;
 	}
 
 	public Action createRunConfigurationAction() {
-		Action action = new LaunchConfigurationAction(this.launchConfigurationSelection, IDebugUIConstants.ID_RUN_LAUNCH_GROUP);
+		Action action = new LaunchConfigurationAction(launchConfigurationSelection, IDebugUIConstants.ID_RUN_LAUNCH_GROUP);
 		configureAction(action, Message_runConfiguration, Message_runConfigurationTooltip, IMG_RUN);
 		return action;
 	}
 
 	public Action createDebugConfigurationAction() {
-		Action action = new LaunchConfigurationAction(this.launchConfigurationSelection, IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP);
+		Action action = new LaunchConfigurationAction(launchConfigurationSelection, IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP);
 		configureAction(action, Message_debugConfiguration, Message_debugConfigurationTooltip, IMG_DEBUG);
 		return action;
 	}
 
-	private final void configureAction(Action action, String title, String tooltip, String imageKey) {
-		action.setText(title);
+	private final void configureAction(Action action, String text, String tooltip, String imageKey) {
+		action.setText(text);
 		action.setToolTipText(tooltip);
-		// TODO BARY - how to set our own custom icon?
-		//action.setImageDescriptor(Activator.getDefault().getImageDescriptor(imageKey));
-		action.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
+		action.setImageDescriptor(RunnerPlugin.getDefault().getImageDescriptor(imageKey));
 	}
 
 	// TODO LWA BARY
