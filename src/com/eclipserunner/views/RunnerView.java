@@ -17,9 +17,9 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
@@ -28,6 +28,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.FilteredTree;
+import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.part.ViewPart;
 
 import com.eclipserunner.views.actions.LaunchActionBuilder;
@@ -39,8 +41,10 @@ import com.eclipserunner.views.actions.LaunchActionBuilder;
  */
 public class RunnerView extends ViewPart implements ILaunchConfigurationSelection {
 
-	private TableViewer viewer;
+	private TreeViewer viewer;
 
+	private ILaunchConfigurationListener launchConfigurationListener; 
+	
 	private Action showRunConfigurationsDialogAction;
 	private Action showDebugConfigurationsDialogAction;
 
@@ -50,7 +54,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	private Action aboutAction;
 
 	// TODO LWA replace this code
-	class ViewContentProvider implements IStructuredContentProvider {
+	class ViewContentProvider implements ITreeContentProvider {
 		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
 		}
 		public void dispose() {
@@ -68,13 +72,25 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 
 			return savedRunConfiguration.toArray();
 		}
+		public Object[] getChildren(Object arg0) {
+			return null;
+		}
+		public Object getParent(Object arg0) {
+			return null;
+		}
+		public boolean hasChildren(Object arg0) {
+			return false;
+		}
 	}
 	
 
 	@Override
 	public void createPartControl(Composite parent) {
+		// TreeViewer viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		
-		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		FilteredTree tree = new FilteredTree(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL, new PatternFilter(), true);
+		
+		viewer = tree.getViewer();
 		viewer.setContentProvider(new ViewContentProvider());
 		viewer.setLabelProvider(DebugUITools.newDebugModelPresentation());
 		viewer.setSorter(new ViewerSorter());
@@ -90,23 +106,31 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 
 		addRunConfigurationListener();
 	}
+	
+	@Override
+	public void dispose() {
+		super.dispose();
+		
+		getLaunchManager().removeLaunchConfigurationListener(launchConfigurationListener);
+	}
 
 	private void addRunConfigurationListener() {
-		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
-		manager.addLaunchConfigurationListener(new ILaunchConfigurationListener() {
+		launchConfigurationListener = new ILaunchConfigurationListener() {
 
 			public void launchConfigurationRemoved(ILaunchConfiguration configuration) {
-				RunnerView.this.viewer.refresh();
+				RunnerView.this.getViewer().refresh();
 			}
 
 			public void launchConfigurationChanged(ILaunchConfiguration configuration) {
-				RunnerView.this.viewer.refresh();
+				RunnerView.this.getViewer().refresh();
 			}
 
 			public void launchConfigurationAdded(ILaunchConfiguration configuration) {
-				RunnerView.this.viewer.refresh();
+				RunnerView.this.getViewer().refresh();
 			}
-		});
+		};
+		
+		getLaunchManager().addLaunchConfigurationListener(launchConfigurationListener);
 	}
 
 	private void setupContextMenu() {
@@ -182,12 +206,16 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		getViewerControl().setFocus();
 	}
 
-	public TableViewer getViewer() {
+	public TreeViewer getViewer() {
 		return this.viewer;
 	}
 	
 	public Control getViewerControl() {
 		return getViewer().getControl();
+	}
+	
+	public ILaunchManager getLaunchManager() {
+		return DebugPlugin.getDefault().getLaunchManager();
 	}
 
 }

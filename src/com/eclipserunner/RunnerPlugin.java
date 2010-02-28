@@ -12,12 +12,13 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
- * The activator class controls the plug-in life cycle
+ * Eclipse runner plugin activator class.
+ * 
+ * @author bary, vachacz
  */
 public class RunnerPlugin extends AbstractUIPlugin {
 
-	// The plug-in ID
-	public static final String PLUGIN_ID = "EclipseRunnerPliugin";
+	public static final String PLUGIN_ID = "EclipseRunnerPlugin";
 
 	// The shared instance
 	private static RunnerPlugin plugin;
@@ -31,16 +32,6 @@ public class RunnerPlugin extends AbstractUIPlugin {
 	// Resource bundle
 	private ResourceBundle resourceBundle;
 
-	/**
-	 * The constructor
-	 */
-	public RunnerPlugin() {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
@@ -55,10 +46,6 @@ public class RunnerPlugin extends AbstractUIPlugin {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
