@@ -1,14 +1,10 @@
 package com.eclipserunner.views;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationListener;
 import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -18,9 +14,7 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -32,6 +26,9 @@ import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.part.ViewPart;
 
+import com.eclipserunner.model.LaunchConfigrationCategory;
+import com.eclipserunner.model.LaunchTreeContentProvider;
+import com.eclipserunner.model.LaunchTreeLabelProvider;
 import com.eclipserunner.views.actions.LaunchActionBuilder;
 
 /**
@@ -41,6 +38,7 @@ import com.eclipserunner.views.actions.LaunchActionBuilder;
  */
 public class RunnerView extends ViewPart implements ILaunchConfigurationSelection {
 
+	private LaunchTreeContentProvider model = new LaunchTreeContentProvider();
 	private TreeViewer viewer;
 
 	private ILaunchConfigurationListener launchConfigurationListener;
@@ -53,44 +51,17 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 
 	private Action aboutAction;
 
-	// TODO LWA replace this code
-	class ViewContentProvider implements ITreeContentProvider {
-		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
-		}
-		public void dispose() {
-		}
-		public Object[] getElements(Object parent) {
-			List<ILaunchConfiguration> savedRunConfiguration = new ArrayList<ILaunchConfiguration>();
-
-			ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
-			try {
-				for (ILaunchConfiguration config : manager.getLaunchConfigurations()) {
-					savedRunConfiguration.add(config);
-				}
-			} catch (CoreException e) {
-			}
-
-			return savedRunConfiguration.toArray();
-		}
-		public Object[] getChildren(Object arg0) {
-			return null;
-		}
-		public Object getParent(Object arg0) {
-			return null;
-		}
-		public boolean hasChildren(Object arg0) {
-			return false;
-		}
-	}
-
-
 	@Override
 	public void createPartControl(Composite parent) {
+		
+		initializeModel();
+		
 		FilteredTree tree = new FilteredTree(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL, new PatternFilter(), true);
 
 		viewer = tree.getViewer();
-		viewer.setContentProvider(new ViewContentProvider());
-		viewer.setLabelProvider(DebugUITools.newDebugModelPresentation());
+		viewer.setContentProvider(model);
+		// viewer.setLabelProvider(DebugUITools.newDebugModelPresentation());
+		viewer.setLabelProvider(new LaunchTreeLabelProvider());
 		viewer.setSorter(new ViewerSorter());
 		viewer.setInput(getViewSite());
 
@@ -103,6 +74,24 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		setupActionBars();
 
 		addRunConfigurationListener();
+	}
+
+	// TODO LWA dummy code
+	private void initializeModel() {
+		model.setTreeViewer(this);
+		LaunchConfigrationCategory category1 = model.addLaunchConfigurationCategory("Eclipse Runner Project");
+		LaunchConfigrationCategory category2 = model.addLaunchConfigurationCategory("Google Wave");
+		
+		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
+		try {
+			for (ILaunchConfiguration configuration : manager.getLaunchConfigurations()) {
+				model.addUncategorizedLaunchConfiguration(configuration);
+				
+				category1.add(configuration);
+				category2.add(configuration);
+			}
+		} catch (CoreException e) {
+		}
 	}
 
 	@Override
@@ -183,12 +172,25 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		aboutAction                         = builder.createAboutAction();
 	}
 
+	// TODO LWA clean up this code
 	public boolean isLaunchConfigurationSelected() {
-		return !getViewer().getSelection().isEmpty();
+		Object element = getFirstSelectedElement();
+		if (element != null && element instanceof ILaunchConfiguration) {
+			return true;
+		}
+		return false;
 	}
 
 	public ILaunchConfiguration getSelectedLaunchConfiguration() {
-		return (ILaunchConfiguration) ((IStructuredSelection) getViewer().getSelection()).getFirstElement();
+		Object element = getFirstSelectedElement();
+		if (element != null && element instanceof ILaunchConfiguration) {
+			return (ILaunchConfiguration) element;
+		}
+		return null;
+	}
+	
+	public Object getFirstSelectedElement() {
+		return ((IStructuredSelection) getViewer().getSelection()).getFirstElement();
 	}
 
 	private void setupDoubleClickAction() {
