@@ -37,4 +37,5 @@ public class LaunchTreeLabelProvider extends LabelProvider {
 		}
 		return debugModelPresentation.getImage(element);
 	}
+
 }

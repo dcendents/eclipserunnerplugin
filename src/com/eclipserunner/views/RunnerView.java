@@ -36,7 +36,7 @@ import com.eclipserunner.views.actions.LaunchActionBuilder;
  * 
  * @author vachacz, bary
  */
-public class RunnerView extends ViewPart implements ILaunchConfigurationSelection {
+public class RunnerView extends ViewPart implements ILaunchConfigurationSelection, IMenuListener {
 
 	private LaunchTreeContentProvider model = new LaunchTreeContentProvider();
 	private TreeViewer viewer;
@@ -55,8 +55,10 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	public void createPartControl(Composite parent) {
 		
 		initializeModel();
-		
-		FilteredTree tree = new FilteredTree(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL, new PatternFilter(), true);
+		PatternFilter patternFilter = new PatternFilter();
+			patternFilter.setIncludeLeadingWildcard(true);
+			
+		FilteredTree tree = new FilteredTree(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL, patternFilter, true);
 
 		viewer = tree.getViewer();
 		viewer.setContentProvider(model);
@@ -122,25 +124,22 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 
 	private void setupContextMenu() {
 		MenuManager menuMgr = new MenuManager("#PopupMenu");
-		menuMgr.setRemoveAllWhenShown(true);
-		menuMgr.addMenuListener(new IMenuListener() {
-			public void menuAboutToShow(IMenuManager manager) {
-				RunnerView.this.setupContextMenu(manager);
-			}
-		});
+			menuMgr.setRemoveAllWhenShown(true);
+			menuMgr.addMenuListener(this);
 
 		Menu menu = menuMgr.createContextMenu(getViewerControl());
 		getViewerControl().setMenu(menu);
 		getSite().registerContextMenu(menuMgr, viewer);
 	}
 
-	private void setupContextMenu(IMenuManager manager) {
-		manager.add(launchRunConfigurationAction);
-		manager.add(launchDebugConfigurationAction);
+	public void menuAboutToShow(IMenuManager manager) {
+		if (isLaunchConfigurationSelected()) {
+			manager.add(launchRunConfigurationAction);
+			manager.add(launchDebugConfigurationAction);
+		}
 		manager.add(new Separator());
 		manager.add(showRunConfigurationsDialogAction);
 		manager.add(showDebugConfigurationsDialogAction);
-		manager.add(new Separator());
 	}
 
 	private void setupActionBars() {
@@ -159,7 +158,6 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	private void setupLocalToolBar(IToolBarManager manager) {
 		manager.add(showRunConfigurationsDialogAction);
 		manager.add(showDebugConfigurationsDialogAction);
-		manager.add(aboutAction);
 	}
 
 	private void setupLaunchActions() {
@@ -182,12 +180,12 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	}
 
 	public ILaunchConfiguration getSelectedLaunchConfiguration() {
-		Object element = getFirstSelectedElement();
-		if (element != null && element instanceof ILaunchConfiguration) {
-			return (ILaunchConfiguration) element;
+		if (isLaunchConfigurationSelected()) {
+			return (ILaunchConfiguration) getFirstSelectedElement();
 		}
 		return null;
 	}
+
 	
 	public Object getFirstSelectedElement() {
 		return ((IStructuredSelection) getViewer().getSelection()).getFirstElement();
