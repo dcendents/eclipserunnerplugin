@@ -12,7 +12,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
  */
 public class LaunchConfigrationCategory {
 
-	private String categoryName;
+	private String name;
 	private Set<ILaunchConfiguration> launchConfigurationSet = new HashSet<ILaunchConfiguration>();
 
 	public void setLaunchConfigurationSet(Set<ILaunchConfiguration> launchConfigurationList) {
@@ -31,15 +31,15 @@ public class LaunchConfigrationCategory {
 		return launchConfigurationSet.toArray();
 	}
 
-	public boolean contains(Object arg0) {
-		return launchConfigurationSet.contains(arg0);
+	public boolean contains(Object object) {
+		return launchConfigurationSet.contains(object);
 	}
 	
-	public String getCategoryName() {
-		return categoryName;
+	public String getName() {
+		return name;
 	}
 
-	public void setCategoryName(String categoryName) {
-		this.categoryName = categoryName;
+	public void setName(String name) {
+		this.name = name;
 	}
 }

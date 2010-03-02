@@ -21,20 +21,20 @@ public class LaunchTreeContentProvider implements ITreeContentProvider {
 
 	private Set<LaunchConfigrationCategory> launchConfigrationCategorySet;
 	
-	private LaunchConfigrationCategory uncategorizedLaunchConfigrationCategory;
+	private LaunchConfigrationCategory uncategorizedCategory;
 
-	private RunnerView viewer;
+	private RunnerView runnerView;
 	
 	public LaunchTreeContentProvider() {
-		uncategorizedLaunchConfigrationCategory = new LaunchConfigrationCategory();
-		uncategorizedLaunchConfigrationCategory.setCategoryName(Message_uncategorized);
+		uncategorizedCategory = new LaunchConfigrationCategory();
+		uncategorizedCategory.setName(Message_uncategorized);
 		
 		launchConfigrationCategorySet = new HashSet<LaunchConfigrationCategory>();
-		launchConfigrationCategorySet.add(uncategorizedLaunchConfigrationCategory);
+		launchConfigrationCategorySet.add(uncategorizedCategory);
 	}
 
 	public void addUncategorizedLaunchConfiguration(ILaunchConfiguration configuration) {
-		uncategorizedLaunchConfigrationCategory.add(configuration);
+		uncategorizedCategory.add(configuration);
 	} 
 	
 	public Object[] getChildren(Object object) {
@@ -46,9 +46,9 @@ public class LaunchTreeContentProvider implements ITreeContentProvider {
 	}
 
 	public Object getParent(Object object) {
-		for (LaunchConfigrationCategory container : launchConfigrationCategorySet) {
-			if (container.contains(object)) {
-				return container;
+		for (LaunchConfigrationCategory category : launchConfigrationCategorySet) {
+			if (category.contains(object)) {
+				return category;
 			}
 		}
 		return null;
@@ -56,14 +56,14 @@ public class LaunchTreeContentProvider implements ITreeContentProvider {
 
 	public boolean hasChildren(Object parent) {
 		if (launchConfigrationCategorySet.contains(parent)) {
-			LaunchConfigrationCategory launchConfigrationContainer = (LaunchConfigrationCategory) parent;
-			return !launchConfigrationContainer.getLaunchConfigurationSet().isEmpty();
+			LaunchConfigrationCategory launchConfigrationCategory = (LaunchConfigrationCategory) parent;
+			return !launchConfigrationCategory.getLaunchConfigurationSet().isEmpty();
 		}
 		return false;
 	}
 
 	public Object[] getElements(Object parent) {
-		if (parent.equals(viewer.getViewSite())) {
+		if (parent.equals(runnerView.getViewSite())) {
 			return launchConfigrationCategorySet.toArray();
 		}
 		return getChildren(parent);
@@ -76,12 +76,12 @@ public class LaunchTreeContentProvider implements ITreeContentProvider {
 	}
 
 	public void setTreeViewer(RunnerView runnerView) {
-		this.viewer = runnerView;
+		this.runnerView = runnerView;
 	}
 
 	public LaunchConfigrationCategory addLaunchConfigurationCategory(String name) {
 		LaunchConfigrationCategory category = new LaunchConfigrationCategory();
-			category.setCategoryName(name);
+			category.setName(name);
 			
 		launchConfigrationCategorySet.add(category);
 		return category;

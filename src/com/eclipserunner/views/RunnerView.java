@@ -36,7 +36,7 @@ import com.eclipserunner.views.actions.LaunchActionBuilder;
  * 
  * @author vachacz, bary
  */
-public class RunnerView extends ViewPart implements ILaunchConfigurationSelection, IMenuListener {
+public class RunnerView extends ViewPart implements ILaunchConfigurationSelection, IMenuListener, IDoubleClickListener {
 
 	private LaunchTreeContentProvider model = new LaunchTreeContentProvider();
 	private TreeViewer viewer;
@@ -72,7 +72,6 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 
 		setupLaunchActions();
 		setupContextMenu();
-		setupDoubleClickAction();
 		setupActionBars();
 
 		addRunConfigurationListener();
@@ -169,34 +168,25 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		launchDebugConfigurationAction      = builder.createDebugConfigurationAction();
 		aboutAction                         = builder.createAboutAction();
 	}
+	
+	public void doubleClick(DoubleClickEvent event) {
+		this.launchRunConfigurationAction.run();
+	}
 
-	// TODO LWA clean up this code
+
 	public boolean isLaunchConfigurationSelected() {
-		Object element = getFirstSelectedElement();
-		if (element != null && element instanceof ILaunchConfiguration) {
+		if (getFirstSelectedElement() instanceof ILaunchConfiguration) {
 			return true;
 		}
 		return false;
 	}
 
 	public ILaunchConfiguration getSelectedLaunchConfiguration() {
-		if (isLaunchConfigurationSelected()) {
-			return (ILaunchConfiguration) getFirstSelectedElement();
-		}
-		return null;
+		return (ILaunchConfiguration) getFirstSelectedElement();
 	}
 
-	
-	public Object getFirstSelectedElement() {
+	private Object getFirstSelectedElement() {
 		return ((IStructuredSelection) getViewer().getSelection()).getFirstElement();
-	}
-
-	private void setupDoubleClickAction() {
-		viewer.addDoubleClickListener(new IDoubleClickListener() {
-			public void doubleClick(DoubleClickEvent event) {
-				RunnerView.this.launchRunConfigurationAction.run();
-			}
-		});
 	}
 
 	@Override

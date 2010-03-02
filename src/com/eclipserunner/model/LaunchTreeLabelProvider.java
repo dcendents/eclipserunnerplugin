@@ -25,7 +25,7 @@ public class LaunchTreeLabelProvider extends LabelProvider {
 	@Override
 	public String getText(Object element) {
 		if (element instanceof LaunchConfigrationCategory) {
-			return ((LaunchConfigrationCategory) element).getCategoryName();
+			return ((LaunchConfigrationCategory) element).getName();
 		}
 		return debugModelPresentation.getText(element);
 	}
