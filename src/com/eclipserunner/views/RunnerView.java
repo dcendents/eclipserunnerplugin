@@ -21,7 +21,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.part.ViewPart;
@@ -55,26 +54,20 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	public void createPartControl(Composite parent) {
 		
 		initializeModel();
-		PatternFilter patternFilter = new PatternFilter();
-			patternFilter.setIncludeLeadingWildcard(true);
-			
-		FilteredTree tree = new FilteredTree(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL, patternFilter, true);
-
-		viewer = tree.getViewer();
-		viewer.setContentProvider(model);
-		// viewer.setLabelProvider(DebugUITools.newDebugModelPresentation());
-		viewer.setLabelProvider(new LaunchTreeLabelProvider());
-		viewer.setSorter(new ViewerSorter());
-		viewer.setInput(getViewSite());
-
-		// Create the help context id for the viewer's control
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(getViewerControl(), "EclipseRunnerPliugin.viewer");
+		initializeViewer(parent);
 
 		setupLaunchActions();
 		setupContextMenu();
 		setupActionBars();
 
 		addRunConfigurationListener();
+	}
+	
+	@Override
+	public void dispose() {
+		super.dispose();
+
+		getLaunchManager().removeLaunchConfigurationListener(launchConfigurationListener);
 	}
 
 	// TODO LWA dummy code
@@ -94,33 +87,31 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		} catch (CoreException e) {
 		}
 	}
+	
+	private void initializeViewer(Composite parent) {
+		
+		PatternFilter patternFilter = new PatternFilter();
+			patternFilter.setIncludeLeadingWildcard(true);
+			
+		FilteredTree tree = new FilteredTree(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL, patternFilter, true);
 
-	@Override
-	public void dispose() {
-		super.dispose();
-
-		getLaunchManager().removeLaunchConfigurationListener(launchConfigurationListener);
+		viewer = tree.getViewer();
+		viewer.setContentProvider(model);
+		viewer.setLabelProvider(new LaunchTreeLabelProvider());
+		viewer.setSorter(new ViewerSorter());
+		viewer.setInput(getViewSite());
 	}
 
-	private void addRunConfigurationListener() {
-		launchConfigurationListener = new ILaunchConfigurationListener() {
+	private void setupLaunchActions() {
+		LaunchActionBuilder builder = LaunchActionBuilder.newInstance().withLaunchConfigurationSelection(this);
 
-			public void launchConfigurationRemoved(ILaunchConfiguration configuration) {
-				RunnerView.this.getViewer().refresh();
-			}
-
-			public void launchConfigurationChanged(ILaunchConfiguration configuration) {
-				RunnerView.this.getViewer().refresh();
-			}
-
-			public void launchConfigurationAdded(ILaunchConfiguration configuration) {
-				RunnerView.this.getViewer().refresh();
-			}
-		};
-
-		getLaunchManager().addLaunchConfigurationListener(launchConfigurationListener);
+		showRunConfigurationsDialogAction   = builder.createShowRunConfigurationDialogAction();
+		showDebugConfigurationsDialogAction = builder.createShowDebugConfigurationDialogAction();
+		launchRunConfigurationAction        = builder.createRunConfigurationAction();
+		launchDebugConfigurationAction      = builder.createDebugConfigurationAction();
+		aboutAction                         = builder.createAboutAction();
 	}
-
+	
 	private void setupContextMenu() {
 		MenuManager menuMgr = new MenuManager("#PopupMenu");
 			menuMgr.setRemoveAllWhenShown(true);
@@ -129,16 +120,6 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		Menu menu = menuMgr.createContextMenu(getViewerControl());
 		getViewerControl().setMenu(menu);
 		getSite().registerContextMenu(menuMgr, viewer);
-	}
-
-	public void menuAboutToShow(IMenuManager manager) {
-		if (isLaunchConfigurationSelected()) {
-			manager.add(launchRunConfigurationAction);
-			manager.add(launchDebugConfigurationAction);
-		}
-		manager.add(new Separator());
-		manager.add(showRunConfigurationsDialogAction);
-		manager.add(showDebugConfigurationsDialogAction);
 	}
 
 	private void setupActionBars() {
@@ -158,21 +139,45 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		manager.add(showRunConfigurationsDialogAction);
 		manager.add(showDebugConfigurationsDialogAction);
 	}
+	
+	private void addRunConfigurationListener() {
+		launchConfigurationListener = new ILaunchConfigurationListener() {
 
-	private void setupLaunchActions() {
-		LaunchActionBuilder builder = LaunchActionBuilder.newInstance().withLaunchConfigurationSelection(this);
+			public void launchConfigurationRemoved(ILaunchConfiguration configuration) {
+				getViewer().refresh();
+			}
 
-		showRunConfigurationsDialogAction   = builder.createShowRunConfigurationDialogAction();
-		showDebugConfigurationsDialogAction = builder.createShowDebugConfigurationDialogAction();
-		launchRunConfigurationAction        = builder.createRunConfigurationAction();
-		launchDebugConfigurationAction      = builder.createDebugConfigurationAction();
-		aboutAction                         = builder.createAboutAction();
+			public void launchConfigurationChanged(ILaunchConfiguration configuration) {
+				getViewer().refresh();
+			}
+
+			public void launchConfigurationAdded(ILaunchConfiguration configuration) {
+				getViewer().refresh();
+			}
+		};
+
+		getLaunchManager().addLaunchConfigurationListener(launchConfigurationListener);
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.action.IMenuListener#menuAboutToShow(org.eclipse.jface.action.IMenuManager)
+	 */
+	public void menuAboutToShow(IMenuManager manager) {
+		if (isLaunchConfigurationSelected()) {
+			manager.add(launchRunConfigurationAction);
+			manager.add(launchDebugConfigurationAction);
+		}
+		manager.add(new Separator());
+		manager.add(showRunConfigurationsDialogAction);
+		manager.add(showDebugConfigurationsDialogAction);
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.viewers.IDoubleClickListener#doubleClick(org.eclipse.jface.viewers.DoubleClickEvent)
+	 */
 	public void doubleClick(DoubleClickEvent event) {
 		this.launchRunConfigurationAction.run();
 	}
-
 
 	public boolean isLaunchConfigurationSelected() {
 		if (getFirstSelectedElement() instanceof ILaunchConfiguration) {
@@ -194,15 +199,15 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		getViewerControl().setFocus();
 	}
 
-	public TreeViewer getViewer() {
+	private TreeViewer getViewer() {
 		return viewer;
 	}
 
-	public Control getViewerControl() {
+	private Control getViewerControl() {
 		return getViewer().getControl();
 	}
 
-	public ILaunchManager getLaunchManager() {
+	private ILaunchManager getLaunchManager() {
 		return DebugPlugin.getDefault().getLaunchManager();
 	}
 
