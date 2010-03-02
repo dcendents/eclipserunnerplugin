@@ -1,5 +1,7 @@
 package com.eclipserunner.views.actions;
 
+import static com.eclipserunner.Messages.Message_addNewCategory;
+import static com.eclipserunner.Messages.Message_addNewCategoryTooltip;
 import static com.eclipserunner.Messages.Message_debugConfiguration;
 import static com.eclipserunner.Messages.Message_debugConfigurationTooltip;
 import static com.eclipserunner.Messages.Message_openDebugConfigurationsDialog;
@@ -14,6 +16,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 
 import com.eclipserunner.RunnerPlugin;
+import com.eclipserunner.model.LaunchTreeContentProvider;
 import com.eclipserunner.views.ILaunchConfigurationSelection;
 
 /**
@@ -28,8 +31,10 @@ public final class LaunchActionBuilder {
 	private static final String IMG_DEBUG                = "debug.gif";
 	private static final String IMG_DEBUG_CONFIGURATIONS = "debug_configuration.gif";
 	private static final String IMG_HELP                 = "help.gif";
+	private static final String IMG_NEW_CATEGORY         = "category-new.gif";
 
 	private ILaunchConfigurationSelection launchConfigurationSelection;
+	private LaunchTreeContentProvider launchTreeContentProvider;
 
 	private LaunchActionBuilder() {
 		// use factory method instead
@@ -41,6 +46,11 @@ public final class LaunchActionBuilder {
 
 	public LaunchActionBuilder withLaunchConfigurationSelection(ILaunchConfigurationSelection launchConfigurationSelection) {
 		this.launchConfigurationSelection = launchConfigurationSelection;
+		return this;
+	}
+	
+	public LaunchActionBuilder withRunnerModel(LaunchTreeContentProvider model) {
+		this.launchTreeContentProvider = model;
 		return this;
 	}
 
@@ -65,6 +75,12 @@ public final class LaunchActionBuilder {
 	public Action createDebugConfigurationAction() {
 		Action action = new LaunchConfigurationAction(launchConfigurationSelection, IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP);
 		configureAction(action, Message_debugConfiguration, Message_debugConfigurationTooltip, IMG_DEBUG);
+		return action;
+	}
+	
+	public Action createAddNewCategoryAction() {
+		Action action = new AddNewCategoryAction(launchTreeContentProvider);
+		configureAction(action, Message_addNewCategory, Message_addNewCategoryTooltip, IMG_NEW_CATEGORY);
 		return action;
 	}
 

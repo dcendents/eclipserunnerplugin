@@ -2,7 +2,9 @@ package com.eclipserunner.model;
 
 import static com.eclipserunner.Messages.Message_uncategorized;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -19,6 +21,7 @@ import com.eclipserunner.views.RunnerView;
  */
 public class LaunchTreeContentProvider implements ITreeContentProvider {
 
+	private List<IModelChangeListener> modelChangeListeners = new ArrayList<IModelChangeListener>();
 	private Set<LaunchConfigrationCategory> launchConfigrationCategorySet;
 	
 	private LaunchConfigrationCategory uncategorizedCategory;
@@ -35,6 +38,7 @@ public class LaunchTreeContentProvider implements ITreeContentProvider {
 
 	public void addUncategorizedLaunchConfiguration(ILaunchConfiguration configuration) {
 		uncategorizedCategory.add(configuration);
+		notifyListenersAboutChange();
 	} 
 	
 	public Object[] getChildren(Object object) {
@@ -84,7 +88,22 @@ public class LaunchTreeContentProvider implements ITreeContentProvider {
 			category.setName(name);
 			
 		launchConfigrationCategorySet.add(category);
+		notifyListenersAboutChange();
 		return category;
+	}
+
+	public void addChangeListener(IModelChangeListener listener) {
+		modelChangeListeners.add(listener);
+	}
+
+	public void removeChangeListener(IModelChangeListener listener) {
+		modelChangeListeners.remove(listener);
+	}
+	
+	private void notifyListenersAboutChange() {
+		for (IModelChangeListener listener : modelChangeListeners) {
+			listener.modelChanged();
+		}
 	}
 
 }

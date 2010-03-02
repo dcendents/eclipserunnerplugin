@@ -25,6 +25,7 @@ import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.part.ViewPart;
 
+import com.eclipserunner.model.IModelChangeListener;
 import com.eclipserunner.model.LaunchConfigrationCategory;
 import com.eclipserunner.model.LaunchTreeContentProvider;
 import com.eclipserunner.model.LaunchTreeLabelProvider;
@@ -35,7 +36,7 @@ import com.eclipserunner.views.actions.LaunchActionBuilder;
  * 
  * @author vachacz, bary
  */
-public class RunnerView extends ViewPart implements ILaunchConfigurationSelection, IMenuListener, IDoubleClickListener {
+public class RunnerView extends ViewPart implements ILaunchConfigurationSelection, IMenuListener, IDoubleClickListener, IModelChangeListener {
 
 	private LaunchTreeContentProvider model = new LaunchTreeContentProvider();
 	private TreeViewer viewer;
@@ -47,6 +48,8 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 
 	private Action launchRunConfigurationAction;
 	private Action launchDebugConfigurationAction;
+	
+	private Action addNewCategoryAction;
 
 	private Action aboutAction;
 
@@ -67,12 +70,14 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	public void dispose() {
 		super.dispose();
 
+		model.removeChangeListener(this);
 		getLaunchManager().removeLaunchConfigurationListener(launchConfigurationListener);
 	}
 
 	// TODO LWA dummy code
 	private void initializeModel() {
 		model.setTreeViewer(this);
+		
 		LaunchConfigrationCategory category1 = model.addLaunchConfigurationCategory("Eclipse Runner Project");
 		LaunchConfigrationCategory category2 = model.addLaunchConfigurationCategory("Google Wave");
 		
@@ -86,6 +91,8 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 			}
 		} catch (CoreException e) {
 		}
+		
+		model.addChangeListener(this);
 	}
 	
 	private void initializeViewer(Composite parent) {
@@ -103,12 +110,15 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	}
 
 	private void setupLaunchActions() {
-		LaunchActionBuilder builder = LaunchActionBuilder.newInstance().withLaunchConfigurationSelection(this);
+		LaunchActionBuilder builder = LaunchActionBuilder.newInstance()
+											.withLaunchConfigurationSelection(this)
+											.withRunnerModel(model);
 
 		showRunConfigurationsDialogAction   = builder.createShowRunConfigurationDialogAction();
 		showDebugConfigurationsDialogAction = builder.createShowDebugConfigurationDialogAction();
 		launchRunConfigurationAction        = builder.createRunConfigurationAction();
 		launchDebugConfigurationAction      = builder.createDebugConfigurationAction();
+		addNewCategoryAction                = builder.createAddNewCategoryAction();
 		aboutAction                         = builder.createAboutAction();
 	}
 	
@@ -129,6 +139,8 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	}
 
 	private void setupLocalPullDown(IMenuManager manager) {
+		manager.add(addNewCategoryAction);
+		manager.add(new Separator());
 		manager.add(showRunConfigurationsDialogAction);
 		manager.add(showDebugConfigurationsDialogAction);
 		manager.add(new Separator());
@@ -136,6 +148,8 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	}
 
 	private void setupLocalToolBar(IToolBarManager manager) {
+		manager.add(addNewCategoryAction);
+		manager.add(new Separator());
 		manager.add(showRunConfigurationsDialogAction);
 		manager.add(showDebugConfigurationsDialogAction);
 	}
@@ -159,14 +173,23 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		getLaunchManager().addLaunchConfigurationListener(launchConfigurationListener);
 	}
 	
+	public void modelChanged() {
+		getViewer().refresh();
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.action.IMenuListener#menuAboutToShow(org.eclipse.jface.action.IMenuManager)
 	 */
 	public void menuAboutToShow(IMenuManager manager) {
+		
+		manager.add(addNewCategoryAction);
+		
 		if (isLaunchConfigurationSelected()) {
+			manager.add(new Separator());
 			manager.add(launchRunConfigurationAction);
 			manager.add(launchDebugConfigurationAction);
 		}
+		
 		manager.add(new Separator());
 		manager.add(showRunConfigurationsDialogAction);
 		manager.add(showDebugConfigurationsDialogAction);
