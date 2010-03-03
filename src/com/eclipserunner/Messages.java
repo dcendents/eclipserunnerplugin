@@ -33,4 +33,9 @@ public class Messages extends NLS {
 	public static String Message_addNewCategoryTooltip;
 	
 	public static String Message_uncategorized;
+	
+	public static String Message_catogoryNameNotValid;
+	public static String Message_categoryDialogTitle;
+	public static String Message_categoryDialogMessage;
+	
 }

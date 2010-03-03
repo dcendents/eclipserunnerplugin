@@ -50,6 +50,14 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	private Action launchDebugConfigurationAction;
 	
 	private Action addNewCategoryAction;
+	
+	// TODO LWA
+	@SuppressWarnings("unused")
+	private Action collapseAllAction;
+	
+	// TODO LWA
+	@SuppressWarnings("unused")
+	private Action expandAllAction;
 
 	private Action aboutAction;
 
