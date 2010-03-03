@@ -1,5 +1,7 @@
 package com.eclipserunner.model;
 
+import static org.mockito.Mockito.verify;
+
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +28,7 @@ public class LauchTreeContentProviderTest {
 		contentProvider.addChangeListener(modelListenerMock);
 		contentProvider.addLaunchConfigurationCategory("test");
 		
-		modelListenerMock.modelChanged();
+		verify(modelListenerMock).modelChanged();
 	}
 
 	@Test
@@ -36,7 +38,7 @@ public class LauchTreeContentProviderTest {
 		contentProvider.addChangeListener(modelListenerMock);
 		contentProvider.addUncategorizedLaunchConfiguration(launchConfigurationMock);
 		
-		modelListenerMock.modelChanged();
+		verify(modelListenerMock).modelChanged();
 	}
 
 	
