@@ -7,7 +7,8 @@ import org.eclipse.debug.core.ILaunchConfiguration;
  */
 public interface ILaunchConfigurationSelection {
 
-	boolean isLaunchConfigurationSelected();
-	ILaunchConfiguration getSelectedLaunchConfiguration();
+	public boolean isLaunchConfigurationSelected();
+	public Object getSelectedObject();
+	public ILaunchConfiguration getSelectedLaunchConfiguration();
 
 }

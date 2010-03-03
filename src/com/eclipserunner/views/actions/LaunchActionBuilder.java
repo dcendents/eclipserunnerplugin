@@ -12,6 +12,8 @@ import static com.eclipserunner.Messages.Message_openDebugConfigurationsDialog;
 import static com.eclipserunner.Messages.Message_openDebugConfigurationsDialogTooltip;
 import static com.eclipserunner.Messages.Message_openRunConfigurationsDialog;
 import static com.eclipserunner.Messages.Message_openRunConfigurationsDialogTooltip;
+import static com.eclipserunner.Messages.Message_rename;
+import static com.eclipserunner.Messages.Message_renameTooltip;
 import static com.eclipserunner.Messages.Message_runConfiguration;
 import static com.eclipserunner.Messages.Message_runConfigurationTooltip;
 import static org.eclipse.debug.ui.IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP;
@@ -106,15 +108,25 @@ public final class LaunchActionBuilder {
 		configureAction(action, Message_expandAll, Message_expandAllTooltip, IMG_EXPAND_ALL);
 		return action;
 	}
+	
+	public Action createRenameAction() {
+		Action action = new RenameConfigOrCategoryAction(launchConfigurationSelection, launchTreeContentProvider);
+		configureAction(action, Message_rename, Message_renameTooltip);
+		return action;
+	}
 
 	private final void configureAction(Action action, String title, String tooltip, String imageFileName) {
 		configureAction(action, title, tooltip, RunnerPlugin.getDefault().getImageDescriptor(imageFileName));
 	}
 	
 	private final void configureAction(Action action, String title, String tooltip, ImageDescriptor imageDescriptor) {
+		action.setImageDescriptor(imageDescriptor);
+		configureAction(action, title, tooltip);
+	}
+	
+	private final void configureAction(Action action, String title, String tooltip) {
 		action.setText(title);
 		action.setToolTipText(tooltip);
-		action.setImageDescriptor(imageDescriptor);
 	}
 
 	// TODO LWA BARY

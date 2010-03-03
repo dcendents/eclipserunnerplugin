@@ -37,7 +37,7 @@ public class LaunchTreeContentProvider implements ITreeContentProvider {
 
 	public void addUncategorizedLaunchConfiguration(ILaunchConfiguration configuration) {
 		uncategorizedCategory.add(configuration);
-		notifyListenersAboutChange();
+		fireModelChangedEvent();
 	} 
 	
 	public Object[] getChildren(Object object) {
@@ -87,7 +87,7 @@ public class LaunchTreeContentProvider implements ITreeContentProvider {
 			category.setName(name);
 			
 		launchConfigrationCategorySet.add(category);
-		notifyListenersAboutChange();
+		fireModelChangedEvent();
 		return category;
 	}
 
@@ -99,7 +99,7 @@ public class LaunchTreeContentProvider implements ITreeContentProvider {
 		modelChangeListeners.remove(listener);
 	}
 	
-	private void notifyListenersAboutChange() {
+	public void fireModelChangedEvent() {
 		for (IModelChangeListener listener : modelChangeListeners) {
 			listener.modelChanged();
 		}

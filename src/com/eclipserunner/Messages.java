@@ -44,4 +44,9 @@ public class Messages extends NLS {
 	public static String Message_expandAll;
 	public static String Message_expandAllTooltip;
 	
+	public static String Message_rename;
+	public static String Message_renameTooltip;
+	public static String Message_renameLaunchConfiguration;
+	public static String Message_renameCategory;
+	
 }

@@ -54,6 +54,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	private Action collapseAllAction;
 	private Action expandAllAction;
 
+	private Action renameAction;
 	private Action aboutAction;
 
 	@Override
@@ -124,6 +125,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		addNewCategoryAction                = builder.createAddNewCategoryAction();
 		collapseAllAction                   = builder.createCollapseAllAction(viewer);
 		expandAllAction                     = builder.createExpandAllAction(viewer);
+		renameAction                        = builder.createRenameAction();
 		aboutAction                         = builder.createAboutAction();
 	}
 	
@@ -199,6 +201,8 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		}
 		
 		manager.add(new Separator());
+		manager.add(renameAction);
+		manager.add(new Separator());
 		manager.add(showRunConfigurationsDialogAction);
 		manager.add(showDebugConfigurationsDialogAction);
 	}
@@ -211,17 +215,17 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	}
 
 	public boolean isLaunchConfigurationSelected() {
-		if (getFirstSelectedElement() instanceof ILaunchConfiguration) {
+		if (getSelectedObject() instanceof ILaunchConfiguration) {
 			return true;
 		}
 		return false;
 	}
 
 	public ILaunchConfiguration getSelectedLaunchConfiguration() {
-		return (ILaunchConfiguration) getFirstSelectedElement();
+		return (ILaunchConfiguration) getSelectedObject();
 	}
-
-	private Object getFirstSelectedElement() {
+	
+	public Object getSelectedObject() {
 		return ((IStructuredSelection) getViewer().getSelection()).getFirstElement();
 	}
 
