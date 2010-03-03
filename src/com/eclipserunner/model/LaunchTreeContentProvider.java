@@ -10,8 +10,7 @@ import java.util.Set;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
-
-import com.eclipserunner.views.RunnerView;
+import org.eclipse.ui.IViewPart;
 
 /**
  * Class implementing {@link ITreeContentProvider} acts as a model for launch configuration tree.
@@ -26,7 +25,7 @@ public class LaunchTreeContentProvider implements ITreeContentProvider {
 	
 	private LaunchConfigurationCategory uncategorizedCategory;
 
-	private RunnerView runnerView;
+	private IViewPart viewPart;
 	
 	public LaunchTreeContentProvider() {
 		uncategorizedCategory = new LaunchConfigurationCategory();
@@ -67,7 +66,7 @@ public class LaunchTreeContentProvider implements ITreeContentProvider {
 	}
 
 	public Object[] getElements(Object parent) {
-		if (parent.equals(runnerView.getViewSite())) {
+		if (parent.equals(viewPart.getViewSite())) {
 			return launchConfigrationCategorySet.toArray();
 		}
 		return getChildren(parent);
@@ -79,8 +78,8 @@ public class LaunchTreeContentProvider implements ITreeContentProvider {
 	public void inputChanged(Viewer arg0, Object arg1, Object arg2) {
 	}
 
-	public void setTreeViewer(RunnerView runnerView) {
-		this.runnerView = runnerView;
+	public void setViewPart(IViewPart viewPart) {
+		this.viewPart = viewPart;
 	}
 
 	public LaunchConfigurationCategory addLaunchConfigurationCategory(String name) {
@@ -104,6 +103,10 @@ public class LaunchTreeContentProvider implements ITreeContentProvider {
 		for (IModelChangeListener listener : modelChangeListeners) {
 			listener.modelChanged();
 		}
+	}
+
+	public LaunchConfigurationCategory getUncategorizedCategory() {
+		return uncategorizedCategory;
 	}
 
 }

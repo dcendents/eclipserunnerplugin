@@ -42,4 +42,8 @@ public class LaunchConfigurationCategory {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public int size() {
+		return launchConfigurationSet.size();
+	}
 }

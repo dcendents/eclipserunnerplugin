@@ -76,7 +76,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 
 	// TODO LWA dummy code
 	private void initializeModel() {
-		model.setTreeViewer(this);
+		model.setViewPart(this);
 		
 		LaunchConfigurationCategory category1 = model.addLaunchConfigurationCategory("Eclipse Runner Project");
 		LaunchConfigurationCategory category2 = model.addLaunchConfigurationCategory("Google Wave");
