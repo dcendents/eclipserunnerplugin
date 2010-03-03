@@ -10,7 +10,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
  * 
  * @author vachacz
  */
-public class LaunchConfigrationCategory {
+public class LaunchConfigurationCategory {
 
 	private String name;
 	private Set<ILaunchConfiguration> launchConfigurationSet = new HashSet<ILaunchConfiguration>();

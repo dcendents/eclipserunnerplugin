@@ -22,17 +22,17 @@ import com.eclipserunner.views.RunnerView;
 public class LaunchTreeContentProvider implements ITreeContentProvider {
 
 	private List<IModelChangeListener> modelChangeListeners = new ArrayList<IModelChangeListener>();
-	private Set<LaunchConfigrationCategory> launchConfigrationCategorySet;
+	private Set<LaunchConfigurationCategory> launchConfigrationCategorySet;
 	
-	private LaunchConfigrationCategory uncategorizedCategory;
+	private LaunchConfigurationCategory uncategorizedCategory;
 
 	private RunnerView runnerView;
 	
 	public LaunchTreeContentProvider() {
-		uncategorizedCategory = new LaunchConfigrationCategory();
+		uncategorizedCategory = new LaunchConfigurationCategory();
 		uncategorizedCategory.setName(Message_uncategorized);
 		
-		launchConfigrationCategorySet = new HashSet<LaunchConfigrationCategory>();
+		launchConfigrationCategorySet = new HashSet<LaunchConfigurationCategory>();
 		launchConfigrationCategorySet.add(uncategorizedCategory);
 	}
 
@@ -43,14 +43,14 @@ public class LaunchTreeContentProvider implements ITreeContentProvider {
 	
 	public Object[] getChildren(Object object) {
 		if (launchConfigrationCategorySet.contains(object)) {
-			LaunchConfigrationCategory launchConfigrationCategory = (LaunchConfigrationCategory) object;
+			LaunchConfigurationCategory launchConfigrationCategory = (LaunchConfigurationCategory) object;
 			return launchConfigrationCategory.toArray();
 		}
 		return null;
 	}
 
 	public Object getParent(Object object) {
-		for (LaunchConfigrationCategory category : launchConfigrationCategorySet) {
+		for (LaunchConfigurationCategory category : launchConfigrationCategorySet) {
 			if (category.contains(object)) {
 				return category;
 			}
@@ -60,7 +60,7 @@ public class LaunchTreeContentProvider implements ITreeContentProvider {
 
 	public boolean hasChildren(Object parent) {
 		if (launchConfigrationCategorySet.contains(parent)) {
-			LaunchConfigrationCategory launchConfigrationCategory = (LaunchConfigrationCategory) parent;
+			LaunchConfigurationCategory launchConfigrationCategory = (LaunchConfigurationCategory) parent;
 			return !launchConfigrationCategory.getLaunchConfigurationSet().isEmpty();
 		}
 		return false;
@@ -83,8 +83,8 @@ public class LaunchTreeContentProvider implements ITreeContentProvider {
 		this.runnerView = runnerView;
 	}
 
-	public LaunchConfigrationCategory addLaunchConfigurationCategory(String name) {
-		LaunchConfigrationCategory category = new LaunchConfigrationCategory();
+	public LaunchConfigurationCategory addLaunchConfigurationCategory(String name) {
+		LaunchConfigurationCategory category = new LaunchConfigurationCategory();
 			category.setName(name);
 			
 		launchConfigrationCategorySet.add(category);

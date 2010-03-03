@@ -26,7 +26,7 @@ import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.part.ViewPart;
 
 import com.eclipserunner.model.IModelChangeListener;
-import com.eclipserunner.model.LaunchConfigrationCategory;
+import com.eclipserunner.model.LaunchConfigurationCategory;
 import com.eclipserunner.model.LaunchTreeContentProvider;
 import com.eclipserunner.model.LaunchTreeLabelProvider;
 import com.eclipserunner.views.actions.LaunchActionBuilder;
@@ -78,8 +78,8 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	private void initializeModel() {
 		model.setTreeViewer(this);
 		
-		LaunchConfigrationCategory category1 = model.addLaunchConfigurationCategory("Eclipse Runner Project");
-		LaunchConfigrationCategory category2 = model.addLaunchConfigurationCategory("Google Wave");
+		LaunchConfigurationCategory category1 = model.addLaunchConfigurationCategory("Eclipse Runner Project");
+		LaunchConfigurationCategory category2 = model.addLaunchConfigurationCategory("Google Wave");
 		
 		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
 		try {

@@ -24,15 +24,15 @@ public class LaunchTreeLabelProvider extends LabelProvider {
 
 	@Override
 	public String getText(Object element) {
-		if (element instanceof LaunchConfigrationCategory) {
-			return ((LaunchConfigrationCategory) element).getName();
+		if (element instanceof LaunchConfigurationCategory) {
+			return ((LaunchConfigurationCategory) element).getName();
 		}
 		return debugModelPresentation.getText(element);
 	}
 	
 	@Override
 	public Image getImage(Object element) {
-		if (element instanceof LaunchConfigrationCategory) {
+		if (element instanceof LaunchConfigurationCategory) {
 			return RunnerPlugin.getDefault().getImageDescriptor(IMG_CATEGORY).createImage();
 		}
 		return debugModelPresentation.getImage(element);
