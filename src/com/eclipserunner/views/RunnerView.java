@@ -51,12 +51,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	
 	private Action addNewCategoryAction;
 	
-	// TODO LWA
-	@SuppressWarnings("unused")
 	private Action collapseAllAction;
-	
-	// TODO LWA
-	@SuppressWarnings("unused")
 	private Action expandAllAction;
 
 	private Action aboutAction;
@@ -127,6 +122,8 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		launchRunConfigurationAction        = builder.createRunConfigurationAction();
 		launchDebugConfigurationAction      = builder.createDebugConfigurationAction();
 		addNewCategoryAction                = builder.createAddNewCategoryAction();
+		collapseAllAction                   = builder.createCollapseAllAction(viewer);
+		expandAllAction                     = builder.createExpandAllAction(viewer);
 		aboutAction                         = builder.createAboutAction();
 	}
 	
@@ -157,6 +154,9 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 
 	private void setupLocalToolBar(IToolBarManager manager) {
 		manager.add(addNewCategoryAction);
+		manager.add(new Separator());
+		manager.add(collapseAllAction);
+		manager.add(expandAllAction);
 		manager.add(new Separator());
 		manager.add(showRunConfigurationsDialogAction);
 		manager.add(showDebugConfigurationsDialogAction);

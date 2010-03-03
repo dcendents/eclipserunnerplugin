@@ -38,4 +38,10 @@ public class Messages extends NLS {
 	public static String Message_categoryDialogTitle;
 	public static String Message_categoryDialogMessage;
 	
+	public static String Message_collapseAll;
+	public static String Message_collapseAllTooltip;
+	
+	public static String Message_expandAll;
+	public static String Message_expandAllTooltip;
+	
 }
