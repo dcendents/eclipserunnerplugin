@@ -49,4 +49,10 @@ public class Messages extends NLS {
 	public static String Message_renameLaunchConfiguration;
 	public static String Message_renameCategory;
 	
+	public static String Message_remove;
+	public static String Message_removeTooltip;
+	public static String Message_removeConfirm;
+	public static String Message_removeCategoryConfirm;
+	public static String Message_removeConfigurationConfirm;
+	
 }

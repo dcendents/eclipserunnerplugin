@@ -47,7 +47,8 @@ public class RunnerViewDropListener extends ViewerDropAdapter {
 			LaunchConfigurationCategory sourceCategory = (LaunchConfigurationCategory)runnerView.getTreeContentProvider().getParent(launchConfiguration);
 			LaunchConfigurationCategory destinationCategory = (LaunchConfigurationCategory)getCurrentTarget();
 
-			sourceCategory.remove(launchConfiguration);
+			// TODO LWA BARY remove is now protected
+			// sourceCategory.remove(launchConfiguration);
 			destinationCategory.add(launchConfiguration);
 
 			return true;

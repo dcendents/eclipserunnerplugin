@@ -12,6 +12,8 @@ import static com.eclipserunner.Messages.Message_openDebugConfigurationsDialog;
 import static com.eclipserunner.Messages.Message_openDebugConfigurationsDialogTooltip;
 import static com.eclipserunner.Messages.Message_openRunConfigurationsDialog;
 import static com.eclipserunner.Messages.Message_openRunConfigurationsDialogTooltip;
+import static com.eclipserunner.Messages.Message_remove;
+import static com.eclipserunner.Messages.Message_removeTooltip;
 import static com.eclipserunner.Messages.Message_rename;
 import static com.eclipserunner.Messages.Message_renameTooltip;
 import static com.eclipserunner.Messages.Message_runConfiguration;
@@ -97,9 +99,8 @@ public final class LaunchActionBuilder {
 	}
 
 	public Action createCollapseAllAction(TreeViewer viewer) {
-		ImageDescriptor image = PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_ELCL_COLLAPSEALL);
 		Action action = new CollapseAllAction(viewer);
-		configureAction(action, Message_collapseAll, Message_collapseAllTooltip, image);
+		configureAction(action, Message_collapseAll, Message_collapseAllTooltip, getSharedImage(ISharedImages.IMG_ELCL_COLLAPSEALL));
 		return action;
 	}
 
@@ -112,6 +113,12 @@ public final class LaunchActionBuilder {
 	public Action createRenameAction() {
 		Action action = new RenameConfigOrCategoryAction(launchConfigurationSelection, launchTreeContentProvider);
 		configureAction(action, Message_rename, Message_renameTooltip);
+		return action;
+	}
+	
+	public Action createRemoveAction() {
+		Action action = new RemoveConfigOrCategoryAction(launchConfigurationSelection, launchTreeContentProvider);
+		configureAction(action, Message_remove, Message_removeTooltip, getSharedImage(ISharedImages.IMG_ETOOL_DELETE));
 		return action;
 	}
 
@@ -127,6 +134,10 @@ public final class LaunchActionBuilder {
 	private final void configureAction(Action action, String title, String tooltip) {
 		action.setText(title);
 		action.setToolTipText(tooltip);
+	}
+	
+	private ImageDescriptor getSharedImage(String image) {
+		return PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(image);
 	}
 
 	// TODO LWA BARY

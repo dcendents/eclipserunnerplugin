@@ -30,6 +30,7 @@ import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.part.ViewPart;
 
 import com.eclipserunner.model.IModelChangeListener;
+import com.eclipserunner.model.LaunchConfigurationCategory;
 import com.eclipserunner.model.LaunchTreeContentProvider;
 import com.eclipserunner.model.LaunchTreeLabelProvider;
 import com.eclipserunner.ui.dnd.RunnerViewDragListener;
@@ -61,6 +62,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	private Action expandAllAction;
 
 	private Action renameAction;
+	private Action removeAction;
 	private Action aboutAction;
 
 	@Override
@@ -138,6 +140,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		collapseAllAction                   = builder.createCollapseAllAction(viewer);
 		expandAllAction                     = builder.createExpandAllAction(viewer);
 		renameAction                        = builder.createRenameAction();
+		removeAction                        = builder.createRemoveAction();
 		aboutAction                         = builder.createAboutAction();
 	}
 
@@ -214,6 +217,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 
 		manager.add(new Separator());
 		manager.add(renameAction);
+		manager.add(removeAction);
 		manager.add(new Separator());
 		manager.add(showRunConfigurationsDialogAction);
 		manager.add(showDebugConfigurationsDialogAction);
@@ -241,6 +245,22 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		return ((IStructuredSelection) getViewer().getSelection()).getFirstElement();
 	}
 
+	public LaunchConfigurationCategory getSelectedObjectCategory() {
+		Object selectedObject = getSelectedObject();
+		LaunchConfigurationCategory category = null;
+		
+		if (selectedObject instanceof ILaunchConfiguration) {
+			category = (LaunchConfigurationCategory) model.getParent(selectedObject);
+		} 
+		else if (selectedObject instanceof LaunchConfigurationCategory) {
+			category = (LaunchConfigurationCategory) selectedObject;
+		}
+		else {
+			assert true; // unreachable code
+		}
+		return category;
+	}
+	
 	@Override
 	public void setFocus() {
 		getViewerControl().setFocus();

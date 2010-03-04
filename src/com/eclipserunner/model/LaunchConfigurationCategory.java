@@ -27,7 +27,7 @@ public class LaunchConfigurationCategory {
 		launchConfigurationSet.add(launchConfiguration);
 	}
 
-	public boolean remove (ILaunchConfiguration launchConfiguration) {
+	protected boolean remove (ILaunchConfiguration launchConfiguration) {
 		return launchConfigurationSet.remove(launchConfiguration);
 	}
 

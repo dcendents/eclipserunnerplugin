@@ -109,4 +109,14 @@ public class LaunchTreeContentProvider implements ITreeContentProvider {
 		return uncategorizedCategory;
 	}
 
+	public void removeCategory(LaunchConfigurationCategory categoy) {
+		launchConfigrationCategorySet.remove(categoy);
+		fireModelChangedEvent();
+	}
+
+	public void removeConfigurationInCategory(LaunchConfigurationCategory category, ILaunchConfiguration configuration) {
+		category.remove(configuration);
+		fireModelChangedEvent();
+	}
+
 }
