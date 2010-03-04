@@ -20,6 +20,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -121,7 +122,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 
 	private void initDragAndDrop() {
 		int operations = DND.DROP_COPY | DND.DROP_MOVE;
-		Transfer[] transferTypes = new Transfer[]{ LocalSelectionTransfer.getTransfer() };
+		Transfer[] transferTypes = new Transfer[]{ LocalSelectionTransfer.getTransfer(), FileTransfer.getInstance() };
 
 		getViewer().addDragSupport(operations, transferTypes, new RunnerViewDragListener(getViewer()));
 		getViewer().addDropSupport(operations, transferTypes, new RunnerViewDropListener(getViewer(), model));

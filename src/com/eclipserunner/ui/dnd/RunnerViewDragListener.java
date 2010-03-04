@@ -1,15 +1,20 @@
 package com.eclipserunner.ui.dnd;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Iterator;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
+import org.eclipse.swt.dnd.FileTransfer;
 
 import com.eclipserunner.model.LaunchConfigurationCategory;
+import com.eclipserunner.views.utils.ImportExportUtil;
 
 /**
  * Listener for handling drag events.
@@ -53,6 +58,25 @@ public class RunnerViewDragListener implements DragSourceListener {
 		if (LocalSelectionTransfer.getTransfer().isSupportedType(event.dataType)) {
 			LocalSelectionTransfer.getTransfer().setSelection(currentSelection);
 		}
+		// TODO BARY: dummy code
+		else if (FileTransfer.getInstance().isSupportedType(event.dataType)) {
+			try {
+				File file = File.createTempFile("eclipse-", ".launch");
+				file.deleteOnExit();
+				ImportExportUtil.export(file, currentSelection);
+
+				String[] paths = new String[1];
+				paths[0] = file.getAbsolutePath();
+				event.data = paths;
+			} catch (CoreException e) {
+				// TODO BARY: exception handling
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO BARY: exception handling
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	public void dragFinished(DragSourceEvent event) {
