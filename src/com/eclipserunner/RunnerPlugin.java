@@ -18,7 +18,6 @@ public class RunnerPlugin extends AbstractUIPlugin {
 
 	public static final String PLUGIN_ID = "EclipseRunnerPlugin";
 
-	// The shared instance
 	private static RunnerPlugin plugin;
 
 	public static final String ICON_PATH = "icons/";

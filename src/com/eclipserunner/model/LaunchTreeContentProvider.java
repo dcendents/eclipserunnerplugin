@@ -14,7 +14,7 @@ import org.eclipse.ui.IViewPart;
 
 /**
  * Class implementing {@link ITreeContentProvider} acts as a model for launch configuration tree.
- * By default provides "uncategorized" category. 
+ * By default provides "uncategorized" category.
  * 
  * @author vachacz
  */
@@ -22,15 +22,15 @@ public class LaunchTreeContentProvider implements ITreeContentProvider {
 
 	private List<IModelChangeListener> modelChangeListeners = new ArrayList<IModelChangeListener>();
 	private Set<LaunchConfigurationCategory> launchConfigrationCategorySet;
-	
+
 	private LaunchConfigurationCategory uncategorizedCategory;
 
 	private IViewPart viewPart;
-	
+
 	public LaunchTreeContentProvider() {
 		uncategorizedCategory = new LaunchConfigurationCategory();
 		uncategorizedCategory.setName(Message_uncategorized);
-		
+
 		launchConfigrationCategorySet = new HashSet<LaunchConfigurationCategory>();
 		launchConfigrationCategorySet.add(uncategorizedCategory);
 	}
@@ -38,8 +38,8 @@ public class LaunchTreeContentProvider implements ITreeContentProvider {
 	public void addUncategorizedLaunchConfiguration(ILaunchConfiguration configuration) {
 		uncategorizedCategory.add(configuration);
 		fireModelChangedEvent();
-	} 
-	
+	}
+
 	public Object[] getChildren(Object object) {
 		if (launchConfigrationCategorySet.contains(object)) {
 			LaunchConfigurationCategory launchConfigrationCategory = (LaunchConfigurationCategory) object;
@@ -75,7 +75,7 @@ public class LaunchTreeContentProvider implements ITreeContentProvider {
 	public void dispose() {
 	}
 
-	public void inputChanged(Viewer arg0, Object arg1, Object arg2) {
+	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 	}
 
 	public void setViewPart(IViewPart viewPart) {
@@ -84,8 +84,8 @@ public class LaunchTreeContentProvider implements ITreeContentProvider {
 
 	public LaunchConfigurationCategory addLaunchConfigurationCategory(String name) {
 		LaunchConfigurationCategory category = new LaunchConfigurationCategory();
-			category.setName(name);
-			
+		category.setName(name);
+
 		launchConfigrationCategorySet.add(category);
 		fireModelChangedEvent();
 		return category;
@@ -98,7 +98,7 @@ public class LaunchTreeContentProvider implements ITreeContentProvider {
 	public void removeChangeListener(IModelChangeListener listener) {
 		modelChangeListeners.remove(listener);
 	}
-	
+
 	public void fireModelChangedEvent() {
 		for (IModelChangeListener listener : modelChangeListeners) {
 			listener.modelChanged();

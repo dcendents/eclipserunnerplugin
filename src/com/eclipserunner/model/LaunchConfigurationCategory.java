@@ -15,8 +15,8 @@ public class LaunchConfigurationCategory {
 	private String name;
 	private Set<ILaunchConfiguration> launchConfigurationSet = new HashSet<ILaunchConfiguration>();
 
-	public void setLaunchConfigurationSet(Set<ILaunchConfiguration> launchConfigurationList) {
-		this.launchConfigurationSet = launchConfigurationList;
+	public void setLaunchConfigurationSet(Set<ILaunchConfiguration> launchConfigurationSet) {
+		this.launchConfigurationSet = launchConfigurationSet;
 	}
 
 	public Set<ILaunchConfiguration> getLaunchConfigurationSet() {
@@ -27,6 +27,10 @@ public class LaunchConfigurationCategory {
 		launchConfigurationSet.add(launchConfiguration);
 	}
 
+	public boolean remove (ILaunchConfiguration launchConfiguration) {
+		return launchConfigurationSet.remove(launchConfiguration);
+	}
+
 	public Object[] toArray() {
 		return launchConfigurationSet.toArray();
 	}
@@ -34,7 +38,7 @@ public class LaunchConfigurationCategory {
 	public boolean contains(Object object) {
 		return launchConfigurationSet.contains(object);
 	}
-	
+
 	public String getName() {
 		return name;
 	}
