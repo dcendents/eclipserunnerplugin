@@ -114,6 +114,11 @@ public class LaunchTreeContentProvider implements ITreeContentProvider {
 		fireModelChangedEvent();
 	}
 
+	public void addConfigurationInCategory(LaunchConfigurationCategory category, ILaunchConfiguration configuration) {
+		category.add(configuration);
+		fireModelChangedEvent();
+	}
+
 	public void removeConfigurationInCategory(LaunchConfigurationCategory category, ILaunchConfiguration configuration) {
 		category.remove(configuration);
 		fireModelChangedEvent();

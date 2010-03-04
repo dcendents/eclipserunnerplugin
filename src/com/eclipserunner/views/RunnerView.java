@@ -11,6 +11,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -19,7 +20,6 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
-import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -121,10 +121,13 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 
 	private void initDragAndDrop() {
 		int operations = DND.DROP_COPY | DND.DROP_MOVE;
-		Transfer[] transferTypes = new Transfer[]{TextTransfer.getInstance()};
-		viewer.addDragSupport(operations, transferTypes, new RunnerViewDragListener(this));
-		viewer.addDropSupport(operations, transferTypes, new RunnerViewDropListener(this));
+		Transfer[] transferTypes = new Transfer[]{ LocalSelectionTransfer.getTransfer() };
+
+		getViewer().addDragSupport(operations, transferTypes, new RunnerViewDragListener(getViewer()));
+		getViewer().addDropSupport(operations, transferTypes, new RunnerViewDropListener(getViewer(), model));
 	}
+
+
 
 
 	private void setupLaunchActions() {
@@ -248,10 +251,10 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	public LaunchConfigurationCategory getSelectedObjectCategory() {
 		Object selectedObject = getSelectedObject();
 		LaunchConfigurationCategory category = null;
-		
+
 		if (selectedObject instanceof ILaunchConfiguration) {
 			category = (LaunchConfigurationCategory) model.getParent(selectedObject);
-		} 
+		}
 		else if (selectedObject instanceof LaunchConfigurationCategory) {
 			category = (LaunchConfigurationCategory) selectedObject;
 		}
@@ -260,7 +263,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		}
 		return category;
 	}
-	
+
 	@Override
 	public void setFocus() {
 		getViewerControl().setFocus();

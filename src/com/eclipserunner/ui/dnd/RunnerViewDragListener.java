@@ -1,11 +1,14 @@
 package com.eclipserunner.ui.dnd;
 
+import java.util.Iterator;
+
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.jface.util.LocalSelectionTransfer;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
-import org.eclipse.swt.dnd.TextTransfer;
-
-import com.eclipserunner.views.RunnerView;
 
 /**
  * Listener for handling drag events.
@@ -14,31 +17,47 @@ import com.eclipserunner.views.RunnerView;
  */
 public class RunnerViewDragListener implements DragSourceListener {
 
-	private final RunnerView runnerView;
+	private IStructuredSelection currentSelection;
 
-	public RunnerViewDragListener(RunnerView runnerView) {
-		this.runnerView = runnerView;
+	private final ISelectionProvider selectionProvider;
+
+	public RunnerViewDragListener(ISelectionProvider selectionProvider) {
+		this.selectionProvider = selectionProvider;
 	}
 
 	public void dragStart(DragSourceEvent event) {
-		if (!runnerView.isLaunchConfigurationSelected()) {
+		ISelection selection = selectionProvider.getSelection();
+		if (selection instanceof IStructuredSelection && !selection.isEmpty()) {
+			this.currentSelection = (IStructuredSelection) selection;
+			Iterator<?> it = currentSelection.iterator();
+			while (it.hasNext()) {
+				Object item = it.next();
+				if (!(item instanceof ILaunchConfiguration)) {
+					event.doit = false;
+					return;
+				}
+			}
+		}
+		else {
+			this.currentSelection = null;
 			event.doit = false;
 		}
 	}
 
 	public void dragSetData(DragSourceEvent event) {
-		if (runnerView.isLaunchConfigurationSelected()) {
-			ILaunchConfiguration launchConfiguration = runnerView.getSelectedLaunchConfiguration();
-			String launchConfigurationName = launchConfiguration.getName();
+		if (currentSelection == null || currentSelection.isEmpty()) {
+			return;
+		}
 
-			if (TextTransfer.getInstance().isSupportedType(event.dataType)) {
-				event.data = launchConfigurationName;
-			}
+		if (LocalSelectionTransfer.getTransfer().isSupportedType(event.dataType)) {
+			LocalSelectionTransfer.getTransfer().setSelection(currentSelection);
 		}
 	}
 
 	public void dragFinished(DragSourceEvent event) {
-		runnerView.modelChanged();
+		if (LocalSelectionTransfer.getTransfer().isSupportedType(event.dataType)) {
+			LocalSelectionTransfer.getTransfer().setSelection(null);
+		}
 	}
 
 }

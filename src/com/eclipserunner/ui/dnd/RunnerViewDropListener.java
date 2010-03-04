@@ -1,12 +1,20 @@
 package com.eclipserunner.ui.dnd;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.jface.util.LocalSelectionTransfer;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerDropAdapter;
-import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.TransferData;
 
 import com.eclipserunner.model.LaunchConfigurationCategory;
-import com.eclipserunner.views.RunnerView;
+import com.eclipserunner.model.LaunchTreeContentProvider;
 
 /**
  * Listener for handling drop events.
@@ -15,45 +23,61 @@ import com.eclipserunner.views.RunnerView;
  */
 public class RunnerViewDropListener extends ViewerDropAdapter {
 
-	private final RunnerView runnerView;
+	private boolean localTransfer;
+	private LaunchTreeContentProvider model;
 
-	public RunnerViewDropListener(RunnerView runnerView) {
-		super(runnerView.getViewer());
-		this.runnerView = runnerView;
+	public RunnerViewDropListener(Viewer viewer, LaunchTreeContentProvider launchTreeContentProvider) {
+		super(viewer);
+		this.model = launchTreeContentProvider;
+		setFeedbackEnabled(true);
 	}
 
 	@Override
 	public boolean validateDrop(Object target, int operation, TransferData transferType) {
-		if (target != null && target instanceof LaunchConfigurationCategory) {
-			return true;
+		localTransfer = false;
+		if (LocalSelectionTransfer.getTransfer().isSupportedType(transferType)) {
+			localTransfer = true;
+			if (getCurrentTarget() instanceof LaunchConfigurationCategory) {
+				return true;
+			}
 		}
 		return false;
-	}
-
-
-	@Override
-	public void drop(DropTargetEvent event) {
-		Object target = determineTarget(event);
-		if (target != null && target instanceof LaunchConfigurationCategory) {
-			super.drop(event);
-		}
 	}
 
 	@Override
 	public boolean performDrop(Object data) {
-		if (runnerView.isLaunchConfigurationSelected()) {
-			ILaunchConfiguration launchConfiguration = runnerView.getSelectedLaunchConfiguration();
+		List<ILaunchConfiguration> launchConfigurationToMove = new ArrayList<ILaunchConfiguration>();
 
-			LaunchConfigurationCategory sourceCategory = (LaunchConfigurationCategory)runnerView.getTreeContentProvider().getParent(launchConfiguration);
-			LaunchConfigurationCategory destinationCategory = (LaunchConfigurationCategory)getCurrentTarget();
-
-			// TODO LWA BARY remove is now protected
-			// sourceCategory.remove(launchConfiguration);
-			destinationCategory.add(launchConfiguration);
-
-			return true;
+		if (localTransfer) {
+			ISelection selection = LocalSelectionTransfer.getTransfer().getSelection();
+			if (selection instanceof IStructuredSelection) {
+				for (Iterator<?> it = ((IStructuredSelection) selection).iterator(); it.hasNext();) {
+					Object item = it.next();
+					if (item instanceof ILaunchConfiguration) {
+						launchConfigurationToMove.add((ILaunchConfiguration) item);
+					}
+				}
+			}
 		}
-		return false;
+
+		Object currentTarget = getCurrentTarget();
+		if (currentTarget instanceof LaunchConfigurationCategory && getCurrentLocation() == LOCATION_ON) {
+			for (ILaunchConfiguration launchConfiguration : launchConfigurationToMove) {
+				LaunchConfigurationCategory sourceCategory = (LaunchConfigurationCategory)model.getParent(launchConfiguration);
+				LaunchConfigurationCategory destinationCategory = (LaunchConfigurationCategory)getCurrentTarget();
+
+				model.removeConfigurationInCategory(sourceCategory, launchConfiguration);
+				model.addConfigurationInCategory(destinationCategory, launchConfiguration);
+			}
+		}
+
+		if (launchConfigurationToMove.size() == 1) {
+			getViewer().setSelection(new StructuredSelection(launchConfigurationToMove.get(0)));
+		}
+
+		model.fireModelChangedEvent();
+
+		return true;
 	}
 
 }
