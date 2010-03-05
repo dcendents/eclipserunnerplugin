@@ -51,18 +51,14 @@ public class RunnerViewDragListener implements DragSourceListener {
 	}
 
 	public void dragSetData(DragSourceEvent event) {
-		// TODO BARY: if (selectionProvided()) { ... }
-		// make the code readable and hide details in private methods
-		if (currentSelection == null || currentSelection.isEmpty()) {
+		if (selectionEmpty()) {
 			return;
 		}
 
-		// TODO BARY: if here is the same as this one below. extract a function and name it so that 
-		// everybody understands what's going on ;)
 		if (LocalSelectionTransfer.getTransfer().isSupportedType(event.dataType)) {
 			LocalSelectionTransfer.getTransfer().setSelection(currentSelection);
 		}
-		
+
 		// TODO BARY: dummy code
 		else if (FileTransfer.getInstance().isSupportedType(event.dataType)) {
 			try {
@@ -85,10 +81,15 @@ public class RunnerViewDragListener implements DragSourceListener {
 	}
 
 	public void dragFinished(DragSourceEvent event) {
-		// TODO BARY: see comment above. as a drag'n drop noob, i don't really understand that
 		if (LocalSelectionTransfer.getTransfer().isSupportedType(event.dataType)) {
 			LocalSelectionTransfer.getTransfer().setSelection(null);
 		}
+	}
+
+	// Helper methods
+
+	private boolean selectionEmpty() {
+		return currentSelection == null || currentSelection.isEmpty();
 	}
 
 }
