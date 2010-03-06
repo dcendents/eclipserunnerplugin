@@ -14,7 +14,7 @@ import org.eclipse.jface.viewers.ViewerDropAdapter;
 import org.eclipse.swt.dnd.TransferData;
 
 import com.eclipserunner.model.ILaunchConfigurationCategory;
-import com.eclipserunner.model.LaunchTreeContentProvider;
+import com.eclipserunner.model.IRunnerModel;
 
 /**
  * Listener for handling drop events.
@@ -24,11 +24,11 @@ import com.eclipserunner.model.LaunchTreeContentProvider;
 public class RunnerViewDropListener extends ViewerDropAdapter {
 
 	private boolean localTransfer;
-	private LaunchTreeContentProvider model;
+	private IRunnerModel runnerModel;
 
-	public RunnerViewDropListener(Viewer viewer, LaunchTreeContentProvider launchTreeContentProvider) {
+	public RunnerViewDropListener(Viewer viewer, IRunnerModel runnerModel) {
 		super(viewer);
-		this.model = launchTreeContentProvider;
+		this.runnerModel = runnerModel;
 		setFeedbackEnabled(true);
 	}
 
@@ -59,7 +59,7 @@ public class RunnerViewDropListener extends ViewerDropAdapter {
 		if (currentTarget instanceof ILaunchConfigurationCategory && getCurrentLocation() == LOCATION_ON) {
 			for (ILaunchConfiguration launchConfiguration : launchConfigurationToMove) {
 				
-				ILaunchConfigurationCategory sourceCategory = (ILaunchConfigurationCategory) model.getParent(launchConfiguration);
+				ILaunchConfigurationCategory sourceCategory = runnerModel.getParentCategory(launchConfiguration);
 				ILaunchConfigurationCategory destinationCategory = (ILaunchConfigurationCategory) getCurrentTarget();
 
 				sourceCategory.remove(launchConfiguration);

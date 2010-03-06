@@ -10,7 +10,7 @@ import org.eclipse.jface.dialogs.InputDialog;
 
 import com.eclipserunner.RunnerPlugin;
 import com.eclipserunner.model.ILaunchConfigurationCategory;
-import com.eclipserunner.model.LaunchTreeContentProvider;
+import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.views.ILaunchConfigurationSelection;
 import com.eclipserunner.views.actions.validator.NotEmptyValidator;
 
@@ -19,11 +19,11 @@ public class RenameConfigOrCategoryAction extends Action {
 	private ILaunchConfigurationSelection launchConfigurationSelection;
 	
 	@SuppressWarnings("unused")
-	private LaunchTreeContentProvider launchTreeContentProvider; 
+	private IRunnerModel runnerModel; 
 	
-	public RenameConfigOrCategoryAction(ILaunchConfigurationSelection launchConfigurationSelection, LaunchTreeContentProvider launchTreeContentProvider) {
+	public RenameConfigOrCategoryAction(ILaunchConfigurationSelection launchConfigurationSelection, IRunnerModel runnerModel) {
 		this.launchConfigurationSelection = launchConfigurationSelection;
-		this.launchTreeContentProvider = launchTreeContentProvider;
+		this.runnerModel = runnerModel;
 	}
 
 	@Override

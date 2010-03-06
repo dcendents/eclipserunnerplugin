@@ -10,18 +10,18 @@ import org.eclipse.jface.dialogs.MessageDialog;
 
 import com.eclipserunner.RunnerPlugin;
 import com.eclipserunner.model.ILaunchConfigurationCategory;
-import com.eclipserunner.model.LaunchTreeContentProvider;
+import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.views.ILaunchConfigurationSelection;
 
 public class RemoveConfigOrCategoryAction extends Action {
 
 	private ILaunchConfigurationSelection launchConfigurationSelection;
-	private LaunchTreeContentProvider launchTreeContentProvider;
+	private IRunnerModel runnerModel;
 	
 	public RemoveConfigOrCategoryAction(ILaunchConfigurationSelection launchConfigurationSelection,
-			LaunchTreeContentProvider launchTreeContentProvider) {
+			IRunnerModel runnerModel) {
 		this.launchConfigurationSelection = launchConfigurationSelection;
-		this.launchTreeContentProvider = launchTreeContentProvider;
+		this.runnerModel = runnerModel;
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class RemoveConfigOrCategoryAction extends Action {
 		boolean confirmed = MessageDialog.openConfirm(RunnerPlugin.getShell(), Message_removeConfirm, Message_removeCategoryConfirm);
 		if (confirmed) {
 			ILaunchConfigurationCategory categoy = (ILaunchConfigurationCategory) launchConfigurationSelection.getSelectedObject();
-			launchTreeContentProvider.removeCategory(categoy);
+			runnerModel.removeCategory(categoy);
 		}
 	}
 

@@ -7,7 +7,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.InputDialog;
 
 import com.eclipserunner.RunnerPlugin;
-import com.eclipserunner.model.LaunchTreeContentProvider;
+import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.views.actions.validator.NotEmptyValidator;
 
 /**
@@ -17,10 +17,10 @@ import com.eclipserunner.views.actions.validator.NotEmptyValidator;
  */
 public class AddNewCategoryAction extends Action {
 
-	private LaunchTreeContentProvider launchTreeContentProvider;
+	private IRunnerModel runnerModel;
 	
-	public AddNewCategoryAction(LaunchTreeContentProvider launchTreeContentProvider) {
-		this.launchTreeContentProvider = launchTreeContentProvider;
+	public AddNewCategoryAction(IRunnerModel runnerModel) {
+		this.runnerModel = runnerModel;
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class AddNewCategoryAction extends Action {
 		
 		dialog.open();
 		
-		launchTreeContentProvider.addLaunchConfigurationCategory(dialog.getValue());
+		runnerModel.addLaunchConfigurationCategory(dialog.getValue());
 	}
 	
 }

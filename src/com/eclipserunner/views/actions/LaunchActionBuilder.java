@@ -29,7 +29,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
 import com.eclipserunner.RunnerPlugin;
-import com.eclipserunner.model.LaunchTreeContentProvider;
+import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.views.ILaunchConfigurationSelection;
 
 /**
@@ -48,7 +48,7 @@ public final class LaunchActionBuilder {
 	private static final String IMG_EXPAND_ALL           = "expandall.gif";
 
 	private ILaunchConfigurationSelection launchConfigurationSelection;
-	private LaunchTreeContentProvider launchTreeContentProvider;
+	private IRunnerModel runnerModel;
 
 	private LaunchActionBuilder() {
 		// use factory method instead
@@ -63,8 +63,8 @@ public final class LaunchActionBuilder {
 		return this;
 	}
 	
-	public LaunchActionBuilder withRunnerModel(LaunchTreeContentProvider model) {
-		this.launchTreeContentProvider = model;
+	public LaunchActionBuilder withRunnerModel(IRunnerModel model) {
+		this.runnerModel = model;
 		return this;
 	}
 
@@ -93,7 +93,7 @@ public final class LaunchActionBuilder {
 	}
 	
 	public Action createAddNewCategoryAction() {
-		Action action = new AddNewCategoryAction(launchTreeContentProvider);
+		Action action = new AddNewCategoryAction(runnerModel);
 		configureAction(action, Message_addNewCategory, Message_addNewCategoryTooltip, IMG_NEW_CATEGORY);
 		return action;
 	}
@@ -111,13 +111,13 @@ public final class LaunchActionBuilder {
 	}
 	
 	public Action createRenameAction() {
-		Action action = new RenameConfigOrCategoryAction(launchConfigurationSelection, launchTreeContentProvider);
+		Action action = new RenameConfigOrCategoryAction(launchConfigurationSelection, runnerModel);
 		configureAction(action, Message_rename, Message_renameTooltip);
 		return action;
 	}
 	
 	public Action createRemoveAction() {
-		Action action = new RemoveConfigOrCategoryAction(launchConfigurationSelection, launchTreeContentProvider);
+		Action action = new RemoveConfigOrCategoryAction(launchConfigurationSelection, runnerModel);
 		configureAction(action, Message_remove, Message_removeTooltip, getSharedImage(ISharedImages.IMG_ETOOL_DELETE));
 		return action;
 	}

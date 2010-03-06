@@ -18,7 +18,7 @@ import org.eclipse.ui.IViewPart;
  * 
  * @author vachacz
  */
-public class LaunchTreeContentProvider implements ITreeContentProvider, ICategoryChangeListener {
+public class LaunchTreeContentProvider implements ITreeContentProvider, ICategoryChangeListener, IRunnerModel {
 
 	private List<IModelChangeListener> modelChangeListeners = new ArrayList<IModelChangeListener>();
 	private Set<ILaunchConfigurationCategory> launchConfigrationCategorySet;
@@ -50,14 +50,21 @@ public class LaunchTreeContentProvider implements ITreeContentProvider, ICategor
 	}
 
 	public Object getParent(Object object) {
+		if (object instanceof ILaunchConfiguration) {
+			return getParentCategory((ILaunchConfiguration) object);
+		}
+		return null;
+	}
+
+	public ILaunchConfigurationCategory getParentCategory(ILaunchConfiguration launchConfiguration) {
 		for (ILaunchConfigurationCategory category : launchConfigrationCategorySet) {
-			if (object instanceof ILaunchConfiguration && category.contains((ILaunchConfiguration) object)) {
+			if (category.contains(launchConfiguration)) {
 				return category;
 			}
 		}
 		return null;
 	}
-
+	
 	public boolean hasChildren(Object parent) {
 		if (launchConfigrationCategorySet.contains(parent)) {
 			ILaunchConfigurationCategory launchConfigrationCategory = (ILaunchConfigurationCategory) parent;
@@ -113,6 +120,7 @@ public class LaunchTreeContentProvider implements ITreeContentProvider, ICategor
 
 	public void removeCategory(ILaunchConfigurationCategory categoy) {
 		launchConfigrationCategorySet.remove(categoy);
+		fireModelChangedEvent();
 	}
 
 	public void categoryChanged() {

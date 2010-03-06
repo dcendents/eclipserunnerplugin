@@ -32,6 +32,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import com.eclipserunner.model.ILaunchConfigurationCategory;
 import com.eclipserunner.model.IModelChangeListener;
+import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.model.LaunchTreeContentProvider;
 import com.eclipserunner.model.LaunchTreeLabelProvider;
 import com.eclipserunner.ui.dnd.RunnerViewDragListener;
@@ -44,8 +45,10 @@ import com.eclipserunner.views.actions.LaunchActionBuilder;
  * @author vachacz, bary
  */
 public class RunnerView extends ViewPart implements ILaunchConfigurationSelection, IMenuListener, IDoubleClickListener, IModelChangeListener {
-
-	private LaunchTreeContentProvider model = new LaunchTreeContentProvider();
+	
+	private ITreeContentProvider treeContentProvider;
+	private IRunnerModel model;
+	
 	private TreeViewer viewer;
 
 	private ILaunchConfigurationListener launchConfigurationListener;
@@ -66,6 +69,14 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	private Action removeAction;
 	private Action aboutAction;
 
+	public RunnerView() {
+		LaunchTreeContentProvider launchTreeContentProvider = new LaunchTreeContentProvider();
+		launchTreeContentProvider.setViewPart(this);
+		
+		treeContentProvider = launchTreeContentProvider;
+		model = launchTreeContentProvider;
+	}
+	
 	@Override
 	public void createPartControl(Composite parent) {
 
@@ -90,8 +101,6 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 
 	// TODO LWA dummy code
 	private void initializeModel() {
-		model.setViewPart(this);
-
 		model.addLaunchConfigurationCategory("Eclipse Runner Project");
 		model.addLaunchConfigurationCategory("Google Wave");
 
@@ -114,7 +123,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		FilteredTree tree = new FilteredTree(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL, patternFilter, true);
 
 		viewer = tree.getViewer();
-		viewer.setContentProvider(model);
+		viewer.setContentProvider(treeContentProvider);
 		viewer.setLabelProvider(new LaunchTreeLabelProvider());
 		viewer.setSorter(new ViewerSorter());
 		viewer.setInput(getViewSite());
@@ -251,7 +260,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		ILaunchConfigurationCategory category = null;
 
 		if (selectedObject instanceof ILaunchConfiguration) {
-			category = (ILaunchConfigurationCategory) model.getParent(selectedObject);
+			category = (ILaunchConfigurationCategory) treeContentProvider.getParent(selectedObject);
 		}
 		else if (selectedObject instanceof ILaunchConfigurationCategory) {
 			category = (ILaunchConfigurationCategory) selectedObject;
@@ -272,7 +281,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	}
 
 	public ITreeContentProvider getTreeContentProvider() {
-		return model;
+		return treeContentProvider;
 	}
 
 	private Control getViewerControl() {
