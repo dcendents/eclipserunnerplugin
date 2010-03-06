@@ -48,7 +48,7 @@ public class LauchTreeContentProviderTest {
 		LaunchTreeContentProvider contentProvider = new LaunchTreeContentProvider();
 
 		contentProvider.addChangeListener(modelListenerMock);
-		contentProvider.addUncategorizedLaunchConfiguration(launchConfigurationMock);
+		contentProvider.addLaunchConfiguration(launchConfigurationMock);
 		
 		verify(modelListenerMock).modelChanged();
 	}
@@ -58,7 +58,7 @@ public class LauchTreeContentProviderTest {
 		LaunchTreeContentProvider contentProvider = new LaunchTreeContentProvider();
 
 		contentProvider.setViewPart(viewPartMock);
-		contentProvider.addUncategorizedLaunchConfiguration(launchConfigurationMock);
+		contentProvider.addLaunchConfiguration(launchConfigurationMock);
 		
 		Object[] elements = contentProvider.getElements(viewSiteMock);
 		
@@ -73,7 +73,7 @@ public class LauchTreeContentProviderTest {
 		LaunchTreeContentProvider contentProvider = new LaunchTreeContentProvider();
 
 		contentProvider.setViewPart(viewPartMock);
-		contentProvider.addUncategorizedLaunchConfiguration(launchConfigurationMock);
+		contentProvider.addLaunchConfiguration(launchConfigurationMock);
 		
 		Object[] elements = contentProvider.getElements(contentProvider.getUncategorizedCategory());
 		

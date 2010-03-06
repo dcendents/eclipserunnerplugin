@@ -36,7 +36,7 @@ public class LaunchTreeContentProvider implements ITreeContentProvider, ICategor
 		launchConfigrationCategorySet.add(uncategorizedCategory);
 	}
 
-	public void addUncategorizedLaunchConfiguration(ILaunchConfiguration configuration) {
+	public void addLaunchConfiguration(ILaunchConfiguration configuration) {
 		uncategorizedCategory.add(configuration);
 		fireModelChangedEvent();
 	}

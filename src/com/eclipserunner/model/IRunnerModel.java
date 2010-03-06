@@ -4,7 +4,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 
 public interface IRunnerModel {
 
-	public void addUncategorizedLaunchConfiguration(ILaunchConfiguration configuration);
+	public void addLaunchConfiguration(ILaunchConfiguration configuration);
 	public ILaunchConfigurationCategory addLaunchConfigurationCategory(String name);
 	public void removeCategory(ILaunchConfigurationCategory categoy);
 	public ILaunchConfigurationCategory getParentCategory(ILaunchConfiguration launchConfiguration);

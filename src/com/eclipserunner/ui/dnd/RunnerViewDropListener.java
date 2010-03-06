@@ -1,6 +1,6 @@
 package com.eclipserunner.ui.dnd;
 
-import static com.eclipserunner.utils.SelectionUtils.getAllSelectedOfType;
+import static com.eclipserunner.utils.SelectionUtils.getAllSelectedByType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +51,7 @@ public class RunnerViewDropListener extends ViewerDropAdapter {
 		if (localTransfer) {
 			ISelection selection = LocalSelectionTransfer.getTransfer().getSelection();
 			launchConfigurationToMove.addAll(
-				getAllSelectedOfType(selection, ILaunchConfiguration.class)
+				getAllSelectedByType(selection, ILaunchConfiguration.class)
 			);
 		}
 

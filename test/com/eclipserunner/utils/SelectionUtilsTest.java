@@ -56,7 +56,7 @@ public class SelectionUtilsTest {
         List<Object> list = Arrays.asList("dummy string", 1L, new Dummy("1"), 2, new Dummy("2"), 3L);
         when(structuredSelectionMock.iterator()).thenReturn(list.iterator());
 		
-		IDummy dummy = SelectionUtils.getFirstSelectedOfType(structuredSelectionMock, IDummy.class);
+		IDummy dummy = SelectionUtils.getFirstSelectedByType(structuredSelectionMock, IDummy.class);
 		
 		assertEquals(dummy.getName(), "1");
 		
@@ -68,7 +68,7 @@ public class SelectionUtilsTest {
 		List<Object> list = Arrays.asList("dummy string", 1L, new ExtDummy("1"), 2, new Dummy("2"), 3L);
         when(structuredSelectionMock.iterator()).thenReturn(list.iterator());
 		
-		IDummy dummy = SelectionUtils.getFirstSelectedOfType(structuredSelectionMock, IDummy.class);
+		IDummy dummy = SelectionUtils.getFirstSelectedByType(structuredSelectionMock, IDummy.class);
 		
 		assertEquals(dummy.getName(), "1");
 		
@@ -80,7 +80,7 @@ public class SelectionUtilsTest {
         List<Object> list = Arrays.asList("dummy string", 1L, new ExtDummy("1"), 2, new Dummy("2"), 3L);
         when(structuredSelectionMock.iterator()).thenReturn(list.iterator());
 		
-		IDummy dummy = SelectionUtils.getFirstSelectedOfType(structuredSelectionMock, Dummy.class);
+		IDummy dummy = SelectionUtils.getFirstSelectedByType(structuredSelectionMock, Dummy.class);
 		
 		assertEquals(dummy.getName(), "1");
 		
@@ -89,7 +89,7 @@ public class SelectionUtilsTest {
 	
 	@Test
 	public void testGetFirstByTypeWithISelection() throws Exception {
-		IDummy dummy = SelectionUtils.getFirstSelectedOfType(selectionMock, Dummy.class);
+		IDummy dummy = SelectionUtils.getFirstSelectedByType(selectionMock, Dummy.class);
 		assertNull(dummy);
 	}
 	
@@ -103,7 +103,7 @@ public class SelectionUtilsTest {
         List<Object> list = Arrays.asList("dummy string", 1L, dummy1, 2, dummy2, 3L);
         when(structuredSelectionMock.iterator()).thenReturn(list.iterator());
 		
-		List<Dummy> dummyList = SelectionUtils.getAllSelectedOfType(structuredSelectionMock, Dummy.class);
+		List<Dummy> dummyList = SelectionUtils.getAllSelectedByType(structuredSelectionMock, Dummy.class);
 		
 		assertEquals(dummyList.size(), 2);
 		assertTrue(dummyList.contains(dummy1));
@@ -114,7 +114,7 @@ public class SelectionUtilsTest {
 	
 	@Test
 	public void testGetAllByTypeWithISelection() throws Exception {
-		List<Dummy> dummyList = SelectionUtils.getAllSelectedOfType(selectionMock, Dummy.class);
+		List<Dummy> dummyList = SelectionUtils.getAllSelectedByType(selectionMock, Dummy.class);
 		assertEquals(dummyList.size(), 0);
 		
 		verify(selectionMock);

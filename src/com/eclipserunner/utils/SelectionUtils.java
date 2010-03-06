@@ -19,15 +19,15 @@ public class SelectionUtils {
 		return new StructuredSelection(object);
 	}
 	
-	public static <T> T getFirstSelectedOfType(ISelection selection, Class<T> instanceClass) {
+	public static <T> T getFirstSelectedByType(ISelection selection, Class<T> instanceClass) {
 		if (selection instanceof IStructuredSelection) {
-			return getFirstSelectedOfType((IStructuredSelection) selection, instanceClass);
+			return getFirstSelectedByType((IStructuredSelection) selection, instanceClass);
 		}
 		return null;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static <T> T getFirstSelectedOfType(IStructuredSelection selection, Class<T> instanceClass) {
+	public static <T> T getFirstSelectedByType(IStructuredSelection selection, Class<T> instanceClass) {
 		Iterator<?> iterator = selection.iterator();
 		while (iterator.hasNext()) {
 			Object item = iterator.next();
@@ -38,15 +38,15 @@ public class SelectionUtils {
 		return null;
 	}
 	
-	public static <T> List<T> getAllSelectedOfType(ISelection selection, Class<T> instanceClass) {
+	public static <T> List<T> getAllSelectedByType(ISelection selection, Class<T> instanceClass) {
 		if (selection instanceof IStructuredSelection) {
-			return getAllSelectedOfType((IStructuredSelection) selection, instanceClass);
+			return getAllSelectedByType((IStructuredSelection) selection, instanceClass);
 		}
 		return new ArrayList<T>();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static <T> List<T> getAllSelectedOfType(IStructuredSelection selection, Class<T> instanceClass) {
+	public static <T> List<T> getAllSelectedByType(IStructuredSelection selection, Class<T> instanceClass) {
 		List<T> selectedOfType = new ArrayList<T>();
 		Iterator<?> iterator = selection.iterator();
 		while (iterator.hasNext()) {

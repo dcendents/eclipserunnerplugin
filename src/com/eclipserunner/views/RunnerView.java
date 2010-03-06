@@ -107,7 +107,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
 		try {
 			for (ILaunchConfiguration configuration : manager.getLaunchConfigurations()) {
-				model.addUncategorizedLaunchConfiguration(configuration);
+				model.addLaunchConfiguration(configuration);
 			}
 		} catch (CoreException e) {
 		}
@@ -126,6 +126,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		viewer.setContentProvider(treeContentProvider);
 		viewer.setLabelProvider(new LaunchTreeLabelProvider());
 		viewer.setSorter(new ViewerSorter());
+		viewer.addDoubleClickListener(this);
 		viewer.setInput(getViewSite());
 	}
 
