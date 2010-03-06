@@ -11,13 +11,14 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import com.eclipserunner.RunnerPlugin;
 import com.eclipserunner.model.ILaunchConfigurationCategory;
 import com.eclipserunner.model.IRunnerModel;
+import com.eclipserunner.model.LaunchTreeContentProvider;
 import com.eclipserunner.views.ILaunchConfigurationSelection;
 
 public class RemoveConfigOrCategoryAction extends Action {
 
 	private ILaunchConfigurationSelection launchConfigurationSelection;
 	private IRunnerModel runnerModel;
-	
+
 	public RemoveConfigOrCategoryAction(ILaunchConfigurationSelection launchConfigurationSelection,
 			IRunnerModel runnerModel) {
 		this.launchConfigurationSelection = launchConfigurationSelection;
@@ -27,7 +28,7 @@ public class RemoveConfigOrCategoryAction extends Action {
 	@Override
 	public void run() {
 		Object selectedObject = launchConfigurationSelection.getSelectedObject();
-		
+
 		if (selectedObject instanceof ILaunchConfiguration) {
 			removeLaunchConfiguration((ILaunchConfiguration) selectedObject);
 		} else if (selectedObject instanceof ILaunchConfigurationCategory) {
@@ -37,6 +38,11 @@ public class RemoveConfigOrCategoryAction extends Action {
 	}
 
 	private void removeLaunchConfigurationCategory(ILaunchConfigurationCategory selectedObject) {
+		// TODO BARY: disable this case in context menu
+		if (LaunchTreeContentProvider.getDefault().getUncategorizedCategory() == selectedObject) {
+			return;
+		}
+
 		boolean confirmed = MessageDialog.openConfirm(RunnerPlugin.getShell(), Message_removeConfirm, Message_removeCategoryConfirm);
 		if (confirmed) {
 			ILaunchConfigurationCategory categoy = (ILaunchConfigurationCategory) launchConfigurationSelection.getSelectedObject();
@@ -48,10 +54,10 @@ public class RemoveConfigOrCategoryAction extends Action {
 		boolean confirmed = MessageDialog.openConfirm(RunnerPlugin.getShell(), Message_removeConfirm, Message_removeConfigurationConfirm);
 		if (confirmed) {
 			ILaunchConfiguration configuration = (ILaunchConfiguration) launchConfigurationSelection.getSelectedObject();
-			
+
 			ILaunchConfigurationCategory category = launchConfigurationSelection.getSelectedObjectCategory();
 			category.remove(configuration);
 		}
 	}
-	
+
 }

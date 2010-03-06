@@ -1,6 +1,5 @@
 package com.eclipserunner.views;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationListener;
@@ -45,10 +44,10 @@ import com.eclipserunner.views.actions.LaunchActionBuilder;
  * @author vachacz, bary
  */
 public class RunnerView extends ViewPart implements ILaunchConfigurationSelection, IMenuListener, IDoubleClickListener, IModelChangeListener {
-	
+
 	private ITreeContentProvider treeContentProvider;
 	private IRunnerModel model;
-	
+
 	private TreeViewer viewer;
 
 	private ILaunchConfigurationListener launchConfigurationListener;
@@ -70,13 +69,13 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	private Action aboutAction;
 
 	public RunnerView() {
-		LaunchTreeContentProvider launchTreeContentProvider = new LaunchTreeContentProvider();
+		LaunchTreeContentProvider launchTreeContentProvider = LaunchTreeContentProvider.getDefault();
 		launchTreeContentProvider.setViewPart(this);
-		
+
 		treeContentProvider = launchTreeContentProvider;
 		model = launchTreeContentProvider;
 	}
-	
+
 	@Override
 	public void createPartControl(Composite parent) {
 
@@ -99,19 +98,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		getLaunchManager().removeLaunchConfigurationListener(launchConfigurationListener);
 	}
 
-	// TODO LWA dummy code
 	private void initializeModel() {
-		model.addLaunchConfigurationCategory("Eclipse Runner Project");
-		model.addLaunchConfigurationCategory("Google Wave");
-
-		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
-		try {
-			for (ILaunchConfiguration configuration : manager.getLaunchConfigurations()) {
-				model.addLaunchConfiguration(configuration);
-			}
-		} catch (CoreException e) {
-		}
-
 		model.addChangeListener(this);
 	}
 

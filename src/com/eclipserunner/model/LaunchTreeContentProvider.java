@@ -20,20 +20,30 @@ import org.eclipse.ui.IViewPart;
  */
 public class LaunchTreeContentProvider implements ITreeContentProvider, ICategoryChangeListener, IRunnerModel {
 
+	private static LaunchTreeContentProvider model = new LaunchTreeContentProvider();
+
 	private List<IModelChangeListener> modelChangeListeners = new ArrayList<IModelChangeListener>();
-	private Set<ILaunchConfigurationCategory> launchConfigrationCategorySet;
+	private Set<ILaunchConfigurationCategory> launchConfigurationCategorySet;
 
 	private ILaunchConfigurationCategory uncategorizedCategory;
 
 	private IViewPart viewPart;
 
-	public LaunchTreeContentProvider() {
+	private LaunchTreeContentProvider() {
 		uncategorizedCategory = new LaunchConfigurationCategory();
 		uncategorizedCategory.setName(Message_uncategorized);
 		uncategorizedCategory.addCategoryChangeListener(this);
 
-		launchConfigrationCategorySet = new HashSet<ILaunchConfigurationCategory>();
-		launchConfigrationCategorySet.add(uncategorizedCategory);
+		launchConfigurationCategorySet = new HashSet<ILaunchConfigurationCategory>();
+		launchConfigurationCategorySet.add(uncategorizedCategory);
+	}
+
+	public static LaunchTreeContentProvider getDefault() {
+		return model;
+	}
+
+	public Set<ILaunchConfigurationCategory> getLaunchConfigurationCategorySet() {
+		return launchConfigurationCategorySet;
 	}
 
 	public void addLaunchConfiguration(ILaunchConfiguration configuration) {
@@ -42,7 +52,7 @@ public class LaunchTreeContentProvider implements ITreeContentProvider, ICategor
 	}
 
 	public Object[] getChildren(Object object) {
-		if (launchConfigrationCategorySet.contains(object)) {
+		if (launchConfigurationCategorySet.contains(object)) {
 			ILaunchConfigurationCategory launchConfigrationCategory = (ILaunchConfigurationCategory) object;
 			return launchConfigrationCategory.getLaunchConfigurationSet().toArray();
 		}
@@ -57,16 +67,16 @@ public class LaunchTreeContentProvider implements ITreeContentProvider, ICategor
 	}
 
 	public ILaunchConfigurationCategory getParentCategory(ILaunchConfiguration launchConfiguration) {
-		for (ILaunchConfigurationCategory category : launchConfigrationCategorySet) {
+		for (ILaunchConfigurationCategory category : launchConfigurationCategorySet) {
 			if (category.contains(launchConfiguration)) {
 				return category;
 			}
 		}
 		return null;
 	}
-	
+
 	public boolean hasChildren(Object parent) {
-		if (launchConfigrationCategorySet.contains(parent)) {
+		if (launchConfigurationCategorySet.contains(parent)) {
 			ILaunchConfigurationCategory launchConfigrationCategory = (ILaunchConfigurationCategory) parent;
 			return !launchConfigrationCategory.isEmpty();
 		}
@@ -75,7 +85,7 @@ public class LaunchTreeContentProvider implements ITreeContentProvider, ICategor
 
 	public Object[] getElements(Object parent) {
 		if (parent.equals(viewPart.getViewSite())) {
-			return launchConfigrationCategorySet.toArray();
+			return launchConfigurationCategorySet.toArray();
 		}
 		return getChildren(parent);
 	}
@@ -95,7 +105,7 @@ public class LaunchTreeContentProvider implements ITreeContentProvider, ICategor
 		category.setName(name);
 		category.addCategoryChangeListener(this);
 
-		launchConfigrationCategorySet.add(category);
+		launchConfigurationCategorySet.add(category);
 		fireModelChangedEvent();
 		return category;
 	}
@@ -118,13 +128,22 @@ public class LaunchTreeContentProvider implements ITreeContentProvider, ICategor
 		return uncategorizedCategory;
 	}
 
-	public void removeCategory(ILaunchConfigurationCategory categoy) {
-		launchConfigrationCategorySet.remove(categoy);
+	public void removeCategory(ILaunchConfigurationCategory category) {
+		launchConfigurationCategorySet.remove(category);
 		fireModelChangedEvent();
 	}
 
 	public void categoryChanged() {
 		fireModelChangedEvent();
+	}
+
+	public ILaunchConfigurationCategory getLaunchConfigurationCategory(String name) {
+		for (ILaunchConfigurationCategory launchConfigurationCategory : launchConfigurationCategorySet) {
+			if (launchConfigurationCategory.getName().equals(name)) {
+				return launchConfigurationCategory;
+			}
+		}
+		return null;
 	}
 
 }
