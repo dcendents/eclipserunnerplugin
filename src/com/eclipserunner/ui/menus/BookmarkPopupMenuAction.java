@@ -75,20 +75,15 @@ public class BookmarkPopupMenuAction implements IObjectActionDelegate, IMenuCrea
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	protected void fillMenu(Menu menu) {
 		List<LaunchShortcutExtension> applicableShortcuts = getApplicableShortcuts();
 		
 		Iterator<LaunchShortcutExtension> iterator = applicableShortcuts.iterator();
 		while (iterator.hasNext()) {
-			LaunchShortcutExtension extension = iterator.next();
+			LaunchShortcutExtension launchShortcut = iterator.next();
 			
-			Iterator modeIter = extension.getModes().iterator();
-			while (modeIter.hasNext()) {
-				String mode = (String) modeIter.next();
-				if (ILaunchManager.RUN_MODE.equals(mode)) {
-					populateMenuItem(mode, extension, menu);
-				}
+			if (launchShortcut.getModes().contains(ILaunchManager.RUN_MODE)) {
+				populateMenuItem(ILaunchManager.RUN_MODE, launchShortcut, menu);
 			}
 		}
 	}
@@ -127,8 +122,7 @@ public class BookmarkPopupMenuAction implements IObjectActionDelegate, IMenuCrea
 
 	private void populateMenuItem(String mode, LaunchShortcutExtension launchShortcut, Menu menu) {
 		Action action = new LaunchShortcutAction(mode, launchShortcut);
-
-		action.setActionDefinitionId(launchShortcut.getId() + "." + mode);
+			action.setActionDefinitionId(launchShortcut.getId() + "." + mode);
 		
 		// replace default action label with context label if specified.
 		String contextLabel = launchShortcut.getContextLabel(mode);
