@@ -10,33 +10,32 @@ import org.eclipse.debug.core.ILaunchConfiguration;
  * 
  * @author vachacz
  */
-public class LaunchConfigurationCategory {
+public class LaunchConfigurationCategory implements ILaunchConfigurationCategory {
 
 	private String name;
 	private Set<ILaunchConfiguration> launchConfigurationSet = new HashSet<ILaunchConfiguration>();
+	private Set<ICategoryChangeListener> listeners = new HashSet<ICategoryChangeListener>();
 
-	public void setLaunchConfigurationSet(Set<ILaunchConfiguration> launchConfigurationSet) {
-		this.launchConfigurationSet = launchConfigurationSet;
-	}
-
-	public Set<ILaunchConfiguration> getLaunchConfigurationSet() {
+	public final Set<ILaunchConfiguration> getLaunchConfigurationSet() {
 		return launchConfigurationSet;
 	}
 
 	public void add(ILaunchConfiguration launchConfiguration) {
 		launchConfigurationSet.add(launchConfiguration);
+		fireCategoryChangedEvent();
 	}
 
-	protected boolean remove (ILaunchConfiguration launchConfiguration) {
-		return launchConfigurationSet.remove(launchConfiguration);
+	public void remove(ILaunchConfiguration launchConfiguration) {
+		launchConfigurationSet.remove(launchConfiguration);
+		fireCategoryChangedEvent();
 	}
 
 	public Object[] toArray() {
 		return launchConfigurationSet.toArray();
 	}
 
-	public boolean contains(Object object) {
-		return launchConfigurationSet.contains(object);
+	public boolean contains(ILaunchConfiguration configuration) {
+		return launchConfigurationSet.contains(configuration);
 	}
 
 	public String getName() {
@@ -45,9 +44,29 @@ public class LaunchConfigurationCategory {
 
 	public void setName(String name) {
 		this.name = name;
+		fireCategoryChangedEvent();
 	}
 
 	public int size() {
 		return launchConfigurationSet.size();
 	}
+	
+	public boolean isEmpty() {
+		return launchConfigurationSet.isEmpty();
+	}
+
+	public void addCategoryChangeListener(ICategoryChangeListener listener) {
+		listeners.add(listener);
+	}
+
+	public void removeCategoryChangeListener(ICategoryChangeListener listener) {
+		listeners.remove(listener);
+	}
+	
+	private void fireCategoryChangedEvent() {
+		for (ICategoryChangeListener listener : listeners) {
+			listener.categoryChanged();
+		}
+	}
+
 }

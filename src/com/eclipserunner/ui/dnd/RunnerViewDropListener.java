@@ -1,19 +1,19 @@
 package com.eclipserunner.ui.dnd;
 
+import static com.eclipserunner.utils.SelectionUtils.getAllSelectedOfType;
+
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerDropAdapter;
 import org.eclipse.swt.dnd.TransferData;
 
-import com.eclipserunner.model.LaunchConfigurationCategory;
+import com.eclipserunner.model.ILaunchConfigurationCategory;
 import com.eclipserunner.model.LaunchTreeContentProvider;
 
 /**
@@ -37,7 +37,7 @@ public class RunnerViewDropListener extends ViewerDropAdapter {
 		localTransfer = false;
 		if (LocalSelectionTransfer.getTransfer().isSupportedType(transferType)) {
 			localTransfer = true;
-			if (getCurrentTarget() instanceof LaunchConfigurationCategory) {
+			if (getCurrentTarget() instanceof ILaunchConfigurationCategory) {
 				return true;
 			}
 		}
@@ -50,26 +50,20 @@ public class RunnerViewDropListener extends ViewerDropAdapter {
 
 		if (localTransfer) {
 			ISelection selection = LocalSelectionTransfer.getTransfer().getSelection();
-			if (selection instanceof IStructuredSelection) {
-				Iterator<?> iterator = ((IStructuredSelection) selection).iterator();
-				while (iterator.hasNext()) {
-					Object item = iterator.next();
-					if (item instanceof ILaunchConfiguration) {
-						launchConfigurationToMove.add((ILaunchConfiguration) item);
-					}
-				}
-			}
+			launchConfigurationToMove.addAll(
+				getAllSelectedOfType(selection, ILaunchConfiguration.class)
+			);
 		}
 
 		Object currentTarget = getCurrentTarget();
-		if (currentTarget instanceof LaunchConfigurationCategory && getCurrentLocation() == LOCATION_ON) {
+		if (currentTarget instanceof ILaunchConfigurationCategory && getCurrentLocation() == LOCATION_ON) {
 			for (ILaunchConfiguration launchConfiguration : launchConfigurationToMove) {
 				
-				LaunchConfigurationCategory sourceCategory = (LaunchConfigurationCategory) model.getParent(launchConfiguration);
-				LaunchConfigurationCategory destinationCategory = (LaunchConfigurationCategory)getCurrentTarget();
+				ILaunchConfigurationCategory sourceCategory = (ILaunchConfigurationCategory) model.getParent(launchConfiguration);
+				ILaunchConfigurationCategory destinationCategory = (ILaunchConfigurationCategory) getCurrentTarget();
 
-				model.removeConfigurationInCategory(sourceCategory, launchConfiguration);
-				model.addConfigurationInCategory(destinationCategory, launchConfiguration);
+				sourceCategory.remove(launchConfiguration);
+				destinationCategory.add(launchConfiguration);
 			}
 		}
 
@@ -80,5 +74,6 @@ public class RunnerViewDropListener extends ViewerDropAdapter {
 
 		return true;
 	}
+
 
 }

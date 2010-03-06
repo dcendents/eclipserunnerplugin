@@ -18,20 +18,21 @@ import org.eclipse.ui.IViewPart;
  * 
  * @author vachacz
  */
-public class LaunchTreeContentProvider implements ITreeContentProvider {
+public class LaunchTreeContentProvider implements ITreeContentProvider, ICategoryChangeListener {
 
 	private List<IModelChangeListener> modelChangeListeners = new ArrayList<IModelChangeListener>();
-	private Set<LaunchConfigurationCategory> launchConfigrationCategorySet;
+	private Set<ILaunchConfigurationCategory> launchConfigrationCategorySet;
 
-	private LaunchConfigurationCategory uncategorizedCategory;
+	private ILaunchConfigurationCategory uncategorizedCategory;
 
 	private IViewPart viewPart;
 
 	public LaunchTreeContentProvider() {
 		uncategorizedCategory = new LaunchConfigurationCategory();
 		uncategorizedCategory.setName(Message_uncategorized);
+		uncategorizedCategory.addCategoryChangeListener(this);
 
-		launchConfigrationCategorySet = new HashSet<LaunchConfigurationCategory>();
+		launchConfigrationCategorySet = new HashSet<ILaunchConfigurationCategory>();
 		launchConfigrationCategorySet.add(uncategorizedCategory);
 	}
 
@@ -42,15 +43,15 @@ public class LaunchTreeContentProvider implements ITreeContentProvider {
 
 	public Object[] getChildren(Object object) {
 		if (launchConfigrationCategorySet.contains(object)) {
-			LaunchConfigurationCategory launchConfigrationCategory = (LaunchConfigurationCategory) object;
-			return launchConfigrationCategory.toArray();
+			ILaunchConfigurationCategory launchConfigrationCategory = (ILaunchConfigurationCategory) object;
+			return launchConfigrationCategory.getLaunchConfigurationSet().toArray();
 		}
 		return null;
 	}
 
 	public Object getParent(Object object) {
-		for (LaunchConfigurationCategory category : launchConfigrationCategorySet) {
-			if (category.contains(object)) {
+		for (ILaunchConfigurationCategory category : launchConfigrationCategorySet) {
+			if (object instanceof ILaunchConfiguration && category.contains((ILaunchConfiguration) object)) {
 				return category;
 			}
 		}
@@ -59,8 +60,8 @@ public class LaunchTreeContentProvider implements ITreeContentProvider {
 
 	public boolean hasChildren(Object parent) {
 		if (launchConfigrationCategorySet.contains(parent)) {
-			LaunchConfigurationCategory launchConfigrationCategory = (LaunchConfigurationCategory) parent;
-			return !launchConfigrationCategory.getLaunchConfigurationSet().isEmpty();
+			ILaunchConfigurationCategory launchConfigrationCategory = (ILaunchConfigurationCategory) parent;
+			return !launchConfigrationCategory.isEmpty();
 		}
 		return false;
 	}
@@ -82,9 +83,10 @@ public class LaunchTreeContentProvider implements ITreeContentProvider {
 		this.viewPart = viewPart;
 	}
 
-	public LaunchConfigurationCategory addLaunchConfigurationCategory(String name) {
-		LaunchConfigurationCategory category = new LaunchConfigurationCategory();
+	public ILaunchConfigurationCategory addLaunchConfigurationCategory(String name) {
+		ILaunchConfigurationCategory category = new LaunchConfigurationCategory();
 		category.setName(name);
+		category.addCategoryChangeListener(this);
 
 		launchConfigrationCategorySet.add(category);
 		fireModelChangedEvent();
@@ -99,28 +101,21 @@ public class LaunchTreeContentProvider implements ITreeContentProvider {
 		modelChangeListeners.remove(listener);
 	}
 
-	public void fireModelChangedEvent() {
+	private void fireModelChangedEvent() {
 		for (IModelChangeListener listener : modelChangeListeners) {
 			listener.modelChanged();
 		}
 	}
 
-	public LaunchConfigurationCategory getUncategorizedCategory() {
+	public ILaunchConfigurationCategory getUncategorizedCategory() {
 		return uncategorizedCategory;
 	}
 
-	public void removeCategory(LaunchConfigurationCategory categoy) {
+	public void removeCategory(ILaunchConfigurationCategory categoy) {
 		launchConfigrationCategorySet.remove(categoy);
-		fireModelChangedEvent();
 	}
 
-	public void addConfigurationInCategory(LaunchConfigurationCategory category, ILaunchConfiguration configuration) {
-		category.add(configuration);
-		fireModelChangedEvent();
-	}
-
-	public void removeConfigurationInCategory(LaunchConfigurationCategory category, ILaunchConfiguration configuration) {
-		category.remove(configuration);
+	public void categoryChanged() {
 		fireModelChangedEvent();
 	}
 

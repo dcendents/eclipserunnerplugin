@@ -1,8 +1,9 @@
 package com.eclipserunner.ui.dnd;
 
+import static com.eclipserunner.utils.SelectionUtils.getFirstSelectedOfType;
+
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.util.LocalSelectionTransfer;
@@ -13,8 +14,8 @@ import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.dnd.FileTransfer;
 
-import com.eclipserunner.model.LaunchConfigurationCategory;
-import com.eclipserunner.views.utils.ImportExportUtil;
+import com.eclipserunner.model.ILaunchConfigurationCategory;
+import com.eclipserunner.utils.ImportExportUtil;
 
 /**
  * Listener for handling drag events.
@@ -23,7 +24,7 @@ import com.eclipserunner.views.utils.ImportExportUtil;
  */
 public class RunnerViewDragListener implements DragSourceListener {
 
-	private IStructuredSelection currentSelection;
+	private ISelection currentSelection;
 
 	private final ISelectionProvider selectionProvider;
 
@@ -34,14 +35,11 @@ public class RunnerViewDragListener implements DragSourceListener {
 	public void dragStart(DragSourceEvent event) {
 		ISelection selection = selectionProvider.getSelection();
 		if (selection instanceof IStructuredSelection && !selection.isEmpty()) {
+			
 			currentSelection = (IStructuredSelection) selection;
-			Iterator<?> iterator = currentSelection.iterator();
-			while (iterator.hasNext()) {
-				Object item = iterator.next();
-				if (item instanceof LaunchConfigurationCategory) {
-					event.doit = false;
-					return;
-				}
+			ILaunchConfigurationCategory category = getFirstSelectedOfType(currentSelection, ILaunchConfigurationCategory.class);
+			if (category != null) {
+				event.doit = false;
 			}
 		}
 		else {
@@ -51,7 +49,7 @@ public class RunnerViewDragListener implements DragSourceListener {
 	}
 
 	public void dragSetData(DragSourceEvent event) {
-		if (selectionEmpty()) {
+		if (isDragSelectionEmpty()) {
 			return;
 		}
 
@@ -88,7 +86,7 @@ public class RunnerViewDragListener implements DragSourceListener {
 
 	// Helper methods
 
-	private boolean selectionEmpty() {
+	private boolean isDragSelectionEmpty() {
 		return currentSelection == null || currentSelection.isEmpty();
 	}
 

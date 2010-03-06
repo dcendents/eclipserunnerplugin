@@ -30,8 +30,8 @@ import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.part.ViewPart;
 
+import com.eclipserunner.model.ILaunchConfigurationCategory;
 import com.eclipserunner.model.IModelChangeListener;
-import com.eclipserunner.model.LaunchConfigurationCategory;
 import com.eclipserunner.model.LaunchTreeContentProvider;
 import com.eclipserunner.model.LaunchTreeLabelProvider;
 import com.eclipserunner.ui.dnd.RunnerViewDragListener;
@@ -127,9 +127,6 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		getViewer().addDragSupport(operations, transferTypes, new RunnerViewDragListener(getViewer()));
 		getViewer().addDropSupport(operations, transferTypes, new RunnerViewDropListener(getViewer(), model));
 	}
-
-
-
 
 	private void setupLaunchActions() {
 		LaunchActionBuilder builder = LaunchActionBuilder.newInstance()
@@ -249,15 +246,15 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		return ((IStructuredSelection) getViewer().getSelection()).getFirstElement();
 	}
 
-	public LaunchConfigurationCategory getSelectedObjectCategory() {
+	public ILaunchConfigurationCategory getSelectedObjectCategory() {
 		Object selectedObject = getSelectedObject();
-		LaunchConfigurationCategory category = null;
+		ILaunchConfigurationCategory category = null;
 
 		if (selectedObject instanceof ILaunchConfiguration) {
-			category = (LaunchConfigurationCategory) model.getParent(selectedObject);
+			category = (ILaunchConfigurationCategory) model.getParent(selectedObject);
 		}
-		else if (selectedObject instanceof LaunchConfigurationCategory) {
-			category = (LaunchConfigurationCategory) selectedObject;
+		else if (selectedObject instanceof ILaunchConfigurationCategory) {
+			category = (ILaunchConfigurationCategory) selectedObject;
 		}
 		else {
 			assert true; // unreachable code

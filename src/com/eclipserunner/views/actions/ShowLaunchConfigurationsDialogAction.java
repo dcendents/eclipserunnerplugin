@@ -1,6 +1,6 @@
 package com.eclipserunner.views.actions;
 
-import static com.eclipserunner.views.utils.SelectionUtils.asStructuredSelection;
+import static com.eclipserunner.utils.SelectionUtils.asStructuredSelection;
 import static org.eclipse.debug.internal.ui.launchConfigurations.LaunchConfigurationsDialog.LAUNCH_CONFIGURATION_DIALOG_OPEN_ON_LAST_LAUNCHED;
 import static org.eclipse.debug.internal.ui.launchConfigurations.LaunchConfigurationsDialog.LAUNCH_CONFIGURATION_DIALOG_OPEN_ON_SELECTION;
 

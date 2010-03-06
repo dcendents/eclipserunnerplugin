@@ -1,4 +1,4 @@
-package com.eclipserunner.views.utils;
+package com.eclipserunner.utils;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -6,12 +6,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ISelection;
 
 public class ImportExportUtil {
 
 	// TODO BARY dummy code
-	public static void export(File file, IStructuredSelection selection) throws CoreException {
+	public static void export(File file, ISelection selection) throws CoreException {
 		try {
 			FileWriter fstream = new FileWriter(file);
 			BufferedWriter out = new BufferedWriter(fstream);
