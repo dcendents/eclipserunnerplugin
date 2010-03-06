@@ -7,6 +7,6 @@ package com.eclipserunner.model;
  */
 public interface IModelChangeListener {
 
-	public void modelChanged();
-	
+	void modelChanged();
+
 }

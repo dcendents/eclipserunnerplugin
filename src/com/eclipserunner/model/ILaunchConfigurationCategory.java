@@ -11,19 +11,19 @@ import org.eclipse.debug.core.ILaunchConfiguration;
  */
 public interface ILaunchConfigurationCategory {
 
-	public Set<ILaunchConfiguration> getLaunchConfigurationSet();
-	
-	public void add(ILaunchConfiguration launchConfiguration);
-	public void remove(ILaunchConfiguration launchConfiguration);
-	
-	public void addCategoryChangeListener(ICategoryChangeListener listener);
-	public void removeCategoryChangeListener(ICategoryChangeListener listener);
+	Set<ILaunchConfiguration> getLaunchConfigurationSet();
 
-	public boolean contains(ILaunchConfiguration configuration);
+	void add(ILaunchConfiguration launchConfiguration);
+	void remove(ILaunchConfiguration launchConfiguration);
 
-	public boolean isEmpty();
+	void addCategoryChangeListener(ICategoryChangeListener listener);
+	void removeCategoryChangeListener(ICategoryChangeListener listener);
 
-	public String getName();
-	public void setName(String name);
-	
+	boolean contains(ILaunchConfiguration configuration);
+
+	boolean isEmpty();
+
+	String getName();
+	void setName(String name);
+
 }

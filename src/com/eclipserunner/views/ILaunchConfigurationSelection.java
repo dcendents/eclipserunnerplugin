@@ -9,9 +9,9 @@ import com.eclipserunner.model.ILaunchConfigurationCategory;
  */
 public interface ILaunchConfigurationSelection {
 
-	public boolean isLaunchConfigurationSelected();
-	public Object getSelectedObject();
-	public ILaunchConfiguration getSelectedLaunchConfiguration();
-	public ILaunchConfigurationCategory getSelectedObjectCategory();
+	boolean isLaunchConfigurationSelected();
+	Object getSelectedObject();
+	ILaunchConfiguration getSelectedLaunchConfiguration();
+	ILaunchConfigurationCategory getSelectedObjectCategory();
 
 }
