@@ -37,26 +37,23 @@ public class RemoveConfigOrCategoryAction extends Action {
 		// else do nothing
 	}
 
-	private void removeLaunchConfigurationCategory(ILaunchConfigurationCategory selectedObject) {
+	private void removeLaunchConfigurationCategory(ILaunchConfigurationCategory selectedCategory) {
 		// TODO BARY: disable this case in context menu
-		if (LaunchTreeContentProvider.getDefault().getUncategorizedCategory() == selectedObject) {
+		if (LaunchTreeContentProvider.getDefault().getUncategorizedCategory() == selectedCategory) {
 			return;
 		}
-
+	
 		boolean confirmed = MessageDialog.openConfirm(RunnerPlugin.getShell(), Message_removeConfirm, Message_removeCategoryConfirm);
 		if (confirmed) {
-			ILaunchConfigurationCategory categoy = (ILaunchConfigurationCategory) launchConfigurationSelection.getSelectedObject();
-			runnerModel.removeCategory(categoy);
+			runnerModel.removeCategory(selectedCategory);
 		}
 	}
 
-	private void removeLaunchConfiguration(ILaunchConfiguration selectedObject) {
+	private void removeLaunchConfiguration(ILaunchConfiguration selectedConfiguration) {
 		boolean confirmed = MessageDialog.openConfirm(RunnerPlugin.getShell(), Message_removeConfirm, Message_removeConfigurationConfirm);
 		if (confirmed) {
-			ILaunchConfiguration configuration = (ILaunchConfiguration) launchConfigurationSelection.getSelectedObject();
-
 			ILaunchConfigurationCategory category = launchConfigurationSelection.getSelectedObjectCategory();
-			category.remove(configuration);
+			category.remove(selectedConfiguration);
 		}
 	}
 

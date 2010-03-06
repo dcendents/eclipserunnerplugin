@@ -19,26 +19,15 @@
 		<contexts file="contexts.xml" />
 	</extension>
 
-	<extension point="org.eclipse.ui.popupMenus"> 
-		<viewerContribution id="com.eclipserunner.action.editor" 
-				targetID="#CompilationUnitEditorContext">
-			
-			<menu label="Bookmark launch configuration" path="additions" 
-					id="com.eclipserunner.ui.menu1" icon="icons/run_plus.gif" >
-				<separator name="group1" /> 
-			</menu> 
-		
-			<action id="com.eclipserunner.ui.action1" 
-				label="Add Run as to Runner View" icon="icons/run.gif" 
-				menubarPath="com.eclipserunner.ui.menu1/group1" 
-				class="com.eclipserunner.ui.menus.SaveAsRunJavaEditorAction" />
-
-			<action id="com.eclipserunner.ui.action2" 
-				label="Add Debug as to Runner View" icon="icons/debug.gif" 
-				menubarPath="com.eclipserunner.ui.menu1/group1" 
-				class="com.eclipserunner.ui.menus.SaveAsRunJavaEditorAction" />
-			
-		</viewerContribution> 
+	<extension point="org.eclipse.ui.popupMenus">
+      <objectContribution objectClass="java.lang.Object" id="org.eclipse.debug.ui.contextualBookmark.bookmark">
+         <action label="Bookmark launch configuration"
+               icon="icons/run_plus.gif" style="pulldown"
+               class="com.eclipserunner.ui.menus.BookmarkPopupMenuAction"
+               menubarPath="additions" enablesFor="+"
+               id="org.eclipse.debug.ui.contextualBookmark.bookmark.submenu">
+         </action>                  
+      </objectContribution>
 	</extension>
 
 </plugin>

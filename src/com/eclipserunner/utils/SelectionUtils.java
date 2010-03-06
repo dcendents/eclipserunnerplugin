@@ -1,6 +1,7 @@
 package com.eclipserunner.utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -57,4 +58,9 @@ public class SelectionUtils {
 		}
 		return selectedOfType;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public static List selectionAsList(IStructuredSelection selection) {
+		return Arrays.asList(selection.toArray());
+	} 
 }

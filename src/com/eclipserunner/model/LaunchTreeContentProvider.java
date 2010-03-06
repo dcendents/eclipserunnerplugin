@@ -135,6 +135,7 @@ public class LaunchTreeContentProvider implements ITreeContentProvider, ICategor
 		//	uncategorizedCategory.add(launchConfiguration);
 		//}
 		launchConfigurationCategorySet.remove(category);
+		category.removeCategoryChangeListener(this);
 		fireModelChangedEvent();
 	}
 
