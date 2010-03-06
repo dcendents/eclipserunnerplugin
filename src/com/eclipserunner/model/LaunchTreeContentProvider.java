@@ -129,6 +129,11 @@ public class LaunchTreeContentProvider implements ITreeContentProvider, ICategor
 	}
 
 	public void removeCategory(ILaunchConfigurationCategory category) {
+		// TODO/FIXME: BARY LWA java.util.ConcurrentModificationException
+		//for(ILaunchConfiguration launchConfiguration : category.getLaunchConfigurationSet()) {
+		//	category.remove(launchConfiguration);
+		//	uncategorizedCategory.add(launchConfiguration);
+		//}
 		launchConfigurationCategorySet.remove(category);
 		fireModelChangedEvent();
 	}
