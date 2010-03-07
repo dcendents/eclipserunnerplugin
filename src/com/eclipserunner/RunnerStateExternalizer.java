@@ -156,7 +156,6 @@ public class RunnerStateExternalizer {
 		}
 	}
 
-
 	/**
 	 * Save plugin state into given file.
 	 * 

@@ -75,7 +75,6 @@ public class RunnerViewDragListener implements DragSourceListener {
 				e.printStackTrace();
 			}
 		}
-
 	}
 
 	public void dragFinished(DragSourceEvent event) {
@@ -83,8 +82,6 @@ public class RunnerViewDragListener implements DragSourceListener {
 			LocalSelectionTransfer.getTransfer().setSelection(null);
 		}
 	}
-
-	// Helper methods
 
 	private boolean isDragSelectionEmpty() {
 		return currentSelection == null || currentSelection.isEmpty();

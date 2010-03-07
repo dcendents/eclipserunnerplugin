@@ -119,7 +119,7 @@ public class RunnerPlugin extends AbstractUIPlugin {
 	 * 
 	 * @return SWT active Shell.
 	 */
-	public static Shell getShell() {
+	public static Shell getRunnerShell() {
 		return Display.getCurrent().getActiveShell();
 	}
 

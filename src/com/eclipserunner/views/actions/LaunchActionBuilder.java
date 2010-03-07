@@ -146,7 +146,7 @@ public final class LaunchActionBuilder {
 			@Override
 			public void run() {
 				MessageDialog.openInformation(
-						RunnerPlugin.getShell(), "Eclipse Runner View", "About action executed!"
+						RunnerPlugin.getRunnerShell(), "Eclipse Runner View", "About action executed!"
 				);
 			}
 		};

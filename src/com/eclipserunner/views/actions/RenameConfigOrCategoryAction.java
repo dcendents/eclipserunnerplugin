@@ -5,6 +5,7 @@ import static com.eclipserunner.Messages.Message_errorLaunchConfigurationAlready
 import static com.eclipserunner.Messages.Message_rename;
 import static com.eclipserunner.Messages.Message_renameCategory;
 import static com.eclipserunner.Messages.Message_renameLaunchConfiguration;
+import static com.eclipserunner.RunnerPlugin.getRunnerShell;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
@@ -15,7 +16,6 @@ import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 
-import com.eclipserunner.RunnerPlugin;
 import com.eclipserunner.model.ILaunchConfigurationCategory;
 import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.model.LaunchTreeContentProvider;
@@ -64,38 +64,28 @@ public class RenameConfigOrCategoryAction extends Action {
 			if (dialog.getReturnCode() == Window.OK) {
 
 				String newName = dialog.getValue().trim();
-				if (launchConfigurationNameAlreadyExists(newName)) {
+				if (isExistingLaunchConfigurationName(newName)) {
 					MessageDialog.openError(
-							RunnerPlugin.getShell(), Message_error, Message_errorLaunchConfigurationAlreadyExists
+							getRunnerShell(), Message_error, Message_errorLaunchConfigurationAlreadyExists
 					);
-					return;
+				} else {
+					ILaunchConfigurationWorkingCopy workingCopy = launchConfiguration.getWorkingCopy();
+					workingCopy.rename(newName);
+					workingCopy.doSave();
 				}
-
-				ILaunchConfigurationWorkingCopy launchConfigurationWorkingCopy = launchConfiguration.getWorkingCopy();
-				launchConfigurationWorkingCopy.rename(newName);
-				launchConfigurationWorkingCopy.doSave();
-
 			}
 		} catch (CoreException e) {
-			MessageDialog.openError(
-					RunnerPlugin.getShell(), Message_error, e.getMessage()
-			);
-			return;
+			MessageDialog.openError(getRunnerShell(), Message_error, e.getMessage());
 		}
 	}
 
 	private InputDialog openRenameDialog(String title, String message, String initialValue) {
-		InputDialog dialog = new InputDialog(RunnerPlugin.getShell(), title, message, initialValue, new NotEmptyValidator());
+		InputDialog dialog = new InputDialog(getRunnerShell(), title, message, initialValue, new NotEmptyValidator());
 		dialog.open();
 		return dialog;
 	}
 
-	private boolean launchConfigurationNameAlreadyExists(String name) throws CoreException {
-		for (ILaunchConfiguration tmpLaunchConfiguration : DebugPlugin.getDefault().getLaunchManager().getLaunchConfigurations()) {
-			if (tmpLaunchConfiguration.getName().equals(name)) {
-				return true;
-			}
-		}
-		return false;
+	private boolean isExistingLaunchConfigurationName(String name) throws CoreException {
+		return DebugPlugin.getDefault().getLaunchManager().isExistingLaunchConfigurationName(name);
 	}
 }

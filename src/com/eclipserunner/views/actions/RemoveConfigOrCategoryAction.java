@@ -43,14 +43,14 @@ public class RemoveConfigOrCategoryAction extends Action {
 			return;
 		}
 
-		boolean confirmed = MessageDialog.openConfirm(RunnerPlugin.getShell(), Message_removeConfirm, Message_removeCategoryConfirm);
+		boolean confirmed = MessageDialog.openConfirm(RunnerPlugin.getRunnerShell(), Message_removeConfirm, Message_removeCategoryConfirm);
 		if (confirmed) {
 			runnerModel.removeLaunchConfigurationCategory(selectedCategory);
 		}
 	}
 
 	private void removeLaunchConfiguration(ILaunchConfiguration selectedConfiguration) {
-		boolean confirmed = MessageDialog.openConfirm(RunnerPlugin.getShell(), Message_removeConfirm, Message_removeConfigurationConfirm);
+		boolean confirmed = MessageDialog.openConfirm(RunnerPlugin.getRunnerShell(), Message_removeConfirm, Message_removeConfigurationConfirm);
 		if (confirmed) {
 			ILaunchConfigurationCategory category = launchConfigurationSelection.getSelectedObjectCategory();
 			category.remove(selectedConfiguration);
