@@ -40,7 +40,6 @@ import com.eclipserunner.model.LaunchTreeContentProvider;
  * 
  * @author bary
  */
-// TODO BARY: extract error messages to message bundle
 public class RunnerStateExternalizer {
 
 	private static final String XML_VERSION_ATTR        = "version";
@@ -144,7 +143,7 @@ public class RunnerStateExternalizer {
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			return builder.parse(inputStream);
 		} catch (Exception e) {
-			throw new CoreException(new Status(IStatus.ERROR, RunnerPlugin.PLUGIN_ID, "Failed to load runner state file", e));
+			throw new CoreException(new Status(IStatus.ERROR, RunnerPlugin.PLUGIN_ID, "Failed to load runner state", e));
 		} finally {
 			if (inputStream != null) {
 				try {
@@ -174,7 +173,7 @@ public class RunnerStateExternalizer {
 				outStream.close();
 			}
 		} catch (IOException e) {
-			throw new CoreException(new Status(IStatus.ERROR, RunnerPlugin.PLUGIN_ID, "Saving runner state", e));
+			throw new CoreException(new Status(IStatus.ERROR, RunnerPlugin.PLUGIN_ID, "Failed to save runner state", e));
 		}
 	}
 
@@ -187,7 +186,9 @@ public class RunnerStateExternalizer {
 
 		// create the category nodes
 		for (ILaunchConfigurationCategory launchConfigurationCategory : launchConfigurationCategories) {
-			createCategoryElement(launchConfigurationCategory, document, runnerNode);
+			runnerNode.appendChild(
+					createCategoryElement(launchConfigurationCategory, document)
+			);
 		}
 
 		return document;
@@ -204,20 +205,20 @@ public class RunnerStateExternalizer {
 		}
 	}
 
-	public static Element createCategoryElement(ILaunchConfigurationCategory category, Document document, Element parentNode) {
+	public static Element createCategoryElement(ILaunchConfigurationCategory category, Document document) {
 		Element categoryNode = document.createElement(CATEGORY_NODE_NAME);
 		categoryNode.setAttribute(NAME_ATTR, category.getName());
-		parentNode.appendChild(categoryNode);
 		for (ILaunchConfiguration launchConfiguration : category.getLaunchConfigurationSet()) {
-			createConfigurationElement(launchConfiguration, document, categoryNode);
+			categoryNode.appendChild(
+					createConfigurationElement(launchConfiguration, document)
+			);
 		}
 		return categoryNode;
 	}
 
-	public static Element createConfigurationElement(ILaunchConfiguration launchConfiguration, Document document, Element parentNode) {
+	public static Element createConfigurationElement(ILaunchConfiguration launchConfiguration, Document document) {
 		Element launchConfigurationNode = document.createElement(CONFIGURATION_NODE_NAME);
 		launchConfigurationNode.setAttribute(NAME_ATTR, launchConfiguration.getName());
-		parentNode.appendChild(launchConfigurationNode);
 		return launchConfigurationNode;
 	}
 
@@ -230,7 +231,7 @@ public class RunnerStateExternalizer {
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.transform(source, result);
 		} catch (TransformerException e) {
-			throw new CoreException(new Status(IStatus.ERROR, RunnerPlugin.PLUGIN_ID, "Failed write task list", e));
+			throw new CoreException(new Status(IStatus.ERROR, RunnerPlugin.PLUGIN_ID, "Failed to write document", e));
 		}
 	}
 
