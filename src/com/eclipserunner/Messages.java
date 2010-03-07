@@ -28,31 +28,34 @@ public class Messages extends NLS {
 	public static String Message_debugConfigurationTooltip;
 	public static String Message_openDebugConfigurationsDialog;
 	public static String Message_openDebugConfigurationsDialogTooltip;
-	
+
 	public static String Message_addNewCategory;
 	public static String Message_addNewCategoryTooltip;
-	
+
 	public static String Message_uncategorized;
-	
+
 	public static String Message_catogoryNameNotValid;
 	public static String Message_categoryDialogTitle;
 	public static String Message_categoryDialogMessage;
-	
+
 	public static String Message_collapseAll;
 	public static String Message_collapseAllTooltip;
-	
+
 	public static String Message_expandAll;
 	public static String Message_expandAllTooltip;
-	
+
 	public static String Message_rename;
 	public static String Message_renameTooltip;
 	public static String Message_renameLaunchConfiguration;
 	public static String Message_renameCategory;
-	
+
 	public static String Message_remove;
 	public static String Message_removeTooltip;
 	public static String Message_removeConfirm;
 	public static String Message_removeCategoryConfirm;
 	public static String Message_removeConfigurationConfirm;
-	
+
+	public static String Message_error;
+	public static String Message_errorLaunchConfigurationAlreadyExists;
+
 }

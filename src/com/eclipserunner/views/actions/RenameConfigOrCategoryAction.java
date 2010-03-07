@@ -1,12 +1,19 @@
 package com.eclipserunner.views.actions;
 
+import static com.eclipserunner.Messages.Message_error;
+import static com.eclipserunner.Messages.Message_errorLaunchConfigurationAlreadyExists;
 import static com.eclipserunner.Messages.Message_rename;
 import static com.eclipserunner.Messages.Message_renameCategory;
 import static com.eclipserunner.Messages.Message_renameLaunchConfiguration;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.window.Window;
 
 import com.eclipserunner.RunnerPlugin;
 import com.eclipserunner.model.ILaunchConfigurationCategory;
@@ -46,16 +53,35 @@ public class RenameConfigOrCategoryAction extends Action {
 		}
 
 		InputDialog dialog = openRenameDialog(Message_rename, Message_renameCategory, category.getName());
-		category.setName(dialog.getValue());
+		if (dialog.getReturnCode() == Window.OK) {
+			category.setName(dialog.getValue());
+		}
 	}
 
 	private void renameLaunchConfiguration(ILaunchConfiguration launchConfiguration) {
-		@SuppressWarnings("unused")
-		InputDialog dialog = openRenameDialog(Message_rename, Message_renameLaunchConfiguration, launchConfiguration.getName());
+		try {
+			InputDialog dialog = openRenameDialog(Message_rename, Message_renameLaunchConfiguration, launchConfiguration.getName());
+			if (dialog.getReturnCode() == Window.OK) {
 
-		// TODO LWA missing setName in ILaunchConfiguration interface ...
-		// selectedObject.setName(dialog.getValue());
-		// launchTreeContentProvider.fireModelChangedEvent();
+				String newName = dialog.getValue().trim();
+				if (launchConfigurationNameAlreadyExists(newName)) {
+					MessageDialog.openError(
+							RunnerPlugin.getShell(), Message_error, Message_errorLaunchConfigurationAlreadyExists
+					);
+					return;
+				}
+
+				ILaunchConfigurationWorkingCopy launchConfigurationWorkingCopy = launchConfiguration.getWorkingCopy();
+				launchConfigurationWorkingCopy.rename(newName);
+				launchConfigurationWorkingCopy.doSave();
+
+			}
+		} catch (CoreException e) {
+			MessageDialog.openError(
+					RunnerPlugin.getShell(), Message_error, e.getMessage()
+			);
+			return;
+		}
 	}
 
 	private InputDialog openRenameDialog(String title, String message, String initialValue) {
@@ -64,4 +90,12 @@ public class RenameConfigOrCategoryAction extends Action {
 		return dialog;
 	}
 
+	private boolean launchConfigurationNameAlreadyExists(String name) throws CoreException {
+		for (ILaunchConfiguration tmpLaunchConfiguration : DebugPlugin.getDefault().getLaunchManager().getLaunchConfigurations()) {
+			if (tmpLaunchConfiguration.getName().equals(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
