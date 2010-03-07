@@ -53,9 +53,8 @@ public class BookmarkAction extends Action {
 			Set types = launchShortcut.getAssociatedConfigurationTypes();
 			ILaunchConfigurationType type = DebugPlugin.getDefault().getLaunchManager().getLaunchConfigurationType((String) types.toArray()[0]);
 
-			ILaunchConfigurationWorkingCopy wc;
 			try {
-				wc = type.newInstance(null, DebugPlugin.getDefault().getLaunchManager().generateUniqueLaunchConfigurationNameFrom(LaunchConfigurationsMessages.CreateLaunchConfigurationAction_New_configuration_2));
+				ILaunchConfigurationWorkingCopy wc = type.newInstance(null, DebugPlugin.getDefault().getLaunchManager().generateUniqueLaunchConfigurationNameFrom(LaunchConfigurationsMessages.CreateLaunchConfigurationAction_New_configuration_2));
 				ILaunchConfiguration launchConfiguration = wc.doSave();
 				
 				provider.addLaunchConfiguration(launchConfiguration);

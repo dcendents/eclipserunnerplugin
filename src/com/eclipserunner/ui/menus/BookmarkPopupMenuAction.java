@@ -28,7 +28,7 @@ import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.activities.WorkbenchActivityHelper;
 
 /**
- * TODO LWA: under development
+ * Class provides dynamic popup menu with bookmark launch configuration actions.
  * 
  * @author vachacz
  */
@@ -51,7 +51,7 @@ public class BookmarkPopupMenuAction extends MenuCreatorAdapter implements IObje
 					Menu menu = (Menu) event.widget;
 					disposeMenuItems(menu);
 					if (selection != null) {
-						fillMenu(menu);
+						rebuildMenu(menu);
 					}
 					rebuildMenu = false;
 				}
@@ -75,35 +75,15 @@ public class BookmarkPopupMenuAction extends MenuCreatorAdapter implements IObje
 		}
 	}
 
-	protected void fillMenu(Menu menu) {
+	protected void rebuildMenu(Menu menu) {
 		List<LaunchShortcutExtension> applicableShortcuts = getApplicableShortcuts();
 
 		List<LaunchShortcutExtension> runShortcuts = getShortcutsForLaunchMode(applicableShortcuts, ILaunchManager.RUN_MODE);
 		List<LaunchShortcutExtension> debugShortcuts = getShortcutsForLaunchMode(applicableShortcuts, ILaunchManager.DEBUG_MODE);
 
-		for (LaunchShortcutExtension launchShortcut : runShortcuts) {
-			populateMenuItem(ILaunchManager.RUN_MODE, launchShortcut, menu);
-		}
-		
-		new Separator().fill(menu, -1);
-		
-		for (LaunchShortcutExtension launchShortcut : debugShortcuts) {
-			populateMenuItem(ILaunchManager.DEBUG_MODE, launchShortcut, menu);
-		}
-	}
-
-	private List<LaunchShortcutExtension> getShortcutsForLaunchMode(List<LaunchShortcutExtension> applicableShortcuts, String launchMode) {
-		List<LaunchShortcutExtension> applicableLaunchShortcuts = new ArrayList<LaunchShortcutExtension>();
-		
-		Iterator<LaunchShortcutExtension> iterator = applicableShortcuts.iterator();
-		while (iterator.hasNext()) {
-			LaunchShortcutExtension launchShortcut = iterator.next();
-			
-			if (launchShortcut.getModes().contains(ILaunchManager.RUN_MODE)) {
-				applicableLaunchShortcuts.add(launchShortcut);
-			}
-		}
-		return applicableLaunchShortcuts;
+		populateBookmarkMenuItems(menu, runShortcuts, ILaunchManager.RUN_MODE);
+		populateSeparator(menu);
+		populateBookmarkMenuItems(menu, debugShortcuts, ILaunchManager.DEBUG_MODE);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -121,6 +101,37 @@ public class BookmarkPopupMenuAction extends MenuCreatorAdapter implements IObje
 		return applicableShortcuts;
 	}
 
+	private List<LaunchShortcutExtension> getShortcutsForLaunchMode(List<LaunchShortcutExtension> applicableShortcuts, String launchMode) {
+		List<LaunchShortcutExtension> applicableLaunchShortcuts = new ArrayList<LaunchShortcutExtension>();
+		
+		Iterator<LaunchShortcutExtension> iterator = applicableShortcuts.iterator();
+		while (iterator.hasNext()) {
+			LaunchShortcutExtension launchShortcut = iterator.next();
+			
+			if (launchShortcut.getModes().contains(launchMode)) {
+				applicableLaunchShortcuts.add(launchShortcut);
+			}
+		}
+		return applicableLaunchShortcuts;
+	}
+	
+	private void populateBookmarkMenuItems(Menu menu, List<LaunchShortcutExtension> launchShortcuts, String mode) {
+		for (LaunchShortcutExtension launchShortcut : launchShortcuts) {
+			Action action = new BookmarkAction(mode, launchShortcut);
+				action.setActionDefinitionId(launchShortcut.getId() + "." + mode);
+			
+			// replace default action label with context label if specified.
+			String contextLabel = launchShortcut.getContextLabel(mode);
+			action.setText(contextLabel != null ? contextLabel : action.getText());
+			
+			new ActionContributionItem(action).fill(menu, -1);
+		}
+	}
+	
+	private void populateSeparator(Menu menu) {
+		new Separator().fill(menu, -1);
+	}
+	
 	private IEvaluationContext createContext() {
 		IEvaluationContext context = new EvaluationContext(null, selectionAsList(selection));
 		context.setAllowPluginActivation(true);
@@ -136,17 +147,6 @@ public class BookmarkPopupMenuAction extends MenuCreatorAdapter implements IObje
 		} catch (CoreException e) {
 			return false;
 		}
-	}
-
-	private void populateMenuItem(String mode, LaunchShortcutExtension launchShortcut, Menu menu) {
-		Action action = new BookmarkAction(mode, launchShortcut);
-			action.setActionDefinitionId(launchShortcut.getId() + "." + mode);
-		
-		// replace default action label with context label if specified.
-		String contextLabel = launchShortcut.getContextLabel(mode);
-		action.setText(contextLabel != null ? contextLabel : action.getText());
-		
-		new ActionContributionItem(action).fill(menu, -1);
 	}
 		
 	@SuppressWarnings("unchecked")
