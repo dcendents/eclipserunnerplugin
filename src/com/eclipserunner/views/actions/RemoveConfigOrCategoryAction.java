@@ -38,7 +38,6 @@ public class RemoveConfigOrCategoryAction extends Action {
 	}
 
 	private void removeLaunchConfigurationCategory(ILaunchConfigurationCategory selectedCategory) {
-		// TODO BARY: disable this case in context menu
 		if (LaunchTreeContentProvider.getDefault().getUncategorizedCategory() == selectedCategory) {
 			return;
 		}
@@ -52,7 +51,7 @@ public class RemoveConfigOrCategoryAction extends Action {
 	private void removeLaunchConfiguration(ILaunchConfiguration selectedConfiguration) {
 		boolean confirmed = MessageDialog.openConfirm(RunnerPlugin.getRunnerShell(), Message_removeConfirm, Message_removeConfigurationConfirm);
 		if (confirmed) {
-			ILaunchConfigurationCategory category = launchConfigurationSelection.getSelectedObjectCategory();
+			ILaunchConfigurationCategory category = launchConfigurationSelection.getSelectedLaunchConfigurationCategory();
 			category.remove(selectedConfiguration);
 		}
 	}

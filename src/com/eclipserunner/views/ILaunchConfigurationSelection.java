@@ -12,6 +12,6 @@ public interface ILaunchConfigurationSelection {
 	boolean isLaunchConfigurationSelected();
 	Object getSelectedObject();
 	ILaunchConfiguration getSelectedLaunchConfiguration();
-	ILaunchConfigurationCategory getSelectedObjectCategory();
+	ILaunchConfigurationCategory getSelectedLaunchConfigurationCategory();
 
 }

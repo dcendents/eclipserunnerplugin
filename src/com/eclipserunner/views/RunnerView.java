@@ -127,8 +127,8 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 
 	private void setupLaunchActions() {
 		LaunchActionBuilder builder = LaunchActionBuilder.newInstance()
-			.withLaunchConfigurationSelection(this)
-			.withRunnerModel(model);
+		.withLaunchConfigurationSelection(this)
+		.withRunnerModel(model);
 
 		showRunConfigurationsDialogAction   = builder.createShowRunConfigurationDialogAction();
 		showDebugConfigurationsDialogAction = builder.createShowDebugConfigurationDialogAction();
@@ -203,6 +203,8 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.action.IMenuListener#menuAboutToShow(org.eclipse.jface.action.IMenuManager)
 	 */
+	// TODO LWA BARY: define which actions should be visible/enable for category and configuration,
+	// do we plan some restrictions when user selects multiple items or selects simultaneously catagory and configuration item?
 	public void menuAboutToShow(IMenuManager manager) {
 
 		manager.add(addNewCategoryAction);
@@ -219,6 +221,17 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		manager.add(new Separator());
 		manager.add(showRunConfigurationsDialogAction);
 		manager.add(showDebugConfigurationsDialogAction);
+
+
+		if (isLaunchConfigurationCategorySelected() &&
+				getSelectedLaunchConfigurationCategory() == LaunchTreeContentProvider.getDefault().getUncategorizedCategory()) {
+			renameAction.setEnabled(false);
+			removeAction.setEnabled(false);
+		}
+		else {
+			renameAction.setEnabled(true);
+			removeAction.setEnabled(true);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -228,8 +241,19 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		this.launchRunConfigurationAction.run();
 	}
 
+	public Object getSelectedObject() {
+		return ((IStructuredSelection) getViewer().getSelection()).getFirstElement();
+	}
+
 	public boolean isLaunchConfigurationSelected() {
 		if (getSelectedObject() instanceof ILaunchConfiguration) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isLaunchConfigurationCategorySelected() {
+		if (getSelectedObject() instanceof ILaunchConfigurationCategory) {
 			return true;
 		}
 		return false;
@@ -239,11 +263,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		return (ILaunchConfiguration) getSelectedObject();
 	}
 
-	public Object getSelectedObject() {
-		return ((IStructuredSelection) getViewer().getSelection()).getFirstElement();
-	}
-
-	public ILaunchConfigurationCategory getSelectedObjectCategory() {
+	public ILaunchConfigurationCategory getSelectedLaunchConfigurationCategory() {
 		Object selectedObject = getSelectedObject();
 		ILaunchConfigurationCategory category = null;
 

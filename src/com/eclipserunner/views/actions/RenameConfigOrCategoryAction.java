@@ -47,7 +47,6 @@ public class RenameConfigOrCategoryAction extends Action {
 	}
 
 	private void renameLaunchConfigurationCategory(ILaunchConfigurationCategory category) {
-		// TODO BARY: disable this case in context menu
 		if (LaunchTreeContentProvider.getDefault().getUncategorizedCategory() == category) {
 			return;
 		}
