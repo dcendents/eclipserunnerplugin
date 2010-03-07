@@ -11,11 +11,14 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+
+import com.eclipserunner.model.LaunchTreeContentProvider;
 
 /**
  * Eclipse runner plugin activator class.
@@ -68,6 +71,9 @@ public class RunnerPlugin extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 
+		// register model as lunch configuration change listener
+		DebugPlugin.getDefault().getLaunchManager().addLaunchConfigurationListener(LaunchTreeContentProvider.getDefault());
+
 		ISavedState savedState = ResourcesPlugin.getWorkspace().addSaveParticipant(this, new RunnerSaveParticipant());
 		restoreSavedState(savedState);
 	}
@@ -76,6 +82,8 @@ public class RunnerPlugin extends AbstractUIPlugin {
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
+
+		DebugPlugin.getDefault().getLaunchManager().removeLaunchConfigurationListener(LaunchTreeContentProvider.getDefault());
 
 		if (ResourcesPlugin.getWorkspace() != null) {
 			ResourcesPlugin.getWorkspace().removeSaveParticipant(this);

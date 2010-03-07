@@ -5,6 +5,7 @@ import static com.eclipserunner.Messages.Message_categoryDialogTitle;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.window.Window;
 
 import com.eclipserunner.RunnerPlugin;
 import com.eclipserunner.model.IRunnerModel;
@@ -18,19 +19,19 @@ import com.eclipserunner.views.actions.validator.NotEmptyValidator;
 public class AddNewCategoryAction extends Action {
 
 	private IRunnerModel runnerModel;
-	
+
 	public AddNewCategoryAction(IRunnerModel runnerModel) {
 		this.runnerModel = runnerModel;
 	}
 
 	@Override
 	public void run() {
-		InputDialog dialog = new InputDialog(RunnerPlugin.getShell(), 
-			Message_categoryDialogTitle, Message_categoryDialogMessage, "", new NotEmptyValidator());
-		
+		InputDialog dialog = new InputDialog(RunnerPlugin.getShell(), Message_categoryDialogTitle, Message_categoryDialogMessage, "", new NotEmptyValidator());
+
 		dialog.open();
-		
-		runnerModel.addLaunchConfigurationCategory(dialog.getValue());
+		if (dialog.getReturnCode() == Window.OK) {
+			runnerModel.addLaunchConfigurationCategory(dialog.getValue());
+		}
 	}
-	
+
 }

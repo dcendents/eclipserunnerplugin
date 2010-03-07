@@ -80,13 +80,21 @@ public class RunnerStateExternalizer {
 		// configuration to category mapping
 		Map<String, String> configurationCategories = new HashMap<String, String>();
 
+		// populating model
+		LaunchTreeContentProvider model = LaunchTreeContentProvider.getDefault();
+
 		// read categories
 		NodeList categoryNodeList = runnerNode.getElementsByTagName(CATEGORY_NODE_NAME);
 		for (int categoryIndex = 0; categoryIndex < categoryNodeList.getLength(); categoryIndex++) {
 			Element categoryElement = (Element) categoryNodeList.item(categoryIndex);
 			String categoryName = categoryElement.getAttribute(NAME_ATTR);
 
-			// read configurations
+			// create empty categories
+			if (model.getLaunchConfigurationCategory(categoryName) == null) {
+				model.addLaunchConfigurationCategory(categoryName);
+			}
+
+			// read configurations and map them to categories
 			NodeList launchConfigurationNodeList = categoryElement.getElementsByTagName(CONFIGURATION_NODE_NAME);
 			for (int j = 0; j < launchConfigurationNodeList.getLength(); j++) {
 				Element configurationElement = (Element) launchConfigurationNodeList.item(j);
@@ -96,9 +104,7 @@ public class RunnerStateExternalizer {
 			}
 		}
 
-		// populating model
-		LaunchTreeContentProvider model = LaunchTreeContentProvider.getDefault();
-
+		// get "fresh" configurations and add to categories
 		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 		for (ILaunchConfiguration configuration : launchManager.getLaunchConfigurations()) {
 			ILaunchConfigurationCategory launchConfigurationCategory = null;
@@ -111,9 +117,6 @@ public class RunnerStateExternalizer {
 			}
 			if (launchConfigurationCategory == null) {
 				launchConfigurationCategory = model.getLaunchConfigurationCategory(categoryName);
-			}
-			if (launchConfigurationCategory == null) {
-				launchConfigurationCategory = model.addLaunchConfigurationCategory(categoryName);
 			}
 
 			launchConfigurationCategory.add(configuration);

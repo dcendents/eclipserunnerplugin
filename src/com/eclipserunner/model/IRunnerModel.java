@@ -5,10 +5,13 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 public interface IRunnerModel {
 
 	void addLaunchConfiguration(ILaunchConfiguration configuration);
+	void removeLaunchConfiguration(ILaunchConfiguration configuration);
+
 	ILaunchConfigurationCategory addLaunchConfigurationCategory(String name);
+	void removeLaunchConfigurationCategory(ILaunchConfigurationCategory category);
+
 	ILaunchConfigurationCategory getLaunchConfigurationCategory(String name);
-	void removeCategory(ILaunchConfigurationCategory category);
-	ILaunchConfigurationCategory getParentCategory(ILaunchConfiguration launchConfiguration);
+	ILaunchConfigurationCategory getLaunchConfigurationCategory(ILaunchConfiguration launchConfiguration);
 
 	void addChangeListener(IModelChangeListener listener);
 	void removeChangeListener(IModelChangeListener listener);

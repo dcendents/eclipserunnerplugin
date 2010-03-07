@@ -51,15 +51,15 @@ public class RunnerViewDropListener extends ViewerDropAdapter {
 		if (localTransfer) {
 			ISelection selection = LocalSelectionTransfer.getTransfer().getSelection();
 			launchConfigurationToMove.addAll(
-				getAllSelectedByType(selection, ILaunchConfiguration.class)
+					getAllSelectedByType(selection, ILaunchConfiguration.class)
 			);
 		}
 
 		Object currentTarget = getCurrentTarget();
 		if (currentTarget instanceof ILaunchConfigurationCategory && getCurrentLocation() == LOCATION_ON) {
 			for (ILaunchConfiguration launchConfiguration : launchConfigurationToMove) {
-				
-				ILaunchConfigurationCategory sourceCategory = runnerModel.getParentCategory(launchConfiguration);
+
+				ILaunchConfigurationCategory sourceCategory = runnerModel.getLaunchConfigurationCategory(launchConfiguration);
 				ILaunchConfigurationCategory destinationCategory = (ILaunchConfigurationCategory) getCurrentTarget();
 
 				sourceCategory.remove(launchConfiguration);

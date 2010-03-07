@@ -42,10 +42,10 @@ public class RemoveConfigOrCategoryAction extends Action {
 		if (LaunchTreeContentProvider.getDefault().getUncategorizedCategory() == selectedCategory) {
 			return;
 		}
-	
+
 		boolean confirmed = MessageDialog.openConfirm(RunnerPlugin.getShell(), Message_removeConfirm, Message_removeCategoryConfirm);
 		if (confirmed) {
-			runnerModel.removeCategory(selectedCategory);
+			runnerModel.removeLaunchConfigurationCategory(selectedCategory);
 		}
 	}
 
