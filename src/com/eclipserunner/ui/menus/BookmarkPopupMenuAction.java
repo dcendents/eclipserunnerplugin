@@ -22,11 +22,9 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.events.MenuAdapter;
 import org.eclipse.swt.events.MenuEvent;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.ui.IObjectActionDelegate;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.activities.WorkbenchActivityHelper;
 
 /**
@@ -35,7 +33,7 @@ import org.eclipse.ui.activities.WorkbenchActivityHelper;
  * @author vachacz
  */
 @SuppressWarnings("restriction")
-public class BookmarkPopupMenuAction implements IObjectActionDelegate, IMenuCreator {
+public class BookmarkPopupMenuAction extends MenuCreatorAdapter implements IObjectActionDelegate, IMenuCreator {
 
 	private IStructuredSelection selection;
 	private boolean rebuildMenu = true;
@@ -130,24 +128,7 @@ public class BookmarkPopupMenuAction implements IObjectActionDelegate, IMenuCrea
 		
 		new ActionContributionItem(action).fill(menu, -1);
 	}
-	
-	public void setActivePart(IAction arg0, IWorkbenchPart arg1) {
-		// not needed
-	}
-	
-	public void run(IAction action) {
-		// action provides sub menu and does not handle any action
-	}
-	
-	public Menu getMenu(Control control) {
-		// never called
-		return null;
-	}
-
-	public void dispose() {
-		// nothing to do
-	}
-	
+		
 	@SuppressWarnings("unchecked")
 	private List getLaunchShortcuts() {
 		return DebugUIPlugin.getDefault().getLaunchConfigurationManager().getLaunchShortcuts();
