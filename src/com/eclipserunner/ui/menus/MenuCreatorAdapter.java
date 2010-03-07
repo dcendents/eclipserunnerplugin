@@ -18,23 +18,23 @@ import org.eclipse.ui.IWorkbenchPart;
  */
 public class MenuCreatorAdapter implements IObjectActionDelegate, IMenuCreator {
 
-	public void setActivePart(IAction arg0, IWorkbenchPart arg1) {
+	public void setActivePart(IAction action, IWorkbenchPart workbenchPart) {
 	}
 
-	public void run(IAction arg0) {
+	public void run(IAction action) {
 	}
 
-	public void selectionChanged(IAction arg0, ISelection arg1) {
+	public void selectionChanged(IAction action, ISelection selection) {
 	}
 
 	public void dispose() {
 	}
 
-	public Menu getMenu(Control arg0) {
+	public Menu getMenu(Control control) {
 		return null;
 	}
 
-	public Menu getMenu(Menu arg0) {
+	public Menu getMenu(Menu menu) {
 		return null;
 	}
 

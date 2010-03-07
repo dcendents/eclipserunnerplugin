@@ -116,9 +116,9 @@ public class BookmarkPopupMenuAction extends MenuCreatorAdapter implements IObje
 	}
 	
 	private void populateBookmarkMenuItems(Menu menu, List<LaunchShortcutExtension> launchShortcuts, String mode) {
+		Action action = null;
 		for (LaunchShortcutExtension launchShortcut : launchShortcuts) {
-			Action action = new BookmarkAction(mode, launchShortcut);
-				action.setActionDefinitionId(launchShortcut.getId() + "." + mode);
+			action = new BookmarkAction(mode, launchShortcut);
 			
 			// replace default action label with context label if specified.
 			String contextLabel = launchShortcut.getContextLabel(mode);

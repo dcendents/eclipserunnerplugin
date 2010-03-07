@@ -127,8 +127,8 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 
 	private void setupLaunchActions() {
 		LaunchActionBuilder builder = LaunchActionBuilder.newInstance()
-		.withLaunchConfigurationSelection(this)
-		.withRunnerModel(model);
+			.withLaunchConfigurationSelection(this)
+			.withRunnerModel(model);
 
 		showRunConfigurationsDialogAction   = builder.createShowRunConfigurationDialogAction();
 		showDebugConfigurationsDialogAction = builder.createShowDebugConfigurationDialogAction();
