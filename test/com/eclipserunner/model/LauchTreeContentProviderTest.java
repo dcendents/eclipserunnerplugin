@@ -34,7 +34,7 @@ public class LauchTreeContentProviderTest {
 
 	@Test
 	public void testAddLaunchConfigurationCategory() {
-		LaunchTreeContentProvider contentProvider = LaunchTreeContentProvider.getDefault();
+		RunnerModel contentProvider = RunnerModel.getDefault();
 
 		contentProvider.addChangeListener(modelListenerMock);
 		contentProvider.addLaunchConfigurationCategory("test");
@@ -44,7 +44,7 @@ public class LauchTreeContentProviderTest {
 
 	@Test
 	public void testAddUncategorizedLaunchConfiguration() {
-		LaunchTreeContentProvider contentProvider = LaunchTreeContentProvider.getDefault();
+		RunnerModel contentProvider = RunnerModel.getDefault();
 
 		contentProvider.addChangeListener(modelListenerMock);
 		contentProvider.addLaunchConfiguration(launchConfigurationMock);

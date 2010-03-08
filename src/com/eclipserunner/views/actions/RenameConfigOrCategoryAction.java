@@ -18,7 +18,7 @@ import org.eclipse.jface.window.Window;
 
 import com.eclipserunner.model.ILaunchConfigurationCategory;
 import com.eclipserunner.model.IRunnerModel;
-import com.eclipserunner.model.LaunchTreeContentProvider;
+import com.eclipserunner.model.RunnerModel;
 import com.eclipserunner.views.ILaunchConfigurationSelection;
 import com.eclipserunner.views.actions.validator.NotEmptyValidator;
 
@@ -47,7 +47,7 @@ public class RenameConfigOrCategoryAction extends Action {
 	}
 
 	private void renameLaunchConfigurationCategory(ILaunchConfigurationCategory category) {
-		if (LaunchTreeContentProvider.getDefault().getUncategorizedCategory() == category) {
+		if (RunnerModel.getDefault().getUncategorizedCategory() == category) {
 			return;
 		}
 

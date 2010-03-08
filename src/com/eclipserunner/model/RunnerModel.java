@@ -18,16 +18,16 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
  * 
  * @author vachacz
  */
-public class LaunchTreeContentProvider implements ICategoryChangeListener, IRunnerModel, ILaunchConfigurationListener {
+public class RunnerModel implements ICategoryChangeListener, IRunnerModel, ILaunchConfigurationListener {
 
-	private static LaunchTreeContentProvider model = new LaunchTreeContentProvider();
+	private static RunnerModel model = new RunnerModel();
 
 	private List<IModelChangeListener> modelChangeListeners = new ArrayList<IModelChangeListener>();
 	private Set<ILaunchConfigurationCategory> launchConfigurationCategorySet;
 
 	private ILaunchConfigurationCategory uncategorizedCategory;
 
-	private LaunchTreeContentProvider() {
+	private RunnerModel() {
 		uncategorizedCategory = new LaunchConfigurationCategory();
 		uncategorizedCategory.setName(Message_uncategorized);
 		uncategorizedCategory.addCategoryChangeListener(this);
@@ -36,7 +36,7 @@ public class LaunchTreeContentProvider implements ICategoryChangeListener, IRunn
 		launchConfigurationCategorySet.add(uncategorizedCategory);
 	}
 
-	public static LaunchTreeContentProvider getDefault() {
+	public static RunnerModel getDefault() {
 		return model;
 	}
 

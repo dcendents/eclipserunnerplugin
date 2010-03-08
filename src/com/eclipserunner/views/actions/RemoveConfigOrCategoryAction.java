@@ -11,7 +11,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import com.eclipserunner.RunnerPlugin;
 import com.eclipserunner.model.ILaunchConfigurationCategory;
 import com.eclipserunner.model.IRunnerModel;
-import com.eclipserunner.model.LaunchTreeContentProvider;
+import com.eclipserunner.model.RunnerModel;
 import com.eclipserunner.views.ILaunchConfigurationSelection;
 
 public class RemoveConfigOrCategoryAction extends Action {
@@ -38,7 +38,7 @@ public class RemoveConfigOrCategoryAction extends Action {
 	}
 
 	private void removeLaunchConfigurationCategory(ILaunchConfigurationCategory selectedCategory) {
-		if (LaunchTreeContentProvider.getDefault().getUncategorizedCategory() == selectedCategory) {
+		if (RunnerModel.getDefault().getUncategorizedCategory() == selectedCategory) {
 			return;
 		}
 

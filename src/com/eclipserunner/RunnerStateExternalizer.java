@@ -33,7 +33,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import com.eclipserunner.model.ILaunchConfigurationCategory;
-import com.eclipserunner.model.LaunchTreeContentProvider;
+import com.eclipserunner.model.RunnerModel;
 
 /**
  * Helper class for saving and loading plugin state.
@@ -80,7 +80,7 @@ public class RunnerStateExternalizer {
 		Map<String, String> configurationCategories = new HashMap<String, String>();
 
 		// populating model
-		LaunchTreeContentProvider model = LaunchTreeContentProvider.getDefault();
+		RunnerModel model = RunnerModel.getDefault();
 
 		// read categories
 		NodeList categoryNodeList = runnerNode.getElementsByTagName(CATEGORY_NODE_NAME);
@@ -128,7 +128,7 @@ public class RunnerStateExternalizer {
 	 * @throws CoreException
 	 */
 	public static void readDefaultState() throws CoreException {
-		LaunchTreeContentProvider model = LaunchTreeContentProvider.getDefault();
+		RunnerModel model = RunnerModel.getDefault();
 		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 		for (ILaunchConfiguration configuration : launchManager.getLaunchConfigurations()) {
 			model.getUncategorizedCategory().add(configuration);
@@ -163,7 +163,7 @@ public class RunnerStateExternalizer {
 	 */
 	public static void writeStateToFile(File outputFile) throws CoreException {
 		try {
-			LaunchTreeContentProvider model = LaunchTreeContentProvider.getDefault();
+			RunnerModel model = RunnerModel.getDefault();
 			FileOutputStream outStream = new FileOutputStream(outputFile);
 			try {
 				Document doc = createCategorDocument(model.getLaunchConfigurationCategorySet());

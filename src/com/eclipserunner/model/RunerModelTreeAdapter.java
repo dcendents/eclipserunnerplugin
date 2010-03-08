@@ -10,12 +10,12 @@ import org.eclipse.ui.IViewPart;
  * 
  * @author vachacz
  */
-public class ModelTreeContentProviderAdapter implements ITreeContentProvider {
+public class RunerModelTreeAdapter implements ITreeContentProvider {
 
 	private IRunnerModel runnerModel;
 	private IViewPart viewPart;
 	
-	public ModelTreeContentProviderAdapter(IRunnerModel runnerModel, IViewPart viewPart) {
+	public RunerModelTreeAdapter(IRunnerModel runnerModel, IViewPart viewPart) {
 		this.runnerModel = runnerModel;
 		this.viewPart = viewPart;
 	}

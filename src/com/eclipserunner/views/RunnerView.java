@@ -32,9 +32,9 @@ import org.eclipse.ui.part.ViewPart;
 import com.eclipserunner.model.ILaunchConfigurationCategory;
 import com.eclipserunner.model.IModelChangeListener;
 import com.eclipserunner.model.IRunnerModel;
-import com.eclipserunner.model.LaunchTreeContentProvider;
+import com.eclipserunner.model.RunnerModel;
 import com.eclipserunner.model.LaunchTreeLabelProvider;
-import com.eclipserunner.model.ModelTreeContentProviderAdapter;
+import com.eclipserunner.model.RunerModelTreeAdapter;
 import com.eclipserunner.ui.dnd.RunnerViewDragListener;
 import com.eclipserunner.ui.dnd.RunnerViewDropListener;
 import com.eclipserunner.views.actions.LaunchActionBuilder;
@@ -70,8 +70,8 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	private Action aboutAction;
 
 	public RunnerView() {
-		model = LaunchTreeContentProvider.getDefault();
-		treeContentProvider = new ModelTreeContentProviderAdapter(model, this);
+		model = RunnerModel.getDefault();
+		treeContentProvider = new RunerModelTreeAdapter(model, this);
 	}
 
 	@Override
@@ -222,7 +222,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 
 
 		if (isLaunchConfigurationCategorySelected() &&
-				getSelectedLaunchConfigurationCategory() == LaunchTreeContentProvider.getDefault().getUncategorizedCategory()) {
+				getSelectedLaunchConfigurationCategory() == RunnerModel.getDefault().getUncategorizedCategory()) {
 			renameAction.setEnabled(false);
 			removeAction.setEnabled(false);
 		}

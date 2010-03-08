@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-import com.eclipserunner.model.LaunchTreeContentProvider;
+import com.eclipserunner.model.RunnerModel;
 
 /**
  * Eclipse runner plugin activator class.
@@ -72,7 +72,7 @@ public class RunnerPlugin extends AbstractUIPlugin {
 		plugin = this;
 
 		// register model as lunch configuration change listener
-		DebugPlugin.getDefault().getLaunchManager().addLaunchConfigurationListener(LaunchTreeContentProvider.getDefault());
+		DebugPlugin.getDefault().getLaunchManager().addLaunchConfigurationListener(RunnerModel.getDefault());
 
 		ISavedState savedState = ResourcesPlugin.getWorkspace().addSaveParticipant(this, new RunnerSaveParticipant());
 		restoreSavedState(savedState);
@@ -83,7 +83,7 @@ public class RunnerPlugin extends AbstractUIPlugin {
 		plugin = null;
 		super.stop(context);
 
-		DebugPlugin.getDefault().getLaunchManager().removeLaunchConfigurationListener(LaunchTreeContentProvider.getDefault());
+		DebugPlugin.getDefault().getLaunchManager().removeLaunchConfigurationListener(RunnerModel.getDefault());
 
 		if (ResourcesPlugin.getWorkspace() != null) {
 			ResourcesPlugin.getWorkspace().removeSaveParticipant(this);
