@@ -29,8 +29,8 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
 import com.eclipserunner.RunnerPlugin;
+import com.eclipserunner.model.ILaunchConfigurationSelection;
 import com.eclipserunner.model.IRunnerModel;
-import com.eclipserunner.views.ILaunchConfigurationSelection;
 
 /**
  * Builder creates Actions related to test launching

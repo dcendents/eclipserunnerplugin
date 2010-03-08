@@ -17,9 +17,9 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 
 import com.eclipserunner.model.ILaunchConfigurationCategory;
+import com.eclipserunner.model.ILaunchConfigurationSelection;
 import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.model.RunnerModel;
-import com.eclipserunner.views.ILaunchConfigurationSelection;
 import com.eclipserunner.views.actions.validator.NotEmptyValidator;
 
 public class RenameConfigOrCategoryAction extends Action {

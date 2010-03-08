@@ -2,7 +2,7 @@ package com.eclipserunner.views.actions;
 
 import org.eclipse.debug.ui.DebugUITools;
 
-import com.eclipserunner.views.ILaunchConfigurationSelection;
+import com.eclipserunner.model.ILaunchConfigurationSelection;
 
 /**
  * Action responsible for launching selected configuration.

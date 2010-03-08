@@ -10,6 +10,7 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.internal.ui.DebugUIPlugin;
 import org.eclipse.debug.internal.ui.contextlaunching.LaunchingResourceManager;
 import org.eclipse.debug.internal.ui.launchConfigurations.LaunchConfigurationsMessages;
@@ -52,16 +53,20 @@ public class BookmarkAction extends Action {
 			runnerModel.addLaunchConfiguration((ILaunchConfiguration) configs.get(0));
 		} else {
 			Set types = launchShortcut.getAssociatedConfigurationTypes();
-			ILaunchConfigurationType type = DebugPlugin.getDefault().getLaunchManager().getLaunchConfigurationType((String) types.toArray()[0]);
+			ILaunchConfigurationType type = getLaunchManager().getLaunchConfigurationType((String) types.toArray()[0]);
 
 			try {
-				ILaunchConfigurationWorkingCopy wc = type.newInstance(null, DebugPlugin.getDefault().getLaunchManager().generateUniqueLaunchConfigurationNameFrom(LaunchConfigurationsMessages.CreateLaunchConfigurationAction_New_configuration_2));
-				ILaunchConfiguration launchConfiguration = wc.doSave();
+				ILaunchConfigurationWorkingCopy workingCopy = type.newInstance(null, getLaunchManager().generateUniqueLaunchConfigurationNameFrom(LaunchConfigurationsMessages.CreateLaunchConfigurationAction_New_configuration_2));
+				ILaunchConfiguration launchConfiguration = workingCopy.doSave();
 				
 				runnerModel.addLaunchConfiguration(launchConfiguration);
 			} catch (CoreException e) {
 			}
 		}
+	}
+
+	private ILaunchManager getLaunchManager() {
+		return DebugPlugin.getDefault().getLaunchManager();
 	}
 	
 }

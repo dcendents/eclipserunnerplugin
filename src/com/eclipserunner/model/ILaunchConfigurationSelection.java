@@ -1,8 +1,7 @@
-package com.eclipserunner.views;
+package com.eclipserunner.model;
 
 import org.eclipse.debug.core.ILaunchConfiguration;
 
-import com.eclipserunner.model.ILaunchConfigurationCategory;
 
 /**
  * @author vachacz

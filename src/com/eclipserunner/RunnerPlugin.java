@@ -39,7 +39,6 @@ public class RunnerPlugin extends AbstractUIPlugin {
 
 	private final Map<String, ImageDescriptor> imageDescriptors = new HashMap<String, ImageDescriptor>(13);
 
-
 	// Callback object responsible for saving the uncomitted state of plugin.
 	private class RunnerSaveParticipant implements ISaveParticipant {
 		public void prepareToSave(ISaveContext context)	throws CoreException {
@@ -136,7 +135,7 @@ public class RunnerPlugin extends AbstractUIPlugin {
 					File file = getStateLocation().append(location).toFile();
 					RunnerStateExternalizer.readStateFromFile(file);
 				}
-			} catch(CoreException e) {
+			} catch (CoreException e) {
 				e.printStackTrace();
 				RunnerStateExternalizer.readDefaultState();
 			}

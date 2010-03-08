@@ -149,8 +149,8 @@ public class RunnerStateExternalizer {
 			if (inputStream != null) {
 				try {
 					inputStream.close();
-				} catch (IOException e) {
-					e.printStackTrace();
+				} catch (IOException exception) {
+					exception.printStackTrace();
 				}
 			}
 		}
@@ -165,13 +165,13 @@ public class RunnerStateExternalizer {
 	public static void writeStateToFile(File outputFile) throws CoreException {
 		try {
 			IRunnerModel runnerModel = RunnerModel.getDefault();
-			FileOutputStream outStream = new FileOutputStream(outputFile);
+			FileOutputStream outputStream = new FileOutputStream(outputFile);
 			try {
-				Document doc = createCategorDocument(runnerModel.getLaunchConfigurationCategorySet());
-				writeDocument(doc, outStream);
-				outStream.flush();
+				Document document = createCategorDocument(runnerModel.getLaunchConfigurationCategorySet());
+				writeDocument(document, outputStream);
+				outputStream.flush();
 			} finally {
-				outStream.close();
+				outputStream.close();
 			}
 		} catch (IOException e) {
 			throw new CoreException(new Status(IStatus.ERROR, RunnerPlugin.PLUGIN_ID, "Failed to save runner state", e));

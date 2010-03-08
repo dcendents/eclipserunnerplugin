@@ -10,9 +10,9 @@ import org.eclipse.jface.dialogs.MessageDialog;
 
 import com.eclipserunner.RunnerPlugin;
 import com.eclipserunner.model.ILaunchConfigurationCategory;
+import com.eclipserunner.model.ILaunchConfigurationSelection;
 import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.model.RunnerModel;
-import com.eclipserunner.views.ILaunchConfigurationSelection;
 
 public class RemoveConfigOrCategoryAction extends Action {
 

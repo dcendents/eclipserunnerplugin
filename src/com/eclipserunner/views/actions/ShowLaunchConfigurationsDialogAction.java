@@ -7,7 +7,7 @@ import static org.eclipse.debug.internal.ui.launchConfigurations.LaunchConfigura
 import org.eclipse.debug.internal.ui.launchConfigurations.LaunchConfigurationsDialog;
 
 import com.eclipserunner.RunnerPlugin;
-import com.eclipserunner.views.ILaunchConfigurationSelection;
+import com.eclipserunner.model.ILaunchConfigurationSelection;
 
 /**
  * Action responsible for showing LaunchConfigurationsDialog.

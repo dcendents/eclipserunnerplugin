@@ -30,14 +30,6 @@ public class LaunchConfigurationCategory implements ILaunchConfigurationCategory
 		fireCategoryChangedEvent();
 	}
 
-	public Object[] toArray() {
-		return launchConfigurationSet.toArray();
-	}
-
-	public boolean contains(ILaunchConfiguration configuration) {
-		return launchConfigurationSet.contains(configuration);
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -49,6 +41,10 @@ public class LaunchConfigurationCategory implements ILaunchConfigurationCategory
 
 	public int size() {
 		return launchConfigurationSet.size();
+	}
+	
+	public boolean contains(ILaunchConfiguration configuration) {
+		return launchConfigurationSet.contains(configuration);
 	}
 	
 	public boolean isEmpty() {

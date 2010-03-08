@@ -3,6 +3,7 @@ package com.eclipserunner.model;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationListener;
+import org.eclipse.debug.core.ILaunchManager;
 
 public class RunnerModelLaunchListenerAdapter implements ILaunchConfigurationListener {
 
@@ -14,7 +15,7 @@ public class RunnerModelLaunchListenerAdapter implements ILaunchConfigurationLis
 	
 	public void launchConfigurationAdded(ILaunchConfiguration newConfiguration) {
 		// Find old configuration
-		ILaunchConfiguration oldLaunchConfiguration = DebugPlugin.getDefault().getLaunchManager().getMovedFrom(newConfiguration);
+		ILaunchConfiguration oldLaunchConfiguration = getLaunchManager().getMovedFrom(newConfiguration);
 		ILaunchConfigurationCategory oldConfigurationCategory = null;
 		if (oldLaunchConfiguration != null) {
 			oldConfigurationCategory = runnerModel.getLaunchConfigurationCategory(oldLaunchConfiguration);
@@ -35,5 +36,9 @@ public class RunnerModelLaunchListenerAdapter implements ILaunchConfigurationLis
 
 	public void launchConfigurationRemoved(ILaunchConfiguration configuration) {
 		runnerModel.removeLaunchConfiguration(configuration);
+	}
+	
+	private ILaunchManager getLaunchManager() {
+		return DebugPlugin.getDefault().getLaunchManager();
 	}
 }
