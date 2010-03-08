@@ -1,6 +1,5 @@
 package com.eclipserunner.model;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -53,33 +52,4 @@ public class LauchTreeContentProviderTest {
 		verify(modelListenerMock).modelChanged();
 	}
 
-	@Test
-	public void testGetElementsViewPortParent() {
-		LaunchTreeContentProvider contentProvider = LaunchTreeContentProvider.getDefault();
-
-		contentProvider.setViewPart(viewPartMock);
-		contentProvider.addLaunchConfiguration(launchConfigurationMock);
-
-		Object[] elements = contentProvider.getElements(viewSiteMock);
-
-		assertEquals(elements.length, 1);
-		assertEquals(elements[0], contentProvider.getUncategorizedCategory());
-
-		verify(viewPartMock).getViewSite();
-	}
-
-	@Test
-	public void testGetElementsCategory() {
-		LaunchTreeContentProvider contentProvider = LaunchTreeContentProvider.getDefault();
-
-		contentProvider.setViewPart(viewPartMock);
-		contentProvider.addLaunchConfiguration(launchConfigurationMock);
-
-		Object[] elements = contentProvider.getElements(contentProvider.getUncategorizedCategory());
-
-		assertEquals(elements.length, 1);
-		assertEquals(elements[0], launchConfigurationMock);
-
-		verify(viewPartMock).getViewSite();
-	}
 }

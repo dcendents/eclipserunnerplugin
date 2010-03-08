@@ -1,5 +1,7 @@
 package com.eclipserunner.model;
 
+import java.util.Set;
+
 import org.eclipse.debug.core.ILaunchConfiguration;
 
 public interface IRunnerModel {
@@ -12,6 +14,7 @@ public interface IRunnerModel {
 
 	ILaunchConfigurationCategory getLaunchConfigurationCategory(String name);
 	ILaunchConfigurationCategory getLaunchConfigurationCategory(ILaunchConfiguration launchConfiguration);
+	Set<ILaunchConfigurationCategory> getLaunchConfigurationCategorySet();
 
 	void addChangeListener(IModelChangeListener listener);
 	void removeChangeListener(IModelChangeListener listener);

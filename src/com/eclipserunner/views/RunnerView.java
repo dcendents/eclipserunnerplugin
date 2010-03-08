@@ -34,6 +34,7 @@ import com.eclipserunner.model.IModelChangeListener;
 import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.model.LaunchTreeContentProvider;
 import com.eclipserunner.model.LaunchTreeLabelProvider;
+import com.eclipserunner.model.ModelTreeContentProviderAdapter;
 import com.eclipserunner.ui.dnd.RunnerViewDragListener;
 import com.eclipserunner.ui.dnd.RunnerViewDropListener;
 import com.eclipserunner.views.actions.LaunchActionBuilder;
@@ -69,11 +70,8 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	private Action aboutAction;
 
 	public RunnerView() {
-		LaunchTreeContentProvider launchTreeContentProvider = LaunchTreeContentProvider.getDefault();
-		launchTreeContentProvider.setViewPart(this);
-
-		treeContentProvider = launchTreeContentProvider;
-		model = launchTreeContentProvider;
+		model = LaunchTreeContentProvider.getDefault();
+		treeContentProvider = new ModelTreeContentProviderAdapter(model, this);
 	}
 
 	@Override

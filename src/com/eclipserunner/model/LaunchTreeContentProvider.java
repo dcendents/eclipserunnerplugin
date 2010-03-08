@@ -11,8 +11,6 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.ui.IViewPart;
 
 /**
  * Class implementing {@link ITreeContentProvider} acts as a model for launch configuration tree.
@@ -20,7 +18,7 @@ import org.eclipse.ui.IViewPart;
  * 
  * @author vachacz
  */
-public class LaunchTreeContentProvider implements ITreeContentProvider, ICategoryChangeListener, IRunnerModel, ILaunchConfigurationListener {
+public class LaunchTreeContentProvider implements ICategoryChangeListener, IRunnerModel, ILaunchConfigurationListener {
 
 	private static LaunchTreeContentProvider model = new LaunchTreeContentProvider();
 
@@ -28,8 +26,6 @@ public class LaunchTreeContentProvider implements ITreeContentProvider, ICategor
 	private Set<ILaunchConfigurationCategory> launchConfigurationCategorySet;
 
 	private ILaunchConfigurationCategory uncategorizedCategory;
-
-	private IViewPart viewPart;
 
 	private LaunchTreeContentProvider() {
 		uncategorizedCategory = new LaunchConfigurationCategory();
@@ -53,21 +49,6 @@ public class LaunchTreeContentProvider implements ITreeContentProvider, ICategor
 		fireModelChangedEvent();
 	}
 
-	public Object[] getChildren(Object object) {
-		if (launchConfigurationCategorySet.contains(object)) {
-			ILaunchConfigurationCategory launchConfigrationCategory = (ILaunchConfigurationCategory) object;
-			return launchConfigrationCategory.getLaunchConfigurationSet().toArray();
-		}
-		return null;
-	}
-
-	public Object getParent(Object object) {
-		if (object instanceof ILaunchConfiguration) {
-			return getLaunchConfigurationCategory((ILaunchConfiguration) object);
-		}
-		return null;
-	}
-
 	public ILaunchConfigurationCategory getLaunchConfigurationCategory(ILaunchConfiguration launchConfiguration) {
 		for (ILaunchConfigurationCategory category : launchConfigurationCategorySet) {
 			if (category.contains(launchConfiguration)) {
@@ -75,31 +56,6 @@ public class LaunchTreeContentProvider implements ITreeContentProvider, ICategor
 			}
 		}
 		return null;
-	}
-
-	public boolean hasChildren(Object parent) {
-		if (launchConfigurationCategorySet.contains(parent)) {
-			ILaunchConfigurationCategory launchConfigrationCategory = (ILaunchConfigurationCategory) parent;
-			return !launchConfigrationCategory.isEmpty();
-		}
-		return false;
-	}
-
-	public Object[] getElements(Object parent) {
-		if (parent.equals(viewPart.getViewSite())) {
-			return launchConfigurationCategorySet.toArray();
-		}
-		return getChildren(parent);
-	}
-
-	public void dispose() {
-	}
-
-	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-	}
-
-	public void setViewPart(IViewPart viewPart) {
-		this.viewPart = viewPart;
 	}
 
 	public ILaunchConfigurationCategory addLaunchConfigurationCategory(String name) {
@@ -114,6 +70,7 @@ public class LaunchTreeContentProvider implements ITreeContentProvider, ICategor
 
 	public void removeLaunchConfiguration(ILaunchConfiguration configuration) {
 		for (ILaunchConfigurationCategory launchConfigurationCategory : launchConfigurationCategorySet) {
+			// TODO BARY/LWA: launchConfigurationCategory.remove(configuration) and that's all ??
 			for(ILaunchConfiguration launchConfiguration : launchConfigurationCategory.getLaunchConfigurationSet()) {
 				if (launchConfiguration.equals(configuration)) {
 					launchConfigurationCategory.remove(launchConfiguration);
@@ -164,7 +121,6 @@ public class LaunchTreeContentProvider implements ITreeContentProvider, ICategor
 		}
 		return null;
 	}
-
 
 	// ILaunchConfigurationListener
 	public void launchConfigurationAdded(ILaunchConfiguration newConfiguration) {
