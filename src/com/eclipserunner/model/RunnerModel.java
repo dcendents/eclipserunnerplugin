@@ -25,7 +25,7 @@ public class RunnerModel implements ICategoryChangeListener, IRunnerModel {
 
 	private ILaunchConfigurationCategory uncategorizedCategory;
 
-	private RunnerModel() {
+	protected RunnerModel() {
 		uncategorizedCategory = new LaunchConfigurationCategory();
 		uncategorizedCategory.setName(Message_uncategorized);
 		uncategorizedCategory.addCategoryChangeListener(this);
@@ -44,7 +44,7 @@ public class RunnerModel implements ICategoryChangeListener, IRunnerModel {
 
 	public void addLaunchConfiguration(ILaunchConfiguration configuration) {
 		uncategorizedCategory.add(configuration);
-		fireModelChangedEvent();
+		// fireModelChangedEvent() not needed because category change triggers an event
 	}
 
 	public ILaunchConfigurationCategory getLaunchConfigurationCategory(ILaunchConfiguration launchConfiguration) {
@@ -68,28 +68,9 @@ public class RunnerModel implements ICategoryChangeListener, IRunnerModel {
 
 	public void removeLaunchConfiguration(ILaunchConfiguration configuration) {
 		for (ILaunchConfigurationCategory launchConfigurationCategory : launchConfigurationCategorySet) {
-			// TODO BARY/LWA: launchConfigurationCategory.remove(configuration) and that's all ??
-			for(ILaunchConfiguration launchConfiguration : launchConfigurationCategory.getLaunchConfigurationSet()) {
-				if (launchConfiguration.equals(configuration)) {
-					launchConfigurationCategory.remove(launchConfiguration);
-					return;
-				}
-			}
+			launchConfigurationCategory.remove(configuration);
 		}
-	}
-
-	public void addChangeListener(IModelChangeListener listener) {
-		modelChangeListeners.add(listener);
-	}
-
-	public void removeChangeListener(IModelChangeListener listener) {
-		modelChangeListeners.remove(listener);
-	}
-
-	private void fireModelChangedEvent() {
-		for (IModelChangeListener listener : modelChangeListeners) {
-			listener.modelChanged();
-		}
+		fireModelChangedEvent();
 	}
 
 	public ILaunchConfigurationCategory getUncategorizedCategory() {
@@ -107,10 +88,6 @@ public class RunnerModel implements ICategoryChangeListener, IRunnerModel {
 		fireModelChangedEvent();
 	}
 
-	public void categoryChanged() {
-		fireModelChangedEvent();
-	}
-
 	public ILaunchConfigurationCategory getLaunchConfigurationCategory(String name) {
 		for (ILaunchConfigurationCategory launchConfigurationCategory : launchConfigurationCategorySet) {
 			if (launchConfigurationCategory.getName().equals(name)) {
@@ -118,6 +95,29 @@ public class RunnerModel implements ICategoryChangeListener, IRunnerModel {
 			}
 		}
 		return null;
+	}
+	
+	public void categoryChanged() {
+		fireModelChangedEvent();
+	}
+	
+	public void addChangeListener(IModelChangeListener listener) {
+		modelChangeListeners.add(listener);
+	}
+
+	public void removeChangeListener(IModelChangeListener listener) {
+		modelChangeListeners.remove(listener);
+	}
+
+	private void fireModelChangedEvent() {
+		for (IModelChangeListener listener : modelChangeListeners) {
+			listener.modelChanged();
+		}
+	}
+
+	// for test only
+	protected void setLaunchConfigurationCategorySet(Set<ILaunchConfigurationCategory> launchConfigurationCategorySet) {
+		this.launchConfigurationCategorySet = launchConfigurationCategorySet;
 	}
 
 }
