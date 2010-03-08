@@ -46,10 +46,10 @@ public class BookmarkAction extends Action {
 			resource = resourceManeger.getLaunchableResource(shortcuts, selection);
 		}
 
-		IRunnerModel provider = RunnerModel.getDefault();
+		IRunnerModel runnerModel = RunnerModel.getDefault();
 		List configs = resourceManeger.getParticipatingLaunchConfigurations(selection, resource, shortcuts, launchMode);
 		if (configs.size() > 0) {
-			provider.addLaunchConfiguration((ILaunchConfiguration) configs.get(0));
+			runnerModel.addLaunchConfiguration((ILaunchConfiguration) configs.get(0));
 		} else {
 			Set types = launchShortcut.getAssociatedConfigurationTypes();
 			ILaunchConfigurationType type = DebugPlugin.getDefault().getLaunchManager().getLaunchConfigurationType((String) types.toArray()[0]);
@@ -58,7 +58,7 @@ public class BookmarkAction extends Action {
 				ILaunchConfigurationWorkingCopy wc = type.newInstance(null, DebugPlugin.getDefault().getLaunchManager().generateUniqueLaunchConfigurationNameFrom(LaunchConfigurationsMessages.CreateLaunchConfigurationAction_New_configuration_2));
 				ILaunchConfiguration launchConfiguration = wc.doSave();
 				
-				provider.addLaunchConfiguration(launchConfiguration);
+				runnerModel.addLaunchConfiguration(launchConfiguration);
 			} catch (CoreException e) {
 			}
 		}

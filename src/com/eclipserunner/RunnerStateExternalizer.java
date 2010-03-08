@@ -81,7 +81,7 @@ public class RunnerStateExternalizer {
 		Map<String, String> configurationCategories = new HashMap<String, String>();
 
 		// populating model
-		IRunnerModel model = RunnerModel.getDefault();
+		IRunnerModel runnerModel = RunnerModel.getDefault();
 
 		// read categories
 		NodeList categoryNodeList = runnerNode.getElementsByTagName(CATEGORY_NODE_NAME);
@@ -90,8 +90,8 @@ public class RunnerStateExternalizer {
 			String categoryName = categoryElement.getAttribute(NAME_ATTR);
 
 			// create empty categories
-			if (model.getLaunchConfigurationCategory(categoryName) == null) {
-				model.addLaunchConfigurationCategory(categoryName);
+			if (runnerModel.getLaunchConfigurationCategory(categoryName) == null) {
+				runnerModel.addLaunchConfigurationCategory(categoryName);
 			}
 
 			// read configurations and map them to categories
@@ -113,10 +113,10 @@ public class RunnerStateExternalizer {
 			String categoryName = configurationCategories.get(configurationName);
 
 			if (categoryName == null) {
-				launchConfigurationCategory = model.getUncategorizedCategory();
+				launchConfigurationCategory = runnerModel.getUncategorizedCategory();
 			}
 			if (launchConfigurationCategory == null) {
-				launchConfigurationCategory = model.getLaunchConfigurationCategory(categoryName);
+				launchConfigurationCategory = runnerModel.getLaunchConfigurationCategory(categoryName);
 			}
 
 			launchConfigurationCategory.add(configuration);
@@ -129,10 +129,10 @@ public class RunnerStateExternalizer {
 	 * @throws CoreException
 	 */
 	public static void readDefaultState() throws CoreException {
-		IRunnerModel model = RunnerModel.getDefault();
+		IRunnerModel runnerModel = RunnerModel.getDefault();
 		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 		for (ILaunchConfiguration configuration : launchManager.getLaunchConfigurations()) {
-			model.getUncategorizedCategory().add(configuration);
+			runnerModel.getUncategorizedCategory().add(configuration);
 		}
 	}
 
@@ -164,10 +164,10 @@ public class RunnerStateExternalizer {
 	 */
 	public static void writeStateToFile(File outputFile) throws CoreException {
 		try {
-			IRunnerModel model = RunnerModel.getDefault();
+			IRunnerModel runnerModel = RunnerModel.getDefault();
 			FileOutputStream outStream = new FileOutputStream(outputFile);
 			try {
-				Document doc = createCategorDocument(model.getLaunchConfigurationCategorySet());
+				Document doc = createCategorDocument(runnerModel.getLaunchConfigurationCategorySet());
 				writeDocument(doc, outStream);
 				outStream.flush();
 			} finally {

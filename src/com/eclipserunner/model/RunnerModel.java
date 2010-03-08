@@ -18,7 +18,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
  */
 public class RunnerModel implements ICategoryChangeListener, IRunnerModel {
 
-	private static RunnerModel model = new RunnerModel();
+	private static RunnerModel runnerModel = new RunnerModel();
 
 	private List<IModelChangeListener> modelChangeListeners = new ArrayList<IModelChangeListener>();
 	private Set<ILaunchConfigurationCategory> launchConfigurationCategorySet;
@@ -35,7 +35,7 @@ public class RunnerModel implements ICategoryChangeListener, IRunnerModel {
 	}
 
 	public static IRunnerModel getDefault() {
-		return model;
+		return runnerModel;
 	}
 
 	public Set<ILaunchConfigurationCategory> getLaunchConfigurationCategorySet() {

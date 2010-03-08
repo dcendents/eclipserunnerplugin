@@ -32,8 +32,8 @@ import org.eclipse.ui.part.ViewPart;
 import com.eclipserunner.model.ILaunchConfigurationCategory;
 import com.eclipserunner.model.IModelChangeListener;
 import com.eclipserunner.model.IRunnerModel;
-import com.eclipserunner.model.RunnerModel;
 import com.eclipserunner.model.LaunchTreeLabelProvider;
+import com.eclipserunner.model.RunnerModel;
 import com.eclipserunner.model.RunnerModelTreeAdapter;
 import com.eclipserunner.ui.dnd.RunnerViewDragListener;
 import com.eclipserunner.ui.dnd.RunnerViewDropListener;
@@ -47,7 +47,7 @@ import com.eclipserunner.views.actions.LaunchActionBuilder;
 public class RunnerView extends ViewPart implements ILaunchConfigurationSelection, IMenuListener, IDoubleClickListener, IModelChangeListener {
 
 	private ITreeContentProvider treeContentProvider;
-	private IRunnerModel model;
+	private IRunnerModel runnerModel;
 
 	private TreeViewer viewer;
 
@@ -70,8 +70,8 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	private Action aboutAction;
 
 	public RunnerView() {
-		model = RunnerModel.getDefault();
-		treeContentProvider = new RunnerModelTreeAdapter(model, this);
+		runnerModel = RunnerModel.getDefault();
+		treeContentProvider = new RunnerModelTreeAdapter(runnerModel, this);
 	}
 
 	@Override
@@ -92,12 +92,12 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	public void dispose() {
 		super.dispose();
 
-		model.removeChangeListener(this);
+		runnerModel.removeChangeListener(this);
 		getLaunchManager().removeLaunchConfigurationListener(launchConfigurationListener);
 	}
 
 	private void initializeModel() {
-		model.addChangeListener(this);
+		runnerModel.addChangeListener(this);
 	}
 
 	private void initializeViewer(Composite parent) {
@@ -120,13 +120,13 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		Transfer[] transferTypes = new Transfer[]{ LocalSelectionTransfer.getTransfer(), FileTransfer.getInstance() };
 
 		getViewer().addDragSupport(operations, transferTypes, new RunnerViewDragListener(getViewer()));
-		getViewer().addDropSupport(operations, transferTypes, new RunnerViewDropListener(getViewer(), model));
+		getViewer().addDropSupport(operations, transferTypes, new RunnerViewDropListener(getViewer(), runnerModel));
 	}
 
 	private void setupLaunchActions() {
 		LaunchActionBuilder builder = LaunchActionBuilder.newInstance()
 		.withLaunchConfigurationSelection(this)
-		.withRunnerModel(model);
+		.withRunnerModel(runnerModel);
 
 		showRunConfigurationsDialogAction   = builder.createShowRunConfigurationDialogAction();
 		showDebugConfigurationsDialogAction = builder.createShowDebugConfigurationDialogAction();

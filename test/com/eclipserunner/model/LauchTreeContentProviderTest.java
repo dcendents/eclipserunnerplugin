@@ -34,20 +34,20 @@ public class LauchTreeContentProviderTest {
 
 	@Test
 	public void testAddLaunchConfigurationCategory() {
-		IRunnerModel contentProvider = RunnerModel.getDefault();
+		IRunnerModel runnerModel = RunnerModel.getDefault();
 
-		contentProvider.addChangeListener(modelListenerMock);
-		contentProvider.addLaunchConfigurationCategory("test");
+		runnerModel.addChangeListener(modelListenerMock);
+		runnerModel.addLaunchConfigurationCategory("test");
 
 		verify(modelListenerMock).modelChanged();
 	}
 
 	@Test
 	public void testAddUncategorizedLaunchConfiguration() {
-		IRunnerModel contentProvider = RunnerModel.getDefault();
+		IRunnerModel runnerModel = RunnerModel.getDefault();
 
-		contentProvider.addChangeListener(modelListenerMock);
-		contentProvider.addLaunchConfiguration(launchConfigurationMock);
+		runnerModel.addChangeListener(modelListenerMock);
+		runnerModel.addLaunchConfiguration(launchConfigurationMock);
 
 		verify(modelListenerMock).modelChanged();
 	}
