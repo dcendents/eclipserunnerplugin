@@ -11,7 +11,10 @@ import org.eclipse.debug.core.ILaunchConfiguration;
  */
 public interface ILaunchConfigurationCategory {
 
-	Set<ILaunchConfiguration> getLaunchConfigurationSet();
+	String getName();
+	void setName(String name);
+
+	Set<ILaunchConfiguration> getLaunchConfigurations();
 
 	void add(ILaunchConfiguration launchConfiguration);
 	void remove(ILaunchConfiguration launchConfiguration);
@@ -22,8 +25,6 @@ public interface ILaunchConfigurationCategory {
 	boolean contains(ILaunchConfiguration configuration);
 
 	boolean isEmpty();
-
-	String getName();
-	void setName(String name);
+	int size();
 
 }

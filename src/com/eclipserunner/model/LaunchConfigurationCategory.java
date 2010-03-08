@@ -13,22 +13,8 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 public class LaunchConfigurationCategory implements ILaunchConfigurationCategory {
 
 	private String name;
-	private Set<ILaunchConfiguration> launchConfigurationSet = new HashSet<ILaunchConfiguration>();
-	private Set<ICategoryChangeListener> listeners = new HashSet<ICategoryChangeListener>();
-
-	public final Set<ILaunchConfiguration> getLaunchConfigurationSet() {
-		return launchConfigurationSet;
-	}
-
-	public void add(ILaunchConfiguration launchConfiguration) {
-		launchConfigurationSet.add(launchConfiguration);
-		fireCategoryChangedEvent();
-	}
-
-	public void remove(ILaunchConfiguration launchConfiguration) {
-		launchConfigurationSet.remove(launchConfiguration);
-		fireCategoryChangedEvent();
-	}
+	private Set<ILaunchConfiguration> launchConfigurations = new HashSet<ILaunchConfiguration>();
+	private Set<ICategoryChangeListener> categoryChangeListeners = new HashSet<ICategoryChangeListener>();
 
 	public String getName() {
 		return name;
@@ -39,29 +25,43 @@ public class LaunchConfigurationCategory implements ILaunchConfigurationCategory
 		fireCategoryChangedEvent();
 	}
 
-	public int size() {
-		return launchConfigurationSet.size();
+	public final Set<ILaunchConfiguration> getLaunchConfigurations() {
+		return launchConfigurations;
 	}
-	
-	public boolean contains(ILaunchConfiguration configuration) {
-		return launchConfigurationSet.contains(configuration);
+
+	public void add(ILaunchConfiguration launchConfiguration) {
+		launchConfigurations.add(launchConfiguration);
+		fireCategoryChangedEvent();
 	}
-	
-	public boolean isEmpty() {
-		return launchConfigurationSet.isEmpty();
+
+	public void remove(ILaunchConfiguration launchConfiguration) {
+		launchConfigurations.remove(launchConfiguration);
+		fireCategoryChangedEvent();
 	}
 
 	public void addCategoryChangeListener(ICategoryChangeListener listener) {
-		listeners.add(listener);
+		categoryChangeListeners.add(listener);
 	}
 
 	public void removeCategoryChangeListener(ICategoryChangeListener listener) {
-		listeners.remove(listener);
+		categoryChangeListeners.remove(listener);
 	}
-	
+
+	public boolean contains(ILaunchConfiguration configuration) {
+		return launchConfigurations.contains(configuration);
+	}
+
+	public boolean isEmpty() {
+		return launchConfigurations.isEmpty();
+	}
+
+	public int size() {
+		return launchConfigurations.size();
+	}
+
 	private void fireCategoryChangedEvent() {
-		for (ICategoryChangeListener listener : listeners) {
-			listener.categoryChanged();
+		for (ICategoryChangeListener categoryChangeListener : categoryChangeListeners) {
+			categoryChangeListener.categoryChanged();
 		}
 	}
 

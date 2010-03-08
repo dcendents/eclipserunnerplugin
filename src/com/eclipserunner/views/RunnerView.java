@@ -93,12 +93,12 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	public void dispose() {
 		super.dispose();
 
-		runnerModel.removeChangeListener(this);
+		runnerModel.removeModelChangeListener(this);
 		getLaunchManager().removeLaunchConfigurationListener(launchConfigurationListener);
 	}
 
 	private void initializeModel() {
-		runnerModel.addChangeListener(this);
+		runnerModel.addModelChangeListener(this);
 	}
 
 	private void initializeViewer(Composite parent) {

@@ -28,10 +28,10 @@ public class RunnerModelTest {
 
 	@Mock
 	private ILaunchConfiguration launchConfigurationMock;
-	
+
 	@Mock
 	private ILaunchConfigurationCategory launchConfigurationCategoryMock;
-	
+
 	@Mock
 	private Set<ILaunchConfigurationCategory> launchConfigurationSetMock;
 
@@ -48,9 +48,9 @@ public class RunnerModelTest {
 		RunnerModel runnerModel = new RunnerModel();
 
 		// setup
-		runnerModel.addChangeListener(modelListenerMock);
-		runnerModel.setLaunchConfigurationCategorySet(launchConfigurationSetMock);
-		
+		runnerModel.addModelChangeListener(modelListenerMock);
+		runnerModel.setLaunchConfigurationCategories(launchConfigurationSetMock);
+
 		// test
 		runnerModel.addLaunchConfigurationCategory("test");
 
@@ -63,40 +63,40 @@ public class RunnerModelTest {
 		RunnerModel runnerModel = new RunnerModel();
 
 		// setup
-		runnerModel.addChangeListener(modelListenerMock);
-		runnerModel.setLaunchConfigurationCategorySet(launchConfigurationSetMock);
-		
+		runnerModel.addModelChangeListener(modelListenerMock);
+		runnerModel.setLaunchConfigurationCategories(launchConfigurationSetMock);
+
 		// test
 		runnerModel.addLaunchConfiguration(launchConfigurationMock);
 
 		verify(modelListenerMock).modelChanged();
 	}
-	
+
 	@Test
 	public void testRemoveLaunchConfiguration() {
 		RunnerModel runnerModel = new RunnerModel();
 
 		// setup
-		runnerModel.addChangeListener(modelListenerMock);
-		runnerModel.setLaunchConfigurationCategorySet(launchConfigurationSetMock);
-		
+		runnerModel.addModelChangeListener(modelListenerMock);
+		runnerModel.setLaunchConfigurationCategories(launchConfigurationSetMock);
+
 		// test
 		runnerModel.removeLaunchConfiguration(launchConfigurationMock);
 
 		verify(modelListenerMock).modelChanged();
 	}
-	
+
 	@Test
 	public void testRemoveLaunchConfigurationCategory() {
 		RunnerModel runnerModel = new RunnerModel();
 
 		// setup
-		runnerModel.addChangeListener(modelListenerMock);
-		runnerModel.setLaunchConfigurationCategorySet(launchConfigurationSetMock);
-		
+		runnerModel.addModelChangeListener(modelListenerMock);
+		runnerModel.setLaunchConfigurationCategories(launchConfigurationSetMock);
+
 		// test
 		runnerModel.removeLaunchConfigurationCategory(launchConfigurationCategoryMock);
-		
+
 		verify(launchConfigurationSetMock).remove(anyLaunchConfigurationCotegory());
 		verify(modelListenerMock).modelChanged();
 	}

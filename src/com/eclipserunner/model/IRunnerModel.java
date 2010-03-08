@@ -14,11 +14,11 @@ public interface IRunnerModel {
 
 	ILaunchConfigurationCategory getLaunchConfigurationCategory(String name);
 	ILaunchConfigurationCategory getLaunchConfigurationCategory(ILaunchConfiguration launchConfiguration);
-	Set<ILaunchConfigurationCategory> getLaunchConfigurationCategorySet();
+	Set<ILaunchConfigurationCategory> getLaunchConfigurationCategories();
 
-	void addChangeListener(IModelChangeListener listener);
-	void removeChangeListener(IModelChangeListener listener);
-	
+	void addModelChangeListener(IModelChangeListener listener);
+	void removeModelChangeListener(IModelChangeListener listener);
+
 	ILaunchConfigurationCategory getUncategorizedCategory();
 
 }

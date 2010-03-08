@@ -14,16 +14,16 @@ public class RunnerModelTreeAdapter implements ITreeContentProvider {
 
 	private IRunnerModel runnerModel;
 	private IViewPart viewPart;
-	
+
 	public RunnerModelTreeAdapter(IRunnerModel runnerModel, IViewPart viewPart) {
 		this.runnerModel = runnerModel;
 		this.viewPart = viewPart;
 	}
-	
+
 	public Object[] getChildren(Object object) {
 		if (object instanceof ILaunchConfigurationCategory) {
 			ILaunchConfigurationCategory launchConfigrationCategory = (ILaunchConfigurationCategory) object;
-			return launchConfigrationCategory.getLaunchConfigurationSet().toArray();
+			return launchConfigrationCategory.getLaunchConfigurations().toArray();
 		}
 		return null;
 	}
@@ -45,7 +45,7 @@ public class RunnerModelTreeAdapter implements ITreeContentProvider {
 
 	public Object[] getElements(Object parent) {
 		if (parent.equals(viewPart.getViewSite())) {
-			return runnerModel.getLaunchConfigurationCategorySet().toArray();
+			return runnerModel.getLaunchConfigurationCategories().toArray();
 		}
 		return getChildren(parent);
 	}

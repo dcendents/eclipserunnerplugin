@@ -20,7 +20,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 import com.eclipserunner.model.RunnerModel;
-import com.eclipserunner.model.RunnerModelLaunchListenerAdapter;
+import com.eclipserunner.model.RunnerModelLaunchConfigurationListenerAdapter;
 
 /**
  * Eclipse runner plugin activator class.
@@ -72,7 +72,7 @@ public class RunnerPlugin extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		launchConfigurationListener = new RunnerModelLaunchListenerAdapter(RunnerModel.getDefault());
+		launchConfigurationListener = new RunnerModelLaunchConfigurationListenerAdapter(RunnerModel.getDefault());
 
 		// register model as lunch configuration change listener
 		DebugPlugin.getDefault().getLaunchManager().addLaunchConfigurationListener(launchConfigurationListener);

@@ -167,7 +167,7 @@ public class RunnerStateExternalizer {
 			IRunnerModel runnerModel = RunnerModel.getDefault();
 			FileOutputStream outputStream = new FileOutputStream(outputFile);
 			try {
-				Document document = createCategorDocument(runnerModel.getLaunchConfigurationCategorySet());
+				Document document = createCategorDocument(runnerModel.getLaunchConfigurationCategories());
 				writeDocument(document, outputStream);
 				outputStream.flush();
 			} finally {
@@ -209,7 +209,7 @@ public class RunnerStateExternalizer {
 	public static Element createCategoryElement(ILaunchConfigurationCategory category, Document document) {
 		Element categoryNode = document.createElement(CATEGORY_NODE_NAME);
 		categoryNode.setAttribute(NAME_ATTR, category.getName());
-		for (ILaunchConfiguration launchConfiguration : category.getLaunchConfigurationSet()) {
+		for (ILaunchConfiguration launchConfiguration : category.getLaunchConfigurations()) {
 			categoryNode.appendChild(
 					createConfigurationElement(launchConfiguration, document)
 			);

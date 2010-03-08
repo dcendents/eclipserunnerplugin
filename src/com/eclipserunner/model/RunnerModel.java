@@ -21,7 +21,7 @@ public class RunnerModel implements ICategoryChangeListener, IRunnerModel {
 	private static RunnerModel runnerModel = new RunnerModel();
 
 	private List<IModelChangeListener> modelChangeListeners = new ArrayList<IModelChangeListener>();
-	private Set<ILaunchConfigurationCategory> launchConfigurationCategorySet;
+	private Set<ILaunchConfigurationCategory> launchConfigurationCategories;
 
 	private ILaunchConfigurationCategory uncategorizedCategory;
 
@@ -30,16 +30,16 @@ public class RunnerModel implements ICategoryChangeListener, IRunnerModel {
 		uncategorizedCategory.setName(Message_uncategorized);
 		uncategorizedCategory.addCategoryChangeListener(this);
 
-		launchConfigurationCategorySet = new HashSet<ILaunchConfigurationCategory>();
-		launchConfigurationCategorySet.add(uncategorizedCategory);
+		launchConfigurationCategories = new HashSet<ILaunchConfigurationCategory>();
+		launchConfigurationCategories.add(uncategorizedCategory);
 	}
 
 	public static IRunnerModel getDefault() {
 		return runnerModel;
 	}
 
-	public Set<ILaunchConfigurationCategory> getLaunchConfigurationCategorySet() {
-		return launchConfigurationCategorySet;
+	public Set<ILaunchConfigurationCategory> getLaunchConfigurationCategories() {
+		return launchConfigurationCategories;
 	}
 
 	public void addLaunchConfiguration(ILaunchConfiguration configuration) {
@@ -48,7 +48,7 @@ public class RunnerModel implements ICategoryChangeListener, IRunnerModel {
 	}
 
 	public ILaunchConfigurationCategory getLaunchConfigurationCategory(ILaunchConfiguration launchConfiguration) {
-		for (ILaunchConfigurationCategory category : launchConfigurationCategorySet) {
+		for (ILaunchConfigurationCategory category : launchConfigurationCategories) {
 			if (category.contains(launchConfiguration)) {
 				return category;
 			}
@@ -61,13 +61,13 @@ public class RunnerModel implements ICategoryChangeListener, IRunnerModel {
 		category.setName(name);
 		category.addCategoryChangeListener(this);
 
-		launchConfigurationCategorySet.add(category);
+		launchConfigurationCategories.add(category);
 		fireModelChangedEvent();
 		return category;
 	}
 
 	public void removeLaunchConfiguration(ILaunchConfiguration configuration) {
-		for (ILaunchConfigurationCategory launchConfigurationCategory : launchConfigurationCategorySet) {
+		for (ILaunchConfigurationCategory launchConfigurationCategory : launchConfigurationCategories) {
 			launchConfigurationCategory.remove(configuration);
 		}
 		fireModelChangedEvent();
@@ -83,29 +83,29 @@ public class RunnerModel implements ICategoryChangeListener, IRunnerModel {
 		//	category.remove(launchConfiguration);
 		//	uncategorizedCategory.add(launchConfiguration);
 		//}
-		launchConfigurationCategorySet.remove(category);
+		launchConfigurationCategories.remove(category);
 		category.removeCategoryChangeListener(this);
 		fireModelChangedEvent();
 	}
 
 	public ILaunchConfigurationCategory getLaunchConfigurationCategory(String name) {
-		for (ILaunchConfigurationCategory launchConfigurationCategory : launchConfigurationCategorySet) {
+		for (ILaunchConfigurationCategory launchConfigurationCategory : launchConfigurationCategories) {
 			if (launchConfigurationCategory.getName().equals(name)) {
 				return launchConfigurationCategory;
 			}
 		}
 		return null;
 	}
-	
+
 	public void categoryChanged() {
 		fireModelChangedEvent();
 	}
-	
-	public void addChangeListener(IModelChangeListener listener) {
+
+	public void addModelChangeListener(IModelChangeListener listener) {
 		modelChangeListeners.add(listener);
 	}
 
-	public void removeChangeListener(IModelChangeListener listener) {
+	public void removeModelChangeListener(IModelChangeListener listener) {
 		modelChangeListeners.remove(listener);
 	}
 
@@ -116,8 +116,8 @@ public class RunnerModel implements ICategoryChangeListener, IRunnerModel {
 	}
 
 	// for test only
-	protected void setLaunchConfigurationCategorySet(Set<ILaunchConfigurationCategory> launchConfigurationCategorySet) {
-		this.launchConfigurationCategorySet = launchConfigurationCategorySet;
+	protected void setLaunchConfigurationCategories(Set<ILaunchConfigurationCategory> launchConfigurationCategories) {
+		this.launchConfigurationCategories = launchConfigurationCategories;
 	}
 
 }
