@@ -18,5 +18,7 @@ public interface IRunnerModel {
 
 	void addChangeListener(IModelChangeListener listener);
 	void removeChangeListener(IModelChangeListener listener);
+	
+	ILaunchConfigurationCategory getUncategorizedCategory();
 
 }

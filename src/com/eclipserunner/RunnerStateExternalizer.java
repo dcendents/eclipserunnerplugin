@@ -33,6 +33,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import com.eclipserunner.model.ILaunchConfigurationCategory;
+import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.model.RunnerModel;
 
 /**
@@ -80,7 +81,7 @@ public class RunnerStateExternalizer {
 		Map<String, String> configurationCategories = new HashMap<String, String>();
 
 		// populating model
-		RunnerModel model = RunnerModel.getDefault();
+		IRunnerModel model = RunnerModel.getDefault();
 
 		// read categories
 		NodeList categoryNodeList = runnerNode.getElementsByTagName(CATEGORY_NODE_NAME);
@@ -128,7 +129,7 @@ public class RunnerStateExternalizer {
 	 * @throws CoreException
 	 */
 	public static void readDefaultState() throws CoreException {
-		RunnerModel model = RunnerModel.getDefault();
+		IRunnerModel model = RunnerModel.getDefault();
 		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 		for (ILaunchConfiguration configuration : launchManager.getLaunchConfigurations()) {
 			model.getUncategorizedCategory().add(configuration);
@@ -163,7 +164,7 @@ public class RunnerStateExternalizer {
 	 */
 	public static void writeStateToFile(File outputFile) throws CoreException {
 		try {
-			RunnerModel model = RunnerModel.getDefault();
+			IRunnerModel model = RunnerModel.getDefault();
 			FileOutputStream outStream = new FileOutputStream(outputFile);
 			try {
 				Document doc = createCategorDocument(model.getLaunchConfigurationCategorySet());

@@ -18,6 +18,7 @@ import org.eclipse.debug.internal.ui.stringsubstitution.SelectedResourceManager;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.IStructuredSelection;
 
+import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.model.RunnerModel;
 
 @SuppressWarnings("restriction")
@@ -45,7 +46,7 @@ public class BookmarkAction extends Action {
 			resource = resourceManeger.getLaunchableResource(shortcuts, selection);
 		}
 
-		RunnerModel provider = RunnerModel.getDefault();
+		IRunnerModel provider = RunnerModel.getDefault();
 		List configs = resourceManeger.getParticipatingLaunchConfigurations(selection, resource, shortcuts, launchMode);
 		if (configs.size() > 0) {
 			provider.addLaunchConfiguration((ILaunchConfiguration) configs.get(0));

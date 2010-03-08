@@ -12,6 +12,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunchConfigurationListener;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -19,6 +20,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 import com.eclipserunner.model.RunnerModel;
+import com.eclipserunner.model.RunnerModelLaunchListenerAdapter;
 
 /**
  * Eclipse runner plugin activator class.
@@ -30,6 +32,7 @@ public class RunnerPlugin extends AbstractUIPlugin {
 	public static final String PLUGIN_ID         = "com.eclipserunner.plugin";
 	public static final String PLUGIN_STATE_FILE = "runner";
 
+	ILaunchConfigurationListener launchConfigurationListener;
 	private static RunnerPlugin plugin;
 
 	public static final String ICON_PATH = "icons/";
@@ -70,9 +73,10 @@ public class RunnerPlugin extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		launchConfigurationListener = new RunnerModelLaunchListenerAdapter(RunnerModel.getDefault());
 
 		// register model as lunch configuration change listener
-		DebugPlugin.getDefault().getLaunchManager().addLaunchConfigurationListener(RunnerModel.getDefault());
+		DebugPlugin.getDefault().getLaunchManager().addLaunchConfigurationListener(launchConfigurationListener);
 
 		ISavedState savedState = ResourcesPlugin.getWorkspace().addSaveParticipant(this, new RunnerSaveParticipant());
 		restoreSavedState(savedState);
@@ -83,7 +87,7 @@ public class RunnerPlugin extends AbstractUIPlugin {
 		plugin = null;
 		super.stop(context);
 
-		DebugPlugin.getDefault().getLaunchManager().removeLaunchConfigurationListener(RunnerModel.getDefault());
+		DebugPlugin.getDefault().getLaunchManager().removeLaunchConfigurationListener(launchConfigurationListener);
 
 		if (ResourcesPlugin.getWorkspace() != null) {
 			ResourcesPlugin.getWorkspace().removeSaveParticipant(this);

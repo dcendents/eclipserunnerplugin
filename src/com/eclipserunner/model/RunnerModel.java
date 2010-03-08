@@ -7,9 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchConfigurationListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 
 /**
@@ -18,7 +16,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
  * 
  * @author vachacz
  */
-public class RunnerModel implements ICategoryChangeListener, IRunnerModel, ILaunchConfigurationListener {
+public class RunnerModel implements ICategoryChangeListener, IRunnerModel {
 
 	private static RunnerModel model = new RunnerModel();
 
@@ -36,7 +34,7 @@ public class RunnerModel implements ICategoryChangeListener, IRunnerModel, ILaun
 		launchConfigurationCategorySet.add(uncategorizedCategory);
 	}
 
-	public static RunnerModel getDefault() {
+	public static IRunnerModel getDefault() {
 		return model;
 	}
 
@@ -120,33 +118,6 @@ public class RunnerModel implements ICategoryChangeListener, IRunnerModel, ILaun
 			}
 		}
 		return null;
-	}
-
-	// ILaunchConfigurationListener
-	public void launchConfigurationAdded(ILaunchConfiguration newConfiguration) {
-		// Find old configuration
-		ILaunchConfiguration oldLaunchConfiguration = DebugPlugin.getDefault().getLaunchManager().getMovedFrom(newConfiguration);
-		ILaunchConfigurationCategory oldConfigurationCategory = null;
-		if (oldLaunchConfiguration != null) {
-			oldConfigurationCategory = getLaunchConfigurationCategory(oldLaunchConfiguration);
-		}
-
-		// add new configuration to the same category if possible
-		if (oldConfigurationCategory != null) {
-			oldConfigurationCategory.add(newConfiguration);
-		}
-		else {
-			getUncategorizedCategory().add(newConfiguration);
-		}
-	}
-
-	// ILaunchConfigurationListener
-	public void launchConfigurationChanged(ILaunchConfiguration configuration) {
-	}
-
-	// ILaunchConfigurationListener
-	public void launchConfigurationRemoved(ILaunchConfiguration configuration) {
-		removeLaunchConfiguration(configuration);
 	}
 
 }
