@@ -1,4 +1,4 @@
-package com.eclipserunner.ui.menus;
+package com.eclipserunner.popups;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuCreator;

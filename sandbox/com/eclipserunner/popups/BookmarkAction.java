@@ -1,4 +1,4 @@
-package com.eclipserunner.ui.menus;
+package com.eclipserunner.popups;
 
 import java.util.Arrays;
 import java.util.List;

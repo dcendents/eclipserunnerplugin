@@ -1,4 +1,4 @@
-package com.eclipserunner.ui.menus;
+package com.eclipserunner.popups;
 
 import static com.eclipserunner.utils.SelectionUtils.selectionAsList;
 
