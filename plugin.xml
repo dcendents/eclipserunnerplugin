@@ -19,6 +19,7 @@
 		<contexts file="contexts.xml" />
 	</extension>
 
+<!--
 	<extension point="org.eclipse.ui.popupMenus">
       <objectContribution objectClass="java.lang.Object" id="org.eclipse.debug.ui.contextualBookmark.bookmark">
          <action label="Bookmark launch configuration"
@@ -29,5 +30,6 @@
          </action>                  
       </objectContribution>
 	</extension>
+-->
 
 </plugin>
