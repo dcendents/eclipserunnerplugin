@@ -9,7 +9,6 @@ import static com.eclipserunner.RunnerPlugin.getRunnerShell;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.InputDialog;
@@ -17,6 +16,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 
 import com.eclipserunner.model.ILaunchConfigurationCategory;
+import com.eclipserunner.model.ILaunchConfigurationNode;
 import com.eclipserunner.model.ILaunchConfigurationSelection;
 import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.model.RunnerModel;
@@ -38,8 +38,8 @@ public class RenameConfigOrCategoryAction extends Action {
 	public void run() {
 		Object selectedObject = launchConfigurationSelection.getSelectedObject();
 
-		if (selectedObject instanceof ILaunchConfiguration) {
-			renameLaunchConfiguration((ILaunchConfiguration) selectedObject);
+		if (selectedObject instanceof ILaunchConfigurationNode) {
+			renameLaunchConfiguration((ILaunchConfigurationNode) selectedObject);
 		} else if (selectedObject instanceof ILaunchConfigurationCategory) {
 			renameLaunchConfigurationCategory((ILaunchConfigurationCategory) selectedObject);
 		}
@@ -57,18 +57,19 @@ public class RenameConfigOrCategoryAction extends Action {
 		}
 	}
 
-	private void renameLaunchConfiguration(ILaunchConfiguration launchConfiguration) {
+	private void renameLaunchConfiguration(ILaunchConfigurationNode node) {
 		try {
-			InputDialog dialog = openRenameDialog(Message_rename, Message_renameLaunchConfiguration, launchConfiguration.getName());
+			InputDialog dialog = openRenameDialog(Message_rename, Message_renameLaunchConfiguration, node.getLaunchConiguration().getName());
 			if (dialog.getReturnCode() == Window.OK) {
 
 				String newName = dialog.getValue().trim();
+				// TODO LWA this should be in validator ...
 				if (isExistingLaunchConfigurationName(newName)) {
 					MessageDialog.openError(
 							getRunnerShell(), Message_error, Message_errorLaunchConfigurationAlreadyExists
 					);
 				} else {
-					ILaunchConfigurationWorkingCopy workingCopy = launchConfiguration.getWorkingCopy();
+					ILaunchConfigurationWorkingCopy workingCopy = node.getLaunchConiguration().getWorkingCopy();
 					workingCopy.rename(newName);
 					workingCopy.doSave();
 				}

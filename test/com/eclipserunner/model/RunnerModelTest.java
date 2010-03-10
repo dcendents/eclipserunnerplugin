@@ -7,7 +7,6 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.Set;
 
-import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewSite;
 import org.junit.Before;
@@ -27,7 +26,7 @@ public class RunnerModelTest {
 	private IModelChangeListener modelListenerMock;
 
 	@Mock
-	private ILaunchConfiguration launchConfigurationMock;
+	private ILaunchConfigurationNode launchConfigurationMock;
 
 	@Mock
 	private ILaunchConfigurationCategory launchConfigurationCategoryMock;
@@ -67,7 +66,7 @@ public class RunnerModelTest {
 		runnerModel.setLaunchConfigurationCategories(launchConfigurationSetMock);
 
 		// test
-		runnerModel.addLaunchConfiguration(launchConfigurationMock);
+		runnerModel.addLaunchConfigurationNode(launchConfigurationMock);
 
 		verify(modelListenerMock).modelChanged();
 	}
@@ -81,7 +80,7 @@ public class RunnerModelTest {
 		runnerModel.setLaunchConfigurationCategories(launchConfigurationSetMock);
 
 		// test
-		runnerModel.removeLaunchConfiguration(launchConfigurationMock);
+		runnerModel.removeLaunchConfigurationNode(launchConfigurationMock);
 
 		verify(modelListenerMock).modelChanged();
 	}

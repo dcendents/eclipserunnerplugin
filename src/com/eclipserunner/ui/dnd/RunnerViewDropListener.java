@@ -5,7 +5,6 @@ import static com.eclipserunner.utils.SelectionUtils.getAllSelectedByType;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -14,7 +13,7 @@ import org.eclipse.jface.viewers.ViewerDropAdapter;
 import org.eclipse.swt.dnd.TransferData;
 
 import com.eclipserunner.model.ILaunchConfigurationCategory;
-import com.eclipserunner.model.IRunnerModel;
+import com.eclipserunner.model.ILaunchConfigurationNode;
 
 /**
  * Listener for handling drop events.
@@ -24,11 +23,9 @@ import com.eclipserunner.model.IRunnerModel;
 public class RunnerViewDropListener extends ViewerDropAdapter {
 
 	private boolean localTransfer;
-	private IRunnerModel runnerModel;
 
-	public RunnerViewDropListener(Viewer viewer, IRunnerModel runnerModel) {
+	public RunnerViewDropListener(Viewer viewer) {
 		super(viewer);
-		this.runnerModel = runnerModel;
 		setFeedbackEnabled(true);
 	}
 
@@ -46,20 +43,20 @@ public class RunnerViewDropListener extends ViewerDropAdapter {
 
 	@Override
 	public boolean performDrop(Object data) {
-		List<ILaunchConfiguration> launchConfigurationToMove = new ArrayList<ILaunchConfiguration>();
+		List<ILaunchConfigurationNode> launchConfigurationToMove = new ArrayList<ILaunchConfigurationNode>();
 
 		if (localTransfer) {
 			ISelection selection = LocalSelectionTransfer.getTransfer().getSelection();
 			launchConfigurationToMove.addAll(
-					getAllSelectedByType(selection, ILaunchConfiguration.class)
+					getAllSelectedByType(selection, ILaunchConfigurationNode.class)
 			);
 		}
 
 		Object currentTarget = getCurrentTarget();
 		if (currentTarget instanceof ILaunchConfigurationCategory && getCurrentLocation() == LOCATION_ON) {
-			for (ILaunchConfiguration launchConfiguration : launchConfigurationToMove) {
+			for (ILaunchConfigurationNode launchConfiguration : launchConfigurationToMove) {
 
-				ILaunchConfigurationCategory sourceCategory = runnerModel.getLaunchConfigurationCategory(launchConfiguration);
+				ILaunchConfigurationCategory sourceCategory = launchConfiguration.getParentCategory();
 				ILaunchConfigurationCategory destinationCategory = (ILaunchConfigurationCategory) getCurrentTarget();
 
 				sourceCategory.remove(launchConfiguration);

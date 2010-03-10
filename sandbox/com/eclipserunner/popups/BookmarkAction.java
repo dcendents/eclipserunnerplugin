@@ -47,19 +47,23 @@ public class BookmarkAction extends Action {
 			resource = resourceManeger.getLaunchableResource(shortcuts, selection);
 		}
 
+		@SuppressWarnings("unused")
 		IRunnerModel runnerModel = RunnerModel.getDefault();
 		List configs = resourceManeger.getParticipatingLaunchConfigurations(selection, resource, shortcuts, launchMode);
 		if (configs.size() > 0) {
-			runnerModel.addLaunchConfiguration((ILaunchConfiguration) configs.get(0));
+			// TODO LWA
+			// runnerModel.addLaunchConfiguration((ILaunchConfiguration) configs.get(0));
 		} else {
 			Set types = launchShortcut.getAssociatedConfigurationTypes();
 			ILaunchConfigurationType type = getLaunchManager().getLaunchConfigurationType((String) types.toArray()[0]);
 
 			try {
 				ILaunchConfigurationWorkingCopy workingCopy = type.newInstance(null, getLaunchManager().generateUniqueLaunchConfigurationNameFrom(LaunchConfigurationsMessages.CreateLaunchConfigurationAction_New_configuration_2));
+				@SuppressWarnings("unused")
 				ILaunchConfiguration launchConfiguration = workingCopy.doSave();
 				
-				runnerModel.addLaunchConfiguration(launchConfiguration);
+				// TODO LWA
+				// runnerModel.addLaunchConfiguration(launchConfiguration);
 			} catch (CoreException e) {
 			}
 		}

@@ -42,12 +42,12 @@ public class RunnerModel implements ICategoryChangeListener, IRunnerModel {
 		return launchConfigurationCategories;
 	}
 
-	public void addLaunchConfiguration(ILaunchConfiguration configuration) {
+	public void addLaunchConfigurationNode(ILaunchConfigurationNode configuration) {
 		uncategorizedCategory.add(configuration);
 		// fireModelChangedEvent() not needed because category change triggers an event
 	}
 
-	public ILaunchConfigurationCategory getLaunchConfigurationCategory(ILaunchConfiguration launchConfiguration) {
+	public ILaunchConfigurationCategory getLaunchConfigurationCategory(ILaunchConfigurationNode launchConfiguration) {
 		for (ILaunchConfigurationCategory category : launchConfigurationCategories) {
 			if (category.contains(launchConfiguration)) {
 				return category;
@@ -66,11 +66,17 @@ public class RunnerModel implements ICategoryChangeListener, IRunnerModel {
 		return category;
 	}
 
-	public void removeLaunchConfiguration(ILaunchConfiguration configuration) {
+	public void removeLaunchConfigurationNode(ILaunchConfigurationNode configuration) {
 		for (ILaunchConfigurationCategory launchConfigurationCategory : launchConfigurationCategories) {
 			launchConfigurationCategory.remove(configuration);
 		}
 		fireModelChangedEvent();
+	}
+	
+	public void removeLaunchConfiguration(ILaunchConfiguration configuration) {
+		for (ILaunchConfigurationCategory category : launchConfigurationCategories) {
+			category.remove(configuration);
+		}
 	}
 
 	public ILaunchConfigurationCategory getUncategorizedCategory() {

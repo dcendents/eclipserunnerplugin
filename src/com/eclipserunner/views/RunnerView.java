@@ -30,6 +30,7 @@ import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.part.ViewPart;
 
 import com.eclipserunner.model.ILaunchConfigurationCategory;
+import com.eclipserunner.model.ILaunchConfigurationNode;
 import com.eclipserunner.model.ILaunchConfigurationSelection;
 import com.eclipserunner.model.IModelChangeListener;
 import com.eclipserunner.model.IRunnerModel;
@@ -123,7 +124,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		Transfer[] transferTypes = new Transfer[]{ LocalSelectionTransfer.getTransfer(), FileTransfer.getInstance() };
 
 		getViewer().addDragSupport(operations, transferTypes, new RunnerViewDragListener(getViewer()));
-		getViewer().addDropSupport(operations, transferTypes, new RunnerViewDropListener(getViewer(), runnerModel));
+		getViewer().addDropSupport(operations, transferTypes, new RunnerViewDropListener(getViewer()));
 	}
 
 	private void setupLaunchActions() {
@@ -182,15 +183,12 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 
 	private void addRunConfigurationListener() {
 		launchConfigurationListener = new ILaunchConfigurationListener() {
-
 			public void launchConfigurationRemoved(ILaunchConfiguration configuration) {
 				getViewer().refresh();
 			}
-
 			public void launchConfigurationChanged(ILaunchConfiguration configuration) {
 				getViewer().refresh();
 			}
-
 			public void launchConfigurationAdded(ILaunchConfiguration configuration) {
 				getViewer().refresh();
 			}
@@ -212,7 +210,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 
 		manager.add(addNewCategoryAction);
 
-		if (isLaunchConfigurationSelected()) {
+		if (isLaunchConfigurationNodeSelected()) {
 			manager.add(new Separator());
 			manager.add(launchRunConfigurationAction);
 			manager.add(launchDebugConfigurationAction);
@@ -253,8 +251,8 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		return ((IStructuredSelection) getViewer().getSelection()).getFirstElement();
 	}
 
-	public boolean isLaunchConfigurationSelected() {
-		if (getSelectedObject() instanceof ILaunchConfiguration) {
+	public boolean isLaunchConfigurationNodeSelected() {
+		if (getSelectedObject() instanceof ILaunchConfigurationNode) {
 			return true;
 		}
 		return false;
@@ -267,15 +265,15 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		return false;
 	}
 
-	public ILaunchConfiguration getSelectedLaunchConfiguration() {
-		return (ILaunchConfiguration) getSelectedObject();
+	public ILaunchConfigurationNode getSelectedLaunchConfigurationNode() {
+		return (ILaunchConfigurationNode) getSelectedObject();
 	}
 
 	public ILaunchConfigurationCategory getSelectedLaunchConfigurationCategory() {
 		Object selectedObject = getSelectedObject();
 		ILaunchConfigurationCategory category = null;
 
-		if (selectedObject instanceof ILaunchConfiguration) {
+		if (selectedObject instanceof ILaunchConfigurationNode) {
 			category = (ILaunchConfigurationCategory) treeContentProvider.getParent(selectedObject);
 		}
 		else if (selectedObject instanceof ILaunchConfigurationCategory) {

@@ -33,6 +33,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import com.eclipserunner.model.ILaunchConfigurationCategory;
+import com.eclipserunner.model.ILaunchConfigurationNode;
 import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.model.RunnerModel;
 
@@ -105,13 +106,12 @@ public class RunnerStateExternalizer {
 		}
 
 		// get "fresh" configurations and add to categories
-		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
-		for (ILaunchConfiguration configuration : launchManager.getLaunchConfigurations()) {
-			ILaunchConfigurationCategory launchConfigurationCategory = null;
+		for (ILaunchConfiguration configuration : getLaunchManager().getLaunchConfigurations()) {
 
 			String configurationName = configuration.getName();
 			String categoryName = configurationCategories.get(configurationName);
 
+			ILaunchConfigurationCategory launchConfigurationCategory = null;
 			if (categoryName == null) {
 				launchConfigurationCategory = runnerModel.getUncategorizedCategory();
 			}
@@ -123,6 +123,11 @@ public class RunnerStateExternalizer {
 		}
 	}
 
+	private static ILaunchManager getLaunchManager() {
+		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
+		return launchManager;
+	}
+
 	/**
 	 * Load plugin default state.
 	 * 
@@ -130,7 +135,7 @@ public class RunnerStateExternalizer {
 	 */
 	public static void readDefaultState() throws CoreException {
 		IRunnerModel runnerModel = RunnerModel.getDefault();
-		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
+		ILaunchManager launchManager = getLaunchManager();
 		for (ILaunchConfiguration configuration : launchManager.getLaunchConfigurations()) {
 			runnerModel.getUncategorizedCategory().add(configuration);
 		}
@@ -209,9 +214,9 @@ public class RunnerStateExternalizer {
 	public static Element createCategoryElement(ILaunchConfigurationCategory category, Document document) {
 		Element categoryNode = document.createElement(CATEGORY_NODE_NAME);
 		categoryNode.setAttribute(NAME_ATTR, category.getName());
-		for (ILaunchConfiguration launchConfiguration : category.getLaunchConfigurations()) {
+		for (ILaunchConfigurationNode launchConfiguration : category.getLaunchConfigurationNodes()) {
 			categoryNode.appendChild(
-					createConfigurationElement(launchConfiguration, document)
+				createConfigurationElement(launchConfiguration.getLaunchConiguration(), document)
 			);
 		}
 		return categoryNode;

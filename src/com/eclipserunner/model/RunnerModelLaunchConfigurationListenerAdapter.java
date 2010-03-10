@@ -14,32 +14,36 @@ public class RunnerModelLaunchConfigurationListenerAdapter implements ILaunchCon
 	}
 
 	public void launchConfigurationAdded(ILaunchConfiguration newConfiguration) {
-		// Find old configuration
-		ILaunchConfiguration oldLaunchConfiguration = getLaunchManager().getMovedFrom(newConfiguration);
-		ILaunchConfigurationCategory oldConfigurationCategory = null;
-		if (oldLaunchConfiguration != null) {
-			oldConfigurationCategory = runnerModel.getLaunchConfigurationCategory(oldLaunchConfiguration);
-		}
-
-		// add new configuration to the same category if possible
-		if (oldConfigurationCategory != null) {
-			oldConfigurationCategory.add(newConfiguration);
-		}
-		else {
+		
+	// TODO LWA
+		
+//		// Find old configuration
+//		ILaunchConfiguration oldLaunchConfiguration = getLaunchManager().getMovedFrom(newConfiguration);
+//		ILaunchConfigurationCategory oldConfigurationCategory = null;
+//		if (oldLaunchConfiguration != null) {
+//			oldConfigurationCategory = runnerModel.getLaunchConfigurationCategory(oldLaunchConfiguration);
+//		}
+//
+//		// add new configuration to the same category if possible
+//		if (oldConfigurationCategory != null) {
+//			oldConfigurationCategory.add(newConfiguration);
+//		}
+//		else {
 			runnerModel.getUncategorizedCategory().add(newConfiguration);
-		}
+//		}
 	}
 
 	public void launchConfigurationChanged(ILaunchConfiguration configuration) {
 		// Dont care at this moment. LaunchConfiguration rename fires two events
 		// launchConfigurationAdded and launchConfigurationRemoved.
-		// Old configuration is deleted and new is created in place of old one.
+		// Old configuration is deleted and new is created in place of the old one.
 	}
 
 	public void launchConfigurationRemoved(ILaunchConfiguration configuration) {
 		runnerModel.removeLaunchConfiguration(configuration);
 	}
 
+	@SuppressWarnings("unused")
 	private ILaunchManager getLaunchManager() {
 		return DebugPlugin.getDefault().getLaunchManager();
 	}

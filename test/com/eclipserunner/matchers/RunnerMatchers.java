@@ -6,6 +6,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.mockito.ArgumentMatcher;
 
 import com.eclipserunner.model.ILaunchConfigurationCategory;
+import com.eclipserunner.model.ILaunchConfigurationNode;
 
 public class RunnerMatchers {
 
@@ -13,6 +14,13 @@ public class RunnerMatchers {
 		@Override
 		public boolean matches(Object object) {
 			return (object instanceof ILaunchConfiguration);
+		}
+	}
+	
+	static class IsILaunchConfigurationNode extends ArgumentMatcher<ILaunchConfigurationNode> {
+		@Override
+		public boolean matches(Object object) {
+			return (object instanceof ILaunchConfigurationNode);
 		}
 	}
 	
@@ -29,5 +37,9 @@ public class RunnerMatchers {
 	
 	public static ILaunchConfigurationCategory anyLaunchConfigurationCotegory() {
 		return argThat(new IsILaunchConfigurationCategory());
+	}
+	
+	public static ILaunchConfigurationNode anyLaunchConfigurationNode() {
+		return argThat(new IsILaunchConfigurationNode());
 	}
 }

@@ -13,10 +13,8 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 public class LaunchConfigurationCategory implements ILaunchConfigurationCategory {
 
 	private String name;
-	private Set<ILaunchConfiguration> launchConfigurations = new HashSet<ILaunchConfiguration>();
-	private Set<ILaunchConfiguration> launchConfigurationBookmarks = new HashSet<ILaunchConfiguration>();
+	private Set<ILaunchConfigurationNode> launchConfigurationNodes = new HashSet<ILaunchConfigurationNode>();
 	private Set<ICategoryChangeListener> categoryChangeListeners = new HashSet<ICategoryChangeListener>();
-
 
 	public String getName() {
 		return name;
@@ -27,18 +25,29 @@ public class LaunchConfigurationCategory implements ILaunchConfigurationCategory
 		fireCategoryChangedEvent();
 	}
 
-	public final Set<ILaunchConfiguration> getLaunchConfigurations() {
-		return launchConfigurations;
+	public final Set<ILaunchConfigurationNode> getLaunchConfigurationNodes() {
+		return launchConfigurationNodes;
 	}
 
-	public void add(ILaunchConfiguration launchConfiguration) {
-		launchConfigurations.add(launchConfiguration);
+	@Override
+	public void add(ILaunchConfiguration newConfiguration) {
+		
+		// TODO LWA builder
+		LaunchConfigurationNode node = new LaunchConfigurationNode();
+		node.setLaunchConfiguration(newConfiguration);
+		node.setLaunchConfigurationCategory(this);
+		node.unbookmark();
+		
+		launchConfigurationNodes.add(node);
+	}
+	
+	public void add(ILaunchConfigurationNode launchConfigurationNode) {
+		launchConfigurationNodes.add(launchConfigurationNode);
 		fireCategoryChangedEvent();
 	}
 
-	public void remove(ILaunchConfiguration launchConfiguration) {
-		launchConfigurations.remove(launchConfiguration);
-		launchConfigurationBookmarks.remove(launchConfiguration);
+	public void remove(ILaunchConfigurationNode launchConfiguration) {
+		launchConfigurationNodes.remove(launchConfiguration);
 		fireCategoryChangedEvent();
 	}
 
@@ -51,50 +60,45 @@ public class LaunchConfigurationCategory implements ILaunchConfigurationCategory
 	}
 
 	public void bookmarkAll() {
-		launchConfigurationBookmarks.clear();
-		launchConfigurationBookmarks.addAll(launchConfigurations);
+		for (ILaunchConfigurationNode node : launchConfigurationNodes) {
+			node.bookmark();
+		}
 		fireCategoryChangedEvent();
 	}
 
 	public void unbookmarkAll() {
-		launchConfigurationBookmarks.clear();
+		for (ILaunchConfigurationNode node : launchConfigurationNodes) {
+			node.unbookmark();
+		}
 		fireCategoryChangedEvent();
 	}
 
-	public void bookmark(ILaunchConfiguration configuration) {
-		if (contains(configuration)) {
-			launchConfigurationBookmarks.add(configuration);
-			fireCategoryChangedEvent();
-		}
-	}
-
-	public void unbookmark(ILaunchConfiguration configuration) {
-		if (contains(configuration)) {
-			launchConfigurationBookmarks.remove(configuration);
-			fireCategoryChangedEvent();
-		}
-	}
-
-	public boolean isBookmarked(ILaunchConfiguration configuration) {
-		return launchConfigurationBookmarks.contains(configuration);
-	}
-
-	public boolean contains(ILaunchConfiguration configuration) {
-		return launchConfigurations.contains(configuration);
+	public boolean contains(ILaunchConfigurationNode launchConfigurationNode) {
+		return launchConfigurationNodes.contains(launchConfigurationNode);
 	}
 
 	public boolean isEmpty() {
-		return launchConfigurations.isEmpty();
+		return launchConfigurationNodes.isEmpty();
 	}
 
 	public int size() {
-		return launchConfigurations.size();
+		return launchConfigurationNodes.size();
 	}
 
 	private void fireCategoryChangedEvent() {
 		for (ICategoryChangeListener categoryChangeListener : categoryChangeListeners) {
 			categoryChangeListener.categoryChanged();
 		}
+	}
+
+	@Override
+	public void remove(ILaunchConfiguration configuration) {
+		// TODO LWA smart equals + tests
+		for (ILaunchConfigurationNode node : launchConfigurationNodes) {
+			if (node.getLaunchConiguration().equals(configuration)) {
+				launchConfigurationNodes.remove(node);
+			}
+		}		
 	}
 
 }

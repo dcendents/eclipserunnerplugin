@@ -21,9 +21,9 @@ public class LaunchConfigurationAction extends AbstractLaunchAction {
 
 	@Override
 	public void run() {
-		if (launchConfigurationSelection.isLaunchConfigurationSelected()) {
+		if (launchConfigurationSelection.isLaunchConfigurationNodeSelected()) {
 			DebugUITools.launch(
-				launchConfigurationSelection.getSelectedLaunchConfiguration(),
+				launchConfigurationSelection.getSelectedLaunchConfigurationNode().getLaunchConiguration(),
 				getLaunchConfigurationManager().getLaunchGroup(getLaunchGroupId()).getMode()
 			);
 		}

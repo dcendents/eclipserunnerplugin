@@ -1,6 +1,5 @@
 package com.eclipserunner.model;
 
-import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugModelPresentation;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -32,20 +31,25 @@ public class LaunchTreeLabelProvider extends LabelProvider {
 		if (element instanceof ILaunchConfigurationCategory) {
 			return ((ILaunchConfigurationCategory) element).getName();
 		}
+		else if (element instanceof ILaunchConfigurationNode) {
+			ILaunchConfigurationNode launchConfiguration = (ILaunchConfigurationNode) element;
+			return debugModelPresentation.getText(launchConfiguration.getLaunchConiguration());
+		}
 		return debugModelPresentation.getText(element);
 	}
 
 	@Override
 	public Image getImage(Object element) {
 		if (element instanceof ILaunchConfigurationCategory) {
+			// TODO private method
 			return RunnerPlugin.getDefault().getImageDescriptor(IMG_CATEGORY).createImage();
 		}
-		else if (element instanceof ILaunchConfiguration) {
-			Image image = debugModelPresentation.getImage(element);
-			ILaunchConfiguration launchConfiguration = (ILaunchConfiguration) element;
-			ILaunchConfigurationCategory launchConfigurationCategory = RunnerModel.getDefault().getLaunchConfigurationCategory(launchConfiguration);
-
-			if (launchConfigurationCategory.isBookmarked(launchConfiguration)) {
+		else if (element instanceof ILaunchConfigurationNode) {
+			ILaunchConfigurationNode launchConfiguration = (ILaunchConfigurationNode) element;
+			Image image = debugModelPresentation.getImage(launchConfiguration.getLaunchConiguration());
+			
+			if (launchConfiguration.isBookmarked()) {
+				// TODO private method return overlyImage(image, IMG_DFSDFSDF)
 				ImageDescriptor bookmarkDescriptor = RunnerPlugin.getDefault().getImageDescriptor(IMG_BOOKMARK);
 				DecorationOverlayIcon bookmarkedImage = new  DecorationOverlayIcon(image, bookmarkDescriptor, IDecoration.TOP_RIGHT);
 				return bookmarkedImage.createImage();

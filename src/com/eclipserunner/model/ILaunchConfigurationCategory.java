@@ -14,23 +14,23 @@ public interface ILaunchConfigurationCategory {
 	String getName();
 	void setName(String name);
 
-	Set<ILaunchConfiguration> getLaunchConfigurations();
+	Set<ILaunchConfigurationNode> getLaunchConfigurationNodes();
 
 	void add(ILaunchConfiguration launchConfiguration);
+	void add(ILaunchConfigurationNode launchConfigurationNode);
+	
 	void remove(ILaunchConfiguration launchConfiguration);
+	void remove(ILaunchConfigurationNode launchConfigurationNode);
 
 	void addCategoryChangeListener(ICategoryChangeListener listener);
 	void removeCategoryChangeListener(ICategoryChangeListener listener);
 
+	boolean contains(ILaunchConfigurationNode launchConfigurationNode);
+	
 	void bookmarkAll();
 	void unbookmarkAll();
-	void bookmark(ILaunchConfiguration configuration);
-	void unbookmark(ILaunchConfiguration configuration);
-	boolean isBookmarked(ILaunchConfiguration configuration);
-
-	boolean contains(ILaunchConfiguration configuration);
 
 	boolean isEmpty();
 	int size();
-
+	
 }

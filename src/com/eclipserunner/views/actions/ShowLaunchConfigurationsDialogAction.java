@@ -31,9 +31,9 @@ public class ShowLaunchConfigurationsDialogAction extends AbstractLaunchAction {
 				getLaunchConfigurationManager().getLaunchGroup(getLaunchGroupId())
 		);
 
-		if (selection.isLaunchConfigurationSelected()) {
+		if (selection.isLaunchConfigurationNodeSelected()) {
 			dialog.setOpenMode(LAUNCH_CONFIGURATION_DIALOG_OPEN_ON_SELECTION);
-			dialog.setInitialSelection(asStructuredSelection(selection.getSelectedLaunchConfiguration()));
+			dialog.setInitialSelection(asStructuredSelection(selection.getSelectedLaunchConfigurationNode()));
 		}
 		else {
 			dialog.setOpenMode(LAUNCH_CONFIGURATION_DIALOG_OPEN_ON_LAST_LAUNCHED);

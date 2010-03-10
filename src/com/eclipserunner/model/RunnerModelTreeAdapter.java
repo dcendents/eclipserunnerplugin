@@ -1,6 +1,5 @@
 package com.eclipserunner.model;
 
-import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.ui.IViewPart;
@@ -23,14 +22,14 @@ public class RunnerModelTreeAdapter implements ITreeContentProvider {
 	public Object[] getChildren(Object object) {
 		if (object instanceof ILaunchConfigurationCategory) {
 			ILaunchConfigurationCategory launchConfigrationCategory = (ILaunchConfigurationCategory) object;
-			return launchConfigrationCategory.getLaunchConfigurations().toArray();
+			return launchConfigrationCategory.getLaunchConfigurationNodes().toArray();
 		}
 		return null;
 	}
 
 	public Object getParent(Object object) {
-		if (object instanceof ILaunchConfiguration) {
-			return runnerModel.getLaunchConfigurationCategory((ILaunchConfiguration) object);
+		if (object instanceof ILaunchConfigurationNode) {
+			return ((ILaunchConfigurationNode) object).getParentCategory();
 		}
 		return null;
 	}
