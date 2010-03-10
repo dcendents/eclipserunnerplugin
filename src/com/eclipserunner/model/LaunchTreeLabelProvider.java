@@ -1,5 +1,6 @@
 package com.eclipserunner.model;
 
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugModelPresentation;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -34,27 +35,27 @@ public class LaunchTreeLabelProvider extends LabelProvider {
 		return debugModelPresentation.getText(element);
 	}
 
-	//@Override
-	//public Image getImage(Object element) {
-	//	if (element instanceof ILaunchConfigurationCategory) {
-	//		return RunnerPlugin.getDefault().getImageDescriptor(IMG_CATEGORY).createImage();
-	//	}
-	//	return debugModelPresentation.getImage(element);
-	//}
-
 	@Override
-	// TODO: This is proof of concept how to combine images. It adds pin icon in the righr top corner of original icon.
 	public Image getImage(Object element) {
-		Image image = null;
-		ImageDescriptor bookmarkDescriptor = RunnerPlugin.getDefault().getImageDescriptor(IMG_BOOKMARK);
 		if (element instanceof ILaunchConfigurationCategory) {
-			image = RunnerPlugin.getDefault().getImageDescriptor(IMG_CATEGORY).createImage();
+			return RunnerPlugin.getDefault().getImageDescriptor(IMG_CATEGORY).createImage();
+		}
+		else if (element instanceof ILaunchConfiguration) {
+			Image image = debugModelPresentation.getImage(element);
+			ILaunchConfiguration launchConfiguration = (ILaunchConfiguration) element;
+			ILaunchConfigurationCategory launchConfigurationCategory = RunnerModel.getDefault().getLaunchConfigurationCategory(launchConfiguration);
+
+			if (launchConfigurationCategory.isBookmarked(launchConfiguration)) {
+				ImageDescriptor bookmarkDescriptor = RunnerPlugin.getDefault().getImageDescriptor(IMG_BOOKMARK);
+				DecorationOverlayIcon bookmarkedImage = new  DecorationOverlayIcon(image, bookmarkDescriptor, IDecoration.TOP_RIGHT);
+				return bookmarkedImage.createImage();
+			}
+
+			return image;
 		}
 		else {
-			image = debugModelPresentation.getImage(element);
+			return ImageDescriptor.getMissingImageDescriptor().createImage();
 		}
-		DecorationOverlayIcon bookmarkedImage = new  DecorationOverlayIcon(image, bookmarkDescriptor, IDecoration.TOP_RIGHT);
-		return bookmarkedImage.createImage();
 	}
 
 }

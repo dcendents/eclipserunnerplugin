@@ -63,8 +63,10 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	private Action addNewCategoryAction;
 
 	private Action collapseAllAction;
-
 	private Action expandAllAction;
+
+	private Action bookmarkAction;
+	private Action unbookmarkAction;
 
 	private Action renameAction;
 	private Action removeAction;
@@ -136,6 +138,8 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		addNewCategoryAction                = builder.createAddNewCategoryAction();
 		collapseAllAction                   = builder.createCollapseAllAction(viewer);
 		expandAllAction                     = builder.createExpandAllAction(viewer);
+		bookmarkAction                      = builder.createBookmarkAction();
+		unbookmarkAction                    = builder.createUnbookmarkAction();
 		renameAction                        = builder.createRenameAction();
 		removeAction                        = builder.createRemoveAction();
 		aboutAction                         = builder.createAboutAction();
@@ -217,6 +221,11 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		manager.add(new Separator());
 		manager.add(renameAction);
 		manager.add(removeAction);
+
+		manager.add(new Separator());
+		manager.add(bookmarkAction);
+		manager.add(unbookmarkAction);
+
 		manager.add(new Separator());
 		manager.add(showRunConfigurationsDialogAction);
 		manager.add(showDebugConfigurationsDialogAction);

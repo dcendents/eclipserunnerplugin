@@ -2,6 +2,8 @@ package com.eclipserunner.views.actions;
 
 import static com.eclipserunner.Messages.Message_addNewCategory;
 import static com.eclipserunner.Messages.Message_addNewCategoryTooltip;
+import static com.eclipserunner.Messages.Message_bookmark;
+import static com.eclipserunner.Messages.Message_bookmarkTooltip;
 import static com.eclipserunner.Messages.Message_collapseAll;
 import static com.eclipserunner.Messages.Message_collapseAllTooltip;
 import static com.eclipserunner.Messages.Message_debugConfiguration;
@@ -18,6 +20,8 @@ import static com.eclipserunner.Messages.Message_rename;
 import static com.eclipserunner.Messages.Message_renameTooltip;
 import static com.eclipserunner.Messages.Message_runConfiguration;
 import static com.eclipserunner.Messages.Message_runConfigurationTooltip;
+import static com.eclipserunner.Messages.Message_unbookmark;
+import static com.eclipserunner.Messages.Message_unbookmarkTooltip;
 import static org.eclipse.debug.ui.IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP;
 import static org.eclipse.debug.ui.IDebugUIConstants.ID_RUN_LAUNCH_GROUP;
 
@@ -46,6 +50,8 @@ public final class LaunchActionBuilder {
 	private static final String IMG_HELP                 = "help.gif";
 	private static final String IMG_NEW_CATEGORY         = "category-new.gif";
 	private static final String IMG_EXPAND_ALL           = "expandall.gif";
+	private static final String IMG_BOOKMARK             = "bookmark.gif";
+	private static final String IMG_UNBOOKMARK           = "unbookmark.gif";
 
 	private ILaunchConfigurationSelection launchConfigurationSelection;
 	private IRunnerModel runnerModel;
@@ -62,7 +68,7 @@ public final class LaunchActionBuilder {
 		this.launchConfigurationSelection = launchConfigurationSelection;
 		return this;
 	}
-	
+
 	public LaunchActionBuilder withRunnerModel(IRunnerModel model) {
 		this.runnerModel = model;
 		return this;
@@ -91,7 +97,7 @@ public final class LaunchActionBuilder {
 		configureAction(action, Message_debugConfiguration, Message_debugConfigurationTooltip, IMG_DEBUG);
 		return action;
 	}
-	
+
 	public Action createAddNewCategoryAction() {
 		Action action = new AddNewCategoryAction(runnerModel);
 		configureAction(action, Message_addNewCategory, Message_addNewCategoryTooltip, IMG_NEW_CATEGORY);
@@ -109,33 +115,45 @@ public final class LaunchActionBuilder {
 		configureAction(action, Message_expandAll, Message_expandAllTooltip, IMG_EXPAND_ALL);
 		return action;
 	}
-	
+
 	public Action createRenameAction() {
 		Action action = new RenameConfigOrCategoryAction(launchConfigurationSelection, runnerModel);
 		configureAction(action, Message_rename, Message_renameTooltip);
 		return action;
 	}
-	
+
 	public Action createRemoveAction() {
 		Action action = new RemoveConfigOrCategoryAction(launchConfigurationSelection, runnerModel);
 		configureAction(action, Message_remove, Message_removeTooltip, getSharedImage(ISharedImages.IMG_ETOOL_DELETE));
 		return action;
 	}
 
+	public Action createBookmarkAction() {
+		Action action = new BookmarkLaunchAction(launchConfigurationSelection);
+		configureAction(action, Message_bookmark, Message_bookmarkTooltip, IMG_BOOKMARK);
+		return action;
+	}
+
+	public Action createUnbookmarkAction() {
+		Action action = new UnbookmarkLaunchAction(launchConfigurationSelection);
+		configureAction(action, Message_unbookmark, Message_unbookmarkTooltip, IMG_UNBOOKMARK);
+		return action;
+	}
+
 	private final void configureAction(Action action, String title, String tooltip, String imageFileName) {
 		configureAction(action, title, tooltip, RunnerPlugin.getDefault().getImageDescriptor(imageFileName));
 	}
-	
+
 	private final void configureAction(Action action, String title, String tooltip, ImageDescriptor imageDescriptor) {
 		action.setImageDescriptor(imageDescriptor);
 		configureAction(action, title, tooltip);
 	}
-	
+
 	private final void configureAction(Action action, String title, String tooltip) {
 		action.setText(title);
 		action.setToolTipText(tooltip);
 	}
-	
+
 	private ImageDescriptor getSharedImage(String image) {
 		return PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(image);
 	}

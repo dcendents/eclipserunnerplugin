@@ -9,6 +9,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 public interface ILaunchConfigurationSelection {
 
 	boolean isLaunchConfigurationSelected();
+	boolean isLaunchConfigurationCategorySelected();
 	Object getSelectedObject();
 	ILaunchConfiguration getSelectedLaunchConfiguration();
 	ILaunchConfigurationCategory getSelectedLaunchConfigurationCategory();

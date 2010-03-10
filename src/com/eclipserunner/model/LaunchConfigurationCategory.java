@@ -14,7 +14,9 @@ public class LaunchConfigurationCategory implements ILaunchConfigurationCategory
 
 	private String name;
 	private Set<ILaunchConfiguration> launchConfigurations = new HashSet<ILaunchConfiguration>();
+	private Set<ILaunchConfiguration> launchConfigurationBookmarks = new HashSet<ILaunchConfiguration>();
 	private Set<ICategoryChangeListener> categoryChangeListeners = new HashSet<ICategoryChangeListener>();
+
 
 	public String getName() {
 		return name;
@@ -36,6 +38,7 @@ public class LaunchConfigurationCategory implements ILaunchConfigurationCategory
 
 	public void remove(ILaunchConfiguration launchConfiguration) {
 		launchConfigurations.remove(launchConfiguration);
+		launchConfigurationBookmarks.remove(launchConfiguration);
 		fireCategoryChangedEvent();
 	}
 
@@ -45,6 +48,35 @@ public class LaunchConfigurationCategory implements ILaunchConfigurationCategory
 
 	public void removeCategoryChangeListener(ICategoryChangeListener listener) {
 		categoryChangeListeners.remove(listener);
+	}
+
+	public void bookmarkAll() {
+		launchConfigurationBookmarks.clear();
+		launchConfigurationBookmarks.addAll(launchConfigurations);
+		fireCategoryChangedEvent();
+	}
+
+	public void unbookmarkAll() {
+		launchConfigurationBookmarks.clear();
+		fireCategoryChangedEvent();
+	}
+
+	public void bookmark(ILaunchConfiguration configuration) {
+		if (contains(configuration)) {
+			launchConfigurationBookmarks.add(configuration);
+			fireCategoryChangedEvent();
+		}
+	}
+
+	public void unbookmark(ILaunchConfiguration configuration) {
+		if (contains(configuration)) {
+			launchConfigurationBookmarks.remove(configuration);
+			fireCategoryChangedEvent();
+		}
+	}
+
+	public boolean isBookmarked(ILaunchConfiguration configuration) {
+		return launchConfigurationBookmarks.contains(configuration);
 	}
 
 	public boolean contains(ILaunchConfiguration configuration) {

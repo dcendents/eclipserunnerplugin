@@ -22,6 +22,12 @@ public interface ILaunchConfigurationCategory {
 	void addCategoryChangeListener(ICategoryChangeListener listener);
 	void removeCategoryChangeListener(ICategoryChangeListener listener);
 
+	void bookmarkAll();
+	void unbookmarkAll();
+	void bookmark(ILaunchConfiguration configuration);
+	void unbookmark(ILaunchConfiguration configuration);
+	boolean isBookmarked(ILaunchConfiguration configuration);
+
 	boolean contains(ILaunchConfiguration configuration);
 
 	boolean isEmpty();
