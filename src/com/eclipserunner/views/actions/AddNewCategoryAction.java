@@ -9,7 +9,7 @@ import org.eclipse.jface.window.Window;
 
 import com.eclipserunner.RunnerPlugin;
 import com.eclipserunner.model.IRunnerModel;
-import com.eclipserunner.views.actions.validator.LaunchConfigurationNameValidator;
+import com.eclipserunner.views.actions.validator.CategoryNameValidator;
 
 /**
  * Action creates new empty category in plugin model.
@@ -26,7 +26,7 @@ public class AddNewCategoryAction extends Action {
 
 	@Override
 	public void run() {
-		InputDialog dialog = new InputDialog(RunnerPlugin.getRunnerShell(), Message_categoryDialogTitle, Message_categoryDialogMessage, "", new LaunchConfigurationNameValidator());
+		InputDialog dialog = new InputDialog(RunnerPlugin.getRunnerShell(), Message_categoryDialogTitle, Message_categoryDialogMessage, "", new CategoryNameValidator());
 
 		dialog.open();
 		if (dialog.getReturnCode() == Window.OK) {

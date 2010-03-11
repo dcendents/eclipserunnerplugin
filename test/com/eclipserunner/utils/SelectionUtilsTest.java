@@ -116,7 +116,5 @@ public class SelectionUtilsTest {
 	public void testGetAllByTypeWithISelection() throws Exception {
 		List<Dummy> dummyList = SelectionUtils.getAllSelectedByType(selectionMock, Dummy.class);
 		assertEquals(dummyList.size(), 0);
-		
-		verify(selectionMock);
 	}
 }

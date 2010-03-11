@@ -69,7 +69,7 @@ public class RenameConfigOrCategoryAction extends Action {
 	}
 
 	private InputDialog openRenameDialog(String title, String message, String initialValue) {
-		InputDialog dialog = new InputDialog(getRunnerShell(), title, message, initialValue, new LaunchConfigurationNameValidator());
+		InputDialog dialog = new InputDialog(getRunnerShell(), title, message, initialValue, new LaunchConfigurationNameValidator(initialValue));
 		dialog.open();
 		return dialog;
 	}
