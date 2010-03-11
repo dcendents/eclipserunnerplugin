@@ -18,7 +18,7 @@ import com.eclipserunner.RunnerPlugin;
 public class LaunchTreeLabelProvider extends LabelProvider {
 
 	private static final String IMG_CATEGORY   = "category.gif";
-	private static final String IMG_DECORATION = "star_min.gif";
+	private static final String IMG_DECORATION = "bookmark_pin2.gif";
 
 	private IDebugModelPresentation debugModelPresentation;
 
@@ -61,7 +61,7 @@ public class LaunchTreeLabelProvider extends LabelProvider {
 
 	private Image overlyImage(Image image, String decoration) {
 		ImageDescriptor decorationDescriptor = RunnerPlugin.getDefault().getImageDescriptor(decoration);
-		return new DecorationOverlayIcon(image, decorationDescriptor, IDecoration.TOP_RIGHT).createImage();
+		return new DecorationOverlayIcon(image, decorationDescriptor, IDecoration.BOTTOM_RIGHT).createImage();
 	}
-
+	
 }
