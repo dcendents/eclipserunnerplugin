@@ -35,6 +35,9 @@ public class LaunchTreeLabelProvider extends LabelProvider {
 			ILaunchConfigurationNode launchConfiguration = (ILaunchConfigurationNode) element;
 			return debugModelPresentation.getText(launchConfiguration.getLaunchConfiguration());
 		}
+		else if (element instanceof LaunchConfigurationTypeNode) {
+			return debugModelPresentation.getText(((LaunchConfigurationTypeNode) element).getType());
+		}
 		return debugModelPresentation.getText(element);
 	}
 
@@ -51,6 +54,9 @@ public class LaunchTreeLabelProvider extends LabelProvider {
 				return overlyImage(image, IMG_DECORATION);
 			}
 			return image;
+		}
+		else if (element instanceof LaunchConfigurationTypeNode) {
+			return debugModelPresentation.getImage(((LaunchConfigurationTypeNode) element).getType());
 		}
 		return ImageDescriptor.getMissingImageDescriptor().createImage();
 	}
