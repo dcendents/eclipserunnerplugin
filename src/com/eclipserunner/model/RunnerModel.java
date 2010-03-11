@@ -16,7 +16,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
  * 
  * @author vachacz
  */
-public class RunnerModel implements ICategoryChangeListener, IRunnerModel {
+public class RunnerModel implements IRunnerModel, ICategoryChangeListener {
 
 	private static RunnerModel runnerModel = new RunnerModel();
 
@@ -72,7 +72,7 @@ public class RunnerModel implements ICategoryChangeListener, IRunnerModel {
 		}
 		fireModelChangedEvent();
 	}
-	
+
 	public void removeLaunchConfiguration(ILaunchConfiguration configuration) {
 		for (ILaunchConfigurationCategory category : launchConfigurationCategories) {
 			category.remove(configuration);
@@ -103,10 +103,6 @@ public class RunnerModel implements ICategoryChangeListener, IRunnerModel {
 		return null;
 	}
 
-	public void categoryChanged() {
-		fireModelChangedEvent();
-	}
-
 	public void addModelChangeListener(IModelChangeListener listener) {
 		modelChangeListeners.add(listener);
 	}
@@ -124,6 +120,21 @@ public class RunnerModel implements ICategoryChangeListener, IRunnerModel {
 	// for test only
 	protected void setLaunchConfigurationCategories(Set<ILaunchConfigurationCategory> launchConfigurationCategories) {
 		this.launchConfigurationCategories = launchConfigurationCategories;
+	}
+
+	public ILaunchConfigurationNode findLaunchConfigurationNodeBy(ILaunchConfiguration configuration) {
+		for (ILaunchConfigurationCategory launchConfigurationCategory : launchConfigurationCategories) {
+			for (ILaunchConfigurationNode launchConfigurationNode : launchConfigurationCategory.getLaunchConfigurationNodes()) {
+				if (launchConfigurationNode.getLaunchConfiguration().equals(configuration)) {
+					return launchConfigurationNode;
+				}
+			}
+		}
+		return null;
+	}
+
+	public void categoryChanged() {
+		fireModelChangedEvent();
 	}
 
 }

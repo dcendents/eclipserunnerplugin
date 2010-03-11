@@ -59,7 +59,7 @@ public class RenameConfigOrCategoryAction extends Action {
 
 	private void renameLaunchConfiguration(ILaunchConfigurationNode node) {
 		try {
-			InputDialog dialog = openRenameDialog(Message_rename, Message_renameLaunchConfiguration, node.getLaunchConiguration().getName());
+			InputDialog dialog = openRenameDialog(Message_rename, Message_renameLaunchConfiguration, node.getLaunchConfiguration().getName());
 			if (dialog.getReturnCode() == Window.OK) {
 
 				String newName = dialog.getValue().trim();
@@ -69,7 +69,7 @@ public class RenameConfigOrCategoryAction extends Action {
 							getRunnerShell(), Message_error, Message_errorLaunchConfigurationAlreadyExists
 					);
 				} else {
-					ILaunchConfigurationWorkingCopy workingCopy = node.getLaunchConiguration().getWorkingCopy();
+					ILaunchConfigurationWorkingCopy workingCopy = node.getLaunchConfiguration().getWorkingCopy();
 					workingCopy.rename(newName);
 					workingCopy.doSave();
 				}

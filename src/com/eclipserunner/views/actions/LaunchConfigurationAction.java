@@ -23,8 +23,8 @@ public class LaunchConfigurationAction extends AbstractLaunchAction {
 	public void run() {
 		if (launchConfigurationSelection.isLaunchConfigurationNodeSelected()) {
 			DebugUITools.launch(
-				launchConfigurationSelection.getSelectedLaunchConfigurationNode().getLaunchConiguration(),
-				getLaunchConfigurationManager().getLaunchGroup(getLaunchGroupId()).getMode()
+					launchConfigurationSelection.getSelectedLaunchConfigurationNode().getLaunchConfiguration(),
+					getLaunchConfigurationManager().getLaunchGroup(getLaunchGroupId()).getMode()
 			);
 		}
 	}

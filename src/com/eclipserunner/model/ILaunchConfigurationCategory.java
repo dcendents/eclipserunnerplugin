@@ -18,19 +18,18 @@ public interface ILaunchConfigurationCategory {
 
 	void add(ILaunchConfiguration launchConfiguration);
 	void add(ILaunchConfigurationNode launchConfigurationNode);
-	
+
 	void remove(ILaunchConfiguration launchConfiguration);
 	void remove(ILaunchConfigurationNode launchConfigurationNode);
 
 	void addCategoryChangeListener(ICategoryChangeListener listener);
 	void removeCategoryChangeListener(ICategoryChangeListener listener);
 
-	boolean contains(ILaunchConfigurationNode launchConfigurationNode);
-	
 	void bookmarkAll();
 	void unbookmarkAll();
 
+	boolean contains(ILaunchConfigurationNode launchConfigurationNode);
 	boolean isEmpty();
 	int size();
-	
+
 }

@@ -56,7 +56,7 @@ public class RunnerViewDropListener extends ViewerDropAdapter {
 		if (currentTarget instanceof ILaunchConfigurationCategory && getCurrentLocation() == LOCATION_ON) {
 			for (ILaunchConfigurationNode launchConfiguration : launchConfigurationToMove) {
 
-				ILaunchConfigurationCategory sourceCategory = launchConfiguration.getParentCategory();
+				ILaunchConfigurationCategory sourceCategory = launchConfiguration.getLaunchConfigurationCategory();
 				ILaunchConfigurationCategory destinationCategory = (ILaunchConfigurationCategory) getCurrentTarget();
 
 				sourceCategory.remove(launchConfiguration);

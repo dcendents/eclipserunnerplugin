@@ -14,23 +14,17 @@ public class RunnerModelLaunchConfigurationListenerAdapter implements ILaunchCon
 	}
 
 	public void launchConfigurationAdded(ILaunchConfiguration newConfiguration) {
-		
-	// TODO LWA
-		
-//		// Find old configuration
-//		ILaunchConfiguration oldLaunchConfiguration = getLaunchManager().getMovedFrom(newConfiguration);
-//		ILaunchConfigurationCategory oldConfigurationCategory = null;
-//		if (oldLaunchConfiguration != null) {
-//			oldConfigurationCategory = runnerModel.getLaunchConfigurationCategory(oldLaunchConfiguration);
-//		}
-//
-//		// add new configuration to the same category if possible
-//		if (oldConfigurationCategory != null) {
-//			oldConfigurationCategory.add(newConfiguration);
-//		}
-//		else {
-			runnerModel.getUncategorizedCategory().add(newConfiguration);
-//		}
+		// TODO LWA verify
+		ILaunchConfiguration oldLaunchConfiguration = getLaunchManager().getMovedFrom(newConfiguration);
+		if (oldLaunchConfiguration != null) {
+			LaunchConfigurationNode launchConfigurationNode = (LaunchConfigurationNode) runnerModel.findLaunchConfigurationNodeBy(oldLaunchConfiguration);
+			if (launchConfigurationNode != null) {
+				launchConfigurationNode.setLaunchConfiguration(newConfiguration);
+				return;
+			}
+		}
+
+		runnerModel.getUncategorizedCategory().add(newConfiguration);
 	}
 
 	public void launchConfigurationChanged(ILaunchConfiguration configuration) {
@@ -43,8 +37,8 @@ public class RunnerModelLaunchConfigurationListenerAdapter implements ILaunchCon
 		runnerModel.removeLaunchConfiguration(configuration);
 	}
 
-	@SuppressWarnings("unused")
 	private ILaunchManager getLaunchManager() {
 		return DebugPlugin.getDefault().getLaunchManager();
 	}
+
 }

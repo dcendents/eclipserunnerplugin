@@ -1,5 +1,8 @@
 package com.eclipserunner.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.eclipse.debug.core.ILaunchConfiguration;
 
 /**
@@ -7,44 +10,11 @@ import org.eclipse.debug.core.ILaunchConfiguration;
  */
 public class LaunchConfigurationNode implements ILaunchConfigurationNode {
 
-	private ILaunchConfigurationCategory launchConfigurationCategory;
 	private ILaunchConfiguration launchConfiguration;
+	private ILaunchConfigurationCategory launchConfigurationCategory;
 	private boolean bookmarked;
-	
-	
-	@Override
-	public void bookmark() {
-		bookmarked = true;
-	}
 
-	@Override
-	public void unbookmark() {
-		bookmarked = false;
-	}
-	
-	@Override
-	public boolean isBookmarked() {
-		return bookmarked;
-	}
-	
-	@Override
-	public ILaunchConfiguration getLaunchConiguration() {
-		return getLaunchConfiguration();
-	}
-
-	@Override
-	public ILaunchConfigurationCategory getParentCategory() {
-		return getLaunchConfigurationCategory();
-	}
-
-	public void setLaunchConfigurationCategory(
-			ILaunchConfigurationCategory launchConfigurationCategory) {
-		this.launchConfigurationCategory = launchConfigurationCategory;
-	}
-
-	public ILaunchConfigurationCategory getLaunchConfigurationCategory() {
-		return launchConfigurationCategory;
-	}
+	private Set<ILaunchConfigurationChangeListener> launchConfigurationChangeListeners = new HashSet<ILaunchConfigurationChangeListener>();
 
 	public void setLaunchConfiguration(ILaunchConfiguration launchConfiguration) {
 		this.launchConfiguration = launchConfiguration;
@@ -52,6 +22,42 @@ public class LaunchConfigurationNode implements ILaunchConfigurationNode {
 
 	public ILaunchConfiguration getLaunchConfiguration() {
 		return launchConfiguration;
+	}
+
+	public void setLaunchConfigurationCategory(ILaunchConfigurationCategory launchConfigurationCategory) {
+		this.launchConfigurationCategory = launchConfigurationCategory;
+	}
+
+	public ILaunchConfigurationCategory getLaunchConfigurationCategory() {
+		return launchConfigurationCategory;
+	}
+
+	public void bookmark() {
+		bookmarked = true;
+		fireLaunchConfigurationChangedEvent();
+	}
+
+	public void unbookmark() {
+		bookmarked = false;
+		fireLaunchConfigurationChangedEvent();
+	}
+
+	public boolean isBookmarked() {
+		return bookmarked;
+	}
+
+	public void addLaunchConfigurationChangeListener(ILaunchConfigurationChangeListener listener) {
+		launchConfigurationChangeListeners.add(listener);
+	}
+
+	public void removeLaunchConfigurationChangeListener(ILaunchConfigurationChangeListener listener) {
+		launchConfigurationChangeListeners.remove(listener);
+	}
+
+	private void fireLaunchConfigurationChangedEvent() {
+		for (ILaunchConfigurationChangeListener launchConfigurationChangeListener : launchConfigurationChangeListeners) {
+			launchConfigurationChangeListener.launchConfigurationChanged();
+		}
 	}
 
 }

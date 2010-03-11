@@ -7,12 +7,14 @@ import org.eclipse.debug.core.ILaunchConfiguration;
  */
 public interface ILaunchConfigurationNode {
 
-	ILaunchConfiguration getLaunchConiguration();
-	ILaunchConfigurationCategory getParentCategory();
+	ILaunchConfiguration getLaunchConfiguration();
+	ILaunchConfigurationCategory getLaunchConfigurationCategory();
 
 	void bookmark();
 	void unbookmark();
-	
 	boolean isBookmarked();
-	
+
+	void addLaunchConfigurationChangeListener(ILaunchConfigurationChangeListener listener);
+	void removeLaunchConfigurationChangeListener(ILaunchConfigurationChangeListener listener);
+
 }

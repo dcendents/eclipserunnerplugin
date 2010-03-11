@@ -216,7 +216,7 @@ public class RunnerStateExternalizer {
 		categoryNode.setAttribute(NAME_ATTR, category.getName());
 		for (ILaunchConfigurationNode launchConfiguration : category.getLaunchConfigurationNodes()) {
 			categoryNode.appendChild(
-				createConfigurationElement(launchConfiguration.getLaunchConiguration(), document)
+					createConfigurationElement(launchConfiguration.getLaunchConfiguration(), document)
 			);
 		}
 		return categoryNode;

@@ -13,12 +13,12 @@ import com.eclipserunner.RunnerPlugin;
 /**
  * Launch configuration tree decorator.
  * 
- * @author vachacz
+ * @author vachacz, bary
  */
 public class LaunchTreeLabelProvider extends LabelProvider {
 
 	private static final String IMG_CATEGORY = "category.gif";
-	private static final String IMG_BOOKMARK = "pin.gif";
+	private static final String IMG_PIN      = "pin.gif";
 
 	private IDebugModelPresentation debugModelPresentation;
 
@@ -33,7 +33,7 @@ public class LaunchTreeLabelProvider extends LabelProvider {
 		}
 		else if (element instanceof ILaunchConfigurationNode) {
 			ILaunchConfigurationNode launchConfiguration = (ILaunchConfigurationNode) element;
-			return debugModelPresentation.getText(launchConfiguration.getLaunchConiguration());
+			return debugModelPresentation.getText(launchConfiguration.getLaunchConfiguration());
 		}
 		return debugModelPresentation.getText(element);
 	}
@@ -41,18 +41,14 @@ public class LaunchTreeLabelProvider extends LabelProvider {
 	@Override
 	public Image getImage(Object element) {
 		if (element instanceof ILaunchConfigurationCategory) {
-			// TODO private method
-			return RunnerPlugin.getDefault().getImageDescriptor(IMG_CATEGORY).createImage();
+			return getCategoryImage();
 		}
 		else if (element instanceof ILaunchConfigurationNode) {
 			ILaunchConfigurationNode launchConfiguration = (ILaunchConfigurationNode) element;
-			Image image = debugModelPresentation.getImage(launchConfiguration.getLaunchConiguration());
-			
+			Image image = debugModelPresentation.getImage(launchConfiguration.getLaunchConfiguration());
+
 			if (launchConfiguration.isBookmarked()) {
-				// TODO private method return overlyImage(image, IMG_DFSDFSDF)
-				ImageDescriptor bookmarkDescriptor = RunnerPlugin.getDefault().getImageDescriptor(IMG_BOOKMARK);
-				DecorationOverlayIcon bookmarkedImage = new  DecorationOverlayIcon(image, bookmarkDescriptor, IDecoration.TOP_RIGHT);
-				return bookmarkedImage.createImage();
+				return getDecoratedImage(image, IMG_PIN);
 			}
 
 			return image;
@@ -60,6 +56,16 @@ public class LaunchTreeLabelProvider extends LabelProvider {
 		else {
 			return ImageDescriptor.getMissingImageDescriptor().createImage();
 		}
+	}
+
+	private Image getCategoryImage() {
+		return RunnerPlugin.getDefault().getImageDescriptor(IMG_CATEGORY).createImage();
+	}
+
+	private Image getDecoratedImage(Image image, String decoration) {
+		ImageDescriptor decorationDescriptor = RunnerPlugin.getDefault().getImageDescriptor(decoration);
+		DecorationOverlayIcon decoratedImageDescriptor = new DecorationOverlayIcon(image, decorationDescriptor, IDecoration.TOP_RIGHT);
+		return decoratedImageDescriptor.createImage();
 	}
 
 }

@@ -29,7 +29,7 @@ public class RunnerModelTreeAdapter implements ITreeContentProvider {
 
 	public Object getParent(Object object) {
 		if (object instanceof ILaunchConfigurationNode) {
-			return ((ILaunchConfigurationNode) object).getParentCategory();
+			return ((ILaunchConfigurationNode) object).getLaunchConfigurationCategory();
 		}
 		return null;
 	}

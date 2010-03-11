@@ -10,7 +10,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
  * 
  * @author vachacz
  */
-public class LaunchConfigurationCategory implements ILaunchConfigurationCategory {
+public class LaunchConfigurationCategory implements ILaunchConfigurationCategory, ILaunchConfigurationChangeListener {
 
 	private String name;
 	private Set<ILaunchConfigurationNode> launchConfigurationNodes = new HashSet<ILaunchConfigurationNode>();
@@ -29,21 +29,30 @@ public class LaunchConfigurationCategory implements ILaunchConfigurationCategory
 		return launchConfigurationNodes;
 	}
 
-	@Override
 	public void add(ILaunchConfiguration newConfiguration) {
-		
 		// TODO LWA builder
 		LaunchConfigurationNode node = new LaunchConfigurationNode();
+		node.addLaunchConfigurationChangeListener(this);
 		node.setLaunchConfiguration(newConfiguration);
 		node.setLaunchConfigurationCategory(this);
 		node.unbookmark();
-		
+
 		launchConfigurationNodes.add(node);
 	}
-	
+
 	public void add(ILaunchConfigurationNode launchConfigurationNode) {
+		launchConfigurationNode.addLaunchConfigurationChangeListener(this);
 		launchConfigurationNodes.add(launchConfigurationNode);
 		fireCategoryChangedEvent();
+	}
+
+	public void remove(ILaunchConfiguration configuration) {
+		// TODO LWA smart equals + tests
+		for (ILaunchConfigurationNode node : launchConfigurationNodes) {
+			if (node.getLaunchConfiguration().equals(configuration)) {
+				launchConfigurationNodes.remove(node);
+			}
+		}
 	}
 
 	public void remove(ILaunchConfigurationNode launchConfiguration) {
@@ -91,14 +100,8 @@ public class LaunchConfigurationCategory implements ILaunchConfigurationCategory
 		}
 	}
 
-	@Override
-	public void remove(ILaunchConfiguration configuration) {
-		// TODO LWA smart equals + tests
-		for (ILaunchConfigurationNode node : launchConfigurationNodes) {
-			if (node.getLaunchConiguration().equals(configuration)) {
-				launchConfigurationNodes.remove(node);
-			}
-		}		
+	public void launchConfigurationChanged() {
+		fireCategoryChangedEvent();
 	}
 
 }

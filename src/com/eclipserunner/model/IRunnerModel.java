@@ -21,4 +21,6 @@ public interface IRunnerModel {
 	ILaunchConfigurationCategory getUncategorizedCategory();
 	void removeLaunchConfiguration(ILaunchConfiguration configuration);
 
+	ILaunchConfigurationNode findLaunchConfigurationNodeBy(ILaunchConfiguration configuration);
+
 }
