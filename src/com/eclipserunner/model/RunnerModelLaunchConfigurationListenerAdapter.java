@@ -5,6 +5,12 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationListener;
 import org.eclipse.debug.core.ILaunchManager;
 
+/**
+ * Adapter listening for Launch manager event.
+ * 
+ * @author bary
+ *
+ */
 public class RunnerModelLaunchConfigurationListenerAdapter implements ILaunchConfigurationListener {
 
 	private IRunnerModel runnerModel;

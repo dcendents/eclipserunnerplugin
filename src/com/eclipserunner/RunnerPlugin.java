@@ -14,13 +14,16 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfigurationListener;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 import com.eclipserunner.model.RunnerModel;
+import com.eclipserunner.model.RunnerModelJdtSelectionListenerAdapter;
 import com.eclipserunner.model.RunnerModelLaunchConfigurationListenerAdapter;
 
 /**
@@ -28,23 +31,25 @@ import com.eclipserunner.model.RunnerModelLaunchConfigurationListenerAdapter;
  * 
  * @author bary, vachacz
  */
+@SuppressWarnings("restriction")
 public class RunnerPlugin extends AbstractUIPlugin {
 
 	public static final String PLUGIN_ID         = "com.eclipserunner.plugin";
 	public static final String PLUGIN_STATE_FILE = "runner";
+	public static final String ICON_PATH = "icons/";
 
-	ILaunchConfigurationListener launchConfigurationListener;
 	private static RunnerPlugin plugin;
 
-	public static final String ICON_PATH = "icons/";
+	private ILaunchConfigurationListener launchConfigurationListener;
+	private ISelectionListener jdtSelectionListener;
 
 	private final Map<String, ImageDescriptor> imageDescriptors = new HashMap<String, ImageDescriptor>(13);
 
-	/** 
+	/**
 	 * Callback object responsible for saving the uncommitted state of plugin.
 	 */
 	private class RunnerSaveParticipant implements ISaveParticipant {
-		
+
 		public void prepareToSave(ISaveContext context)	throws CoreException {
 			// dont care
 		}
@@ -76,10 +81,15 @@ public class RunnerPlugin extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		launchConfigurationListener = new RunnerModelLaunchConfigurationListenerAdapter(RunnerModel.getDefault());
 
-		// register model as lunch configuration change listener
+		launchConfigurationListener = new RunnerModelLaunchConfigurationListenerAdapter(RunnerModel.getDefault());
+		jdtSelectionListener = new RunnerModelJdtSelectionListenerAdapter(RunnerModel.getDefault());
+
+		// register model as listener for launch manager configuration changes
 		getLaunchManager().addLaunchConfigurationListener(launchConfigurationListener);
+
+		// register model as listener for JDT selection changes
+		JavaPlugin.getActivePage().addSelectionListener(jdtSelectionListener);
 
 		ISavedState savedState = ResourcesPlugin.getWorkspace().addSaveParticipant(this, new RunnerSaveParticipant());
 		restoreSavedState(savedState);
@@ -91,6 +101,7 @@ public class RunnerPlugin extends AbstractUIPlugin {
 		super.stop(context);
 
 		getLaunchManager().removeLaunchConfigurationListener(launchConfigurationListener);
+		JavaPlugin.getActivePage().removeSelectionListener(jdtSelectionListener);
 
 		if (ResourcesPlugin.getWorkspace() != null) {
 			ResourcesPlugin.getWorkspace().removeSaveParticipant(this);
@@ -148,7 +159,7 @@ public class RunnerPlugin extends AbstractUIPlugin {
 			RunnerStateExternalizer.readDefaultState();
 		}
 	}
-	
+
 	private ILaunchManager getLaunchManager() {
 		return DebugPlugin.getDefault().getLaunchManager();
 	}
