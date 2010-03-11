@@ -50,7 +50,7 @@ public final class LaunchActionBuilder {
 	private static final String IMG_HELP                 = "help.gif";
 	private static final String IMG_NEW_CATEGORY         = "category-new.gif";
 	private static final String IMG_EXPAND_ALL           = "expandall.gif";
-	private static final String IMG_BOOKMARK             = "bookmark.gif";
+	private static final String IMG_BOOKMARK             = "bookmark_star.gif";
 	private static final String IMG_UNBOOKMARK           = "unbookmark.gif";
 
 	private ILaunchConfigurationSelection launchConfigurationSelection;

@@ -17,8 +17,8 @@ import com.eclipserunner.RunnerPlugin;
  */
 public class LaunchTreeLabelProvider extends LabelProvider {
 
-	private static final String IMG_CATEGORY = "category.gif";
-	private static final String IMG_PIN      = "pin.gif";
+	private static final String IMG_CATEGORY   = "category.gif";
+	private static final String IMG_DECORATION = "star_min.gif";
 
 	private IDebugModelPresentation debugModelPresentation;
 
@@ -48,7 +48,7 @@ public class LaunchTreeLabelProvider extends LabelProvider {
 			Image image = debugModelPresentation.getImage(launchConfiguration.getLaunchConfiguration());
 
 			if (launchConfiguration.isBookmarked()) {
-				return getDecoratedImage(image, IMG_PIN);
+				return getDecoratedImage(image, IMG_DECORATION);
 			}
 
 			return image;
