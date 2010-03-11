@@ -21,7 +21,8 @@ public class RunnerModelJdtSelectionListenerAdapter implements ISelectionListene
 
 	// TODO BARY
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-		System.out.println("TODO: handle JDT selection change");
+		System.out.println("TODO: handle JDT selection change part:" + part.getClass().getSimpleName() + ", selection: " + selection.getClass().getSimpleName());
+
 	}
 
 }

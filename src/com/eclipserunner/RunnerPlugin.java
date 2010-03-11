@@ -14,10 +14,12 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfigurationListener;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -30,7 +32,7 @@ import com.eclipserunner.model.RunnerModelLaunchConfigurationListenerAdapter;
  * 
  * @author bary, vachacz
  */
-//@SuppressWarnings("restriction")
+@SuppressWarnings("restriction")
 public class RunnerPlugin extends AbstractUIPlugin {
 
 	public static final String PLUGIN_ID         = "com.eclipserunner.plugin";
@@ -39,8 +41,9 @@ public class RunnerPlugin extends AbstractUIPlugin {
 
 	private static RunnerPlugin plugin;
 
-	ILaunchConfigurationListener launchConfigurationListener;
-	ISelectionListener jdtSelectionListener;
+	private IWorkbenchPage workbenchPage;
+	private ILaunchConfigurationListener launchConfigurationListener;
+	private ISelectionListener jdtSelectionListener;
 
 	private final Map<String, ImageDescriptor> imageDescriptors = new HashMap<String, ImageDescriptor>(13);
 
@@ -88,7 +91,9 @@ public class RunnerPlugin extends AbstractUIPlugin {
 		getLaunchManager().addLaunchConfigurationListener(launchConfigurationListener);
 
 		// register model as listener for JDT selection changes
-		// JavaPlugin.getActivePage().addSelectionListener(jdtSelectionListener);
+		// we need to save workbenchPage or else we get NullPointer in stop() method when invoking JavaPlugin.getActivePage()
+		workbenchPage = JavaPlugin.getActivePage();
+		workbenchPage.addSelectionListener(jdtSelectionListener);
 
 		ISavedState savedState = ResourcesPlugin.getWorkspace().addSaveParticipant(this, new RunnerSaveParticipant());
 		restoreSavedState(savedState);
@@ -100,7 +105,7 @@ public class RunnerPlugin extends AbstractUIPlugin {
 		super.stop(context);
 
 		getLaunchManager().removeLaunchConfigurationListener(launchConfigurationListener);
-		// JavaPlugin.getActivePage().removeSelectionListener(jdtSelectionListener);
+		workbenchPage.removeSelectionListener(jdtSelectionListener);
 
 		if (ResourcesPlugin.getWorkspace() != null) {
 			ResourcesPlugin.getWorkspace().removeSaveParticipant(this);
