@@ -208,6 +208,12 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	// do we plan some restrictions when user selects multiple items or selects simultaneously catagory and configuration item?
 	public void menuAboutToShow(IMenuManager manager) {
 
+		setupMenuItems(manager);
+		setupActionEnablement();
+		
+	}
+
+	private void setupMenuItems(IMenuManager manager) {
 		manager.add(addNewCategoryAction);
 
 		if (isLaunchConfigurationNodeSelected()) {
@@ -227,10 +233,11 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		manager.add(new Separator());
 		manager.add(showRunConfigurationsDialogAction);
 		manager.add(showDebugConfigurationsDialogAction);
-
-
+	}
+	
+	private void setupActionEnablement() {
 		if (isLaunchConfigurationCategorySelected() &&
-				getSelectedLaunchConfigurationCategory() == RunnerModel.getDefault().getUncategorizedCategory()) {
+				getSelectedLaunchConfigurationCategory() == runnerModel.getUncategorizedCategory()) {
 			renameAction.setEnabled(false);
 			removeAction.setEnabled(false);
 		}

@@ -47,15 +47,6 @@ public class RunnerModel implements IRunnerModel, ICategoryChangeListener {
 		// fireModelChangedEvent() not needed because category change triggers an event
 	}
 
-	public ILaunchConfigurationCategory getLaunchConfigurationCategory(ILaunchConfigurationNode launchConfiguration) {
-		for (ILaunchConfigurationCategory category : launchConfigurationCategories) {
-			if (category.contains(launchConfiguration)) {
-				return category;
-			}
-		}
-		return null;
-	}
-
 	public ILaunchConfigurationCategory addLaunchConfigurationCategory(String name) {
 		ILaunchConfigurationCategory category = new LaunchConfigurationCategory();
 		category.setName(name);
@@ -124,6 +115,7 @@ public class RunnerModel implements IRunnerModel, ICategoryChangeListener {
 
 	public ILaunchConfigurationNode findLaunchConfigurationNodeBy(ILaunchConfiguration configuration) {
 		for (ILaunchConfigurationCategory launchConfigurationCategory : launchConfigurationCategories) {
+			// TODO LWA BARY: maybe category.contains() could check also ILaunchConfigs ??
 			for (ILaunchConfigurationNode launchConfigurationNode : launchConfigurationCategory.getLaunchConfigurationNodes()) {
 				if (launchConfigurationNode.getLaunchConfiguration().equals(configuration)) {
 					return launchConfigurationNode;

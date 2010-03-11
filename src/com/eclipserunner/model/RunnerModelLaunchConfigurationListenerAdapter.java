@@ -17,6 +17,10 @@ public class RunnerModelLaunchConfigurationListenerAdapter implements ILaunchCon
 		// TODO LWA verify
 		ILaunchConfiguration oldLaunchConfiguration = getLaunchManager().getMovedFrom(newConfiguration);
 		if (oldLaunchConfiguration != null) {
+			
+			// TODO BARY: verify this
+			// better: runnerModel.remove(oldLaunchConfiguration);
+			
 			LaunchConfigurationNode launchConfigurationNode = (LaunchConfigurationNode) runnerModel.findLaunchConfigurationNodeBy(oldLaunchConfiguration);
 			if (launchConfigurationNode != null) {
 				launchConfigurationNode.setLaunchConfiguration(newConfiguration);

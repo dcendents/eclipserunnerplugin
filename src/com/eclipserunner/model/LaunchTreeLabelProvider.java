@@ -41,31 +41,27 @@ public class LaunchTreeLabelProvider extends LabelProvider {
 	@Override
 	public Image getImage(Object element) {
 		if (element instanceof ILaunchConfigurationCategory) {
-			return getCategoryImage();
+			return createImage(IMG_CATEGORY);
 		}
 		else if (element instanceof ILaunchConfigurationNode) {
 			ILaunchConfigurationNode launchConfiguration = (ILaunchConfigurationNode) element;
 			Image image = debugModelPresentation.getImage(launchConfiguration.getLaunchConfiguration());
 
 			if (launchConfiguration.isBookmarked()) {
-				return getDecoratedImage(image, IMG_DECORATION);
+				return overlyImage(image, IMG_DECORATION);
 			}
-
 			return image;
 		}
-		else {
-			return ImageDescriptor.getMissingImageDescriptor().createImage();
-		}
+		return ImageDescriptor.getMissingImageDescriptor().createImage();
 	}
 
-	private Image getCategoryImage() {
-		return RunnerPlugin.getDefault().getImageDescriptor(IMG_CATEGORY).createImage();
+	private Image createImage(String image) {
+		return RunnerPlugin.getDefault().getImageDescriptor(image).createImage();
 	}
 
-	private Image getDecoratedImage(Image image, String decoration) {
+	private Image overlyImage(Image image, String decoration) {
 		ImageDescriptor decorationDescriptor = RunnerPlugin.getDefault().getImageDescriptor(decoration);
-		DecorationOverlayIcon decoratedImageDescriptor = new DecorationOverlayIcon(image, decorationDescriptor, IDecoration.TOP_RIGHT);
-		return decoratedImageDescriptor.createImage();
+		return new DecorationOverlayIcon(image, decorationDescriptor, IDecoration.TOP_RIGHT).createImage();
 	}
 
 }

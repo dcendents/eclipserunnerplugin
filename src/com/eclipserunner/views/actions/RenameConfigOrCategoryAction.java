@@ -1,14 +1,12 @@
 package com.eclipserunner.views.actions;
 
 import static com.eclipserunner.Messages.Message_error;
-import static com.eclipserunner.Messages.Message_errorLaunchConfigurationAlreadyExists;
 import static com.eclipserunner.Messages.Message_rename;
 import static com.eclipserunner.Messages.Message_renameCategory;
 import static com.eclipserunner.Messages.Message_renameLaunchConfiguration;
 import static com.eclipserunner.RunnerPlugin.getRunnerShell;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.InputDialog;
@@ -20,7 +18,7 @@ import com.eclipserunner.model.ILaunchConfigurationNode;
 import com.eclipserunner.model.ILaunchConfigurationSelection;
 import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.model.RunnerModel;
-import com.eclipserunner.views.actions.validator.NotEmptyValidator;
+import com.eclipserunner.views.actions.validator.LaunchConfigurationNameValidator;
 
 public class RenameConfigOrCategoryAction extends Action {
 
@@ -61,18 +59,9 @@ public class RenameConfigOrCategoryAction extends Action {
 		try {
 			InputDialog dialog = openRenameDialog(Message_rename, Message_renameLaunchConfiguration, node.getLaunchConfiguration().getName());
 			if (dialog.getReturnCode() == Window.OK) {
-
-				String newName = dialog.getValue().trim();
-				// TODO LWA this should be in validator ...
-				if (isExistingLaunchConfigurationName(newName)) {
-					MessageDialog.openError(
-							getRunnerShell(), Message_error, Message_errorLaunchConfigurationAlreadyExists
-					);
-				} else {
-					ILaunchConfigurationWorkingCopy workingCopy = node.getLaunchConfiguration().getWorkingCopy();
-					workingCopy.rename(newName);
-					workingCopy.doSave();
-				}
+				ILaunchConfigurationWorkingCopy workingCopy = node.getLaunchConfiguration().getWorkingCopy();
+				workingCopy.rename(dialog.getValue().trim());
+				workingCopy.doSave();
 			}
 		} catch (CoreException e) {
 			MessageDialog.openError(getRunnerShell(), Message_error, e.getMessage());
@@ -80,12 +69,10 @@ public class RenameConfigOrCategoryAction extends Action {
 	}
 
 	private InputDialog openRenameDialog(String title, String message, String initialValue) {
-		InputDialog dialog = new InputDialog(getRunnerShell(), title, message, initialValue, new NotEmptyValidator());
+		InputDialog dialog = new InputDialog(getRunnerShell(), title, message, initialValue, new LaunchConfigurationNameValidator());
 		dialog.open();
 		return dialog;
 	}
 
-	private boolean isExistingLaunchConfigurationName(String name) throws CoreException {
-		return DebugPlugin.getDefault().getLaunchManager().isExistingLaunchConfigurationName(name);
-	}
+
 }

@@ -47,7 +47,6 @@ public class LaunchConfigurationCategory implements ILaunchConfigurationCategory
 	}
 
 	public void remove(ILaunchConfiguration configuration) {
-		// TODO LWA smart equals + tests
 		for (ILaunchConfigurationNode node : launchConfigurationNodes) {
 			if (node.getLaunchConfiguration().equals(configuration)) {
 				launchConfigurationNodes.remove(node);
@@ -55,17 +54,9 @@ public class LaunchConfigurationCategory implements ILaunchConfigurationCategory
 		}
 	}
 
-	public void remove(ILaunchConfigurationNode launchConfiguration) {
-		launchConfigurationNodes.remove(launchConfiguration);
+	public void remove(ILaunchConfigurationNode launchConfigurationNode) {
+		launchConfigurationNodes.remove(launchConfigurationNode);
 		fireCategoryChangedEvent();
-	}
-
-	public void addCategoryChangeListener(ICategoryChangeListener listener) {
-		categoryChangeListeners.add(listener);
-	}
-
-	public void removeCategoryChangeListener(ICategoryChangeListener listener) {
-		categoryChangeListeners.remove(listener);
 	}
 
 	public void bookmarkAll() {
@@ -94,6 +85,14 @@ public class LaunchConfigurationCategory implements ILaunchConfigurationCategory
 		return launchConfigurationNodes.size();
 	}
 
+	public void addCategoryChangeListener(ICategoryChangeListener listener) {
+		categoryChangeListeners.add(listener);
+	}
+
+	public void removeCategoryChangeListener(ICategoryChangeListener listener) {
+		categoryChangeListeners.remove(listener);
+	}
+	
 	private void fireCategoryChangedEvent() {
 		for (ICategoryChangeListener categoryChangeListener : categoryChangeListeners) {
 			categoryChangeListener.categoryChanged();

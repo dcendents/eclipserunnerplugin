@@ -22,6 +22,7 @@ import com.eclipserunner.model.ILaunchConfigurationNode;
  */
 public class RunnerViewDropListener extends ViewerDropAdapter {
 
+	// TODO BARY : what is "localTransfer"? we could change name to something better
 	private boolean localTransfer;
 
 	public RunnerViewDropListener(Viewer viewer) {
