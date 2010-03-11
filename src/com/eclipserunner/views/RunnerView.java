@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.part.ViewPart;
@@ -36,6 +37,7 @@ import com.eclipserunner.model.IModelChangeListener;
 import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.model.LaunchTreeLabelProvider;
 import com.eclipserunner.model.RunnerModel;
+import com.eclipserunner.model.RunnerModelJdtSelectionListenerAdapter;
 import com.eclipserunner.model.RunnerModelTreeWithTypesAdapter;
 import com.eclipserunner.ui.dnd.RunnerViewDragListener;
 import com.eclipserunner.ui.dnd.RunnerViewDropListener;
@@ -54,6 +56,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	private TreeViewer viewer;
 
 	private ILaunchConfigurationListener launchConfigurationListener;
+	private ISelectionListener selectionListener;
 
 	private Action showRunConfigurationsDialogAction;
 	private Action showDebugConfigurationsDialogAction;
@@ -73,10 +76,17 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	private Action removeAction;
 	private Action aboutAction;
 
+	// we are listening only from this selection providers
+	private final String[] selectonProviders = new String[] {
+			"org.eclipse.jdt.ui.PackageExplorer",
+			"org.eclipse.ui.navigator.ProjectExplorer"
+	};
+
 	public RunnerView() {
 		runnerModel = RunnerModel.getDefault();
 		// treeContentProvider = new RunnerModelTreeAdapter(runnerModel, this);
 		treeContentProvider = new RunnerModelTreeWithTypesAdapter(runnerModel, this);
+		selectionListener = new RunnerModelJdtSelectionListenerAdapter(runnerModel, this);
 	}
 
 	@Override
@@ -91,6 +101,8 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		setupActionBars();
 
 		addRunConfigurationListener();
+
+		initializeSelectionListeners();
 	}
 
 	@Override
@@ -99,6 +111,8 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 
 		runnerModel.removeModelChangeListener(this);
 		getLaunchManager().removeLaunchConfigurationListener(launchConfigurationListener);
+
+		disposeSelectionListeners();
 	}
 
 	private void initializeModel() {
@@ -118,6 +132,21 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		viewer.setSorter(new ViewerSorter());
 		viewer.addDoubleClickListener(this);
 		viewer.setInput(getViewSite());
+
+		// we're cooperative and also provide our selection
+		getSite().setSelectionProvider(viewer);
+	}
+
+	private void initializeSelectionListeners() {
+		for (String partId : selectonProviders) {
+			getSite().getWorkbenchWindow().getSelectionService().addSelectionListener(partId, selectionListener);
+		}
+	}
+
+	private void disposeSelectionListeners() {
+		for (String partId : selectonProviders) {
+			getSite().getWorkbenchWindow().getSelectionService().removeSelectionListener(partId, selectionListener);
+		}
 	}
 
 	private void initDragAndDrop() {
@@ -211,7 +240,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 
 		setupMenuItems(manager);
 		setupActionEnablement();
-		
+
 	}
 
 	private void setupMenuItems(IMenuManager manager) {
@@ -235,7 +264,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		manager.add(showRunConfigurationsDialogAction);
 		manager.add(showDebugConfigurationsDialogAction);
 	}
-	
+
 	private void setupActionEnablement() {
 		if (isLaunchConfigurationCategorySelected() &&
 				getSelectedLaunchConfigurationCategory() == runnerModel.getUncategorizedCategory()) {

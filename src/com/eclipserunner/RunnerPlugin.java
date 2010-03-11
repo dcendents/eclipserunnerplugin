@@ -14,17 +14,13 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfigurationListener;
 import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.ISelectionListener;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 import com.eclipserunner.model.RunnerModel;
-import com.eclipserunner.model.RunnerModelJdtSelectionListenerAdapter;
 import com.eclipserunner.model.RunnerModelLaunchConfigurationListenerAdapter;
 
 /**
@@ -32,7 +28,6 @@ import com.eclipserunner.model.RunnerModelLaunchConfigurationListenerAdapter;
  * 
  * @author bary, vachacz
  */
-@SuppressWarnings("restriction")
 public class RunnerPlugin extends AbstractUIPlugin {
 
 	public static final String PLUGIN_ID         = "com.eclipserunner.plugin";
@@ -41,9 +36,7 @@ public class RunnerPlugin extends AbstractUIPlugin {
 
 	private static RunnerPlugin plugin;
 
-	private IWorkbenchPage workbenchPage;
 	private ILaunchConfigurationListener launchConfigurationListener;
-	private ISelectionListener jdtSelectionListener;
 
 	private final Map<String, ImageDescriptor> imageDescriptors = new HashMap<String, ImageDescriptor>(13);
 
@@ -85,15 +78,9 @@ public class RunnerPlugin extends AbstractUIPlugin {
 		plugin = this;
 
 		launchConfigurationListener = new RunnerModelLaunchConfigurationListenerAdapter(RunnerModel.getDefault());
-		jdtSelectionListener = new RunnerModelJdtSelectionListenerAdapter(RunnerModel.getDefault());
 
 		// register model as listener for launch manager configuration changes
 		getLaunchManager().addLaunchConfigurationListener(launchConfigurationListener);
-
-		// register model as listener for JDT selection changes
-		// we need to save workbenchPage or else we get NullPointer in stop() method when invoking JavaPlugin.getActivePage()
-		workbenchPage = JavaPlugin.getActivePage();
-		workbenchPage.addSelectionListener(jdtSelectionListener);
 
 		ISavedState savedState = ResourcesPlugin.getWorkspace().addSaveParticipant(this, new RunnerSaveParticipant());
 		restoreSavedState(savedState);
@@ -105,7 +92,6 @@ public class RunnerPlugin extends AbstractUIPlugin {
 		super.stop(context);
 
 		getLaunchManager().removeLaunchConfigurationListener(launchConfigurationListener);
-		workbenchPage.removeSelectionListener(jdtSelectionListener);
 
 		if (ResourcesPlugin.getWorkspace() != null) {
 			ResourcesPlugin.getWorkspace().removeSaveParticipant(this);
