@@ -37,6 +37,7 @@ import com.eclipserunner.model.IModelChangeListener;
 import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.model.adapters.RunnerModelJdtSelectionListenerAdapter;
 import com.eclipserunner.model.adapters.RunnerModelLaunchConfigurationListenerAdapter;
+import com.eclipserunner.model.adapters.RunnerModelTreeAdapter;
 import com.eclipserunner.model.adapters.RunnerModelTreeWithTypesAdapter;
 import com.eclipserunner.model.impl.LaunchTreeLabelProvider;
 import com.eclipserunner.model.impl.RunnerModel;
@@ -49,7 +50,7 @@ import com.eclipserunner.views.actions.LaunchActionBuilder;
  * 
  * @author vachacz, bary
  */
-public class RunnerView extends ViewPart implements ILaunchConfigurationSelection, IMenuListener, IDoubleClickListener, IModelChangeListener {
+public class RunnerView extends ViewPart implements ILaunchConfigurationSelection, IMenuListener, IDoubleClickListener, IModelChangeListener, IRunnerView {
 
 	private ITreeContentProvider treeContentProvider;
 	private IRunnerModel runnerModel;
@@ -77,6 +78,9 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	private Action renameAction;
 	private Action removeAction;
 	private Action aboutAction;
+	
+	private Action toggleFlatModeAction;
+	private Action toggleTypeModeAction;
 
 	// we are listening only from this selection providers
 	private final String[] selectonProviders = new String[] {
@@ -186,7 +190,8 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	private void setupLaunchActions() {
 		LaunchActionBuilder builder = LaunchActionBuilder.newInstance()
 		.withLaunchConfigurationSelection(this)
-		.withRunnerModel(runnerModel);
+		.withRunnerModel(runnerModel)
+		.withRunnerView(this);
 
 		showRunConfigurationsDialogAction   = builder.createShowRunConfigurationDialogAction();
 		showDebugConfigurationsDialogAction = builder.createShowDebugConfigurationDialogAction();
@@ -200,6 +205,8 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		renameAction                        = builder.createRenameAction();
 		removeAction                        = builder.createRemoveAction();
 		aboutAction                         = builder.createAboutAction();
+		toggleFlatModeAction                = builder.createToggleFlatModeAction();
+		toggleTypeModeAction                = builder.createToggleTypeModeAction();
 	}
 
 	private void setupContextMenu() {
@@ -221,6 +228,9 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	private void setupLocalPullDown(IMenuManager manager) {
 		manager.add(addNewCategoryAction);
 		manager.add(new Separator());
+		manager.add(toggleFlatModeAction);
+		manager.add(toggleTypeModeAction);
+		manager.add(new Separator());
 		manager.add(showRunConfigurationsDialogAction);
 		manager.add(showDebugConfigurationsDialogAction);
 		manager.add(new Separator());
@@ -232,9 +242,6 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		manager.add(new Separator());
 		manager.add(collapseAllAction);
 		manager.add(expandAllAction);
-		manager.add(new Separator());
-		manager.add(showRunConfigurationsDialogAction);
-		manager.add(showDebugConfigurationsDialogAction);
 	}
 
 	// TODO LWA BARY: define which actions should be visible/enable for category and configuration,
@@ -353,6 +360,21 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 
 	private ILaunchManager getLaunchManager() {
 		return DebugPlugin.getDefault().getLaunchManager();
+	}
+	
+	// TODO LWA delete local field: treeContentPrivider
+	public void setTreeMode(TreeMode mode) {
+		if (mode.isFlat()) {
+			toggleFlatModeAction.setChecked(true);
+			toggleTypeModeAction.setChecked(false);
+			treeContentProvider = new RunnerModelTreeAdapter(runnerModel, this);
+		} else {
+			toggleFlatModeAction.setChecked(false);
+			toggleTypeModeAction.setChecked(true);
+			treeContentProvider = new RunnerModelTreeWithTypesAdapter(runnerModel, this);
+		}
+		viewer.setContentProvider(treeContentProvider);
+		getViewer().refresh();
 	}
 
 }

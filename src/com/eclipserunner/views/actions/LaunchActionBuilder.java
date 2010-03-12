@@ -35,6 +35,8 @@ import org.eclipse.ui.PlatformUI;
 import com.eclipserunner.RunnerPlugin;
 import com.eclipserunner.model.ILaunchConfigurationSelection;
 import com.eclipserunner.model.IRunnerModel;
+import com.eclipserunner.views.IRunnerView;
+import com.eclipserunner.views.TreeMode;
 
 /**
  * Builder creates Actions related to test launching
@@ -52,9 +54,13 @@ public final class LaunchActionBuilder {
 	private static final String IMG_EXPAND_ALL           = "expandall.gif";
 	private static final String IMG_BOOKMARK             = "bookmark_star.gif";
 	private static final String IMG_UNBOOKMARK           = "unbookmark.gif";
+	private static final String IMG_FLAT_TREE            = "flat.gif";
+	private static final String IMG_TYPE_TREE            = "hierarchical.gif";
+
 
 	private ILaunchConfigurationSelection launchConfigurationSelection;
 	private IRunnerModel runnerModel;
+	private IRunnerView runnerView;
 
 	private LaunchActionBuilder() {
 		// use factory method instead
@@ -74,6 +80,11 @@ public final class LaunchActionBuilder {
 		return this;
 	}
 
+	public LaunchActionBuilder withRunnerView(IRunnerView runnerView) {
+		this.runnerView = runnerView;
+		return this;
+	}
+	
 	public Action createShowRunConfigurationDialogAction() {
 		Action action = new ShowLaunchConfigurationsDialogAction(launchConfigurationSelection, ID_RUN_LAUNCH_GROUP);
 		configureAction(action, Message_openRunConfigurationsDialog, Message_openRunConfigurationsDialogTooltip, IMG_RUN_CONFIGURATIONS);
@@ -137,6 +148,20 @@ public final class LaunchActionBuilder {
 	public Action createUnbookmarkAction() {
 		Action action = new UnbookmarkLaunchAction(launchConfigurationSelection);
 		configureAction(action, Message_unbookmark, Message_unbookmarkTooltip, IMG_UNBOOKMARK);
+		return action;
+	}
+	
+	public Action createToggleFlatModeAction() {
+		Action action = new ToggleTreeModeAction(runnerView, TreeMode.FLAT_MODE, false);
+		// TODO LWA
+		configureAction(action, "Flat tree", Message_unbookmarkTooltip, IMG_FLAT_TREE);
+		return action;
+	}
+	
+	public Action createToggleTypeModeAction() {
+		Action action = new ToggleTreeModeAction(runnerView, TreeMode.TYPE_MODE, true);
+		// TODO LWA
+		configureAction(action, "Tree with types", Message_unbookmarkTooltip, IMG_TYPE_TREE);
 		return action;
 	}
 
