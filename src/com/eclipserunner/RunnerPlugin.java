@@ -11,17 +11,11 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.debug.core.ILaunchConfigurationListener;
-import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
-
-import com.eclipserunner.model.adapters.RunnerModelLaunchConfigurationListenerAdapter;
-import com.eclipserunner.model.impl.RunnerModel;
 
 /**
  * Eclipse runner plugin activator class.
@@ -32,11 +26,9 @@ public class RunnerPlugin extends AbstractUIPlugin {
 
 	public static final String PLUGIN_ID         = "com.eclipserunner.plugin";
 	public static final String PLUGIN_STATE_FILE = "runner";
-	public static final String ICON_PATH = "icons/";
+	public static final String ICON_PATH         = "icons/";
 
 	private static RunnerPlugin plugin;
-
-	private ILaunchConfigurationListener launchConfigurationListener;
 
 	private final Map<String, ImageDescriptor> imageDescriptors = new HashMap<String, ImageDescriptor>(13);
 
@@ -77,11 +69,6 @@ public class RunnerPlugin extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 
-		launchConfigurationListener = new RunnerModelLaunchConfigurationListenerAdapter(RunnerModel.getDefault());
-
-		// register model as listener for launch manager configuration changes
-		getLaunchManager().addLaunchConfigurationListener(launchConfigurationListener);
-
 		ISavedState savedState = ResourcesPlugin.getWorkspace().addSaveParticipant(this, new RunnerSaveParticipant());
 		restoreSavedState(savedState);
 	}
@@ -90,8 +77,6 @@ public class RunnerPlugin extends AbstractUIPlugin {
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
-
-		getLaunchManager().removeLaunchConfigurationListener(launchConfigurationListener);
 
 		if (ResourcesPlugin.getWorkspace() != null) {
 			ResourcesPlugin.getWorkspace().removeSaveParticipant(this);
@@ -148,10 +133,6 @@ public class RunnerPlugin extends AbstractUIPlugin {
 		else {
 			RunnerStateExternalizer.readDefaultState();
 		}
-	}
-
-	private ILaunchManager getLaunchManager() {
-		return DebugPlugin.getDefault().getLaunchManager();
 	}
 
 }
