@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.eclipse.debug.core.ILaunchConfiguration;
 
+import com.eclipserunner.model.IActionEnablement;
 import com.eclipserunner.model.ICategoryChangeListener;
 import com.eclipserunner.model.ILaunchConfigurationCategory;
 import com.eclipserunner.model.ILaunchConfigurationChangeListener;
@@ -16,11 +17,15 @@ import com.eclipserunner.model.ILaunchConfigurationNode;
  * 
  * @author vachacz
  */
-public class LaunchConfigurationCategory implements ILaunchConfigurationCategory, ILaunchConfigurationChangeListener {
+public class LaunchConfigurationCategory implements ILaunchConfigurationCategory, 
+											ILaunchConfigurationChangeListener, IActionEnablement {
 
 	private String name;
 	private Set<ILaunchConfigurationNode> launchConfigurationNodes = new HashSet<ILaunchConfigurationNode>();
 	private Set<ICategoryChangeListener> categoryChangeListeners = new HashSet<ICategoryChangeListener>();
+	
+	private boolean removable  = true;
+	private boolean renameable = true;
 
 	public String getName() {
 		return name;
@@ -100,6 +105,22 @@ public class LaunchConfigurationCategory implements ILaunchConfigurationCategory
 
 	public void launchConfigurationChanged() {
 		fireCategoryChangedEvent();
+	}
+
+	public boolean isRemovable() {
+		return removable;
+	}
+
+	public boolean isRenamable() {
+		return renameable;
+	}
+
+	public void setRemovable(boolean removable) {
+		this.removable = removable;
+	}
+
+	public void setRenameable(boolean renameable) {
+		this.renameable = renameable;
 	}
 
 }

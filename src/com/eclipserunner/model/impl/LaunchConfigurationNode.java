@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.eclipse.debug.core.ILaunchConfiguration;
 
+import com.eclipserunner.model.IActionEnablement;
 import com.eclipserunner.model.ILaunchConfigurationCategory;
 import com.eclipserunner.model.ILaunchConfigurationChangeListener;
 import com.eclipserunner.model.ILaunchConfigurationNode;
@@ -12,7 +13,7 @@ import com.eclipserunner.model.ILaunchConfigurationNode;
 /**
  * @author vachacz
  */
-public class LaunchConfigurationNode implements ILaunchConfigurationNode {
+public class LaunchConfigurationNode implements ILaunchConfigurationNode, IActionEnablement {
 
 	private ILaunchConfiguration launchConfiguration;
 	private ILaunchConfigurationCategory launchConfigurationCategory;
@@ -57,6 +58,14 @@ public class LaunchConfigurationNode implements ILaunchConfigurationNode {
 		for (ILaunchConfigurationChangeListener launchConfigurationChangeListener : launchConfigurationChangeListeners) {
 			launchConfigurationChangeListener.launchConfigurationChanged();
 		}
+	}
+
+	public boolean isRemovable() {
+		return true;
+	}
+
+	public boolean isRenamable() {
+		return true;
 	}
 
 }

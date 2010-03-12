@@ -30,6 +30,7 @@ import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.part.ViewPart;
 
+import com.eclipserunner.model.IActionEnablement;
 import com.eclipserunner.model.ILaunchConfigurationCategory;
 import com.eclipserunner.model.ILaunchConfigurationNode;
 import com.eclipserunner.model.ILaunchConfigurationSelection;
@@ -266,14 +267,14 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	}
 
 	private void setupActionEnablement() {
-		if (isLaunchConfigurationCategorySelected() &&
-				getSelectedLaunchConfigurationCategory() == runnerModel.getUncategorizedCategory()) {
-			renameAction.setEnabled(false);
-			removeAction.setEnabled(false);
+		IActionEnablement provider = getActionEnablementProvider();
+		if (provider != null) {
+			renameAction.setEnabled(provider.isRenamable());
+			removeAction.setEnabled(provider.isRemovable());
 		}
 		else {
-			renameAction.setEnabled(true);
-			removeAction.setEnabled(true);
+			renameAction.setEnabled(false);
+			removeAction.setEnabled(false);
 		}
 	}
 
@@ -301,6 +302,15 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		}
 		return false;
 	}
+	
+	private IActionEnablement getActionEnablementProvider() {
+		Object selectedObject = getSelectedObject();
+		if (getSelectedObject() instanceof IActionEnablement) {
+			return (IActionEnablement) selectedObject;
+		}
+		return null;
+	}
+
 
 	public ILaunchConfigurationNode getSelectedLaunchConfigurationNode() {
 		return (ILaunchConfigurationNode) getSelectedObject();

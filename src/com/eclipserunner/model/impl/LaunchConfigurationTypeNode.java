@@ -2,9 +2,10 @@ package com.eclipserunner.model.impl;
 
 import org.eclipse.debug.core.ILaunchConfigurationType;
 
+import com.eclipserunner.model.IActionEnablement;
 import com.eclipserunner.model.ILaunchConfigurationCategory;
 
-public class LaunchConfigurationTypeNode {
+public class LaunchConfigurationTypeNode implements IActionEnablement {
 
 	private ILaunchConfigurationCategory parentCategory;
 	private ILaunchConfigurationType type;
@@ -23,6 +24,14 @@ public class LaunchConfigurationTypeNode {
 
 	public ILaunchConfigurationCategory getParentCategory() {
 		return parentCategory;
+	}
+
+	public boolean isRemovable() {
+		return false;
+	}
+
+	public boolean isRenamable() {
+		return false;
 	}
 	
 }

@@ -33,9 +33,13 @@ public class RunnerModel implements IRunnerModel, ICategoryChangeListener {
 	private ILaunchConfigurationCategory uncategorizedCategory;
 
 	protected RunnerModel() {
-		uncategorizedCategory = new LaunchConfigurationCategory();
-		uncategorizedCategory.setName(Message_uncategorized);
-		uncategorizedCategory.addCategoryChangeListener(this);
+		LaunchConfigurationCategory category = new LaunchConfigurationCategory();
+		category.setName(Message_uncategorized);
+		category.addCategoryChangeListener(this);
+		category.setRemovable(false);
+		category.setRenameable(false);
+		
+		uncategorizedCategory = category;
 
 		launchConfigurationCategories = new HashSet<ILaunchConfigurationCategory>();
 		launchConfigurationCategories.add(uncategorizedCategory);
