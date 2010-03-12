@@ -8,10 +8,13 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 public interface ILaunchConfigurationNode {
 
 	ILaunchConfiguration getLaunchConfiguration();
+	void setLaunchConfiguration(ILaunchConfiguration configuration);
+
 	ILaunchConfigurationCategory getLaunchConfigurationCategory();
+	void setLaunchConfigurationCategory(ILaunchConfigurationCategory category);
 
 	boolean isBookmarked();
-	public void setBookmarked(boolean state);
+	void setBookmarked(boolean state);
 
 	void addLaunchConfigurationChangeListener(ILaunchConfigurationChangeListener listener);
 	void removeLaunchConfigurationChangeListener(ILaunchConfigurationChangeListener listener);

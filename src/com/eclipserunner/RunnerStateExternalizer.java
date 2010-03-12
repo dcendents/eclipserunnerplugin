@@ -58,14 +58,13 @@ public class RunnerStateExternalizer {
 	private static final String CATEGORY_NODE_NAME      = "category";
 	private static final String CONFIGURATION_NODE_NAME = "launchConfiguration";
 
-	
+
 	/**
 	 * Load plugin state from given file.
 	 * 
 	 * @param inputFile Plugin state file.
 	 * @throws CoreException
 	 */
-	// TODO BARY: bad code due to interface missing API
 	public static void readStateFromFile(File inputFile) throws CoreException {
 		if (!inputFile.exists()) {
 			throw new CoreException(new Status(IStatus.ERROR, RunnerPlugin.PLUGIN_ID, "File not found '" + inputFile.getAbsolutePath() + "'"));
@@ -82,21 +81,21 @@ public class RunnerStateExternalizer {
 		}
 
 		// configuration name to node maping
-		Map<String, LaunchConfigurationNode> launchConfigurationNodes = new HashMap<String, LaunchConfigurationNode>();
+		Map<String, ILaunchConfigurationNode> launchConfigurationNodes = new HashMap<String, ILaunchConfigurationNode>();
 
 		// populating model
 		IRunnerModel runnerModel = RunnerModel.getDefault();
 
 		// read categories
 		NodeList categoryNodeList = runnerNode.getElementsByTagName(CATEGORY_NODE_NAME);
-		for (int categoryIndex = 0; categoryIndex < categoryNodeList.getLength(); categoryIndex++) {			
+		for (int categoryIndex = 0; categoryIndex < categoryNodeList.getLength(); categoryIndex++) {
 			Element categoryElement = (Element) categoryNodeList.item(categoryIndex);
 			String categoryName = categoryElement.getAttribute(NAME_ATTR);
-			
+
 			// create category if not exists
 			ILaunchConfigurationCategory launchConfigurationCategory = runnerModel.getLaunchConfigurationCategory(categoryName);
 			if (launchConfigurationCategory == null) {
-				launchConfigurationCategory = runnerModel.addLaunchConfigurationCategory(categoryName); 
+				launchConfigurationCategory = runnerModel.addLaunchConfigurationCategory(categoryName);
 			}
 
 			// read configurations and map them to categories
@@ -107,29 +106,27 @@ public class RunnerStateExternalizer {
 				boolean isBookmarked = Boolean.valueOf(configurationElement.getAttribute(BOOKMARK_ATTR));
 
 				// create empty Node
-				// TODO BARY: bad code
-				LaunchConfigurationNode launchConfigurationNode = new LaunchConfigurationNode();
+				ILaunchConfigurationNode launchConfigurationNode = new LaunchConfigurationNode();
 				launchConfigurationNode.setLaunchConfigurationCategory(launchConfigurationCategory);
 				launchConfigurationNode.setBookmarked(isBookmarked);
-				
+
 				launchConfigurationNodes.put(configurationName, launchConfigurationNode);
 			}
 		}
 
 		// get all configurations from launch manager
-		// TODO BARY: bad code
-		for (ILaunchConfiguration configuration : getLaunchManager().getLaunchConfigurations()) {
+		for (ILaunchConfiguration launchConfiguration : getLaunchManager().getLaunchConfigurations()) {
 
 			// get configuration metadata
-			String configurationName = configuration.getName();
-			
-			LaunchConfigurationNode launchConfigurationNode = launchConfigurationNodes.get(configurationName);
+			String launchConfigurationName = launchConfiguration.getName();
+
+			ILaunchConfigurationNode launchConfigurationNode = launchConfigurationNodes.get(launchConfigurationName);
 			if (launchConfigurationNode == null) {
 				launchConfigurationNode = new LaunchConfigurationNode();
 				launchConfigurationNode.setLaunchConfigurationCategory(runnerModel.getUncategorizedCategory());
 			}
-			launchConfigurationNode.setLaunchConfiguration(configuration);
-						
+			launchConfigurationNode.setLaunchConfiguration(launchConfiguration);
+
 			ILaunchConfigurationCategory launchConfigurationCategory = launchConfigurationNode.getLaunchConfigurationCategory();
 			launchConfigurationCategory.add(launchConfigurationNode);
 		}
@@ -148,8 +145,10 @@ public class RunnerStateExternalizer {
 	public static void readDefaultState() throws CoreException {
 		IRunnerModel runnerModel = RunnerModel.getDefault();
 		ILaunchManager launchManager = getLaunchManager();
-		for (ILaunchConfiguration configuration : launchManager.getLaunchConfigurations()) {
-			runnerModel.getUncategorizedCategory().add(configuration);
+		for (ILaunchConfiguration launchConfiguration : launchManager.getLaunchConfigurations()) {
+			LaunchConfigurationNode launchConfigurationNode = new LaunchConfigurationNode();
+			launchConfigurationNode.setLaunchConfiguration(launchConfiguration);
+			runnerModel.getUncategorizedCategory().add(launchConfigurationNode);
 		}
 	}
 

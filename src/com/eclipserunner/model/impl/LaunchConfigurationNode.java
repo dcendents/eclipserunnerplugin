@@ -21,6 +21,9 @@ public class LaunchConfigurationNode implements ILaunchConfigurationNode, IActio
 
 	private Set<ILaunchConfigurationChangeListener> launchConfigurationChangeListeners = new HashSet<ILaunchConfigurationChangeListener>();
 
+	public LaunchConfigurationNode() {
+	}
+
 	public void setLaunchConfiguration(ILaunchConfiguration launchConfiguration) {
 		this.launchConfiguration = launchConfiguration;
 	}

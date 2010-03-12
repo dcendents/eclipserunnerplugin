@@ -6,11 +6,10 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 
 public interface IRunnerModel {
 
-	ILaunchConfigurationCategory addLaunchConfigurationCategory(String name);
 	void addLaunchConfigurationNode(ILaunchConfigurationNode launchConfigurationNode);
-
-	void removeLaunchConfiguration(ILaunchConfiguration launchConfiguration);
 	void removeLaunchConfigurationNode(ILaunchConfigurationNode launchConfigurationNode);
+
+	ILaunchConfigurationCategory addLaunchConfigurationCategory(String name);
 	void removeLaunchConfigurationCategory(ILaunchConfigurationCategory category);
 
 	ILaunchConfigurationCategory getLaunchConfigurationCategory(String name);

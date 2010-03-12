@@ -37,7 +37,7 @@ public class RunnerModel implements IRunnerModel, ICategoryChangeListener {
 			}
 		}
 	}
-	
+
 	private static RunnerModel runnerModel = new RunnerModel();
 
 	private List<IModelChangeListener> modelChangeListeners = new ArrayList<IModelChangeListener>();
@@ -51,7 +51,7 @@ public class RunnerModel implements IRunnerModel, ICategoryChangeListener {
 		category.addCategoryChangeListener(this);
 		category.setRemovable(false);
 		category.setRenameable(false);
-		
+
 		uncategorizedCategory = category;
 
 		launchConfigurationCategories = new TreeSet<ILaunchConfigurationCategory>(new ILaunchConfigurationCategoryComparator());
@@ -71,6 +71,13 @@ public class RunnerModel implements IRunnerModel, ICategoryChangeListener {
 		// fireModelChangedEvent() not needed because category change triggers an event
 	}
 
+	public void removeLaunchConfigurationNode(ILaunchConfigurationNode configuration) {
+		for (ILaunchConfigurationCategory launchConfigurationCategory : launchConfigurationCategories) {
+			launchConfigurationCategory.remove(configuration);
+		}
+		fireModelChangedEvent();
+	}
+
 	public ILaunchConfigurationCategory addLaunchConfigurationCategory(String name) {
 		ILaunchConfigurationCategory category = new LaunchConfigurationCategory();
 		category.setName(name);
@@ -81,32 +88,18 @@ public class RunnerModel implements IRunnerModel, ICategoryChangeListener {
 		return category;
 	}
 
-	public void removeLaunchConfigurationNode(ILaunchConfigurationNode configuration) {
-		for (ILaunchConfigurationCategory launchConfigurationCategory : launchConfigurationCategories) {
-			launchConfigurationCategory.remove(configuration);
-		}
-		fireModelChangedEvent();
-	}
-
-	public void removeLaunchConfiguration(ILaunchConfiguration configuration) {
-		for (ILaunchConfigurationCategory category : launchConfigurationCategories) {
-			category.remove(configuration);
-		}
-	}
-
-	public ILaunchConfigurationCategory getUncategorizedCategory() {
-		return uncategorizedCategory;
-	}
-
 	public void removeLaunchConfigurationCategory(ILaunchConfigurationCategory category) {
-		// TODO/FIXME: BARY LWA java.util.ConcurrentModificationException
-		//for(ILaunchConfiguration launchConfiguration : category.getLaunchConfigurationSet()) {
-		//	category.remove(launchConfiguration);
-		//	uncategorizedCategory.add(launchConfiguration);
+		// TODO/FIXME: BARY LWA Why this for throws java.util.ConcurrentModificationException what we are doing wrong here?
+		//for(ILaunchConfigurationNode launchConfigurationNode : category.getLaunchConfigurationNodes()) {
+		//	category.remove(launchConfigurationNode);
 		//}
 		launchConfigurationCategories.remove(category);
 		category.removeCategoryChangeListener(this);
 		fireModelChangedEvent();
+	}
+
+	public ILaunchConfigurationCategory getUncategorizedCategory() {
+		return uncategorizedCategory;
 	}
 
 	public ILaunchConfigurationCategory getLaunchConfigurationCategory(String name) {

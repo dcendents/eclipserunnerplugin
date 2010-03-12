@@ -3,8 +3,6 @@ package com.eclipserunner.model.impl;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.debug.core.ILaunchConfiguration;
-
 import com.eclipserunner.model.IActionEnablement;
 import com.eclipserunner.model.ICategoryChangeListener;
 import com.eclipserunner.model.ILaunchConfigurationCategory;
@@ -17,13 +15,12 @@ import com.eclipserunner.model.ILaunchConfigurationNode;
  * 
  * @author vachacz
  */
-public class LaunchConfigurationCategory implements ILaunchConfigurationCategory, 
-											ILaunchConfigurationChangeListener, IActionEnablement {
+public class LaunchConfigurationCategory implements ILaunchConfigurationCategory, ILaunchConfigurationChangeListener, IActionEnablement {
 
 	private String name;
 	private Set<ILaunchConfigurationNode> launchConfigurationNodes = new HashSet<ILaunchConfigurationNode>();
 	private Set<ICategoryChangeListener> categoryChangeListeners = new HashSet<ICategoryChangeListener>();
-	
+
 	private boolean removable  = true;
 	private boolean renameable = true;
 
@@ -40,29 +37,13 @@ public class LaunchConfigurationCategory implements ILaunchConfigurationCategory
 		return launchConfigurationNodes;
 	}
 
-	public void add(ILaunchConfiguration newConfiguration) {
-		// TODO LWA builder
-		LaunchConfigurationNode node = new LaunchConfigurationNode();
-		node.addLaunchConfigurationChangeListener(this);
-		node.setLaunchConfiguration(newConfiguration);
-		node.setLaunchConfigurationCategory(this);
-		node.setBookmarked(false);
-
-		launchConfigurationNodes.add(node);
-	}
-
 	public void add(ILaunchConfigurationNode launchConfigurationNode) {
+		launchConfigurationNode.setLaunchConfigurationCategory(this);
+		launchConfigurationNode.setBookmarked(false);
 		launchConfigurationNode.addLaunchConfigurationChangeListener(this);
+
 		launchConfigurationNodes.add(launchConfigurationNode);
 		fireCategoryChangedEvent();
-	}
-
-	public void remove(ILaunchConfiguration configuration) {
-		for (ILaunchConfigurationNode node : launchConfigurationNodes) {
-			if (node.getLaunchConfiguration().equals(configuration)) {
-				launchConfigurationNodes.remove(node);
-			}
-		}
 	}
 
 	public void remove(ILaunchConfigurationNode launchConfigurationNode) {

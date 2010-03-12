@@ -23,21 +23,24 @@ public class RunnerModelLaunchConfigurationListenerAdapter implements ILaunchCon
 	}
 
 	public void launchConfigurationAdded(ILaunchConfiguration newConfiguration) {
-		// TODO LWA verify
+		LaunchConfigurationNode launchConfigurationNode = null;
 		ILaunchConfiguration oldLaunchConfiguration = getLaunchManager().getMovedFrom(newConfiguration);
 		if (oldLaunchConfiguration != null) {
-			
+
 			// TODO BARY: verify this
 			// better: runnerModel.remove(oldLaunchConfiguration);
-			
-			LaunchConfigurationNode launchConfigurationNode = (LaunchConfigurationNode) runnerModel.findLaunchConfigurationNodeBy(oldLaunchConfiguration);
+			//   Reply from bary: NO because you need to find original node when renaming configuration or you end up in uncategorized category
+
+			launchConfigurationNode = (LaunchConfigurationNode) runnerModel.findLaunchConfigurationNodeBy(oldLaunchConfiguration);
 			if (launchConfigurationNode != null) {
 				launchConfigurationNode.setLaunchConfiguration(newConfiguration);
 				return;
 			}
 		}
 
-		runnerModel.getUncategorizedCategory().add(newConfiguration);
+		launchConfigurationNode = new LaunchConfigurationNode();
+		launchConfigurationNode.setLaunchConfiguration(newConfiguration);
+		runnerModel.getUncategorizedCategory().add(launchConfigurationNode);
 	}
 
 	public void launchConfigurationChanged(ILaunchConfiguration configuration) {
@@ -46,8 +49,11 @@ public class RunnerModelLaunchConfigurationListenerAdapter implements ILaunchCon
 		// Old configuration is deleted and new is created in place of the old one.
 	}
 
-	public void launchConfigurationRemoved(ILaunchConfiguration configuration) {
-		runnerModel.removeLaunchConfiguration(configuration);
+	public void launchConfigurationRemoved(ILaunchConfiguration oldConfiguration) {
+		LaunchConfigurationNode launchConfigurationNode = (LaunchConfigurationNode) runnerModel.findLaunchConfigurationNodeBy(oldConfiguration);
+		if (launchConfigurationNode != null) {
+			runnerModel.removeLaunchConfigurationNode(launchConfigurationNode);
+		}
 	}
 
 	private ILaunchManager getLaunchManager() {
