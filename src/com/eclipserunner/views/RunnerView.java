@@ -52,7 +52,6 @@ import com.eclipserunner.views.actions.LaunchActionBuilder;
  */
 public class RunnerView extends ViewPart implements ILaunchConfigurationSelection, IMenuListener, IDoubleClickListener, IModelChangeListener, IRunnerView {
 
-	private ITreeContentProvider treeContentProvider;
 	private IRunnerModel runnerModel;
 
 	private TreeViewer viewer;
@@ -111,16 +110,15 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	}
 
 	private void initializeViewer(Composite parent) {
-		//treeContentProvider = new RunnerModelTreeAdapter(runnerModel, this);
-		treeContentProvider = new RunnerModelTreeWithTypesAdapter(runnerModel, this);
-
 		PatternFilter patternFilter = new PatternFilter();
 		patternFilter.setIncludeLeadingWildcard(true);
 
 		FilteredTree tree = new FilteredTree(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL, patternFilter, true);
 
 		viewer = tree.getViewer();
-		viewer.setContentProvider(treeContentProvider);
+		viewer.setContentProvider(
+			new RunnerModelTreeWithTypesAdapter(runnerModel, this)
+		);
 		viewer.setLabelProvider(new LaunchTreeLabelProvider());
 		viewer.addDoubleClickListener(this);
 		viewer.setInput(getViewSite());
@@ -326,7 +324,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		ILaunchConfigurationCategory category = null;
 
 		if (selectedObject instanceof ILaunchConfigurationNode) {
-			category = (ILaunchConfigurationCategory) treeContentProvider.getParent(selectedObject);
+			category = (ILaunchConfigurationCategory) getTreeContentProvider().getParent(selectedObject);
 		}
 		else if (selectedObject instanceof ILaunchConfigurationCategory) {
 			category = (ILaunchConfigurationCategory) selectedObject;
@@ -351,7 +349,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	}
 
 	public ITreeContentProvider getTreeContentProvider() {
-		return treeContentProvider;
+		return (ITreeContentProvider) getViewer().getContentProvider();
 	}
 
 	private Control getViewerControl() {
@@ -362,18 +360,21 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		return DebugPlugin.getDefault().getLaunchManager();
 	}
 	
-	// TODO LWA delete local field: treeContentPrivider
+	// TODO LWA TreeContentProviderFactory would hide implementations
 	public void setTreeMode(TreeMode mode) {
 		if (mode.isFlat()) {
 			toggleFlatModeAction.setChecked(true);
 			toggleTypeModeAction.setChecked(false);
-			treeContentProvider = new RunnerModelTreeAdapter(runnerModel, this);
+			viewer.setContentProvider(
+				new RunnerModelTreeAdapter(runnerModel, this)
+			);
 		} else {
 			toggleFlatModeAction.setChecked(false);
 			toggleTypeModeAction.setChecked(true);
-			treeContentProvider = new RunnerModelTreeWithTypesAdapter(runnerModel, this);
+			viewer.setContentProvider(
+				new RunnerModelTreeWithTypesAdapter(runnerModel, this)
+			);
 		}
-		viewer.setContentProvider(treeContentProvider);
 		getViewer().refresh();
 	}
 
