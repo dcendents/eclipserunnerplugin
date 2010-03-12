@@ -1,6 +1,8 @@
-package com.eclipserunner.model;
+package com.eclipserunner.model.impl;
 
 import org.eclipse.debug.core.ILaunchConfigurationType;
+
+import com.eclipserunner.model.ILaunchConfigurationCategory;
 
 public class LaunchConfigurationTypeNode {
 

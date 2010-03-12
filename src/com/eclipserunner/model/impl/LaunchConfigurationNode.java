@@ -1,9 +1,13 @@
-package com.eclipserunner.model;
+package com.eclipserunner.model.impl;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.debug.core.ILaunchConfiguration;
+
+import com.eclipserunner.model.ILaunchConfigurationCategory;
+import com.eclipserunner.model.ILaunchConfigurationChangeListener;
+import com.eclipserunner.model.ILaunchConfigurationNode;
 
 /**
  * @author vachacz

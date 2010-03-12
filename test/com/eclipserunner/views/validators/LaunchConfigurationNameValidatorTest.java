@@ -1,4 +1,4 @@
-package com.eclipserunner.views.actions.validator;
+package com.eclipserunner.views.validators;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.eclipserunner.Messages;
+import com.eclipserunner.views.validators.LaunchConfigurationNameValidator;
 
 public class LaunchConfigurationNameValidatorTest {
 

@@ -20,8 +20,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-import com.eclipserunner.model.RunnerModel;
-import com.eclipserunner.model.RunnerModelLaunchConfigurationListenerAdapter;
+import com.eclipserunner.model.adapters.RunnerModelLaunchConfigurationListenerAdapter;
+import com.eclipserunner.model.impl.RunnerModel;
 
 /**
  * Eclipse runner plugin activator class.

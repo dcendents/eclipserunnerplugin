@@ -9,7 +9,7 @@ import org.eclipse.jface.window.Window;
 
 import com.eclipserunner.RunnerPlugin;
 import com.eclipserunner.model.IRunnerModel;
-import com.eclipserunner.views.actions.validator.CategoryNameValidator;
+import com.eclipserunner.views.validators.CategoryNameValidator;
 
 /**
  * Action creates new empty category in plugin model.

@@ -17,8 +17,8 @@ import com.eclipserunner.model.ILaunchConfigurationCategory;
 import com.eclipserunner.model.ILaunchConfigurationNode;
 import com.eclipserunner.model.ILaunchConfigurationSelection;
 import com.eclipserunner.model.IRunnerModel;
-import com.eclipserunner.model.RunnerModel;
-import com.eclipserunner.views.actions.validator.LaunchConfigurationNameValidator;
+import com.eclipserunner.model.impl.RunnerModel;
+import com.eclipserunner.views.validators.LaunchConfigurationNameValidator;
 
 public class RenameConfigOrCategoryAction extends Action {
 

@@ -1,4 +1,4 @@
-package com.eclipserunner.model;
+package com.eclipserunner.model.impl;
 
 import static com.eclipserunner.matchers.RunnerMatchers.anyLaunchConfigurationCotegory;
 import static org.mockito.Mockito.verify;
@@ -13,6 +13,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import com.eclipserunner.model.ILaunchConfigurationCategory;
+import com.eclipserunner.model.ILaunchConfigurationNode;
+import com.eclipserunner.model.IModelChangeListener;
+import com.eclipserunner.model.impl.RunnerModel;
 
 public class RunnerModelTest {
 

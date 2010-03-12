@@ -12,7 +12,7 @@ import com.eclipserunner.model.ILaunchConfigurationCategory;
 import com.eclipserunner.model.ILaunchConfigurationNode;
 import com.eclipserunner.model.ILaunchConfigurationSelection;
 import com.eclipserunner.model.IRunnerModel;
-import com.eclipserunner.model.RunnerModel;
+import com.eclipserunner.model.impl.RunnerModel;
 
 public class RemoveConfigOrCategoryAction extends Action {
 

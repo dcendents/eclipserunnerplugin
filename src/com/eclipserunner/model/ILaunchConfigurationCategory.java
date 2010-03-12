@@ -4,6 +4,7 @@ import java.util.Set;
 
 import org.eclipse.debug.core.ILaunchConfiguration;
 
+
 /**
  * Launch configuration category interface.
  * 

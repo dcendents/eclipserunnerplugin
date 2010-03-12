@@ -20,7 +20,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.IStructuredSelection;
 
 import com.eclipserunner.model.IRunnerModel;
-import com.eclipserunner.model.RunnerModel;
+import com.eclipserunner.model.impl.RunnerModel;
 
 @SuppressWarnings("restriction")
 public class BookmarkAction extends Action {

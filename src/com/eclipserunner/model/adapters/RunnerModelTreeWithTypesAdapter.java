@@ -1,4 +1,4 @@
-package com.eclipserunner.model;
+package com.eclipserunner.model.adapters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,11 @@ import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.ui.IViewPart;
+
+import com.eclipserunner.model.ILaunchConfigurationCategory;
+import com.eclipserunner.model.ILaunchConfigurationNode;
+import com.eclipserunner.model.IRunnerModel;
+import com.eclipserunner.model.impl.LaunchConfigurationTypeNode;
 
 /**
  * Development code ... before refactoring.

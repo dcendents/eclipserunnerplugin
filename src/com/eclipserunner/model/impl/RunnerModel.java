@@ -1,4 +1,4 @@
-package com.eclipserunner.model;
+package com.eclipserunner.model.impl;
 
 import static com.eclipserunner.Messages.Message_uncategorized;
 
@@ -9,6 +9,13 @@ import java.util.Set;
 
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.viewers.ITreeContentProvider;
+
+import com.eclipserunner.model.ICategoryChangeListener;
+import com.eclipserunner.model.ILaunchConfigurationCategory;
+import com.eclipserunner.model.ILaunchConfigurationNode;
+import com.eclipserunner.model.IModelChangeListener;
+import com.eclipserunner.model.IRunnerModel;
+
 
 /**
  * Class implementing {@link ITreeContentProvider} acts as a model for launch configuration tree.

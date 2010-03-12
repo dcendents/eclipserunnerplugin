@@ -1,9 +1,12 @@
-package com.eclipserunner.model;
+package com.eclipserunner.model.adapters;
 
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationListener;
 import org.eclipse.debug.core.ILaunchManager;
+
+import com.eclipserunner.model.IRunnerModel;
+import com.eclipserunner.model.impl.LaunchConfigurationNode;
 
 /**
  * Adapter listening for Launch manager event.

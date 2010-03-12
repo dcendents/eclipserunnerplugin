@@ -1,9 +1,11 @@
-package com.eclipserunner.model;
+package com.eclipserunner.model.adapters;
 
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPart;
+
+import com.eclipserunner.model.IRunnerModel;
 
 /**
  * Adapter listening for JDT selection events.

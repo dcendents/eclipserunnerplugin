@@ -1,8 +1,12 @@
-package com.eclipserunner.model;
+package com.eclipserunner.model.adapters;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.ui.IViewPart;
+
+import com.eclipserunner.model.ILaunchConfigurationCategory;
+import com.eclipserunner.model.ILaunchConfigurationNode;
+import com.eclipserunner.model.IRunnerModel;
 
 /**
  * Adapter class adapts IRunnerModel to ITreeContentProvider interface.

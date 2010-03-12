@@ -35,8 +35,8 @@ import org.w3c.dom.NodeList;
 import com.eclipserunner.model.ILaunchConfigurationCategory;
 import com.eclipserunner.model.ILaunchConfigurationNode;
 import com.eclipserunner.model.IRunnerModel;
-import com.eclipserunner.model.LaunchConfigurationNode;
-import com.eclipserunner.model.RunnerModel;
+import com.eclipserunner.model.impl.LaunchConfigurationNode;
+import com.eclipserunner.model.impl.RunnerModel;
 
 /**
  * Helper class for saving and loading plugin state.

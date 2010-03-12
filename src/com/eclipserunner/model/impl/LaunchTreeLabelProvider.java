@@ -1,4 +1,4 @@
-package com.eclipserunner.model;
+package com.eclipserunner.model.impl;
 
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugModelPresentation;
@@ -9,6 +9,8 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import com.eclipserunner.RunnerPlugin;
+import com.eclipserunner.model.ILaunchConfigurationCategory;
+import com.eclipserunner.model.ILaunchConfigurationNode;
 
 /**
  * Launch configuration tree decorator.
