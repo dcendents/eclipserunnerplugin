@@ -17,7 +17,6 @@ import com.eclipserunner.model.ILaunchConfigurationCategory;
 import com.eclipserunner.model.ILaunchConfigurationNode;
 import com.eclipserunner.model.ILaunchConfigurationSelection;
 import com.eclipserunner.model.IRunnerModel;
-import com.eclipserunner.model.impl.RunnerModel;
 import com.eclipserunner.views.validators.LaunchConfigurationNameValidator;
 
 public class RenameConfigOrCategoryAction extends Action {
@@ -45,10 +44,6 @@ public class RenameConfigOrCategoryAction extends Action {
 	}
 
 	private void renameLaunchConfigurationCategory(ILaunchConfigurationCategory category) {
-		if (RunnerModel.getDefault().getUncategorizedCategory() == category) {
-			return;
-		}
-
 		InputDialog dialog = openRenameDialog(Message_rename, Message_renameCategory, category.getName());
 		if (dialog.getReturnCode() == Window.OK) {
 			category.setName(dialog.getValue());

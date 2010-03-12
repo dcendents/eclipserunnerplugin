@@ -40,7 +40,7 @@ public class RunnerModelLaunchConfigurationListenerAdapter implements ILaunchCon
 
 		launchConfigurationNode = new LaunchConfigurationNode();
 		launchConfigurationNode.setLaunchConfiguration(newConfiguration);
-		runnerModel.getUncategorizedCategory().add(launchConfigurationNode);
+		runnerModel.getDefaultCategory().add(launchConfigurationNode);
 	}
 
 	public void launchConfigurationChanged(ILaunchConfiguration configuration) {

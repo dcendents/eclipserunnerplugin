@@ -28,9 +28,9 @@ public class RunnerModel implements IRunnerModel, ICategoryChangeListener {
 
 	class ILaunchConfigurationCategoryComparator implements Comparator<ILaunchConfigurationCategory> {
 		public int compare(ILaunchConfigurationCategory category1,	ILaunchConfigurationCategory category2) {
-			if (RunnerModel.this.getUncategorizedCategory().equals(category1)) {
+			if (RunnerModel.this.getDefaultCategory().equals(category1)) {
 				return 1;
-			} else if (RunnerModel.this.getUncategorizedCategory().equals(category2)) {
+			} else if (RunnerModel.this.getDefaultCategory().equals(category2)) {
 				return 1;
 			} else {
 				return category1.getName().compareTo(category2.getName());
@@ -43,7 +43,7 @@ public class RunnerModel implements IRunnerModel, ICategoryChangeListener {
 	private List<IModelChangeListener> modelChangeListeners = new ArrayList<IModelChangeListener>();
 	private Set<ILaunchConfigurationCategory> launchConfigurationCategories;
 
-	private ILaunchConfigurationCategory uncategorizedCategory;
+	private ILaunchConfigurationCategory defaultCategory;
 
 	protected RunnerModel() {
 		LaunchConfigurationCategory category = new LaunchConfigurationCategory();
@@ -52,10 +52,10 @@ public class RunnerModel implements IRunnerModel, ICategoryChangeListener {
 		category.setRemovable(false);
 		category.setRenameable(false);
 
-		uncategorizedCategory = category;
+		defaultCategory = category;
 
 		launchConfigurationCategories = new TreeSet<ILaunchConfigurationCategory>(new ILaunchConfigurationCategoryComparator());
-		launchConfigurationCategories.add(uncategorizedCategory);
+		launchConfigurationCategories.add(defaultCategory);
 	}
 
 	public static IRunnerModel getDefault() {
@@ -67,7 +67,7 @@ public class RunnerModel implements IRunnerModel, ICategoryChangeListener {
 	}
 
 	public void addLaunchConfigurationNode(ILaunchConfigurationNode configuration) {
-		uncategorizedCategory.add(configuration);
+		defaultCategory.add(configuration);
 		// fireModelChangedEvent() not needed because category change triggers an event
 	}
 
@@ -98,8 +98,8 @@ public class RunnerModel implements IRunnerModel, ICategoryChangeListener {
 		fireModelChangedEvent();
 	}
 
-	public ILaunchConfigurationCategory getUncategorizedCategory() {
-		return uncategorizedCategory;
+	public ILaunchConfigurationCategory getDefaultCategory() {
+		return defaultCategory;
 	}
 
 	public ILaunchConfigurationCategory getLaunchConfigurationCategory(String name) {

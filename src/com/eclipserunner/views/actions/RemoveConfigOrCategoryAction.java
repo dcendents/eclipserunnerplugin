@@ -12,7 +12,6 @@ import com.eclipserunner.model.ILaunchConfigurationCategory;
 import com.eclipserunner.model.ILaunchConfigurationNode;
 import com.eclipserunner.model.ILaunchConfigurationSelection;
 import com.eclipserunner.model.IRunnerModel;
-import com.eclipserunner.model.impl.RunnerModel;
 
 public class RemoveConfigOrCategoryAction extends Action {
 
@@ -38,10 +37,6 @@ public class RemoveConfigOrCategoryAction extends Action {
 	}
 
 	private void removeLaunchConfigurationCategory(ILaunchConfigurationCategory selectedCategory) {
-		if (RunnerModel.getDefault().getUncategorizedCategory() == selectedCategory) {
-			return;
-		}
-
 		boolean confirmed = MessageDialog.openConfirm(RunnerPlugin.getRunnerShell(), Message_removeConfirm, Message_removeCategoryConfirm);
 		if (confirmed) {
 			runnerModel.removeLaunchConfigurationCategory(selectedCategory);

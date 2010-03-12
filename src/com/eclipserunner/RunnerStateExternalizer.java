@@ -123,7 +123,7 @@ public class RunnerStateExternalizer {
 			ILaunchConfigurationNode launchConfigurationNode = launchConfigurationNodes.get(launchConfigurationName);
 			if (launchConfigurationNode == null) {
 				launchConfigurationNode = new LaunchConfigurationNode();
-				launchConfigurationNode.setLaunchConfigurationCategory(runnerModel.getUncategorizedCategory());
+				launchConfigurationNode.setLaunchConfigurationCategory(runnerModel.getDefaultCategory());
 			}
 			launchConfigurationNode.setLaunchConfiguration(launchConfiguration);
 
@@ -148,7 +148,7 @@ public class RunnerStateExternalizer {
 		for (ILaunchConfiguration launchConfiguration : launchManager.getLaunchConfigurations()) {
 			LaunchConfigurationNode launchConfigurationNode = new LaunchConfigurationNode();
 			launchConfigurationNode.setLaunchConfiguration(launchConfiguration);
-			runnerModel.getUncategorizedCategory().add(launchConfigurationNode);
+			runnerModel.getDefaultCategory().add(launchConfigurationNode);
 		}
 	}
 
