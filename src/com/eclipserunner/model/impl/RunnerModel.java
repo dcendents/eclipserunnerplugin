@@ -3,9 +3,10 @@ package com.eclipserunner.model.impl;
 import static com.eclipserunner.Messages.Message_uncategorized;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -25,6 +26,18 @@ import com.eclipserunner.model.IRunnerModel;
  */
 public class RunnerModel implements IRunnerModel, ICategoryChangeListener {
 
+	class ILaunchConfigurationCategoryComparator implements Comparator<ILaunchConfigurationCategory> {
+		public int compare(ILaunchConfigurationCategory category1,	ILaunchConfigurationCategory category2) {
+			if (RunnerModel.this.getUncategorizedCategory().equals(category1)) {
+				return 1;
+			} else if (RunnerModel.this.getUncategorizedCategory().equals(category2)) {
+				return 1;
+			} else {
+				return category1.getName().compareTo(category2.getName());
+			}
+		}
+	}
+	
 	private static RunnerModel runnerModel = new RunnerModel();
 
 	private List<IModelChangeListener> modelChangeListeners = new ArrayList<IModelChangeListener>();
@@ -41,7 +54,7 @@ public class RunnerModel implements IRunnerModel, ICategoryChangeListener {
 		
 		uncategorizedCategory = category;
 
-		launchConfigurationCategories = new HashSet<ILaunchConfigurationCategory>();
+		launchConfigurationCategories = new TreeSet<ILaunchConfigurationCategory>(new ILaunchConfigurationCategoryComparator());
 		launchConfigurationCategories.add(uncategorizedCategory);
 	}
 

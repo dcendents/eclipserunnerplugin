@@ -16,7 +16,6 @@ import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.FileTransfer;
@@ -119,7 +118,6 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		viewer = tree.getViewer();
 		viewer.setContentProvider(treeContentProvider);
 		viewer.setLabelProvider(new LaunchTreeLabelProvider());
-		viewer.setSorter(new ViewerSorter());
 		viewer.addDoubleClickListener(this);
 		viewer.setInput(getViewSite());
 
