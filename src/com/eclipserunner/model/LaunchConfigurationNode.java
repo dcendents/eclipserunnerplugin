@@ -32,13 +32,8 @@ public class LaunchConfigurationNode implements ILaunchConfigurationNode {
 		return launchConfigurationCategory;
 	}
 
-	public void bookmark() {
-		bookmarked = true;
-		fireLaunchConfigurationChangedEvent();
-	}
-
-	public void unbookmark() {
-		bookmarked = false;
+	public void setBookmarked(boolean state) {
+		this.bookmarked = state;
 		fireLaunchConfigurationChangedEvent();
 	}
 

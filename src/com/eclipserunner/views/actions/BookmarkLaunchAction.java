@@ -23,7 +23,7 @@ public class BookmarkLaunchAction extends Action {
 	public void run() {
 		if (launchConfigurationSelection.isLaunchConfigurationNodeSelected()) {
 			ILaunchConfigurationNode launchConfiguration = launchConfigurationSelection.getSelectedLaunchConfigurationNode();
-			launchConfiguration.bookmark();
+			launchConfiguration.setBookmarked(true);
 		}
 		if (launchConfigurationSelection.isLaunchConfigurationCategorySelected()) {
 			ILaunchConfigurationCategory launchConfigurationCategory = launchConfigurationSelection.getSelectedLaunchConfigurationCategory();

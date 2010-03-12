@@ -23,7 +23,7 @@ public class UnbookmarkLaunchAction extends Action {
 	public void run() {
 		if (launchConfigurationSelection.isLaunchConfigurationNodeSelected()) {
 			ILaunchConfigurationNode launchConfiguration = launchConfigurationSelection.getSelectedLaunchConfigurationNode();
-			launchConfiguration.unbookmark();
+			launchConfiguration.setBookmarked(false);
 		}
 		if (launchConfigurationSelection.isLaunchConfigurationCategorySelected()) {
 			ILaunchConfigurationCategory launchConfigurationCategory = launchConfigurationSelection.getSelectedLaunchConfigurationCategory();

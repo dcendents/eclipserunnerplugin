@@ -110,9 +110,7 @@ public class RunnerStateExternalizer {
 				// TODO BARY: bad code
 				LaunchConfigurationNode launchConfigurationNode = new LaunchConfigurationNode();
 				launchConfigurationNode.setLaunchConfigurationCategory(launchConfigurationCategory);
-				if (isBookmarked) {
-					launchConfigurationNode.bookmark();
-				}
+				launchConfigurationNode.setBookmarked(isBookmarked);
 				
 				launchConfigurationNodes.put(configurationName, launchConfigurationNode);
 			}

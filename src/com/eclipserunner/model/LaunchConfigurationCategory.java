@@ -35,7 +35,7 @@ public class LaunchConfigurationCategory implements ILaunchConfigurationCategory
 		node.addLaunchConfigurationChangeListener(this);
 		node.setLaunchConfiguration(newConfiguration);
 		node.setLaunchConfigurationCategory(this);
-		node.unbookmark();
+		node.setBookmarked(false);
 
 		launchConfigurationNodes.add(node);
 	}
@@ -61,14 +61,14 @@ public class LaunchConfigurationCategory implements ILaunchConfigurationCategory
 
 	public void bookmarkAll() {
 		for (ILaunchConfigurationNode node : launchConfigurationNodes) {
-			node.bookmark();
+			node.setBookmarked(true);
 		}
 		fireCategoryChangedEvent();
 	}
 
 	public void unbookmarkAll() {
 		for (ILaunchConfigurationNode node : launchConfigurationNodes) {
-			node.unbookmark();
+			node.setBookmarked(false);
 		}
 		fireCategoryChangedEvent();
 	}

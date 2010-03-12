@@ -10,9 +10,8 @@ public interface ILaunchConfigurationNode {
 	ILaunchConfiguration getLaunchConfiguration();
 	ILaunchConfigurationCategory getLaunchConfigurationCategory();
 
-	void bookmark();
-	void unbookmark();
 	boolean isBookmarked();
+	public void setBookmarked(boolean state);
 
 	void addLaunchConfigurationChangeListener(ILaunchConfigurationChangeListener listener);
 	void removeLaunchConfigurationChangeListener(ILaunchConfigurationChangeListener listener);
