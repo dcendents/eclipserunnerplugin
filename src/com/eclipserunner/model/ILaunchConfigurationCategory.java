@@ -26,8 +26,7 @@ public interface ILaunchConfigurationCategory {
 	void addCategoryChangeListener(ICategoryChangeListener listener);
 	void removeCategoryChangeListener(ICategoryChangeListener listener);
 
-	void bookmarkAll();
-	void unbookmarkAll();
+	void setBookmarked(boolean state);
 
 	boolean contains(ILaunchConfigurationNode launchConfigurationNode);
 	boolean isEmpty();

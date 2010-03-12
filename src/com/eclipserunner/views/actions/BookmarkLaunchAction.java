@@ -27,7 +27,7 @@ public class BookmarkLaunchAction extends Action {
 		}
 		if (launchConfigurationSelection.isLaunchConfigurationCategorySelected()) {
 			ILaunchConfigurationCategory launchConfigurationCategory = launchConfigurationSelection.getSelectedLaunchConfigurationCategory();
-			launchConfigurationCategory.bookmarkAll();
+			launchConfigurationCategory.setBookmarked(true);
 		}
 	}
 

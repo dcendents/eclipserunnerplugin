@@ -27,7 +27,7 @@ public class UnbookmarkLaunchAction extends Action {
 		}
 		if (launchConfigurationSelection.isLaunchConfigurationCategorySelected()) {
 			ILaunchConfigurationCategory launchConfigurationCategory = launchConfigurationSelection.getSelectedLaunchConfigurationCategory();
-			launchConfigurationCategory.unbookmarkAll();
+			launchConfigurationCategory.setBookmarked(false);
 		}
 	}
 
