@@ -25,6 +25,7 @@ public class RemoveConfigOrCategoryAction extends Action {
 	}
 
 	@Override
+	// TODO BARY LWA add support for delete many selected items not just first one.
 	public void run() {
 		Object selectedObject = launchConfigurationSelection.getSelectedObject();
 
@@ -46,8 +47,7 @@ public class RemoveConfigOrCategoryAction extends Action {
 	private void removeLaunchConfiguration(ILaunchConfigurationNode selectedConfiguration) {
 		boolean confirmed = MessageDialog.openConfirm(RunnerPlugin.getRunnerShell(), Message_removeConfirm, Message_removeConfigurationConfirm);
 		if (confirmed) {
-			ILaunchConfigurationCategory category = launchConfigurationSelection.getSelectedLaunchConfigurationCategory();
-			category.remove(selectedConfiguration);
+			runnerModel.removeLaunchConfigurationNode(selectedConfiguration);
 		}
 	}
 

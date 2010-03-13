@@ -4,10 +4,12 @@ import static com.eclipserunner.Messages.Message_uncategorized;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 
@@ -66,15 +68,16 @@ public class RunnerModel implements IRunnerModel, ICategoryChangeListener {
 		return launchConfigurationCategories;
 	}
 
-	public void addLaunchConfigurationNode(ILaunchConfigurationNode configuration) {
-		defaultCategory.add(configuration);
+	public void addLaunchConfigurationNode(ILaunchConfigurationNode launchConfigurationNode) {
+		defaultCategory.add(launchConfigurationNode);
 		// fireModelChangedEvent() not needed because category change triggers an event
 	}
 
-	public void removeLaunchConfigurationNode(ILaunchConfigurationNode configuration) {
+	public void removeLaunchConfigurationNode(ILaunchConfigurationNode launchConfigurationNode) {
 		for (ILaunchConfigurationCategory launchConfigurationCategory : launchConfigurationCategories) {
-			launchConfigurationCategory.remove(configuration);
+			launchConfigurationCategory.remove(launchConfigurationNode);
 		}
+		deleteLaunchConfigurationFile(launchConfigurationNode.getLaunchConfiguration());
 		fireModelChangedEvent();
 	}
 
@@ -89,10 +92,12 @@ public class RunnerModel implements IRunnerModel, ICategoryChangeListener {
 	}
 
 	public void removeLaunchConfigurationCategory(ILaunchConfigurationCategory category) {
-		// TODO/FIXME: BARY LWA Why this for throws java.util.ConcurrentModificationException what we are doing wrong here?
-		//for(ILaunchConfigurationNode launchConfigurationNode : category.getLaunchConfigurationNodes()) {
-		//	category.remove(launchConfigurationNode);
-		//}
+		// Iterator in order to avoid java.util.ConcurrentModificationException
+		for (Iterator<ILaunchConfigurationNode> launchConfigurationNodeIterator = category.getLaunchConfigurationNodes().iterator(); launchConfigurationNodeIterator.hasNext();) {
+			ILaunchConfigurationNode launchConfigurationNode = launchConfigurationNodeIterator.next();
+			launchConfigurationNodeIterator.remove();
+			deleteLaunchConfigurationFile(launchConfigurationNode.getLaunchConfiguration());
+		}
 		launchConfigurationCategories.remove(category);
 		category.removeCategoryChangeListener(this);
 		fireModelChangedEvent();
@@ -122,6 +127,16 @@ public class RunnerModel implements IRunnerModel, ICategoryChangeListener {
 	private void fireModelChangedEvent() {
 		for (IModelChangeListener listener : modelChangeListeners) {
 			listener.modelChanged();
+		}
+	}
+
+	private void deleteLaunchConfigurationFile(ILaunchConfiguration configuration) {
+		if (configuration != null) {
+			try {
+				configuration.delete();
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
