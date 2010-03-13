@@ -167,6 +167,7 @@ public class RunnerModel implements IRunnerModel, ICategoryChangeListener {
 	
 	public void setDefaultCategoryVisible(boolean checked) {
 		this.defaultCategoryVisible = checked;
+		fireModelChangedEvent();
 	}
 
 }

@@ -155,21 +155,21 @@ public final class LaunchActionBuilder {
 	}
 
 	public Action createToggleFlatModeAction() {
-		Action action = new ToggleTreeModeAction(runnerView, TreeMode.FLAT_MODE, false);
+		Action action = new ToggleTreeModeAction(runnerView, TreeMode.FLAT_MODE);
 		// TODO LWA
 		configureAction(action, "Flat tree", Message_unbookmarkTooltip, IMG_FLAT_TREE);
 		return action;
 	}
 
 	public Action createToggleTypeModeAction() {
-		Action action = new ToggleTreeModeAction(runnerView, TreeMode.TYPE_MODE, true);
+		Action action = new ToggleTreeModeAction(runnerView, TreeMode.TYPE_MODE);
 		// TODO LWA
 		configureAction(action, "Tree with types", Message_unbookmarkTooltip, IMG_TYPE_TREE);
 		return action;
 	}
 
 	public Action createToggleDefaultCategoryAction() {
-		Action action = new ToggleDefaultCategoryAction(runnerView, runnerModel);
+		Action action = new ToggleDefaultCategoryAction(runnerModel);
 		// TODO LWA
 		configureAction(action, "Show default category", Message_unbookmarkTooltip, IMG_DEFAULT_CATEGORY);
 		return action;
