@@ -13,24 +13,18 @@ public class ToggleTreeModeAction extends AbstractToggleAction {
 		this.mode = mode;
 		this.runnerView = runnerView;
 		
-		if (getPreferenceStore().contains(RunnerPluginPrererenceConstants.TREE_MODE)) {
-			String treeMode = getPreferenceStore().getDefaultString(RunnerPluginPrererenceConstants.TREE_MODE);
-			if (mode.toString().equals(treeMode)) {
-				setChecked(true);
-			} else {
-				setChecked(false);
-			}
+		String treeMode = getPreferenceStore().getString(RunnerPluginPrererenceConstants.TREE_MODE);
+		if (mode.toString().equals(treeMode)) {
+			setChecked(true);
 		} else {
-			
+			setChecked(false);
 		}
 	}
 
 	@Override
 	public void run() {
 		getPreferenceStore().setValue(RunnerPluginPrererenceConstants.TREE_MODE, mode.toString());
-		
-		runnerView.setTreeMode(this.mode);
-		runnerView.refresh();
+		runnerView.setTreeMode(mode);
 	}
 	
 }

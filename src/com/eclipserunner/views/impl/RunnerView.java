@@ -32,6 +32,7 @@ import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.part.ViewPart;
 
+import com.eclipserunner.RunnerPluginPrererenceConstants;
 import com.eclipserunner.model.IActionEnablement;
 import com.eclipserunner.model.ILaunchConfigurationCategory;
 import com.eclipserunner.model.ILaunchConfigurationNode;
@@ -127,9 +128,16 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		FilteredTree tree = new FilteredTree(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL, patternFilter, true);
 
 		viewer = tree.getViewer();
-		viewer.setContentProvider(
-				new RunnerModelTreeWithTypesAdapter(runnerModel, this)
-		);
+		
+		// TODO LWA refactor this code
+		String treeMode = JavaPlugin.getDefault().getPreferenceStore().getString(RunnerPluginPrererenceConstants.TREE_MODE);
+		
+		if (TreeMode.TYPE_MODE.toString().equals(treeMode)) {
+			setTreeTypeContentProvider();
+		} else {
+			setTreeFlatContentProvider();
+		}
+		
 		viewer.setLabelProvider(new LaunchTreeLabelProvider(runnerModel));
 		viewer.addDoubleClickListener(this);
 		viewer.setInput(getViewSite());
@@ -395,24 +403,32 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 
 	// TODO LWA TreeContentProviderFactory would hide implementations
 	public void setTreeMode(TreeMode mode) {
-		if (mode.isFlat()) {
-			toggleFlatModeAction.setChecked(true);
-			toggleTypeModeAction.setChecked(false);
-			viewer.setContentProvider(
-					new RunnerModelTreeAdapter(runnerModel, this)
-			);
-		} else {
+		if (mode.isType()) {
 			toggleFlatModeAction.setChecked(false);
 			toggleTypeModeAction.setChecked(true);
-			viewer.setContentProvider(
-					new RunnerModelTreeWithTypesAdapter(runnerModel, this)
-			);
+			setTreeTypeContentProvider();
+		} else {
+			toggleFlatModeAction.setChecked(true);
+			toggleTypeModeAction.setChecked(false);
+			setTreeFlatContentProvider();
 		}
 		refresh();
 	}
 
 	public void refresh() {
 		getViewer().refresh();
+	}
+	
+	private void setTreeTypeContentProvider() {
+		viewer.setContentProvider(
+			new RunnerModelTreeWithTypesAdapter(runnerModel, this)
+		);
+	}
+
+	private void setTreeFlatContentProvider() {
+		viewer.setContentProvider(
+			new RunnerModelTreeAdapter(runnerModel, this)
+		);
 	}
 
 }

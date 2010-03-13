@@ -8,5 +8,8 @@ public enum TreeMode {
 	public boolean isFlat() {
 		return this.equals(FLAT_MODE);
 	}
-	
+
+	public boolean isType() {
+		return this.equals(TYPE_MODE);
+	}
 }
