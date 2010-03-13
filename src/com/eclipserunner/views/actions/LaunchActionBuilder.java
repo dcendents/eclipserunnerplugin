@@ -51,6 +51,7 @@ public final class LaunchActionBuilder {
 	private static final String IMG_DEBUG_CONFIGURATIONS = "debug_configuration.gif";
 	private static final String IMG_HELP                 = "help.gif";
 	private static final String IMG_NEW_CATEGORY         = "category_new.gif";
+	private static final String IMG_DEFAULT_CATEGORY     = "category-archive.gif";
 	private static final String IMG_EXPAND_ALL           = "expandall.gif";
 	private static final String IMG_BOOKMARK             = "bookmark_star.gif";
 	private static final String IMG_UNBOOKMARK           = "unbookmark.gif";
@@ -162,6 +163,13 @@ public final class LaunchActionBuilder {
 		Action action = new ToggleTreeModeAction(runnerView, TreeMode.TYPE_MODE, true);
 		// TODO LWA
 		configureAction(action, "Tree with types", Message_unbookmarkTooltip, IMG_TYPE_TREE);
+		return action;
+	}
+	
+	public Action createToggleDefaultCategoryAction() {
+		Action action = new ToggleDefaultCategoryAction(runnerView);
+		// TODO LWA
+		configureAction(action, "Show default category", Message_unbookmarkTooltip, IMG_DEFAULT_CATEGORY);
 		return action;
 	}
 

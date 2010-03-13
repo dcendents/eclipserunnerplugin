@@ -1,4 +1,4 @@
-package com.eclipserunner.model.impl;
+package com.eclipserunner.views.impl;
 
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugModelPresentation;
@@ -11,6 +11,8 @@ import org.eclipse.swt.graphics.Image;
 import com.eclipserunner.RunnerPlugin;
 import com.eclipserunner.model.ILaunchConfigurationCategory;
 import com.eclipserunner.model.ILaunchConfigurationNode;
+import com.eclipserunner.model.IRunnerModel;
+import com.eclipserunner.model.impl.LaunchConfigurationTypeNode;
 
 /**
  * Launch configuration tree decorator.
@@ -19,13 +21,16 @@ import com.eclipserunner.model.ILaunchConfigurationNode;
  */
 public class LaunchTreeLabelProvider extends LabelProvider {
 
-	private static final String IMG_CATEGORY   = "category.gif";
-	private static final String IMG_DECORATION = "bookmark_star.gif";
+	private static final String IMG_CATEGORY         = "category.gif";
+	private static final String IMG_DEFAULT_CATEGORY = "category-archive.gif";
+	private static final String IMG_DECORATION       = "bookmark_star.gif";
 
 	private IDebugModelPresentation debugModelPresentation;
+	private final IRunnerModel runnerModel;
 
-	public LaunchTreeLabelProvider() {
-		debugModelPresentation = DebugUITools.newDebugModelPresentation();
+	public LaunchTreeLabelProvider(IRunnerModel runnerModel) {
+		this.debugModelPresentation = DebugUITools.newDebugModelPresentation();
+		this.runnerModel = runnerModel;
 	}
 
 	@Override
@@ -43,10 +48,16 @@ public class LaunchTreeLabelProvider extends LabelProvider {
 		return debugModelPresentation.getText(element);
 	}
 
+	// TODO LWA make it simpler
 	@Override
 	public Image getImage(Object element) {
 		if (element instanceof ILaunchConfigurationCategory) {
-			return createImage(IMG_CATEGORY);
+			ILaunchConfigurationCategory launchConfigurationCategory = (ILaunchConfigurationCategory) element;
+			if (runnerModel.getDefaultCategory() == launchConfigurationCategory) {
+				return createImage(IMG_DEFAULT_CATEGORY);
+			} else {
+				return createImage(IMG_CATEGORY);
+			}
 		}
 		else if (element instanceof ILaunchConfigurationNode) {
 			ILaunchConfigurationNode launchConfiguration = (ILaunchConfigurationNode) element;

@@ -11,7 +11,6 @@ import java.util.TreeSet;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.jface.viewers.ITreeContentProvider;
 
 import com.eclipserunner.model.ICategoryChangeListener;
 import com.eclipserunner.model.ILaunchConfigurationCategory;
@@ -19,10 +18,8 @@ import com.eclipserunner.model.ILaunchConfigurationNode;
 import com.eclipserunner.model.IModelChangeListener;
 import com.eclipserunner.model.IRunnerModel;
 
-
 /**
- * Class implementing {@link ITreeContentProvider} acts as a model for launch configuration tree.
- * By default provides "uncategorized" category.
+ * Class implementing {@link IRunnerModel}
  * 
  * @author vachacz
  */
@@ -48,6 +45,7 @@ public class RunnerModel implements IRunnerModel, ICategoryChangeListener {
 	private ILaunchConfigurationCategory defaultCategory;
 
 	protected RunnerModel() {
+		// TODO LWA builder
 		LaunchConfigurationCategory category = new LaunchConfigurationCategory();
 		category.setName(Message_uncategorized);
 		category.addCategoryChangeListener(this);

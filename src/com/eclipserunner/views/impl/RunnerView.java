@@ -1,4 +1,4 @@
-package com.eclipserunner.views;
+package com.eclipserunner.views.impl;
 
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -39,10 +39,11 @@ import com.eclipserunner.model.adapters.RunnerModelJdtSelectionListenerAdapter;
 import com.eclipserunner.model.adapters.RunnerModelLaunchConfigurationListenerAdapter;
 import com.eclipserunner.model.adapters.RunnerModelTreeAdapter;
 import com.eclipserunner.model.adapters.RunnerModelTreeWithTypesAdapter;
-import com.eclipserunner.model.impl.LaunchTreeLabelProvider;
 import com.eclipserunner.model.impl.RunnerModel;
 import com.eclipserunner.ui.dnd.RunnerViewDragListener;
 import com.eclipserunner.ui.dnd.RunnerViewDropListener;
+import com.eclipserunner.views.IRunnerView;
+import com.eclipserunner.views.TreeMode;
 import com.eclipserunner.views.actions.LaunchActionBuilder;
 
 /**
@@ -80,16 +81,13 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	
 	private Action toggleFlatModeAction;
 	private Action toggleTypeModeAction;
+	private Action toggleDefaultCategoryAction;
 
 	// we are listening only from this selection providers
 	private final String[] selectonProviders = new String[] {
 			"org.eclipse.jdt.ui.PackageExplorer",
 			"org.eclipse.ui.navigator.ProjectExplorer"
 	};
-
-	public RunnerView() {
-		super();
-	}
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -119,7 +117,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		viewer.setContentProvider(
 			new RunnerModelTreeWithTypesAdapter(runnerModel, this)
 		);
-		viewer.setLabelProvider(new LaunchTreeLabelProvider());
+		viewer.setLabelProvider(new LaunchTreeLabelProvider(runnerModel));
 		viewer.addDoubleClickListener(this);
 		viewer.setInput(getViewSite());
 
@@ -205,6 +203,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		aboutAction                         = builder.createAboutAction();
 		toggleFlatModeAction                = builder.createToggleFlatModeAction();
 		toggleTypeModeAction                = builder.createToggleTypeModeAction();
+		toggleDefaultCategoryAction         = builder.createToggleDefaultCategoryAction();
 	}
 
 	private void setupContextMenu() {
@@ -240,6 +239,8 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		manager.add(new Separator());
 		manager.add(collapseAllAction);
 		manager.add(expandAllAction);
+		manager.add(new Separator());
+		manager.add(toggleDefaultCategoryAction);
 	}
 
 	// TODO LWA BARY: define which actions should be visible/enable for category and configuration,
