@@ -20,6 +20,8 @@ import static com.eclipserunner.Messages.Message_rename;
 import static com.eclipserunner.Messages.Message_renameTooltip;
 import static com.eclipserunner.Messages.Message_runConfiguration;
 import static com.eclipserunner.Messages.Message_runConfigurationTooltip;
+import static com.eclipserunner.Messages.Message_toggleBookmarkMode;
+import static com.eclipserunner.Messages.Message_toggleBookmarkModeTooltip;
 import static com.eclipserunner.Messages.Message_unbookmark;
 import static com.eclipserunner.Messages.Message_unbookmarkTooltip;
 import static org.eclipse.debug.ui.IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP;
@@ -85,7 +87,7 @@ public final class LaunchActionBuilder {
 		this.runnerView = runnerView;
 		return this;
 	}
-	
+
 	public Action createShowRunConfigurationDialogAction() {
 		Action action = new ShowLaunchConfigurationsDialogAction(launchConfigurationSelection, ID_RUN_LAUNCH_GROUP);
 		configureAction(action, Message_openRunConfigurationsDialog, Message_openRunConfigurationsDialogTooltip, IMG_RUN_CONFIGURATIONS);
@@ -151,25 +153,31 @@ public final class LaunchActionBuilder {
 		configureAction(action, Message_unbookmark, Message_unbookmarkTooltip, IMG_UNBOOKMARK);
 		return action;
 	}
-	
+
 	public Action createToggleFlatModeAction() {
 		Action action = new ToggleTreeModeAction(runnerView, TreeMode.FLAT_MODE, false);
 		// TODO LWA
 		configureAction(action, "Flat tree", Message_unbookmarkTooltip, IMG_FLAT_TREE);
 		return action;
 	}
-	
+
 	public Action createToggleTypeModeAction() {
 		Action action = new ToggleTreeModeAction(runnerView, TreeMode.TYPE_MODE, true);
 		// TODO LWA
 		configureAction(action, "Tree with types", Message_unbookmarkTooltip, IMG_TYPE_TREE);
 		return action;
 	}
-	
+
 	public Action createToggleDefaultCategoryAction() {
 		Action action = new ToggleDefaultCategoryAction(runnerView, runnerModel);
 		// TODO LWA
 		configureAction(action, "Show default category", Message_unbookmarkTooltip, IMG_DEFAULT_CATEGORY);
+		return action;
+	}
+
+	public Action createToggleBookmarkModeAction() {
+		Action action = new ToggleBookmarkModeAction(runnerView);
+		configureAction(action, Message_toggleBookmarkMode, Message_toggleBookmarkModeTooltip, IMG_BOOKMARK);
 		return action;
 	}
 

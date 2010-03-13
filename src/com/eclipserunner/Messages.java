@@ -61,6 +61,9 @@ public class Messages extends NLS {
 	public static String Message_unbookmark;
 	public static String Message_unbookmarkTooltip;
 
+	public static String Message_toggleBookmarkMode;
+	public static String Message_toggleBookmarkModeTooltip;
+
 	public static String Message_error;
 	public static String Message_errorLaunchConfigurationAlreadyExists;
 

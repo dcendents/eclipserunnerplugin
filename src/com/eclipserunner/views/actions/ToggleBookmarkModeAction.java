@@ -4,20 +4,17 @@ import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jface.action.Action;
 
 import com.eclipserunner.RunnerPluginPrererenceConstants;
-import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.views.IRunnerView;
 
 @SuppressWarnings("restriction")
-public class ToggleDefaultCategoryAction extends Action {
+public class ToggleBookmarkModeAction extends Action {
 
 	private final IRunnerView runnerView;
-	private final IRunnerModel runnerModel;
 
-	public ToggleDefaultCategoryAction(IRunnerView runnerView, IRunnerModel runnerModel) {
+	public ToggleBookmarkModeAction(IRunnerView runnerView) {
 		this.runnerView = runnerView;
-		this.runnerModel = runnerModel;
 
-		boolean checked = JavaPlugin.getDefault().getPreferenceStore().getBoolean(RunnerPluginPrererenceConstants.DEFAULT_CATEGORY_VISIBLE);
+		boolean checked = JavaPlugin.getDefault().getPreferenceStore().getBoolean(RunnerPluginPrererenceConstants.BOOKMARK_FILTER_ENABLE);
 		valueChanged(checked, false);
 	}
 
@@ -25,14 +22,15 @@ public class ToggleDefaultCategoryAction extends Action {
 	public void run() {
 		valueChanged(isChecked(), true);
 
-		runnerModel.setDefaultCategoryVisible(isChecked());
+		// TODO BARY launchers filtering
+		// runnerView.
 		runnerView.refresh();
 	}
 
 	private void valueChanged(final boolean checked, boolean storeProperty) {
 		setChecked(checked);
 		if (storeProperty) {
-			JavaPlugin.getDefault().getPreferenceStore().setValue(RunnerPluginPrererenceConstants.DEFAULT_CATEGORY_VISIBLE, checked);
+			JavaPlugin.getDefault().getPreferenceStore().setValue(RunnerPluginPrererenceConstants.BOOKMARK_FILTER_ENABLE, checked);
 		}
 	}
 

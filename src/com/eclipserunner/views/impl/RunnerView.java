@@ -4,13 +4,16 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationListener;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.LocalSelectionTransfer;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -51,6 +54,7 @@ import com.eclipserunner.views.actions.LaunchActionBuilder;
  * 
  * @author vachacz, bary
  */
+@SuppressWarnings("restriction")
 public class RunnerView extends ViewPart implements ILaunchConfigurationSelection, IMenuListener, IDoubleClickListener, IModelChangeListener, IRunnerView {
 
 	private IRunnerModel runnerModel;
@@ -60,6 +64,8 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	private ILaunchConfigurationListener modelLaunchConfigurationListener;
 	private ILaunchConfigurationListener viewLaunchConfigurationListener;
 	private ISelectionListener selectionListener;
+
+	private IPropertyChangeListener propertyChangeListener;
 
 	private Action showRunConfigurationsDialogAction;
 	private Action showDebugConfigurationsDialogAction;
@@ -78,10 +84,12 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	private Action renameAction;
 	private Action removeAction;
 	private Action aboutAction;
-	
+
 	private Action toggleFlatModeAction;
 	private Action toggleTypeModeAction;
 	private Action toggleDefaultCategoryAction;
+
+	private Action toggleBookmarkModeAction;
 
 	// we are listening only from this selection providers
 	private final String[] selectonProviders = new String[] {
@@ -89,12 +97,17 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 			"org.eclipse.ui.navigator.ProjectExplorer"
 	};
 
+	public RunnerView() {
+		super();
+	}
+
 	@Override
 	public void createPartControl(Composite parent) {
 		initializeModel();
 		initializeViewer(parent);
 		initializeSelectionListeners();
 		initializeLaunchConfigurationListeners();
+		initializePropertyChangeListeners();
 		initializeDragAndDrop();
 
 		setupLaunchActions();
@@ -115,7 +128,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 
 		viewer = tree.getViewer();
 		viewer.setContentProvider(
-			new RunnerModelTreeWithTypesAdapter(runnerModel, this)
+				new RunnerModelTreeWithTypesAdapter(runnerModel, this)
 		);
 		viewer.setLabelProvider(new LaunchTreeLabelProvider(runnerModel));
 		viewer.addDoubleClickListener(this);
@@ -151,6 +164,15 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		getLaunchManager().addLaunchConfigurationListener(modelLaunchConfigurationListener);
 	}
 
+	private void initializePropertyChangeListeners() {
+		propertyChangeListener= new IPropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent event) {
+				System.out.println("RunnerView.RunnerView().new IPropertyChangeListener() {...}.propertyChange()");
+			}
+		};
+		JavaPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(propertyChangeListener);
+	}
+
 	private void initializeDragAndDrop() {
 		int operations = DND.DROP_COPY | DND.DROP_MOVE;
 		Transfer[] transferTypes = new Transfer[]{ LocalSelectionTransfer.getTransfer(), FileTransfer.getInstance() };
@@ -166,6 +188,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		disposeModel();
 		disposeSelectionListeners();
 		disposeLaunchConfigurationListeners();
+		disposePropertyChangeListeners();
 	}
 
 	private void disposeModel() {
@@ -181,6 +204,13 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	private void disposeLaunchConfigurationListeners() {
 		getLaunchManager().removeLaunchConfigurationListener(modelLaunchConfigurationListener);
 		getLaunchManager().removeLaunchConfigurationListener(viewLaunchConfigurationListener);
+	}
+
+	private void disposePropertyChangeListeners() {
+		if (propertyChangeListener != null) {
+			JavaPlugin.getDefault().getPreferenceStore().removePropertyChangeListener(propertyChangeListener);
+			propertyChangeListener= null;
+		}
 	}
 
 	private void setupLaunchActions() {
@@ -204,6 +234,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		toggleFlatModeAction                = builder.createToggleFlatModeAction();
 		toggleTypeModeAction                = builder.createToggleTypeModeAction();
 		toggleDefaultCategoryAction         = builder.createToggleDefaultCategoryAction();
+		toggleBookmarkModeAction            = builder.createToggleBookmarkModeAction();
 	}
 
 	private void setupContextMenu() {
@@ -235,12 +266,13 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	}
 
 	private void setupLocalToolBar(IToolBarManager manager) {
+		manager.add(toggleBookmarkModeAction);
+		manager.add(toggleDefaultCategoryAction);
+		manager.add(new Separator());
 		manager.add(addNewCategoryAction);
 		manager.add(new Separator());
 		manager.add(collapseAllAction);
 		manager.add(expandAllAction);
-		manager.add(new Separator());
-		manager.add(toggleDefaultCategoryAction);
 	}
 
 	// TODO LWA BARY: define which actions should be visible/enable for category and configuration,
@@ -360,20 +392,20 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	private ILaunchManager getLaunchManager() {
 		return DebugPlugin.getDefault().getLaunchManager();
 	}
-	
+
 	// TODO LWA TreeContentProviderFactory would hide implementations
 	public void setTreeMode(TreeMode mode) {
 		if (mode.isFlat()) {
 			toggleFlatModeAction.setChecked(true);
 			toggleTypeModeAction.setChecked(false);
 			viewer.setContentProvider(
-				new RunnerModelTreeAdapter(runnerModel, this)
+					new RunnerModelTreeAdapter(runnerModel, this)
 			);
 		} else {
 			toggleFlatModeAction.setChecked(false);
 			toggleTypeModeAction.setChecked(true);
 			viewer.setContentProvider(
-				new RunnerModelTreeWithTypesAdapter(runnerModel, this)
+					new RunnerModelTreeWithTypesAdapter(runnerModel, this)
 			);
 		}
 		refresh();
