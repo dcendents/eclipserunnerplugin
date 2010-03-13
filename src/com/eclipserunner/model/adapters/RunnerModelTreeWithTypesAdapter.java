@@ -1,7 +1,9 @@
 package com.eclipserunner.model.adapters;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfigurationType;
@@ -63,7 +65,12 @@ public class RunnerModelTreeWithTypesAdapter implements ITreeContentProvider {
 
 	public Object[] getElements(Object parent) {
 		if (parent.equals(viewPart.getViewSite())) {
-			return runnerModel.getLaunchConfigurationCategories().toArray();
+			Set<ILaunchConfigurationCategory> categories = runnerModel.getLaunchConfigurationCategories();
+			Object[] objects = categories.toArray();
+			if (! runnerModel.isDefaultCategoryVisible()) {
+				objects = Arrays.asList(objects).subList(1, objects.length).toArray();
+			}
+			return objects;
 		}
 		return getChildren(parent);
 	}

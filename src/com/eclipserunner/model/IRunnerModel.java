@@ -18,6 +18,8 @@ public interface IRunnerModel {
 	void addModelChangeListener(IModelChangeListener listener);
 	void removeModelChangeListener(IModelChangeListener listener);
 
+	boolean isDefaultCategoryVisible();
+	void setDefaultCategoryVisible(boolean checked);
 	ILaunchConfigurationCategory getDefaultCategory();
 
 	ILaunchConfigurationNode findLaunchConfigurationNodeBy(ILaunchConfiguration configuration);

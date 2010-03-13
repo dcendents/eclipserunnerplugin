@@ -167,7 +167,7 @@ public final class LaunchActionBuilder {
 	}
 	
 	public Action createToggleDefaultCategoryAction() {
-		Action action = new ToggleDefaultCategoryAction(runnerView);
+		Action action = new ToggleDefaultCategoryAction(runnerView, runnerModel);
 		// TODO LWA
 		configureAction(action, "Show default category", Message_unbookmarkTooltip, IMG_DEFAULT_CATEGORY);
 		return action;

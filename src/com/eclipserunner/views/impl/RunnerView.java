@@ -135,13 +135,13 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	private void initializeLaunchConfigurationListeners() {
 		viewLaunchConfigurationListener = new ILaunchConfigurationListener() {
 			public void launchConfigurationRemoved(ILaunchConfiguration configuration) {
-				getViewer().refresh();
+				refresh();
 			}
 			public void launchConfigurationChanged(ILaunchConfiguration configuration) {
-				getViewer().refresh();
+				refresh();
 			}
 			public void launchConfigurationAdded(ILaunchConfiguration configuration) {
-				getViewer().refresh();
+				refresh();
 			}
 		};
 
@@ -337,7 +337,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	}
 
 	public void modelChanged() {
-		getViewer().refresh();
+		refresh();
 	}
 
 	@Override
@@ -376,6 +376,10 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 				new RunnerModelTreeWithTypesAdapter(runnerModel, this)
 			);
 		}
+		refresh();
+	}
+
+	public void refresh() {
 		getViewer().refresh();
 	}
 

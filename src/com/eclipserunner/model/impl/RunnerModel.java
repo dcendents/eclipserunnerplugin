@@ -44,6 +44,8 @@ public class RunnerModel implements IRunnerModel, ICategoryChangeListener {
 
 	private ILaunchConfigurationCategory defaultCategory;
 
+	private boolean defaultCategoryVisible;
+
 	protected RunnerModel() {
 		// TODO LWA builder
 		LaunchConfigurationCategory category = new LaunchConfigurationCategory();
@@ -157,6 +159,14 @@ public class RunnerModel implements IRunnerModel, ICategoryChangeListener {
 
 	public void categoryChanged() {
 		fireModelChangedEvent();
+	}
+
+	public boolean isDefaultCategoryVisible() {
+		return defaultCategoryVisible;
+	}
+	
+	public void setDefaultCategoryVisible(boolean checked) {
+		this.defaultCategoryVisible = checked;
 	}
 
 }
