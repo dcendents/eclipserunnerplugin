@@ -2,8 +2,8 @@ package com.eclipserunner.model.adapters;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfigurationType;
@@ -33,18 +33,17 @@ public class RunnerModelTreeWithTypesAdapter implements ITreeContentProvider {
 
 	public Object[] getChildren(Object object) {
 		if (object instanceof ILaunchConfigurationCategory) {
-			ILaunchConfigurationCategory launchConfigrationCategory = (ILaunchConfigurationCategory) object;
-			return getTypesByCategory(launchConfigrationCategory);
-		} else if (object instanceof LaunchConfigurationTypeNode) {
-			ILaunchConfigurationCategory category = ((LaunchConfigurationTypeNode) object).getParentCategory();
-			return getConfigsByType(category, (LaunchConfigurationTypeNode) object);
+			return getChildrenByCategory((ILaunchConfigurationCategory) object);
+		} 
+		else if (object instanceof LaunchConfigurationTypeNode) {
+			return getChildrenByType((LaunchConfigurationTypeNode) object);
 		}
 		return null;
 	}
 
 	public Object getParent(Object object) {
 		if (object instanceof ILaunchConfigurationNode) {
-			return ((ILaunchConfigurationNode) object).getLaunchConfigurationCategory();
+			return getParentByLaunchConfiguration((ILaunchConfigurationNode) object); 
 		}
 		else if (object instanceof LaunchConfigurationTypeNode) {
 			return ((LaunchConfigurationTypeNode) object).getParentCategory();
@@ -63,9 +62,10 @@ public class RunnerModelTreeWithTypesAdapter implements ITreeContentProvider {
 		return false;
 	}
 
+	// TODO LWA make it better
 	public Object[] getElements(Object parent) {
 		if (parent.equals(viewPart.getViewSite())) {
-			Set<ILaunchConfigurationCategory> categories = runnerModel.getLaunchConfigurationCategories();
+			Collection<ILaunchConfigurationCategory> categories = runnerModel.getLaunchConfigurationCategories();
 			Object[] objects = categories.toArray();
 			if (! runnerModel.isDefaultCategoryVisible()) {
 				objects = Arrays.asList(objects).subList(1, objects.length).toArray();
@@ -81,7 +81,26 @@ public class RunnerModelTreeWithTypesAdapter implements ITreeContentProvider {
 	public void inputChanged(Viewer arg0, Object arg1, Object arg2) {
 	}
 
-	private Object[] getConfigsByType(ILaunchConfigurationCategory category, LaunchConfigurationTypeNode type) {
+	// TODO LWA make it better and easier
+	private Object getParentByLaunchConfiguration(ILaunchConfigurationNode launchConfigurationNode) {
+		ILaunchConfigurationType type;
+		try {
+			type = launchConfigurationNode.getLaunchConfiguration().getType();
+		} catch (CoreException e) {
+			return null;
+		}
+		Object[] children = getChildren(launchConfigurationNode.getLaunchConfigurationCategory());
+		for (int i = 0; i > children.length; i++) {
+			if (((LaunchConfigurationTypeNode) children[i]).getType() == type) {
+				return children[i];
+			}
+		}
+		return null;
+	}
+	
+	private Object[] getChildrenByType(LaunchConfigurationTypeNode type) {
+		ILaunchConfigurationCategory category = type.getParentCategory();
+		
 		List<ILaunchConfigurationNode> nodes = new ArrayList<ILaunchConfigurationNode>();
 		for (ILaunchConfigurationNode node : category.getLaunchConfigurationNodes()) {
 			try {
@@ -94,7 +113,7 @@ public class RunnerModelTreeWithTypesAdapter implements ITreeContentProvider {
 		return nodes.toArray();
 	}
 	
-	private Object[] getTypesByCategory(ILaunchConfigurationCategory launchConfigrationCategory) {
+	private Object[] getChildrenByCategory(ILaunchConfigurationCategory launchConfigrationCategory) {
 		List<LaunchConfigurationTypeNode> types = new ArrayList<LaunchConfigurationTypeNode>();
 		for (ILaunchConfigurationNode node : launchConfigrationCategory.getLaunchConfigurationNodes()) {
 			try {

@@ -1,6 +1,6 @@
 package com.eclipserunner.model;
 
-import java.util.Set;
+import java.util.Collection;
 
 
 /**
@@ -13,7 +13,7 @@ public interface ILaunchConfigurationCategory {
 	String getName();
 	void setName(String name);
 
-	Set<ILaunchConfigurationNode> getLaunchConfigurationNodes();
+	Collection<ILaunchConfigurationNode> getLaunchConfigurationNodes();
 
 	void add(ILaunchConfigurationNode launchConfigurationNode);
 	void remove(ILaunchConfigurationNode launchConfigurationNode);

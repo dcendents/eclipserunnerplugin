@@ -6,9 +6,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -194,7 +194,7 @@ public class RunnerStateExternalizer {
 		}
 	}
 
-	private static Document createCategorDocument(Set<ILaunchConfigurationCategory> launchConfigurationCategories) throws CoreException {
+	private static Document createCategorDocument(Collection<ILaunchConfigurationCategory> launchConfigurationCategories) throws CoreException {
 		Document document = createDocument();
 
 		Element runnerElement = document.createElement(ROOT_NODE_NAME);

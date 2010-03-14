@@ -1,7 +1,7 @@
 package com.eclipserunner.model.adapters;
 
 import java.util.Arrays;
-import java.util.Set;
+import java.util.Collection;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
@@ -51,7 +51,7 @@ public class RunnerModelTreeAdapter implements ITreeContentProvider {
 
 	public Object[] getElements(Object parent) {
 		if (parent.equals(viewPart.getViewSite())) {
-			Set<ILaunchConfigurationCategory> categories = runnerModel.getLaunchConfigurationCategories();
+			Collection<ILaunchConfigurationCategory> categories = runnerModel.getLaunchConfigurationCategories();
 			Object[] objects = categories.toArray();
 			if (! runnerModel.isDefaultCategoryVisible()) {
 				objects = Arrays.asList(objects).subList(1, objects.length).toArray();

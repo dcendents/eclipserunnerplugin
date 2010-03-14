@@ -33,5 +33,5 @@ public class LaunchConfigurationTypeNode implements IActionEnablement {
 	public boolean isRenamable() {
 		return false;
 	}
-	
+
 }
