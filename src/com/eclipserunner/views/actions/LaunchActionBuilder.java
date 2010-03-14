@@ -6,6 +6,8 @@ import static com.eclipserunner.Messages.Message_bookmark;
 import static com.eclipserunner.Messages.Message_bookmarkTooltip;
 import static com.eclipserunner.Messages.Message_collapseAll;
 import static com.eclipserunner.Messages.Message_collapseAllTooltip;
+import static com.eclipserunner.Messages.Message_createToggleDefaultCategory;
+import static com.eclipserunner.Messages.Message_createToggleDefaultCategoryTooltip;
 import static com.eclipserunner.Messages.Message_debugConfiguration;
 import static com.eclipserunner.Messages.Message_debugConfigurationTooltip;
 import static com.eclipserunner.Messages.Message_expandAll;
@@ -22,6 +24,10 @@ import static com.eclipserunner.Messages.Message_runConfiguration;
 import static com.eclipserunner.Messages.Message_runConfigurationTooltip;
 import static com.eclipserunner.Messages.Message_toggleBookmarkMode;
 import static com.eclipserunner.Messages.Message_toggleBookmarkModeTooltip;
+import static com.eclipserunner.Messages.Message_treeModeFlat;
+import static com.eclipserunner.Messages.Message_treeModeFlatTooltip;
+import static com.eclipserunner.Messages.Message_treeModeWithTypes;
+import static com.eclipserunner.Messages.Message_treeModeWithTypesTooltip;
 import static com.eclipserunner.Messages.Message_unbookmark;
 import static com.eclipserunner.Messages.Message_unbookmarkTooltip;
 import static org.eclipse.debug.ui.IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP;
@@ -156,22 +162,19 @@ public final class LaunchActionBuilder {
 
 	public Action createToggleFlatModeAction() {
 		Action action = new ToggleTreeModeAction(runnerView, TreeMode.FLAT_MODE);
-		// TODO LWA
-		configureAction(action, "Flat tree", Message_unbookmarkTooltip, IMG_FLAT_TREE);
+		configureAction(action, Message_treeModeFlat, Message_treeModeFlatTooltip, IMG_FLAT_TREE);
 		return action;
 	}
 
 	public Action createToggleTypeModeAction() {
 		Action action = new ToggleTreeModeAction(runnerView, TreeMode.TYPE_MODE);
-		// TODO LWA
-		configureAction(action, "Tree with types", Message_unbookmarkTooltip, IMG_TYPE_TREE);
+		configureAction(action, Message_treeModeWithTypes, Message_treeModeWithTypesTooltip, IMG_TYPE_TREE);
 		return action;
 	}
 
 	public Action createToggleDefaultCategoryAction() {
 		Action action = new ToggleDefaultCategoryAction(runnerModel);
-		// TODO LWA
-		configureAction(action, "Show default category", Message_unbookmarkTooltip, IMG_DEFAULT_CATEGORY);
+		configureAction(action, Message_createToggleDefaultCategory, Message_createToggleDefaultCategoryTooltip, IMG_DEFAULT_CATEGORY);
 		return action;
 	}
 

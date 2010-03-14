@@ -48,37 +48,45 @@ public class LaunchTreeLabelProvider extends LabelProvider {
 		return debugModelPresentation.getText(element);
 	}
 
-	// TODO LWA make it simpler
 	@Override
 	public Image getImage(Object element) {
 		if (element instanceof ILaunchConfigurationCategory) {
-			ILaunchConfigurationCategory launchConfigurationCategory = (ILaunchConfigurationCategory) element;
-			if (runnerModel.getDefaultCategory() == launchConfigurationCategory) {
-				return createImage(IMG_DEFAULT_CATEGORY);
-			} else {
-				return createImage(IMG_CATEGORY);
-			}
+			return getCategoryImage((ILaunchConfigurationCategory) element);
 		}
 		else if (element instanceof ILaunchConfigurationNode) {
-			ILaunchConfigurationNode launchConfiguration = (ILaunchConfigurationNode) element;
-			Image image = debugModelPresentation.getImage(launchConfiguration.getLaunchConfiguration());
-
-			if (launchConfiguration.isBookmarked()) {
-				return overlyImage(image, IMG_DECORATION);
-			}
-			return image;
+			return getLaunchConfigurationImage((ILaunchConfigurationNode) element);
 		}
 		else if (element instanceof LaunchConfigurationTypeNode) {
-			return debugModelPresentation.getImage(((LaunchConfigurationTypeNode) element).getType());
+			return getLaunchConfigurationTypeImage((LaunchConfigurationTypeNode) element);
 		}
 		return ImageDescriptor.getMissingImageDescriptor().createImage();
 	}
 
+	private Image getCategoryImage(ILaunchConfigurationCategory launchConfigurationCategory) {
+		if (runnerModel.getDefaultCategory() == launchConfigurationCategory) {
+			return createImage(IMG_DEFAULT_CATEGORY);
+		} else {
+			return createImage(IMG_CATEGORY);
+		}
+	}
+
+	private Image getLaunchConfigurationImage(ILaunchConfigurationNode launchConfiguration) {
+		Image image = debugModelPresentation.getImage(launchConfiguration.getLaunchConfiguration());
+		if (launchConfiguration.isBookmarked()) {
+			return overlyBookmarkIcon(image, IMG_DECORATION);
+		}
+		return image;
+	}
+	
+	private Image getLaunchConfigurationTypeImage(LaunchConfigurationTypeNode typeNode) {
+		return debugModelPresentation.getImage(typeNode.getType());
+	}
+	
 	private Image createImage(String image) {
 		return RunnerPlugin.getDefault().getImageDescriptor(image).createImage();
 	}
 
-	private Image overlyImage(Image image, String decoration) {
+	private Image overlyBookmarkIcon(Image image, String decoration) {
 		ImageDescriptor decorationDescriptor = RunnerPlugin.getDefault().getImageDescriptor(decoration);
 		return new DecorationOverlayIcon(image, decorationDescriptor, IDecoration.TOP_RIGHT).createImage();
 	}

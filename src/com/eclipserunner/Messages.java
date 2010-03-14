@@ -67,4 +67,11 @@ public class Messages extends NLS {
 	public static String Message_error;
 	public static String Message_errorLaunchConfigurationAlreadyExists;
 
+	public static String Message_treeModeFlat;
+	public static String Message_treeModeFlatTooltip;
+	public static String Message_treeModeWithTypes;
+	public static String Message_treeModeWithTypesTooltip;
+
+	public static String Message_createToggleDefaultCategory;
+	public static String Message_createToggleDefaultCategoryTooltip;
 }
