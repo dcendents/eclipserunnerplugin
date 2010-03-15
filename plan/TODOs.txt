@@ -1,0 +1,19 @@
+---[ BUGS ]---------------------------------------------------------------------
+[ -- ] expand all + tree with types does not work
+[ -- ] drag and drop to launch configuration type
+[ -- ] open tree nodes are closed while performing some tree operations
+[ -- ] toggle bookmark icon covers base icon 
+
+---[ FEATURES ]-----------------------------------------------------------------
+[ -- ] toggle bookmarks button
+[ -- ] one bookmark/unbookmark button in context menu
+[ -- ] launch configuration filter by active project/working set
+
+---[ REFACTORING & IMPROVEMENTS ]-----------------------------------------------
+[ -- ] interface for LaunchConfigurationTypeNode (for LabelProvider)
+[ -- ] reduce number of TODOs and FIXMEs in code
+
+----[ TODO ]--------------------------------------------------------------------
+[ -- ] release
+[ -- ] update site on google.code
+[ -- ] wiki tutorial
