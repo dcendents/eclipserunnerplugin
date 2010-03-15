@@ -1,5 +1,5 @@
 ---[ BUGS ]---------------------------------------------------------------------
-[ -- ] expand all + tree with types does not work
+[ OK ] expand all + tree with types does not work
 [ -- ] drag and drop to launch configuration type
 [ -- ] open tree nodes are closed while performing some tree operations
 [ -- ] toggle bookmark icon covers base icon
@@ -13,6 +13,8 @@
 ---[ REFACTORING & IMPROVEMENTS ]-----------------------------------------------
 [ -- ] interface for LaunchConfigurationTypeNode (for LabelProvider)
 [ -- ] reduce number of TODOs and FIXMEs in code
+[ -- ] FlatTreeAdpaters jUnit tests
+[ -- ] ICategory instead of ILaunchConfigurationCategory
 
 ----[ TODO ]--------------------------------------------------------------------
 [ -- ] release

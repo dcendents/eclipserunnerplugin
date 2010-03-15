@@ -9,7 +9,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 public class CollapseAllAction extends Action {
 
 	private TreeViewer viewer;
-	
+
 	public CollapseAllAction(TreeViewer viewer) {
 		this.viewer = viewer;
 	}
@@ -17,6 +17,5 @@ public class CollapseAllAction extends Action {
 	@Override
 	public void run() {
 		viewer.collapseAll();
-		viewer.refresh();
 	}
 }

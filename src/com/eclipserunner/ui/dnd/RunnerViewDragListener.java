@@ -1,6 +1,6 @@
 package com.eclipserunner.ui.dnd;
 
-import static com.eclipserunner.utils.SelectionUtils.getFirstSelectedByType;
+import static com.eclipserunner.utils.SelectionUtils.getFirstSelectedItemByType;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,7 +37,7 @@ public class RunnerViewDragListener implements DragSourceListener {
 		if (selection instanceof IStructuredSelection && !selection.isEmpty()) {
 			
 			currentSelection = (IStructuredSelection) selection;
-			ILaunchConfigurationCategory category = getFirstSelectedByType(currentSelection, ILaunchConfigurationCategory.class);
+			ILaunchConfigurationCategory category = getFirstSelectedItemByType(currentSelection, ILaunchConfigurationCategory.class);
 			if (category != null) {
 				event.doit = false;
 			}

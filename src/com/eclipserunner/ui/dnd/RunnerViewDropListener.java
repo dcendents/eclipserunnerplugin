@@ -1,6 +1,6 @@
 package com.eclipserunner.ui.dnd;
 
-import static com.eclipserunner.utils.SelectionUtils.getAllSelectedByType;
+import static com.eclipserunner.utils.SelectionUtils.getAllSelectedItemsByType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +17,12 @@ import com.eclipserunner.model.ILaunchConfigurationNode;
 
 /**
  * Listener for handling drop events.
- * 
+ *
  * @author bary
  */
 public class RunnerViewDropListener extends ViewerDropAdapter {
 
-	// TODO BARY : what is "localTransfer"? we could change name to something better
+	// TODO BARY : what is "localTransfer"? we could change name to express more about the variable
 	private boolean localTransfer;
 
 	public RunnerViewDropListener(Viewer viewer) {
@@ -49,7 +49,7 @@ public class RunnerViewDropListener extends ViewerDropAdapter {
 		if (localTransfer) {
 			ISelection selection = LocalSelectionTransfer.getTransfer().getSelection();
 			launchConfigurationToMove.addAll(
-					getAllSelectedByType(selection, ILaunchConfigurationNode.class)
+					getAllSelectedItemsByType(selection, ILaunchConfigurationNode.class)
 			);
 		}
 
@@ -67,11 +67,9 @@ public class RunnerViewDropListener extends ViewerDropAdapter {
 
 		if (launchConfigurationToMove.size() == 1) {
 			getViewer().setSelection(new StructuredSelection(launchConfigurationToMove.get(0)));
-			getViewer().refresh();
 		}
 
 		return true;
 	}
-
 
 }

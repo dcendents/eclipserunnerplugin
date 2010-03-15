@@ -9,7 +9,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 public class ExpandAllAction extends Action {
 
 	private TreeViewer viewer;
-	
+
 	public ExpandAllAction(TreeViewer viewer) {
 		this.viewer = viewer;
 	}
@@ -17,6 +17,5 @@ public class ExpandAllAction extends Action {
 	@Override
 	public void run() {
 		viewer.expandAll();
-		viewer.refresh();
 	}
 }
