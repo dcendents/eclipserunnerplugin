@@ -18,7 +18,7 @@ import com.eclipserunner.model.impl.LaunchConfigurationTypeNode;
 
 /**
  * Development code ... before refactoring.
- * 
+ *
  * @author vachacz
  */
 public class RunnerModelTreeWithTypesAdapter implements ITreeContentProvider {
@@ -34,7 +34,7 @@ public class RunnerModelTreeWithTypesAdapter implements ITreeContentProvider {
 	public Object[] getChildren(Object object) {
 		if (object instanceof ILaunchConfigurationCategory) {
 			return getChildrenByCategory((ILaunchConfigurationCategory) object);
-		} 
+		}
 		else if (object instanceof LaunchConfigurationTypeNode) {
 			return getChildrenByType((LaunchConfigurationTypeNode) object);
 		}
@@ -43,7 +43,7 @@ public class RunnerModelTreeWithTypesAdapter implements ITreeContentProvider {
 
 	public Object getParent(Object object) {
 		if (object instanceof ILaunchConfigurationNode) {
-			return getParentByLaunchConfiguration((ILaunchConfigurationNode) object); 
+			return getParentByLaunchConfiguration((ILaunchConfigurationNode) object);
 		}
 		else if (object instanceof LaunchConfigurationTypeNode) {
 			return ((LaunchConfigurationTypeNode) object).getParentCategory();
@@ -55,10 +55,10 @@ public class RunnerModelTreeWithTypesAdapter implements ITreeContentProvider {
 		if (parent instanceof ILaunchConfigurationCategory) {
 			ILaunchConfigurationCategory launchConfigrationCategory = (ILaunchConfigurationCategory) parent;
 			return !launchConfigrationCategory.isEmpty();
-		} 
+		}
 		else if (parent instanceof LaunchConfigurationTypeNode) {
 			return true;
-		} 
+		}
 		return false;
 	}
 
@@ -90,17 +90,17 @@ public class RunnerModelTreeWithTypesAdapter implements ITreeContentProvider {
 			return null;
 		}
 		Object[] children = getChildren(launchConfigurationNode.getLaunchConfigurationCategory());
-		for (int i = 0; i > children.length; i++) {
-			if (((LaunchConfigurationTypeNode) children[i]).getType() == type) {
-				return children[i];
+		for (Object child : children) {
+			if (((LaunchConfigurationTypeNode) child).getType() == type) {
+				return child;
 			}
 		}
 		return null;
 	}
-	
+
 	private Object[] getChildrenByType(LaunchConfigurationTypeNode type) {
 		ILaunchConfigurationCategory category = type.getParentCategory();
-		
+
 		List<ILaunchConfigurationNode> nodes = new ArrayList<ILaunchConfigurationNode>();
 		for (ILaunchConfigurationNode node : category.getLaunchConfigurationNodes()) {
 			try {
@@ -112,7 +112,7 @@ public class RunnerModelTreeWithTypesAdapter implements ITreeContentProvider {
 		}
 		return nodes.toArray();
 	}
-	
+
 	private Object[] getChildrenByCategory(ILaunchConfigurationCategory launchConfigrationCategory) {
 		List<LaunchConfigurationTypeNode> types = new ArrayList<LaunchConfigurationTypeNode>();
 		for (ILaunchConfigurationNode node : launchConfigrationCategory.getLaunchConfigurationNodes()) {
@@ -122,7 +122,7 @@ public class RunnerModelTreeWithTypesAdapter implements ITreeContentProvider {
 					LaunchConfigurationTypeNode typeNode = new LaunchConfigurationTypeNode();
 					typeNode.setParentCategory(launchConfigrationCategory);
 					typeNode.setType(type);
-					
+
 					types.add(typeNode);
 				}
 			} catch (CoreException e) {
@@ -139,5 +139,5 @@ public class RunnerModelTreeWithTypesAdapter implements ITreeContentProvider {
 		}
 		return false;
 	}
-	
+
 }

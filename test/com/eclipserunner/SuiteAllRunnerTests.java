@@ -4,6 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import com.eclipserunner.model.adapters.TreeWithTypesAdapterTest;
 import com.eclipserunner.model.impl.RunnerModelTest;
 import com.eclipserunner.utils.SelectionUtilsTest;
 import com.eclipserunner.views.validators.LaunchConfigurationNameValidatorTest;
@@ -12,7 +13,8 @@ import com.eclipserunner.views.validators.LaunchConfigurationNameValidatorTest;
 @SuiteClasses(value = {
 	RunnerModelTest.class,
 	SelectionUtilsTest.class,
-	LaunchConfigurationNameValidatorTest.class
+	LaunchConfigurationNameValidatorTest.class,
+	TreeWithTypesAdapterTest.class
 })
 public class SuiteAllRunnerTests {
 

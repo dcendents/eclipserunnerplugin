@@ -2,7 +2,8 @@
 [ -- ] expand all + tree with types does not work
 [ -- ] drag and drop to launch configuration type
 [ -- ] open tree nodes are closed while performing some tree operations
-[ -- ] toggle bookmark icon covers base icon 
+[ -- ] toggle bookmark icon covers base icon
+[ -- ] delete about action? 
 
 ---[ FEATURES ]-----------------------------------------------------------------
 [ -- ] toggle bookmarks button
