@@ -52,7 +52,7 @@ import com.eclipserunner.views.actions.LaunchActionBuilder;
 
 /**
  * Class provides plugin eclipse View UI component.
- * 
+ *
  * @author vachacz, bary
  */
 @SuppressWarnings("restriction")
@@ -128,16 +128,16 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		FilteredTree tree = new FilteredTree(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL, patternFilter, true);
 
 		viewer = tree.getViewer();
-		
+
 		// TODO LWA refactor this code
 		String treeMode = JavaPlugin.getDefault().getPreferenceStore().getString(RunnerPluginPrererenceConstants.TREE_MODE);
-		
+
 		if (TreeMode.TYPE_MODE.toString().equals(treeMode)) {
 			setTreeTypeContentProvider();
 		} else {
 			setTreeFlatContentProvider();
 		}
-		
+
 		viewer.setLabelProvider(new LaunchTreeLabelProvider(runnerModel));
 		viewer.addDoubleClickListener(this);
 		viewer.setInput(getViewSite());
@@ -418,7 +418,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	public void refresh() {
 		getViewer().refresh();
 	}
-	
+
 	private void setTreeTypeContentProvider() {
 		viewer.setContentProvider(
 			new RunnerModelTreeWithTypesAdapter(runnerModel, this)

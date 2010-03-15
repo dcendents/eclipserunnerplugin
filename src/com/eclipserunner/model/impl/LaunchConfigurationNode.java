@@ -71,4 +71,14 @@ public class LaunchConfigurationNode implements ILaunchConfigurationNode, IActio
 		return true;
 	}
 
+	// TODO BARY code review ...
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof ILaunchConfigurationNode) {
+			ILaunchConfigurationNode node = (ILaunchConfigurationNode) obj;
+			return launchConfiguration.equals(node.getLaunchConfiguration());
+		}
+		return super.equals(obj);
+	}
+
 }

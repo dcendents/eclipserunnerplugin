@@ -34,4 +34,13 @@ public class LaunchConfigurationTypeNode implements IActionEnablement {
 		return false;
 	}
 
+	// TODO BARY code review ...
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof LaunchConfigurationTypeNode) {
+			LaunchConfigurationTypeNode typeNode = (LaunchConfigurationTypeNode) obj;
+			return type.equals(typeNode.getType()) && parentCategory.equals(typeNode.getParentCategory());
+		}
+		return super.equals(obj);
+	}
 }
