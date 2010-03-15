@@ -7,6 +7,9 @@ import com.eclipserunner.model.ILaunchConfigurationCategory;
 
 public class LaunchConfigurationTypeNode implements IActionEnablement {
 
+	private static final int PRIME_MULTIPLYER = 23;
+	private static final int PRIME_BASE       = 133;
+
 	private ILaunchConfigurationCategory parentCategory;
 	private ILaunchConfigurationType type;
 
@@ -34,7 +37,6 @@ public class LaunchConfigurationTypeNode implements IActionEnablement {
 		return false;
 	}
 
-	// TODO BARY code review ...
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof LaunchConfigurationTypeNode) {
@@ -42,5 +44,13 @@ public class LaunchConfigurationTypeNode implements IActionEnablement {
 			return type.equals(typeNode.getType()) && parentCategory.equals(typeNode.getParentCategory());
 		}
 		return super.equals(obj);
+	}
+
+	@Override
+	public int hashCode () {
+		int code = PRIME_BASE;
+		code = PRIME_MULTIPLYER * code + type.hashCode();
+		code = PRIME_MULTIPLYER * code + parentCategory.hashCode();
+		return code;
 	}
 }
