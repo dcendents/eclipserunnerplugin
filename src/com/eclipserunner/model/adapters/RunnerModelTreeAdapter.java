@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IViewSite;
 
 import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
@@ -13,17 +13,15 @@ import com.eclipserunner.model.IRunnerModel;
 
 /**
  * Adapter class adapts IRunnerModel to ITreeContentProvider interface.
- * 
+ *
  * @author vachacz
  */
 public class RunnerModelTreeAdapter implements ITreeContentProvider {
 
 	private IRunnerModel runnerModel;
-	private IViewPart viewPart;
 
-	public RunnerModelTreeAdapter(IRunnerModel runnerModel, IViewPart viewPart) {
+	public RunnerModelTreeAdapter(IRunnerModel runnerModel) {
 		this.runnerModel = runnerModel;
-		this.viewPart = viewPart;
 	}
 
 	public Object[] getChildren(Object object) {
@@ -50,7 +48,7 @@ public class RunnerModelTreeAdapter implements ITreeContentProvider {
 	}
 
 	public Object[] getElements(Object parent) {
-		if (parent.equals(viewPart.getViewSite())) {
+		if (parent instanceof IViewSite) {
 			Collection<ICategoryNode> categoryNodes = runnerModel.getCategoryNodes();
 			Object[] objects = categoryNodes.toArray();
 			if (! runnerModel.isDefaultCategoryNodeVisible()) {

@@ -79,7 +79,7 @@ public class TreeWithTypesAdapterTest {
 
 	@Test
 	public void testGetElementsRoot() throws Exception {
-		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model, viewPart);
+		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model);
 
 		Object[] elements = adapter.getElements(viewSite);
 
@@ -88,7 +88,7 @@ public class TreeWithTypesAdapterTest {
 
 	@Test
 	public void testGetElementsCategory() throws Exception {
-		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model, viewPart);
+		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model);
 
 		Object[] elements = adapter.getElements(category1);
 
@@ -97,7 +97,7 @@ public class TreeWithTypesAdapterTest {
 
 	@Test
 	public void testGetElementsConfigurationTypeNode() throws Exception {
-		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model, viewPart);
+		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model);
 
 		Object[] elements = adapter.getElements(asLaunchConfigurationTypeNode(type2, category1));
 
@@ -106,7 +106,7 @@ public class TreeWithTypesAdapterTest {
 
 	@Test
 	public void testGetElementsLuanchNode() throws Exception {
-		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model, viewPart);
+		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model);
 
 		Object[] elements = adapter.getElements(cat1launch2);
 
@@ -117,7 +117,7 @@ public class TreeWithTypesAdapterTest {
 
 	@Test
 	public void testHasChildrenCategory() throws Exception {
-		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model, viewPart);
+		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model);
 
 		boolean hasChildren = adapter.hasChildren(category1);
 
@@ -126,7 +126,7 @@ public class TreeWithTypesAdapterTest {
 
 	@Test
 	public void testHasChildrenCategoryWithoutChildren() throws Exception {
-		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model, viewPart);
+		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model);
 
 		boolean hasChildren = adapter.hasChildren(category3);
 
@@ -135,7 +135,7 @@ public class TreeWithTypesAdapterTest {
 
 	@Test
 	public void testHasChildrenLaunchConfiguration() throws Exception {
-		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model, viewPart);
+		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model);
 
 		boolean hasChildren = adapter.hasChildren(cat1launch2);
 
@@ -144,7 +144,7 @@ public class TreeWithTypesAdapterTest {
 
 	@Test
 	public void testHasChildrenLaunchConfigurationTypeNode() throws Exception {
-		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model, viewPart);
+		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model);
 
 		boolean hasChildren = adapter.hasChildren(asLaunchConfigurationTypeNode(type2, category1));
 
@@ -155,7 +155,7 @@ public class TreeWithTypesAdapterTest {
 
 	@Test
 	public void testGetParentLaunchConfiguration() throws Exception {
-		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model, viewPart);
+		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model);
 
 		Object parent = adapter.getParent(createLaunchConfigurationNode(cat1launch2, category1));
 
@@ -164,7 +164,7 @@ public class TreeWithTypesAdapterTest {
 
 	@Test
 	public void testGetParentTypeNode() throws Exception {
-		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model, viewPart);
+		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model);
 
 		Object parent = adapter.getParent(asLaunchConfigurationTypeNode(type2, category1));
 
@@ -173,7 +173,7 @@ public class TreeWithTypesAdapterTest {
 
 	@Test
 	public void testGetParentCategory() throws Exception {
-		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model, viewPart);
+		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model);
 
 		Object parent = adapter.getParent(category1);
 
@@ -184,7 +184,7 @@ public class TreeWithTypesAdapterTest {
 
 	@Test
 	public void testGetChildrenLaunchConfiguration() throws Exception {
-		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model, viewPart);
+		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model);
 
 		Object children[] = adapter.getChildren(createLaunchConfigurationNode(cat1launch2, category1));
 
@@ -193,7 +193,7 @@ public class TreeWithTypesAdapterTest {
 
 	@Test
 	public void testGetChildrenConfigurationTypeNode() throws Exception {
-		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model, viewPart);
+		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model);
 
 		Object children[] = adapter.getChildren(asLaunchConfigurationTypeNode(type2, category1));
 
@@ -202,7 +202,7 @@ public class TreeWithTypesAdapterTest {
 
 	@Test
 	public void testGetChildrenCategory() throws Exception {
-		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model, viewPart);
+		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model);
 
 		Object children[] = adapter.getChildren(category2);
 

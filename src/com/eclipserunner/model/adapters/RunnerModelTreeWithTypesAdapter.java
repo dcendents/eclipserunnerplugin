@@ -9,7 +9,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IViewSite;
 
 import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
@@ -24,11 +24,9 @@ import com.eclipserunner.model.impl.LaunchTypeNode;
 public class RunnerModelTreeWithTypesAdapter implements ITreeContentProvider {
 
 	private IRunnerModel runnerModel;
-	private IViewPart viewPart;
 
-	public RunnerModelTreeWithTypesAdapter(IRunnerModel runnerModel, IViewPart viewPart) {
+	public RunnerModelTreeWithTypesAdapter(IRunnerModel runnerModel) {
 		this.runnerModel = runnerModel;
-		this.viewPart = viewPart;
 	}
 
 	public Object[] getChildren(Object object) {
@@ -64,7 +62,7 @@ public class RunnerModelTreeWithTypesAdapter implements ITreeContentProvider {
 
 	// TODO LWA make it better
 	public Object[] getElements(Object parent) {
-		if (parent.equals(viewPart.getViewSite())) {
+		if (parent instanceof IViewSite) {
 			Collection<ICategoryNode> categoryNodes = runnerModel.getCategoryNodes();
 			Object[] objects = categoryNodes.toArray();
 			if (! runnerModel.isDefaultCategoryNodeVisible()) {

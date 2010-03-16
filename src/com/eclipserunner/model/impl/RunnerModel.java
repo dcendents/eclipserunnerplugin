@@ -20,7 +20,7 @@ import com.eclipserunner.model.IRunnerModel;
 
 /**
  * Class implementing {@link IRunnerModel}
- * 
+ *
  * @author vachacz
  */
 public class RunnerModel implements IRunnerModel, ICategoryNodeChangeListener {
@@ -37,8 +37,6 @@ public class RunnerModel implements IRunnerModel, ICategoryNodeChangeListener {
 		}
 	}
 
-	private static RunnerModel runnerModel = new RunnerModel();
-
 	private List<IModelChangeListener> modelChangeListeners = new ArrayList<IModelChangeListener>();
 	private Set<ICategoryNode> categoryNodes;
 
@@ -46,8 +44,8 @@ public class RunnerModel implements IRunnerModel, ICategoryNodeChangeListener {
 
 	private boolean defaultCategoryNodeVisible;
 
-	protected RunnerModel() {
-		// TODO LWA builder
+	public RunnerModel() {
+
 		CategoryNode category = new CategoryNode();
 		category.setName(Message_uncategorized);
 		category.addCategoryNodeChangeListener(this);
@@ -58,10 +56,6 @@ public class RunnerModel implements IRunnerModel, ICategoryNodeChangeListener {
 
 		categoryNodes = new TreeSet<ICategoryNode>(new ICategoryNodeComparator());
 		categoryNodes.add(defaultCategoryNode);
-	}
-
-	public static IRunnerModel getDefault() {
-		return runnerModel;
 	}
 
 	public Set<ICategoryNode> getCategoryNodes() {

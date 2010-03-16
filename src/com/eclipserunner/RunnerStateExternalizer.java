@@ -35,12 +35,12 @@ import org.w3c.dom.NodeList;
 import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.IRunnerModel;
+import com.eclipserunner.model.RunnerModelProvider;
 import com.eclipserunner.model.impl.LaunchNode;
-import com.eclipserunner.model.impl.RunnerModel;
 
 /**
  * Helper class for saving and loading plugin state.
- * 
+ *
  * @author bary
  */
 public class RunnerStateExternalizer {
@@ -61,7 +61,7 @@ public class RunnerStateExternalizer {
 
 	/**
 	 * Load plugin state from given file.
-	 * 
+	 *
 	 * @param inputFile Plugin state file.
 	 * @throws CoreException
 	 */
@@ -84,7 +84,7 @@ public class RunnerStateExternalizer {
 		Map<String, ILaunchNode> launchNodes = new HashMap<String, ILaunchNode>();
 
 		// populating model
-		IRunnerModel runnerModel = RunnerModel.getDefault();
+		IRunnerModel runnerModel = RunnerModelProvider.getDefaultModel();
 
 		// read categories
 		NodeList categoryNodeList = runnerNode.getElementsByTagName(CATEGORY_NODE_NAME);
@@ -139,11 +139,11 @@ public class RunnerStateExternalizer {
 
 	/**
 	 * Load plugin default state.
-	 * 
+	 *
 	 * @throws CoreException
 	 */
 	public static void readDefaultState() throws CoreException {
-		IRunnerModel runnerModel = RunnerModel.getDefault();
+		IRunnerModel runnerModel = RunnerModelProvider.getDefaultModel();
 		ILaunchManager launchManager = getLaunchManager();
 		for (ILaunchConfiguration launchConfiguration : launchManager.getLaunchConfigurations()) {
 			LaunchNode launchNode = new LaunchNode();
@@ -174,13 +174,13 @@ public class RunnerStateExternalizer {
 
 	/**
 	 * Save plugin state into given file.
-	 * 
+	 *
 	 * @param outputFile Plugin state file.
 	 * @throws CoreException
 	 */
 	public static void writeStateToFile(File outputFile) throws CoreException {
 		try {
-			IRunnerModel runnerModel = RunnerModel.getDefault();
+			IRunnerModel runnerModel = RunnerModelProvider.getDefaultModel();
 			FileOutputStream outputStream = new FileOutputStream(outputFile);
 			try {
 				Document document = createCategorDocument(runnerModel.getCategoryNodes());

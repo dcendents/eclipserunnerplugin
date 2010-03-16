@@ -36,14 +36,12 @@ import com.eclipserunner.RunnerPluginPrererenceConstants;
 import com.eclipserunner.model.IActionEnablement;
 import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
-import com.eclipserunner.model.INodeSelection;
 import com.eclipserunner.model.IModelChangeListener;
+import com.eclipserunner.model.INodeSelection;
 import com.eclipserunner.model.IRunnerModel;
+import com.eclipserunner.model.RunnerModelProvider;
 import com.eclipserunner.model.adapters.RunnerModelJdtSelectionListenerAdapter;
 import com.eclipserunner.model.adapters.RunnerModelLaunchConfigurationListenerAdapter;
-import com.eclipserunner.model.adapters.RunnerModelTreeAdapter;
-import com.eclipserunner.model.adapters.RunnerModelTreeWithTypesAdapter;
-import com.eclipserunner.model.impl.RunnerModel;
 import com.eclipserunner.ui.dnd.RunnerViewDragListener;
 import com.eclipserunner.ui.dnd.RunnerViewDropListener;
 import com.eclipserunner.views.IRunnerView;
@@ -117,7 +115,7 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 	}
 
 	private void initializeModel() {
-		runnerModel = RunnerModel.getDefault();
+		runnerModel = RunnerModelProvider.getDefaultModel();
 		runnerModel.addModelChangeListener(this);
 	}
 
@@ -131,12 +129,10 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 
 		// TODO LWA refactor this code
 		String treeMode = JavaPlugin.getDefault().getPreferenceStore().getString(RunnerPluginPrererenceConstants.TREE_MODE);
-
-		if (TreeMode.TYPE_MODE.toString().equals(treeMode)) {
-			setTreeTypeContentProvider();
-		} else {
-			setTreeFlatContentProvider();
-		}
+		RunnerModelProvider.setTreeMode(TreeMode.fromString(treeMode));
+		viewer.setContentProvider(
+			RunnerModelProvider.getTreeContentProvider()
+		);
 
 		viewer.setLabelProvider(new LaunchTreeLabelProvider(runnerModel));
 		viewer.addDoubleClickListener(this);
@@ -406,29 +402,21 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 		if (mode.isType()) {
 			toggleFlatModeAction.setChecked(false);
 			toggleTypeModeAction.setChecked(true);
-			setTreeTypeContentProvider();
 		} else {
 			toggleFlatModeAction.setChecked(true);
 			toggleTypeModeAction.setChecked(false);
-			setTreeFlatContentProvider();
 		}
+
+		RunnerModelProvider.setTreeMode(mode);
+		viewer.setContentProvider(
+			RunnerModelProvider.getTreeContentProvider()
+		);
+
 		refresh();
 	}
 
 	public void refresh() {
 		getViewer().refresh();
-	}
-
-	private void setTreeTypeContentProvider() {
-		viewer.setContentProvider(
-			new RunnerModelTreeWithTypesAdapter(runnerModel, this)
-		);
-	}
-
-	private void setTreeFlatContentProvider() {
-		viewer.setContentProvider(
-			new RunnerModelTreeAdapter(runnerModel, this)
-		);
 	}
 
 }
