@@ -4,6 +4,7 @@ import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 
 import com.eclipserunner.model.adapters.RunnerModelTreeAdapter;
+import com.eclipserunner.model.adapters.RunnerModelTreeWithTypesAdapter;
 import com.eclipserunner.model.impl.RunnerModel;
 import com.eclipserunner.views.TreeMode;
 
@@ -32,7 +33,7 @@ public class RunnerModelProvider {
 	}
 
 	public static void useHierarchicalTreeType() {
-		contentProvider = new RunnerModelTreeAdapter(runnerModel);
+		contentProvider = new RunnerModelTreeWithTypesAdapter(runnerModel);
 	}
 
 	public static void setTreeMode(TreeMode treeMode) {
@@ -40,8 +41,8 @@ public class RunnerModelProvider {
 			case FLAT_MODE:
 				contentProvider = new RunnerModelTreeAdapter(runnerModel);
 				break;
-			case TYPE_MODE:
-				contentProvider = new RunnerModelTreeAdapter(runnerModel);
+			case HIERARCHICAL_MODE:
+				contentProvider = new RunnerModelTreeWithTypesAdapter(runnerModel);
 				break;
 			default:
 				break;

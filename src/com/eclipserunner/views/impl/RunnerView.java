@@ -399,7 +399,7 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 
 	// TODO LWA TreeContentProviderFactory would hide implementations
 	public void setTreeMode(TreeMode mode) {
-		if (mode.isType()) {
+		if (mode.isHierarchical()) {
 			toggleFlatModeAction.setChecked(false);
 			toggleTypeModeAction.setChecked(true);
 		} else {

@@ -167,7 +167,7 @@ public final class LaunchActionBuilder {
 	}
 
 	public Action createToggleTypeModeAction() {
-		Action action = new ToggleTreeModeAction(runnerView, TreeMode.TYPE_MODE);
+		Action action = new ToggleTreeModeAction(runnerView, TreeMode.HIERARCHICAL_MODE);
 		configureAction(action, Message_treeModeWithTypes, Message_treeModeWithTypesTooltip, IMG_TYPE_TREE);
 		return action;
 	}
