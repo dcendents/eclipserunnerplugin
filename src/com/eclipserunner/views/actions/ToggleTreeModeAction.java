@@ -4,6 +4,9 @@ import com.eclipserunner.RunnerPluginPrererenceConstants;
 import com.eclipserunner.views.IRunnerView;
 import com.eclipserunner.views.TreeMode;
 
+/**
+ * @author vachacz
+ */
 public class ToggleTreeModeAction extends AbstractToggleAction {
 
 	private final IRunnerView runnerView;
@@ -12,7 +15,7 @@ public class ToggleTreeModeAction extends AbstractToggleAction {
 	public ToggleTreeModeAction(IRunnerView runnerView, TreeMode mode) {
 		this.mode = mode;
 		this.runnerView = runnerView;
-		
+
 		String treeMode = getPreferenceStore().getString(RunnerPluginPrererenceConstants.TREE_MODE);
 		if (mode.toString().equals(treeMode)) {
 			setChecked(true);
@@ -26,5 +29,5 @@ public class ToggleTreeModeAction extends AbstractToggleAction {
 		getPreferenceStore().setValue(RunnerPluginPrererenceConstants.TREE_MODE, mode.toString());
 		runnerView.setTreeMode(mode);
 	}
-	
+
 }

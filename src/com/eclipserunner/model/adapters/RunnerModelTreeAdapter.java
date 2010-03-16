@@ -64,7 +64,7 @@ public class RunnerModelTreeAdapter implements ITreeContentProvider {
 	public void dispose() {
 	}
 
-	public void inputChanged(Viewer arg0, Object arg1, Object arg2) {
+	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 	}
 
 }

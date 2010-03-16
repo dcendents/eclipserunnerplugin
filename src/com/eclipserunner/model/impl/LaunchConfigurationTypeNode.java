@@ -5,6 +5,9 @@ import org.eclipse.debug.core.ILaunchConfigurationType;
 import com.eclipserunner.model.IActionEnablement;
 import com.eclipserunner.model.ILaunchConfigurationCategory;
 
+/**
+ * @author vachacz
+ */
 public class LaunchConfigurationTypeNode implements IActionEnablement {
 
 	private static final int PRIME_MULTIPLYER = 23;

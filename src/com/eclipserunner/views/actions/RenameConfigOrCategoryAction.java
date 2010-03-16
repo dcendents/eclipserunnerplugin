@@ -19,6 +19,9 @@ import com.eclipserunner.model.ILaunchConfigurationSelection;
 import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.views.validators.LaunchConfigurationNameValidator;
 
+/**
+ * @author vachacz
+ */
 public class RenameConfigOrCategoryAction extends Action {
 
 	private ILaunchConfigurationSelection launchConfigurationSelection;

@@ -28,7 +28,7 @@ public class RunnerModel implements IRunnerModel, ICategoryChangeListener {
 	class ILaunchConfigurationCategoryComparator implements Comparator<ILaunchConfigurationCategory> {
 		public int compare(ILaunchConfigurationCategory category1,	ILaunchConfigurationCategory category2) {
 			if (RunnerModel.this.getDefaultCategory().equals(category1)) {
-				return 1;
+				return -1;
 			} else if (RunnerModel.this.getDefaultCategory().equals(category2)) {
 				return 1;
 			} else {
@@ -164,7 +164,7 @@ public class RunnerModel implements IRunnerModel, ICategoryChangeListener {
 	public boolean isDefaultCategoryVisible() {
 		return defaultCategoryVisible;
 	}
-	
+
 	public void setDefaultCategoryVisible(boolean checked) {
 		this.defaultCategoryVisible = checked;
 		fireModelChangedEvent();

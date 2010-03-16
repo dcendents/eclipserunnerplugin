@@ -75,12 +75,6 @@ public class RunnerModelTreeWithTypesAdapter implements ITreeContentProvider {
 		return getChildren(parent);
 	}
 
-	public void dispose() {
-	}
-
-	public void inputChanged(Viewer arg0, Object arg1, Object arg2) {
-	}
-
 	// TODO LWA make it better and easier
 	private Object getParentByLaunchConfiguration(ILaunchConfigurationNode launchConfigurationNode) {
 		ILaunchConfigurationType type;
@@ -138,6 +132,12 @@ public class RunnerModelTreeWithTypesAdapter implements ITreeContentProvider {
 			}
 		}
 		return false;
+	}
+
+	public void dispose() {
+	}
+
+	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 	}
 
 }

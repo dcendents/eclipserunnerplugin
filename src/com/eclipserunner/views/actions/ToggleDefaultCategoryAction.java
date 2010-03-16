@@ -3,6 +3,9 @@ package com.eclipserunner.views.actions;
 import com.eclipserunner.RunnerPluginPrererenceConstants;
 import com.eclipserunner.model.IRunnerModel;
 
+/**
+ * @author vachacz
+ */
 public class ToggleDefaultCategoryAction extends AbstractToggleAction {
 
 	private final IRunnerModel runnerModel;

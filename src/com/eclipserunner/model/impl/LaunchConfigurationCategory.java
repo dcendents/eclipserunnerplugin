@@ -38,7 +38,6 @@ public class LaunchConfigurationCategory implements ILaunchConfigurationCategory
 
 	public void add(ILaunchConfigurationNode launchConfigurationNode) {
 		launchConfigurationNode.setLaunchConfigurationCategory(this);
-		launchConfigurationNode.setBookmarked(false);
 		launchConfigurationNode.addLaunchConfigurationChangeListener(this);
 
 		launchConfigurationNodes.add(launchConfigurationNode);

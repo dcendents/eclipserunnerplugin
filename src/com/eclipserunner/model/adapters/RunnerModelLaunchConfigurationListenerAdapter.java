@@ -27,10 +27,6 @@ public class RunnerModelLaunchConfigurationListenerAdapter implements ILaunchCon
 		ILaunchConfiguration oldLaunchConfiguration = getLaunchManager().getMovedFrom(newConfiguration);
 		if (oldLaunchConfiguration != null) {
 
-			// TODO BARY: verify this
-			// better: runnerModel.remove(oldLaunchConfiguration);
-			//   Reply from bary: NO because you need to find original node when renaming configuration or you end up in uncategorized category
-
 			launchConfigurationNode = (LaunchConfigurationNode) runnerModel.findLaunchConfigurationNodeBy(oldLaunchConfiguration);
 			if (launchConfigurationNode != null) {
 				launchConfigurationNode.setLaunchConfiguration(newConfiguration);

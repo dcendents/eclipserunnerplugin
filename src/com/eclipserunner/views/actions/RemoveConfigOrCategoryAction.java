@@ -13,6 +13,9 @@ import com.eclipserunner.model.ILaunchConfigurationNode;
 import com.eclipserunner.model.ILaunchConfigurationSelection;
 import com.eclipserunner.model.IRunnerModel;
 
+/**
+ * @author vachacz
+ */
 public class RemoveConfigOrCategoryAction extends Action {
 
 	private ILaunchConfigurationSelection launchConfigurationSelection;
