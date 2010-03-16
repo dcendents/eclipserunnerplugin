@@ -34,9 +34,9 @@ import org.eclipse.ui.part.ViewPart;
 
 import com.eclipserunner.RunnerPluginPrererenceConstants;
 import com.eclipserunner.model.IActionEnablement;
-import com.eclipserunner.model.ILaunchConfigurationCategory;
-import com.eclipserunner.model.ILaunchConfigurationNode;
-import com.eclipserunner.model.ILaunchConfigurationSelection;
+import com.eclipserunner.model.ICategoryNode;
+import com.eclipserunner.model.ILaunchNode;
+import com.eclipserunner.model.INodeSelection;
 import com.eclipserunner.model.IModelChangeListener;
 import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.model.adapters.RunnerModelJdtSelectionListenerAdapter;
@@ -56,7 +56,7 @@ import com.eclipserunner.views.actions.LaunchActionBuilder;
  * @author vachacz, bary
  */
 @SuppressWarnings("restriction")
-public class RunnerView extends ViewPart implements ILaunchConfigurationSelection, IMenuListener, IDoubleClickListener, IModelChangeListener, IRunnerView {
+public class RunnerView extends ViewPart implements INodeSelection, IMenuListener, IDoubleClickListener, IModelChangeListener, IRunnerView {
 
 	private IRunnerModel runnerModel;
 
@@ -295,7 +295,7 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 	private void setupMenuItems(IMenuManager manager) {
 		manager.add(addNewCategoryAction);
 
-		if (isLaunchConfigurationNodeSelected()) {
+		if (isLaunchNodeSelected()) {
 			manager.add(new Separator());
 			manager.add(launchRunConfigurationAction);
 			manager.add(launchDebugConfigurationAction);
@@ -342,33 +342,33 @@ public class RunnerView extends ViewPart implements ILaunchConfigurationSelectio
 		return ((IStructuredSelection) getViewer().getSelection()).getFirstElement();
 	}
 
-	public boolean isLaunchConfigurationNodeSelected() {
-		if (getSelectedObject() instanceof ILaunchConfigurationNode) {
+	public boolean isLaunchNodeSelected() {
+		if (getSelectedObject() instanceof ILaunchNode) {
 			return true;
 		}
 		return false;
 	}
 
-	public boolean isLaunchConfigurationCategorySelected() {
-		if (getSelectedObject() instanceof ILaunchConfigurationCategory) {
+	public boolean isCategoryNodeSelected() {
+		if (getSelectedObject() instanceof ICategoryNode) {
 			return true;
 		}
 		return false;
 	}
 
-	public ILaunchConfigurationNode getSelectedLaunchConfigurationNode() {
-		return (ILaunchConfigurationNode) getSelectedObject();
+	public ILaunchNode getSelectedLaunchNode() {
+		return (ILaunchNode) getSelectedObject();
 	}
 
-	public ILaunchConfigurationCategory getSelectedLaunchConfigurationCategory() {
+	public ICategoryNode getSelectedCategoryNode() {
 		Object selectedObject = getSelectedObject();
-		ILaunchConfigurationCategory category = null;
+		ICategoryNode category = null;
 
-		if (selectedObject instanceof ILaunchConfigurationNode) {
-			category = (ILaunchConfigurationCategory) getTreeContentProvider().getParent(selectedObject);
+		if (selectedObject instanceof ILaunchNode) {
+			category = (ICategoryNode) getTreeContentProvider().getParent(selectedObject);
 		}
-		else if (selectedObject instanceof ILaunchConfigurationCategory) {
-			category = (ILaunchConfigurationCategory) selectedObject;
+		else if (selectedObject instanceof ICategoryNode) {
+			category = (ICategoryNode) selectedObject;
 		}
 		else {
 			assert true; // unreachable code

@@ -5,8 +5,8 @@ package com.eclipserunner.model;
  * 
  * @author vachacz
  */
-public interface ICategoryChangeListener {
+public interface ICategoryNodeChangeListener {
 
-	void categoryChanged();
+	void categoryNodeChanged();
 
 }

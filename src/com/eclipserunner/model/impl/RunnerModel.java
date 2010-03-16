@@ -12,9 +12,9 @@ import java.util.TreeSet;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 
-import com.eclipserunner.model.ICategoryChangeListener;
-import com.eclipserunner.model.ILaunchConfigurationCategory;
-import com.eclipserunner.model.ILaunchConfigurationNode;
+import com.eclipserunner.model.ICategoryNode;
+import com.eclipserunner.model.ICategoryNodeChangeListener;
+import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.IModelChangeListener;
 import com.eclipserunner.model.IRunnerModel;
 
@@ -23,13 +23,13 @@ import com.eclipserunner.model.IRunnerModel;
  * 
  * @author vachacz
  */
-public class RunnerModel implements IRunnerModel, ICategoryChangeListener {
+public class RunnerModel implements IRunnerModel, ICategoryNodeChangeListener {
 
-	class ILaunchConfigurationCategoryComparator implements Comparator<ILaunchConfigurationCategory> {
-		public int compare(ILaunchConfigurationCategory category1,	ILaunchConfigurationCategory category2) {
-			if (RunnerModel.this.getDefaultCategory().equals(category1)) {
+	class ICategoryNodeComparator implements Comparator<ICategoryNode> {
+		public int compare(ICategoryNode category1,	ICategoryNode category2) {
+			if (RunnerModel.this.getDefaultCategoryNode().equals(category1)) {
 				return -1;
-			} else if (RunnerModel.this.getDefaultCategory().equals(category2)) {
+			} else if (RunnerModel.this.getDefaultCategoryNode().equals(category2)) {
 				return 1;
 			} else {
 				return category1.getName().compareTo(category2.getName());
@@ -40,100 +40,100 @@ public class RunnerModel implements IRunnerModel, ICategoryChangeListener {
 	private static RunnerModel runnerModel = new RunnerModel();
 
 	private List<IModelChangeListener> modelChangeListeners = new ArrayList<IModelChangeListener>();
-	private Set<ILaunchConfigurationCategory> launchConfigurationCategories;
+	private Set<ICategoryNode> categoryNodes;
 
-	private ILaunchConfigurationCategory defaultCategory;
+	private ICategoryNode defaultCategoryNode;
 
-	private boolean defaultCategoryVisible;
+	private boolean defaultCategoryNodeVisible;
 
 	protected RunnerModel() {
 		// TODO LWA builder
-		LaunchConfigurationCategory category = new LaunchConfigurationCategory();
+		CategoryNode category = new CategoryNode();
 		category.setName(Message_uncategorized);
-		category.addCategoryChangeListener(this);
+		category.addCategoryNodeChangeListener(this);
 		category.setRemovable(false);
 		category.setRenameable(false);
 
-		defaultCategory = category;
+		defaultCategoryNode = category;
 
-		launchConfigurationCategories = new TreeSet<ILaunchConfigurationCategory>(new ILaunchConfigurationCategoryComparator());
-		launchConfigurationCategories.add(defaultCategory);
+		categoryNodes = new TreeSet<ICategoryNode>(new ICategoryNodeComparator());
+		categoryNodes.add(defaultCategoryNode);
 	}
 
 	public static IRunnerModel getDefault() {
 		return runnerModel;
 	}
 
-	public Set<ILaunchConfigurationCategory> getLaunchConfigurationCategories() {
-		return launchConfigurationCategories;
+	public Set<ICategoryNode> getCategoryNodes() {
+		return categoryNodes;
 	}
 
-	public void addLaunchConfigurationNode(ILaunchConfigurationNode launchConfigurationNode) {
-		defaultCategory.add(launchConfigurationNode);
+	public void addLaunchNode(ILaunchNode launchNode) {
+		defaultCategoryNode.add(launchNode);
 		// fireModelChangedEvent() not needed because category change triggers an event
 	}
 
-	public void removeLaunchConfigurationNode(ILaunchConfigurationNode launchConfigurationNode) {
-		for (ILaunchConfigurationCategory launchConfigurationCategory : launchConfigurationCategories) {
-			launchConfigurationCategory.remove(launchConfigurationNode);
+	public void removeLaunchNode(ILaunchNode launchNode) {
+		for (ICategoryNode categoryNode : categoryNodes) {
+			categoryNode.remove(launchNode);
 		}
-		deleteLaunchConfigurationFile(launchConfigurationNode.getLaunchConfiguration());
+		deleteLaunchConfigurationFile(launchNode.getLaunchConfiguration());
 		fireModelChangedEvent();
 	}
 
-	public ILaunchConfigurationCategory addLaunchConfigurationCategory(String name) {
-		ILaunchConfigurationCategory category = new LaunchConfigurationCategory();
-		category.setName(name);
-		category.addCategoryChangeListener(this);
+	public ICategoryNode addCategoryNode(String categoryNodeName) {
+		ICategoryNode category = new CategoryNode();
+		category.setName(categoryNodeName);
+		category.addCategoryNodeChangeListener(this);
 
-		launchConfigurationCategories.add(category);
+		categoryNodes.add(category);
 		fireModelChangedEvent();
 		return category;
 	}
 
-	public void removeLaunchConfigurationCategory(ILaunchConfigurationCategory category) {
+	public void removeCategoryNode(ICategoryNode categoryNode) {
 		// Iterator in order to avoid java.util.ConcurrentModificationException
-		for (Iterator<ILaunchConfigurationNode> launchConfigurationNodeIterator = category.getLaunchConfigurationNodes().iterator(); launchConfigurationNodeIterator.hasNext();) {
-			ILaunchConfigurationNode launchConfigurationNode = launchConfigurationNodeIterator.next();
-			launchConfigurationNodeIterator.remove();
-			deleteLaunchConfigurationFile(launchConfigurationNode.getLaunchConfiguration());
+		for (Iterator<ILaunchNode> launchNodeIterator = categoryNode.getLaunchNodes().iterator(); launchNodeIterator.hasNext();) {
+			ILaunchNode launchNode = launchNodeIterator.next();
+			launchNodeIterator.remove();
+			deleteLaunchConfigurationFile(launchNode.getLaunchConfiguration());
 		}
-		launchConfigurationCategories.remove(category);
-		category.removeCategoryChangeListener(this);
+		categoryNodes.remove(categoryNode);
+		categoryNode.removeCategoryNodeChangeListener(this);
 		fireModelChangedEvent();
 	}
 
-	public ILaunchConfigurationCategory getDefaultCategory() {
-		return defaultCategory;
+	public ICategoryNode getDefaultCategoryNode() {
+		return defaultCategoryNode;
 	}
 
-	public ILaunchConfigurationCategory getLaunchConfigurationCategory(String name) {
-		for (ILaunchConfigurationCategory launchConfigurationCategory : launchConfigurationCategories) {
-			if (launchConfigurationCategory.getName().equals(name)) {
-				return launchConfigurationCategory;
+	public ICategoryNode getCategoryNode(String name) {
+		for (ICategoryNode categoryNode : categoryNodes) {
+			if (categoryNode.getName().equals(name)) {
+				return categoryNode;
 			}
 		}
 		return null;
 	}
 
-	public void addModelChangeListener(IModelChangeListener listener) {
-		modelChangeListeners.add(listener);
+	public void addModelChangeListener(IModelChangeListener modelChangeListener) {
+		modelChangeListeners.add(modelChangeListener);
 	}
 
-	public void removeModelChangeListener(IModelChangeListener listener) {
-		modelChangeListeners.remove(listener);
+	public void removeModelChangeListener(IModelChangeListener modelChangeListener) {
+		modelChangeListeners.remove(modelChangeListener);
 	}
 
 	private void fireModelChangedEvent() {
-		for (IModelChangeListener listener : modelChangeListeners) {
-			listener.modelChanged();
+		for (IModelChangeListener modelChangeListener : modelChangeListeners) {
+			modelChangeListener.modelChanged();
 		}
 	}
 
-	private void deleteLaunchConfigurationFile(ILaunchConfiguration configuration) {
-		if (configuration != null) {
+	private void deleteLaunchConfigurationFile(ILaunchConfiguration launchConfiguration) {
+		if (launchConfiguration != null) {
 			try {
-				configuration.delete();
+				launchConfiguration.delete();
 			} catch (CoreException e) {
 				e.printStackTrace();
 			}
@@ -141,15 +141,15 @@ public class RunnerModel implements IRunnerModel, ICategoryChangeListener {
 	}
 
 	// for test only
-	protected void setLaunchConfigurationCategories(Set<ILaunchConfigurationCategory> launchConfigurationCategories) {
-		this.launchConfigurationCategories = launchConfigurationCategories;
+	protected void setLaunchConfigurationCategories(Set<ICategoryNode> categoryNodes) {
+		this.categoryNodes = categoryNodes;
 	}
 
-	public ILaunchConfigurationNode findLaunchConfigurationNodeBy(ILaunchConfiguration configuration) {
-		for (ILaunchConfigurationCategory launchConfigurationCategory : launchConfigurationCategories) {
+	public ILaunchNode findLaunchNodeBy(ILaunchConfiguration launchConfiguration) {
+		for (ICategoryNode launchConfigurationCategory : categoryNodes) {
 			// TODO LWA BARY: maybe category.contains() could check also ILaunchConfigs ??
-			for (ILaunchConfigurationNode launchConfigurationNode : launchConfigurationCategory.getLaunchConfigurationNodes()) {
-				if (launchConfigurationNode.getLaunchConfiguration().equals(configuration)) {
+			for (ILaunchNode launchConfigurationNode : launchConfigurationCategory.getLaunchNodes()) {
+				if (launchConfigurationNode.getLaunchConfiguration().equals(launchConfiguration)) {
 					return launchConfigurationNode;
 				}
 			}
@@ -157,16 +157,16 @@ public class RunnerModel implements IRunnerModel, ICategoryChangeListener {
 		return null;
 	}
 
-	public void categoryChanged() {
+	public void categoryNodeChanged() {
 		fireModelChangedEvent();
 	}
 
-	public boolean isDefaultCategoryVisible() {
-		return defaultCategoryVisible;
+	public boolean isDefaultCategoryNodeVisible() {
+		return defaultCategoryNodeVisible;
 	}
 
-	public void setDefaultCategoryVisible(boolean checked) {
-		this.defaultCategoryVisible = checked;
+	public void setDefaultCategoryNodeVisible(boolean visible) {
+		this.defaultCategoryNodeVisible = visible;
 		fireModelChangedEvent();
 	}
 

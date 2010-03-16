@@ -2,7 +2,7 @@ package com.eclipserunner.views.actions;
 
 import org.eclipse.debug.ui.DebugUITools;
 
-import com.eclipserunner.model.ILaunchConfigurationSelection;
+import com.eclipserunner.model.INodeSelection;
 
 /**
  * Action responsible for launching selected configuration.
@@ -12,18 +12,18 @@ import com.eclipserunner.model.ILaunchConfigurationSelection;
 @SuppressWarnings("restriction")
 public class LaunchConfigurationAction extends AbstractLaunchAction {
 
-	private ILaunchConfigurationSelection launchConfigurationSelection;
+	private INodeSelection launchConfigurationSelection;
 
-	public LaunchConfigurationAction(ILaunchConfigurationSelection launchConfigurationSelection, String launchGroupId) {
+	public LaunchConfigurationAction(INodeSelection launchConfigurationSelection, String launchGroupId) {
 		super(launchGroupId);
 		this.launchConfigurationSelection = launchConfigurationSelection;
 	}
 
 	@Override
 	public void run() {
-		if (launchConfigurationSelection.isLaunchConfigurationNodeSelected()) {
+		if (launchConfigurationSelection.isLaunchNodeSelected()) {
 			DebugUITools.launch(
-					launchConfigurationSelection.getSelectedLaunchConfigurationNode().getLaunchConfiguration(),
+					launchConfigurationSelection.getSelectedLaunchNode().getLaunchConfiguration(),
 					getLaunchConfigurationManager().getLaunchGroup(getLaunchGroupId()).getMode()
 			);
 		}

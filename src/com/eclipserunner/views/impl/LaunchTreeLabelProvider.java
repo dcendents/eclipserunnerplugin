@@ -9,10 +9,10 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import com.eclipserunner.RunnerPlugin;
-import com.eclipserunner.model.ILaunchConfigurationCategory;
-import com.eclipserunner.model.ILaunchConfigurationNode;
+import com.eclipserunner.model.ICategoryNode;
+import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.IRunnerModel;
-import com.eclipserunner.model.impl.LaunchConfigurationTypeNode;
+import com.eclipserunner.model.impl.LaunchTypeNode;
 
 /**
  * Launch configuration tree decorator.
@@ -35,42 +35,42 @@ public class LaunchTreeLabelProvider extends LabelProvider {
 
 	@Override
 	public String getText(Object element) {
-		if (element instanceof ILaunchConfigurationCategory) {
-			return ((ILaunchConfigurationCategory) element).getName();
+		if (element instanceof ICategoryNode) {
+			return ((ICategoryNode) element).getName();
 		}
-		else if (element instanceof ILaunchConfigurationNode) {
-			ILaunchConfigurationNode launchConfiguration = (ILaunchConfigurationNode) element;
+		else if (element instanceof ILaunchNode) {
+			ILaunchNode launchConfiguration = (ILaunchNode) element;
 			return debugModelPresentation.getText(launchConfiguration.getLaunchConfiguration());
 		}
-		else if (element instanceof LaunchConfigurationTypeNode) {
-			return debugModelPresentation.getText(((LaunchConfigurationTypeNode) element).getType());
+		else if (element instanceof LaunchTypeNode) {
+			return debugModelPresentation.getText(((LaunchTypeNode) element).getLaunchConfigurationType());
 		}
 		return debugModelPresentation.getText(element);
 	}
 
 	@Override
 	public Image getImage(Object element) {
-		if (element instanceof ILaunchConfigurationCategory) {
-			return getCategoryImage((ILaunchConfigurationCategory) element);
+		if (element instanceof ICategoryNode) {
+			return getCategoryImage((ICategoryNode) element);
 		}
-		else if (element instanceof ILaunchConfigurationNode) {
-			return getLaunchConfigurationImage((ILaunchConfigurationNode) element);
+		else if (element instanceof ILaunchNode) {
+			return getLaunchConfigurationImage((ILaunchNode) element);
 		}
-		else if (element instanceof LaunchConfigurationTypeNode) {
-			return getLaunchConfigurationTypeImage((LaunchConfigurationTypeNode) element);
+		else if (element instanceof LaunchTypeNode) {
+			return getLaunchConfigurationTypeImage((LaunchTypeNode) element);
 		}
 		return ImageDescriptor.getMissingImageDescriptor().createImage();
 	}
 
-	private Image getCategoryImage(ILaunchConfigurationCategory launchConfigurationCategory) {
-		if (runnerModel.getDefaultCategory() == launchConfigurationCategory) {
+	private Image getCategoryImage(ICategoryNode launchConfigurationCategory) {
+		if (runnerModel.getDefaultCategoryNode() == launchConfigurationCategory) {
 			return createImage(IMG_DEFAULT_CATEGORY);
 		} else {
 			return createImage(IMG_CATEGORY);
 		}
 	}
 
-	private Image getLaunchConfigurationImage(ILaunchConfigurationNode launchConfiguration) {
+	private Image getLaunchConfigurationImage(ILaunchNode launchConfiguration) {
 		Image image = debugModelPresentation.getImage(launchConfiguration.getLaunchConfiguration());
 		if (launchConfiguration.isBookmarked()) {
 			return overlyBookmarkIcon(image, IMG_DECORATION);
@@ -78,8 +78,8 @@ public class LaunchTreeLabelProvider extends LabelProvider {
 		return image;
 	}
 	
-	private Image getLaunchConfigurationTypeImage(LaunchConfigurationTypeNode typeNode) {
-		return debugModelPresentation.getImage(typeNode.getType());
+	private Image getLaunchConfigurationTypeImage(LaunchTypeNode typeNode) {
+		return debugModelPresentation.getImage(typeNode.getLaunchConfigurationType());
 	}
 	
 	private Image createImage(String image) {

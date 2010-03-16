@@ -41,7 +41,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
 import com.eclipserunner.RunnerPlugin;
-import com.eclipserunner.model.ILaunchConfigurationSelection;
+import com.eclipserunner.model.INodeSelection;
 import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.views.IRunnerView;
 import com.eclipserunner.views.TreeMode;
@@ -67,7 +67,7 @@ public final class LaunchActionBuilder {
 	private static final String IMG_TYPE_TREE            = "hierarchical.gif";
 
 
-	private ILaunchConfigurationSelection launchConfigurationSelection;
+	private INodeSelection launchConfigurationSelection;
 	private IRunnerModel runnerModel;
 	private IRunnerView runnerView;
 
@@ -79,7 +79,7 @@ public final class LaunchActionBuilder {
 		return new LaunchActionBuilder();
 	}
 
-	public LaunchActionBuilder withLaunchConfigurationSelection(ILaunchConfigurationSelection launchConfigurationSelection) {
+	public LaunchActionBuilder withLaunchConfigurationSelection(INodeSelection launchConfigurationSelection) {
 		this.launchConfigurationSelection = launchConfigurationSelection;
 		return this;
 	}

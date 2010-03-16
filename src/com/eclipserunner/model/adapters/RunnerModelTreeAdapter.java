@@ -7,8 +7,8 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.ui.IViewPart;
 
-import com.eclipserunner.model.ILaunchConfigurationCategory;
-import com.eclipserunner.model.ILaunchConfigurationNode;
+import com.eclipserunner.model.ICategoryNode;
+import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.IRunnerModel;
 
 /**
@@ -27,33 +27,33 @@ public class RunnerModelTreeAdapter implements ITreeContentProvider {
 	}
 
 	public Object[] getChildren(Object object) {
-		if (object instanceof ILaunchConfigurationCategory) {
-			ILaunchConfigurationCategory launchConfigrationCategory = (ILaunchConfigurationCategory) object;
-			return launchConfigrationCategory.getLaunchConfigurationNodes().toArray();
+		if (object instanceof ICategoryNode) {
+			ICategoryNode categoryNode = (ICategoryNode) object;
+			return categoryNode.getLaunchNodes().toArray();
 		}
 		return null;
 	}
 
 	public Object getParent(Object object) {
-		if (object instanceof ILaunchConfigurationNode) {
-			return ((ILaunchConfigurationNode) object).getLaunchConfigurationCategory();
+		if (object instanceof ILaunchNode) {
+			return ((ILaunchNode) object).getCategoryNode();
 		}
 		return null;
 	}
 
 	public boolean hasChildren(Object parent) {
-		if (parent instanceof ILaunchConfigurationCategory) {
-			ILaunchConfigurationCategory launchConfigrationCategory = (ILaunchConfigurationCategory) parent;
-			return !launchConfigrationCategory.isEmpty();
+		if (parent instanceof ICategoryNode) {
+			ICategoryNode categoryNode = (ICategoryNode) parent;
+			return !categoryNode.isEmpty();
 		}
 		return false;
 	}
 
 	public Object[] getElements(Object parent) {
 		if (parent.equals(viewPart.getViewSite())) {
-			Collection<ILaunchConfigurationCategory> categories = runnerModel.getLaunchConfigurationCategories();
-			Object[] objects = categories.toArray();
-			if (! runnerModel.isDefaultCategoryVisible()) {
+			Collection<ICategoryNode> categoryNodes = runnerModel.getCategoryNodes();
+			Object[] objects = categoryNodes.toArray();
+			if (! runnerModel.isDefaultCategoryNodeVisible()) {
 				objects = Arrays.asList(objects).subList(1, objects.length).toArray();
 			}
 			return objects;

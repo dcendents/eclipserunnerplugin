@@ -8,9 +8,9 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 
 import com.eclipserunner.RunnerPlugin;
-import com.eclipserunner.model.ILaunchConfigurationCategory;
-import com.eclipserunner.model.ILaunchConfigurationNode;
-import com.eclipserunner.model.ILaunchConfigurationSelection;
+import com.eclipserunner.model.ICategoryNode;
+import com.eclipserunner.model.ILaunchNode;
+import com.eclipserunner.model.INodeSelection;
 import com.eclipserunner.model.IRunnerModel;
 
 /**
@@ -18,10 +18,10 @@ import com.eclipserunner.model.IRunnerModel;
  */
 public class RemoveConfigOrCategoryAction extends Action {
 
-	private ILaunchConfigurationSelection launchConfigurationSelection;
+	private INodeSelection launchConfigurationSelection;
 	private IRunnerModel runnerModel;
 
-	public RemoveConfigOrCategoryAction(ILaunchConfigurationSelection launchConfigurationSelection,
+	public RemoveConfigOrCategoryAction(INodeSelection launchConfigurationSelection,
 			IRunnerModel runnerModel) {
 		this.launchConfigurationSelection = launchConfigurationSelection;
 		this.runnerModel = runnerModel;
@@ -32,25 +32,25 @@ public class RemoveConfigOrCategoryAction extends Action {
 	public void run() {
 		Object selectedObject = launchConfigurationSelection.getSelectedObject();
 
-		if (selectedObject instanceof ILaunchConfigurationNode) {
-			removeLaunchConfiguration((ILaunchConfigurationNode) selectedObject);
-		} else if (selectedObject instanceof ILaunchConfigurationCategory) {
-			removeLaunchConfigurationCategory((ILaunchConfigurationCategory) selectedObject);
+		if (selectedObject instanceof ILaunchNode) {
+			removeLaunchConfiguration((ILaunchNode) selectedObject);
+		} else if (selectedObject instanceof ICategoryNode) {
+			removeLaunchConfigurationCategory((ICategoryNode) selectedObject);
 		}
 		// else do nothing
 	}
 
-	private void removeLaunchConfigurationCategory(ILaunchConfigurationCategory selectedCategory) {
+	private void removeLaunchConfigurationCategory(ICategoryNode selectedCategory) {
 		boolean confirmed = MessageDialog.openConfirm(RunnerPlugin.getRunnerShell(), Message_removeConfirm, Message_removeCategoryConfirm);
 		if (confirmed) {
-			runnerModel.removeLaunchConfigurationCategory(selectedCategory);
+			runnerModel.removeCategoryNode(selectedCategory);
 		}
 	}
 
-	private void removeLaunchConfiguration(ILaunchConfigurationNode selectedConfiguration) {
+	private void removeLaunchConfiguration(ILaunchNode selectedConfiguration) {
 		boolean confirmed = MessageDialog.openConfirm(RunnerPlugin.getRunnerShell(), Message_removeConfirm, Message_removeConfigurationConfirm);
 		if (confirmed) {
-			runnerModel.removeLaunchConfigurationNode(selectedConfiguration);
+			runnerModel.removeLaunchNode(selectedConfiguration);
 		}
 	}
 

@@ -14,14 +14,14 @@ public class ToggleDefaultCategoryAction extends AbstractToggleAction {
 		this.runnerModel = runnerModel;
 
 		boolean checked = getPreferenceStore().getBoolean(RunnerPluginPrererenceConstants.DEFAULT_CATEGORY_VISIBLE);
-		runnerModel.setDefaultCategoryVisible(checked);
+		runnerModel.setDefaultCategoryNodeVisible(checked);
 		setChecked(checked);
 	}
 
 	@Override
 	public void run() {
 		getPreferenceStore().setValue(RunnerPluginPrererenceConstants.DEFAULT_CATEGORY_VISIBLE, isChecked());
-		runnerModel.setDefaultCategoryVisible(isChecked());
+		runnerModel.setDefaultCategoryNodeVisible(isChecked());
 	}
 
 }

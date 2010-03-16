@@ -14,8 +14,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.eclipserunner.model.ILaunchConfigurationCategory;
-import com.eclipserunner.model.ILaunchConfigurationNode;
+import com.eclipserunner.model.ICategoryNode;
+import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.IModelChangeListener;
 import com.eclipserunner.model.impl.RunnerModel;
 
@@ -31,20 +31,20 @@ public class RunnerModelTest {
 	private IModelChangeListener modelListenerMock;
 
 	@Mock
-	private ILaunchConfigurationNode launchConfigurationMock;
+	private ILaunchNode launchConfigurationMock;
 
 	@Mock
-	private ILaunchConfigurationCategory launchConfigurationCategoryMock;
+	private ICategoryNode launchConfigurationCategoryMock;
 
 	@Mock
-	private Set<ILaunchConfigurationCategory> launchConfigurationSetMock;
+	private Set<ICategoryNode> launchConfigurationSetMock;
 
 	@Before
 	public void initMocks() {
 		MockitoAnnotations.initMocks(this);
 
 		when(viewPartMock.getViewSite()).thenReturn(viewSiteMock);
-		when(launchConfigurationSetMock.iterator()).thenReturn(new ArrayList<ILaunchConfigurationCategory>().iterator());
+		when(launchConfigurationSetMock.iterator()).thenReturn(new ArrayList<ICategoryNode>().iterator());
 	}
 
 	@Test
@@ -56,7 +56,7 @@ public class RunnerModelTest {
 		runnerModel.setLaunchConfigurationCategories(launchConfigurationSetMock);
 
 		// test
-		runnerModel.addLaunchConfigurationCategory("test");
+		runnerModel.addCategoryNode("test");
 
 		verify(launchConfigurationSetMock).add(anyLaunchConfigurationCotegory());
 		verify(modelListenerMock).modelChanged();
@@ -71,7 +71,7 @@ public class RunnerModelTest {
 		runnerModel.setLaunchConfigurationCategories(launchConfigurationSetMock);
 
 		// test
-		runnerModel.addLaunchConfigurationNode(launchConfigurationMock);
+		runnerModel.addLaunchNode(launchConfigurationMock);
 
 		verify(modelListenerMock).modelChanged();
 	}
@@ -85,7 +85,7 @@ public class RunnerModelTest {
 		runnerModel.setLaunchConfigurationCategories(launchConfigurationSetMock);
 
 		// test
-		runnerModel.removeLaunchConfigurationNode(launchConfigurationMock);
+		runnerModel.removeLaunchNode(launchConfigurationMock);
 
 		verify(modelListenerMock).modelChanged();
 	}
@@ -99,7 +99,7 @@ public class RunnerModelTest {
 		runnerModel.setLaunchConfigurationCategories(launchConfigurationSetMock);
 
 		// test
-		runnerModel.removeLaunchConfigurationCategory(launchConfigurationCategoryMock);
+		runnerModel.removeCategoryNode(launchConfigurationCategoryMock);
 
 		verify(launchConfigurationSetMock).remove(anyLaunchConfigurationCotegory());
 		verify(modelListenerMock).modelChanged();

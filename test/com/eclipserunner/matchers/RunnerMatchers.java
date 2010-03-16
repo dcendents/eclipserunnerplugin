@@ -5,8 +5,8 @@ import static org.mockito.Matchers.argThat;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.mockito.ArgumentMatcher;
 
-import com.eclipserunner.model.ILaunchConfigurationCategory;
-import com.eclipserunner.model.ILaunchConfigurationNode;
+import com.eclipserunner.model.ICategoryNode;
+import com.eclipserunner.model.ILaunchNode;
 
 public class RunnerMatchers {
 
@@ -17,17 +17,17 @@ public class RunnerMatchers {
 		}
 	}
 	
-	static class IsILaunchConfigurationNode extends ArgumentMatcher<ILaunchConfigurationNode> {
+	static class IsILaunchConfigurationNode extends ArgumentMatcher<ILaunchNode> {
 		@Override
 		public boolean matches(Object object) {
-			return (object instanceof ILaunchConfigurationNode);
+			return (object instanceof ILaunchNode);
 		}
 	}
 	
-	static class IsILaunchConfigurationCategory extends ArgumentMatcher<ILaunchConfigurationCategory> {
+	static class IsILaunchConfigurationCategory extends ArgumentMatcher<ICategoryNode> {
 		@Override
 		public boolean matches(Object object) {
-			return (object instanceof ILaunchConfigurationCategory);
+			return (object instanceof ICategoryNode);
 		}
 	}
 	
@@ -35,11 +35,11 @@ public class RunnerMatchers {
 		return argThat(new IsILaunchConfiguration());
 	}
 	
-	public static ILaunchConfigurationCategory anyLaunchConfigurationCotegory() {
+	public static ICategoryNode anyLaunchConfigurationCotegory() {
 		return argThat(new IsILaunchConfigurationCategory());
 	}
 	
-	public static ILaunchConfigurationNode anyLaunchConfigurationNode() {
+	public static ILaunchNode anyLaunchConfigurationNode() {
 		return argThat(new IsILaunchConfigurationNode());
 	}
 }

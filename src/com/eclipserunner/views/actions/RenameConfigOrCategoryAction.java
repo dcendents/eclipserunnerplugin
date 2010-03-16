@@ -13,9 +13,9 @@ import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 
-import com.eclipserunner.model.ILaunchConfigurationCategory;
-import com.eclipserunner.model.ILaunchConfigurationNode;
-import com.eclipserunner.model.ILaunchConfigurationSelection;
+import com.eclipserunner.model.ICategoryNode;
+import com.eclipserunner.model.ILaunchNode;
+import com.eclipserunner.model.INodeSelection;
 import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.views.validators.LaunchConfigurationNameValidator;
 
@@ -24,12 +24,12 @@ import com.eclipserunner.views.validators.LaunchConfigurationNameValidator;
  */
 public class RenameConfigOrCategoryAction extends Action {
 
-	private ILaunchConfigurationSelection launchConfigurationSelection;
+	private INodeSelection launchConfigurationSelection;
 
 	@SuppressWarnings("unused")
 	private IRunnerModel runnerModel;
 
-	public RenameConfigOrCategoryAction(ILaunchConfigurationSelection launchConfigurationSelection, IRunnerModel runnerModel) {
+	public RenameConfigOrCategoryAction(INodeSelection launchConfigurationSelection, IRunnerModel runnerModel) {
 		this.launchConfigurationSelection = launchConfigurationSelection;
 		this.runnerModel = runnerModel;
 	}
@@ -38,22 +38,22 @@ public class RenameConfigOrCategoryAction extends Action {
 	public void run() {
 		Object selectedObject = launchConfigurationSelection.getSelectedObject();
 
-		if (selectedObject instanceof ILaunchConfigurationNode) {
-			renameLaunchConfiguration((ILaunchConfigurationNode) selectedObject);
-		} else if (selectedObject instanceof ILaunchConfigurationCategory) {
-			renameLaunchConfigurationCategory((ILaunchConfigurationCategory) selectedObject);
+		if (selectedObject instanceof ILaunchNode) {
+			renameLaunchConfiguration((ILaunchNode) selectedObject);
+		} else if (selectedObject instanceof ICategoryNode) {
+			renameLaunchConfigurationCategory((ICategoryNode) selectedObject);
 		}
 		// else do nothing
 	}
 
-	private void renameLaunchConfigurationCategory(ILaunchConfigurationCategory category) {
+	private void renameLaunchConfigurationCategory(ICategoryNode category) {
 		InputDialog dialog = openRenameDialog(Message_rename, Message_renameCategory, category.getName());
 		if (dialog.getReturnCode() == Window.OK) {
 			category.setName(dialog.getValue());
 		}
 	}
 
-	private void renameLaunchConfiguration(ILaunchConfigurationNode node) {
+	private void renameLaunchConfiguration(ILaunchNode node) {
 		try {
 			InputDialog dialog = openRenameDialog(Message_rename, Message_renameLaunchConfiguration, node.getLaunchConfiguration().getName());
 			if (dialog.getReturnCode() == Window.OK) {

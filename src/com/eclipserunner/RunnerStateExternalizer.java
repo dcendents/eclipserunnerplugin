@@ -32,10 +32,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import com.eclipserunner.model.ILaunchConfigurationCategory;
-import com.eclipserunner.model.ILaunchConfigurationNode;
+import com.eclipserunner.model.ICategoryNode;
+import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.IRunnerModel;
-import com.eclipserunner.model.impl.LaunchConfigurationNode;
+import com.eclipserunner.model.impl.LaunchNode;
 import com.eclipserunner.model.impl.RunnerModel;
 
 /**
@@ -45,18 +45,18 @@ import com.eclipserunner.model.impl.RunnerModel;
  */
 public class RunnerStateExternalizer {
 
-	private static final String XML_VERSION_ATTR        = "version";
-	private static final String XML_VERSION_VALUE       = "1.0";
+	private static final String XML_VERSION_ATTR    = "version";
+	private static final String XML_VERSION_VALUE   = "1.0";
 
-	private static final String VERSION_ATTR            = "version";
-	private static final String VERSION_VALUE           = "1.0.0";
+	private static final String VERSION_ATTR        = "version";
+	private static final String VERSION_VALUE       = "1.0.0";
 
-	private static final String NAME_ATTR               = "name";
-	private static final String BOOKMARK_ATTR           = "bookmark";
+	private static final String NAME_ATTR           = "name";
+	private static final String BOOKMARK_ATTR       = "bookmark";
 
-	private static final String ROOT_NODE_NAME          = "runner";
-	private static final String CATEGORY_NODE_NAME      = "category";
-	private static final String CONFIGURATION_NODE_NAME = "launchConfiguration";
+	private static final String ROOT_NODE_NAME      = "runner";
+	private static final String CATEGORY_NODE_NAME  = "category";
+	private static final String LAUNCH_NODE_NAME    = "launchConfiguration";
 
 
 	/**
@@ -81,7 +81,7 @@ public class RunnerStateExternalizer {
 		}
 
 		// configuration name to node maping
-		Map<String, ILaunchConfigurationNode> launchConfigurationNodes = new HashMap<String, ILaunchConfigurationNode>();
+		Map<String, ILaunchNode> launchNodes = new HashMap<String, ILaunchNode>();
 
 		// populating model
 		IRunnerModel runnerModel = RunnerModel.getDefault();
@@ -93,24 +93,24 @@ public class RunnerStateExternalizer {
 			String categoryName = categoryElement.getAttribute(NAME_ATTR);
 
 			// create category if not exists
-			ILaunchConfigurationCategory launchConfigurationCategory = runnerModel.getLaunchConfigurationCategory(categoryName);
-			if (launchConfigurationCategory == null) {
-				launchConfigurationCategory = runnerModel.addLaunchConfigurationCategory(categoryName);
+			ICategoryNode categoryNode = runnerModel.getCategoryNode(categoryName);
+			if (categoryNode == null) {
+				categoryNode = runnerModel.addCategoryNode(categoryName);
 			}
 
 			// read configurations and map them to categories
-			NodeList launchConfigurationNodeList = categoryElement.getElementsByTagName(CONFIGURATION_NODE_NAME);
-			for (int j = 0; j < launchConfigurationNodeList.getLength(); j++) {
-				Element configurationElement = (Element) launchConfigurationNodeList.item(j);
-				String configurationName = configurationElement.getAttribute(NAME_ATTR);
-				boolean isBookmarked = Boolean.valueOf(configurationElement.getAttribute(BOOKMARK_ATTR));
+			NodeList launchNodeList = categoryElement.getElementsByTagName(LAUNCH_NODE_NAME);
+			for (int j = 0; j < launchNodeList.getLength(); j++) {
+				Element launchElement = (Element) launchNodeList.item(j);
+				String launchName = launchElement.getAttribute(NAME_ATTR);
+				boolean isBookmarked = Boolean.valueOf(launchElement.getAttribute(BOOKMARK_ATTR));
 
 				// create empty Node
-				ILaunchConfigurationNode launchConfigurationNode = new LaunchConfigurationNode();
-				launchConfigurationNode.setLaunchConfigurationCategory(launchConfigurationCategory);
-				launchConfigurationNode.setBookmarked(isBookmarked);
+				ILaunchNode launchNode = new LaunchNode();
+				launchNode.setCategoryNode(categoryNode);
+				launchNode.setBookmarked(isBookmarked);
 
-				launchConfigurationNodes.put(configurationName, launchConfigurationNode);
+				launchNodes.put(launchName, launchNode);
 			}
 		}
 
@@ -118,17 +118,17 @@ public class RunnerStateExternalizer {
 		for (ILaunchConfiguration launchConfiguration : getLaunchManager().getLaunchConfigurations()) {
 
 			// get configuration metadata
-			String launchConfigurationName = launchConfiguration.getName();
+			String launchName = launchConfiguration.getName();
 
-			ILaunchConfigurationNode launchConfigurationNode = launchConfigurationNodes.get(launchConfigurationName);
-			if (launchConfigurationNode == null) {
-				launchConfigurationNode = new LaunchConfigurationNode();
-				launchConfigurationNode.setLaunchConfigurationCategory(runnerModel.getDefaultCategory());
+			ILaunchNode launchNode = launchNodes.get(launchName);
+			if (launchNode == null) {
+				launchNode = new LaunchNode();
+				launchNode.setCategoryNode(runnerModel.getDefaultCategoryNode());
 			}
-			launchConfigurationNode.setLaunchConfiguration(launchConfiguration);
+			launchNode.setLaunchConfiguration(launchConfiguration);
 
-			ILaunchConfigurationCategory launchConfigurationCategory = launchConfigurationNode.getLaunchConfigurationCategory();
-			launchConfigurationCategory.add(launchConfigurationNode);
+			ICategoryNode categoryNode = launchNode.getCategoryNode();
+			categoryNode.add(launchNode);
 		}
 	}
 
@@ -146,9 +146,9 @@ public class RunnerStateExternalizer {
 		IRunnerModel runnerModel = RunnerModel.getDefault();
 		ILaunchManager launchManager = getLaunchManager();
 		for (ILaunchConfiguration launchConfiguration : launchManager.getLaunchConfigurations()) {
-			LaunchConfigurationNode launchConfigurationNode = new LaunchConfigurationNode();
-			launchConfigurationNode.setLaunchConfiguration(launchConfiguration);
-			runnerModel.getDefaultCategory().add(launchConfigurationNode);
+			LaunchNode launchNode = new LaunchNode();
+			launchNode.setLaunchConfiguration(launchConfiguration);
+			runnerModel.getDefaultCategoryNode().add(launchNode);
 		}
 	}
 
@@ -183,7 +183,7 @@ public class RunnerStateExternalizer {
 			IRunnerModel runnerModel = RunnerModel.getDefault();
 			FileOutputStream outputStream = new FileOutputStream(outputFile);
 			try {
-				Document document = createCategorDocument(runnerModel.getLaunchConfigurationCategories());
+				Document document = createCategorDocument(runnerModel.getCategoryNodes());
 				writeDocument(document, outputStream);
 				outputStream.flush();
 			} finally {
@@ -194,7 +194,7 @@ public class RunnerStateExternalizer {
 		}
 	}
 
-	private static Document createCategorDocument(Collection<ILaunchConfigurationCategory> launchConfigurationCategories) throws CoreException {
+	private static Document createCategorDocument(Collection<ICategoryNode> categoryNodes) throws CoreException {
 		Document document = createDocument();
 
 		Element runnerElement = document.createElement(ROOT_NODE_NAME);
@@ -202,9 +202,9 @@ public class RunnerStateExternalizer {
 		document.appendChild(runnerElement);
 
 		// create the category nodes
-		for (ILaunchConfigurationCategory launchConfigurationCategory : launchConfigurationCategories) {
+		for (ICategoryNode categoryNode : categoryNodes) {
 			runnerElement.appendChild(
-					createCategoryElement(launchConfigurationCategory, document)
+					createCategoryElement(categoryNode, document)
 			);
 		}
 
@@ -222,23 +222,23 @@ public class RunnerStateExternalizer {
 		}
 	}
 
-	public static Element createCategoryElement(ILaunchConfigurationCategory category, Document document) {
+	public static Element createCategoryElement(ICategoryNode category, Document document) {
 		Element categoryElement = document.createElement(CATEGORY_NODE_NAME);
 		categoryElement.setAttribute(NAME_ATTR, category.getName());
-		for (ILaunchConfigurationNode launchConfigurationNode : category.getLaunchConfigurationNodes()) {
+		for (ILaunchNode launchNode : category.getLaunchNodes()) {
 			categoryElement.appendChild(
-					createConfigurationElement(launchConfigurationNode, document)
+					createLaunchElement(launchNode, document)
 			);
 		}
 		return categoryElement;
 	}
 
-	public static Element createConfigurationElement(ILaunchConfigurationNode launchConfigurationNode, Document document) {
-		Element launchConfigurationElement = document.createElement(CONFIGURATION_NODE_NAME);
-		ILaunchConfiguration launchConfiguration = launchConfigurationNode.getLaunchConfiguration();
-		launchConfigurationElement.setAttribute(NAME_ATTR, launchConfiguration.getName());
-		launchConfigurationElement.setAttribute(BOOKMARK_ATTR, Boolean.toString(launchConfigurationNode.isBookmarked()));
-		return launchConfigurationElement;
+	public static Element createLaunchElement(ILaunchNode launchNode, Document document) {
+		Element launchElement = document.createElement(LAUNCH_NODE_NAME);
+		ILaunchConfiguration launchConfiguration = launchNode.getLaunchConfiguration();
+		launchElement.setAttribute(NAME_ATTR, launchConfiguration.getName());
+		launchElement.setAttribute(BOOKMARK_ATTR, Boolean.toString(launchNode.isBookmarked()));
+		return launchElement;
 	}
 
 	private static void writeDocument(Document document, OutputStream outputStream) throws CoreException {

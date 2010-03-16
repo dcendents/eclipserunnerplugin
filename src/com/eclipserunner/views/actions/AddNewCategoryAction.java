@@ -30,7 +30,7 @@ public class AddNewCategoryAction extends Action {
 
 		dialog.open();
 		if (dialog.getReturnCode() == Window.OK) {
-			runnerModel.addLaunchConfigurationCategory(dialog.getValue());
+			runnerModel.addCategoryNode(dialog.getValue());
 		}
 	}
 

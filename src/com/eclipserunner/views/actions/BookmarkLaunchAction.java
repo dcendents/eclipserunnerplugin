@@ -2,9 +2,9 @@ package com.eclipserunner.views.actions;
 
 import org.eclipse.jface.action.Action;
 
-import com.eclipserunner.model.ILaunchConfigurationCategory;
-import com.eclipserunner.model.ILaunchConfigurationNode;
-import com.eclipserunner.model.ILaunchConfigurationSelection;
+import com.eclipserunner.model.ICategoryNode;
+import com.eclipserunner.model.ILaunchNode;
+import com.eclipserunner.model.INodeSelection;
 
 /**
  * Bookmark launch configuration.
@@ -13,20 +13,20 @@ import com.eclipserunner.model.ILaunchConfigurationSelection;
  */
 public class BookmarkLaunchAction extends Action {
 
-	private ILaunchConfigurationSelection launchConfigurationSelection;
+	private INodeSelection launchConfigurationSelection;
 
-	public BookmarkLaunchAction(ILaunchConfigurationSelection launchConfigurationSelection) {
+	public BookmarkLaunchAction(INodeSelection launchConfigurationSelection) {
 		this.launchConfigurationSelection = launchConfigurationSelection;
 	}
 
 	@Override
 	public void run() {
-		if (launchConfigurationSelection.isLaunchConfigurationNodeSelected()) {
-			ILaunchConfigurationNode launchConfiguration = launchConfigurationSelection.getSelectedLaunchConfigurationNode();
+		if (launchConfigurationSelection.isLaunchNodeSelected()) {
+			ILaunchNode launchConfiguration = launchConfigurationSelection.getSelectedLaunchNode();
 			launchConfiguration.setBookmarked(true);
 		}
-		if (launchConfigurationSelection.isLaunchConfigurationCategorySelected()) {
-			ILaunchConfigurationCategory launchConfigurationCategory = launchConfigurationSelection.getSelectedLaunchConfigurationCategory();
+		if (launchConfigurationSelection.isCategoryNodeSelected()) {
+			ICategoryNode launchConfigurationCategory = launchConfigurationSelection.getSelectedCategoryNode();
 			launchConfigurationCategory.setBookmarked(true);
 		}
 	}

@@ -6,7 +6,7 @@ import org.eclipse.debug.core.ILaunchConfigurationListener;
 import org.eclipse.debug.core.ILaunchManager;
 
 import com.eclipserunner.model.IRunnerModel;
-import com.eclipserunner.model.impl.LaunchConfigurationNode;
+import com.eclipserunner.model.impl.LaunchNode;
 
 /**
  * Adapter listening for Launch manager event.
@@ -23,20 +23,20 @@ public class RunnerModelLaunchConfigurationListenerAdapter implements ILaunchCon
 	}
 
 	public void launchConfigurationAdded(ILaunchConfiguration newConfiguration) {
-		LaunchConfigurationNode launchConfigurationNode = null;
+		LaunchNode launchNode = null;
 		ILaunchConfiguration oldLaunchConfiguration = getLaunchManager().getMovedFrom(newConfiguration);
 		if (oldLaunchConfiguration != null) {
 
-			launchConfigurationNode = (LaunchConfigurationNode) runnerModel.findLaunchConfigurationNodeBy(oldLaunchConfiguration);
-			if (launchConfigurationNode != null) {
-				launchConfigurationNode.setLaunchConfiguration(newConfiguration);
+			launchNode = (LaunchNode) runnerModel.findLaunchNodeBy(oldLaunchConfiguration);
+			if (launchNode != null) {
+				launchNode.setLaunchConfiguration(newConfiguration);
 				return;
 			}
 		}
 
-		launchConfigurationNode = new LaunchConfigurationNode();
-		launchConfigurationNode.setLaunchConfiguration(newConfiguration);
-		runnerModel.getDefaultCategory().add(launchConfigurationNode);
+		launchNode = new LaunchNode();
+		launchNode.setLaunchConfiguration(newConfiguration);
+		runnerModel.getDefaultCategoryNode().add(launchNode);
 	}
 
 	public void launchConfigurationChanged(ILaunchConfiguration configuration) {
@@ -46,9 +46,9 @@ public class RunnerModelLaunchConfigurationListenerAdapter implements ILaunchCon
 	}
 
 	public void launchConfigurationRemoved(ILaunchConfiguration oldConfiguration) {
-		LaunchConfigurationNode launchConfigurationNode = (LaunchConfigurationNode) runnerModel.findLaunchConfigurationNodeBy(oldConfiguration);
-		if (launchConfigurationNode != null) {
-			runnerModel.removeLaunchConfigurationNode(launchConfigurationNode);
+		LaunchNode launchNode = (LaunchNode) runnerModel.findLaunchNodeBy(oldConfiguration);
+		if (launchNode != null) {
+			runnerModel.removeLaunchNode(launchNode);
 		}
 	}
 

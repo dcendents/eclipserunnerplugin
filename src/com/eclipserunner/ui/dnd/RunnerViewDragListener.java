@@ -14,7 +14,7 @@ import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.dnd.FileTransfer;
 
-import com.eclipserunner.model.ILaunchConfigurationCategory;
+import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.utils.ImportExportUtil;
 
 /**
@@ -37,8 +37,8 @@ public class RunnerViewDragListener implements DragSourceListener {
 		if (selection instanceof IStructuredSelection && !selection.isEmpty()) {
 			
 			currentSelection = (IStructuredSelection) selection;
-			ILaunchConfigurationCategory category = getFirstSelectedItemByType(currentSelection, ILaunchConfigurationCategory.class);
-			if (category != null) {
+			ICategoryNode categoryNode = getFirstSelectedItemByType(currentSelection, ICategoryNode.class);
+			if (categoryNode != null) {
 				event.doit = false;
 			}
 		}

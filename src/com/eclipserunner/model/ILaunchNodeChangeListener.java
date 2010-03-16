@@ -5,8 +5,8 @@ package com.eclipserunner.model;
  * 
  * @author bary
  */
-public interface ILaunchConfigurationChangeListener {
+public interface ILaunchNodeChangeListener {
 
-	void launchConfigurationChanged();
+	void launchNodeChanged();
 
 }

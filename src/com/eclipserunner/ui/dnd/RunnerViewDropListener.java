@@ -12,8 +12,8 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerDropAdapter;
 import org.eclipse.swt.dnd.TransferData;
 
-import com.eclipserunner.model.ILaunchConfigurationCategory;
-import com.eclipserunner.model.ILaunchConfigurationNode;
+import com.eclipserunner.model.ICategoryNode;
+import com.eclipserunner.model.ILaunchNode;
 
 /**
  * Listener for handling drop events.
@@ -34,7 +34,7 @@ public class RunnerViewDropListener extends ViewerDropAdapter {
 		localTransfer = false;
 		if (LocalSelectionTransfer.getTransfer().isSupportedType(transferType)) {
 			localTransfer = true;
-			if (getCurrentTarget() instanceof ILaunchConfigurationCategory) {
+			if (getCurrentTarget() instanceof ICategoryNode) {
 				return true;
 			}
 		}
@@ -43,29 +43,29 @@ public class RunnerViewDropListener extends ViewerDropAdapter {
 
 	@Override
 	public boolean performDrop(Object data) {
-		List<ILaunchConfigurationNode> launchConfigurationToMove = new ArrayList<ILaunchConfigurationNode>();
+		List<ILaunchNode> launchNodesToMove = new ArrayList<ILaunchNode>();
 
 		if (localTransfer) {
 			ISelection selection = LocalSelectionTransfer.getTransfer().getSelection();
-			launchConfigurationToMove.addAll(
-					getAllSelectedItemsByType(selection, ILaunchConfigurationNode.class)
+			launchNodesToMove.addAll(
+					getAllSelectedItemsByType(selection, ILaunchNode.class)
 			);
 		}
 
 		Object currentTarget = getCurrentTarget();
-		if (currentTarget instanceof ILaunchConfigurationCategory && getCurrentLocation() == LOCATION_ON) {
-			for (ILaunchConfigurationNode launchConfiguration : launchConfigurationToMove) {
+		if (currentTarget instanceof ICategoryNode && getCurrentLocation() == LOCATION_ON) {
+			for (ILaunchNode launchNode : launchNodesToMove) {
 
-				ILaunchConfigurationCategory sourceCategory = launchConfiguration.getLaunchConfigurationCategory();
-				ILaunchConfigurationCategory destinationCategory = (ILaunchConfigurationCategory) getCurrentTarget();
+				ICategoryNode sourceCategoryNode = launchNode.getCategoryNode();
+				ICategoryNode destinationCategoryNode = (ICategoryNode) getCurrentTarget();
 
-				sourceCategory.remove(launchConfiguration);
-				destinationCategory.add(launchConfiguration);
+				sourceCategoryNode.remove(launchNode);
+				destinationCategoryNode.add(launchNode);
 			}
 		}
 
-		if (launchConfigurationToMove.size() == 1) {
-			getViewer().setSelection(new StructuredSelection(launchConfigurationToMove.get(0)));
+		if (launchNodesToMove.size() == 1) {
+			getViewer().setSelection(new StructuredSelection(launchNodesToMove.get(0)));
 		}
 
 		return true;

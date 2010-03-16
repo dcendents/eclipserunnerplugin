@@ -6,22 +6,22 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 
 public interface IRunnerModel {
 
-	void addLaunchConfigurationNode(ILaunchConfigurationNode launchConfigurationNode);
-	void removeLaunchConfigurationNode(ILaunchConfigurationNode launchConfigurationNode);
+	void addLaunchNode(ILaunchNode launchNode);
+	void removeLaunchNode(ILaunchNode launchNode);
 
-	ILaunchConfigurationCategory addLaunchConfigurationCategory(String name);
-	void removeLaunchConfigurationCategory(ILaunchConfigurationCategory category);
+	ICategoryNode addCategoryNode(String categoryNodeName);
+	void removeCategoryNode(ICategoryNode categoryNode);
 
-	ILaunchConfigurationCategory getLaunchConfigurationCategory(String name);
-	Collection<ILaunchConfigurationCategory> getLaunchConfigurationCategories();
+	ICategoryNode getCategoryNode(String categoryNodeName);
+	Collection<ICategoryNode> getCategoryNodes();
 
-	void addModelChangeListener(IModelChangeListener listener);
-	void removeModelChangeListener(IModelChangeListener listener);
+	void addModelChangeListener(IModelChangeListener modelChangeListener);
+	void removeModelChangeListener(IModelChangeListener modelChangeListener);
 
-	boolean isDefaultCategoryVisible();
-	void setDefaultCategoryVisible(boolean checked);
-	ILaunchConfigurationCategory getDefaultCategory();
+	boolean isDefaultCategoryNodeVisible();
+	void setDefaultCategoryNodeVisible(boolean visible);
+	ICategoryNode getDefaultCategoryNode();
 
-	ILaunchConfigurationNode findLaunchConfigurationNodeBy(ILaunchConfiguration configuration);
+	ILaunchNode findLaunchNodeBy(ILaunchConfiguration launchConfiguration);
 
 }

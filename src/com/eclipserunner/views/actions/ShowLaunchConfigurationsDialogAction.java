@@ -7,7 +7,7 @@ import static org.eclipse.debug.internal.ui.launchConfigurations.LaunchConfigura
 import org.eclipse.debug.internal.ui.launchConfigurations.LaunchConfigurationsDialog;
 
 import com.eclipserunner.RunnerPlugin;
-import com.eclipserunner.model.ILaunchConfigurationSelection;
+import com.eclipserunner.model.INodeSelection;
 
 /**
  * Action responsible for showing LaunchConfigurationsDialog.
@@ -17,9 +17,9 @@ import com.eclipserunner.model.ILaunchConfigurationSelection;
 @SuppressWarnings("restriction")
 public class ShowLaunchConfigurationsDialogAction extends AbstractLaunchAction {
 
-	private ILaunchConfigurationSelection selection;
+	private INodeSelection selection;
 
-	public ShowLaunchConfigurationsDialogAction(ILaunchConfigurationSelection launchConfigurationSelection, String launchGroupId) {
+	public ShowLaunchConfigurationsDialogAction(INodeSelection launchConfigurationSelection, String launchGroupId) {
 		super(launchGroupId);
 		this.selection = launchConfigurationSelection;
 	}
@@ -31,9 +31,9 @@ public class ShowLaunchConfigurationsDialogAction extends AbstractLaunchAction {
 				getLaunchConfigurationManager().getLaunchGroup(getLaunchGroupId())
 		);
 
-		if (selection.isLaunchConfigurationNodeSelected()) {
+		if (selection.isLaunchNodeSelected()) {
 			dialog.setOpenMode(LAUNCH_CONFIGURATION_DIALOG_OPEN_ON_SELECTION);
-			dialog.setInitialSelection(asStructuredSelection(selection.getSelectedLaunchConfigurationNode()));
+			dialog.setInitialSelection(asStructuredSelection(selection.getSelectedLaunchNode()));
 		}
 		else {
 			dialog.setOpenMode(LAUNCH_CONFIGURATION_DIALOG_OPEN_ON_LAST_LAUNCHED);

@@ -11,10 +11,10 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.ui.IViewPart;
 
-import com.eclipserunner.model.ILaunchConfigurationCategory;
-import com.eclipserunner.model.ILaunchConfigurationNode;
+import com.eclipserunner.model.ICategoryNode;
+import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.IRunnerModel;
-import com.eclipserunner.model.impl.LaunchConfigurationTypeNode;
+import com.eclipserunner.model.impl.LaunchTypeNode;
 
 /**
  * Development code ... before refactoring.
@@ -32,31 +32,31 @@ public class RunnerModelTreeWithTypesAdapter implements ITreeContentProvider {
 	}
 
 	public Object[] getChildren(Object object) {
-		if (object instanceof ILaunchConfigurationCategory) {
-			return getChildrenByCategory((ILaunchConfigurationCategory) object);
+		if (object instanceof ICategoryNode) {
+			return getChildrenByCategoryNode((ICategoryNode) object);
 		}
-		else if (object instanceof LaunchConfigurationTypeNode) {
-			return getChildrenByType((LaunchConfigurationTypeNode) object);
+		else if (object instanceof LaunchTypeNode) {
+			return getChildrenByLaunchTypeNode((LaunchTypeNode) object);
 		}
 		return null;
 	}
 
 	public Object getParent(Object object) {
-		if (object instanceof ILaunchConfigurationNode) {
-			return getParentByLaunchConfiguration((ILaunchConfigurationNode) object);
+		if (object instanceof ILaunchNode) {
+			return getParentByLaunchNode((ILaunchNode) object);
 		}
-		else if (object instanceof LaunchConfigurationTypeNode) {
-			return ((LaunchConfigurationTypeNode) object).getParentCategory();
+		else if (object instanceof LaunchTypeNode) {
+			return ((LaunchTypeNode) object).getCategoryNode();
 		}
 		return null;
 	}
 
 	public boolean hasChildren(Object parent) {
-		if (parent instanceof ILaunchConfigurationCategory) {
-			ILaunchConfigurationCategory launchConfigrationCategory = (ILaunchConfigurationCategory) parent;
-			return !launchConfigrationCategory.isEmpty();
+		if (parent instanceof ICategoryNode) {
+			ICategoryNode categoryNode = (ICategoryNode) parent;
+			return !categoryNode.isEmpty();
 		}
-		else if (parent instanceof LaunchConfigurationTypeNode) {
+		else if (parent instanceof LaunchTypeNode) {
 			return true;
 		}
 		return false;
@@ -65,9 +65,9 @@ public class RunnerModelTreeWithTypesAdapter implements ITreeContentProvider {
 	// TODO LWA make it better
 	public Object[] getElements(Object parent) {
 		if (parent.equals(viewPart.getViewSite())) {
-			Collection<ILaunchConfigurationCategory> categories = runnerModel.getLaunchConfigurationCategories();
-			Object[] objects = categories.toArray();
-			if (! runnerModel.isDefaultCategoryVisible()) {
+			Collection<ICategoryNode> categoryNodes = runnerModel.getCategoryNodes();
+			Object[] objects = categoryNodes.toArray();
+			if (! runnerModel.isDefaultCategoryNodeVisible()) {
 				objects = Arrays.asList(objects).subList(1, objects.length).toArray();
 			}
 			return objects;
@@ -76,58 +76,58 @@ public class RunnerModelTreeWithTypesAdapter implements ITreeContentProvider {
 	}
 
 	// TODO LWA make it better and easier
-	private Object getParentByLaunchConfiguration(ILaunchConfigurationNode launchConfigurationNode) {
+	private Object getParentByLaunchNode(ILaunchNode launchNode) {
 		ILaunchConfigurationType type;
 		try {
-			type = launchConfigurationNode.getLaunchConfiguration().getType();
+			type = launchNode.getLaunchConfiguration().getType();
 		} catch (CoreException e) {
 			return null;
 		}
-		Object[] children = getChildren(launchConfigurationNode.getLaunchConfigurationCategory());
+		Object[] children = getChildren(launchNode.getCategoryNode());
 		for (Object child : children) {
-			if (((LaunchConfigurationTypeNode) child).getType() == type) {
+			if (((LaunchTypeNode) child).getLaunchConfigurationType() == type) {
 				return child;
 			}
 		}
 		return null;
 	}
 
-	private Object[] getChildrenByType(LaunchConfigurationTypeNode type) {
-		ILaunchConfigurationCategory category = type.getParentCategory();
+	private Object[] getChildrenByLaunchTypeNode(LaunchTypeNode launchTypeNode) {
+		ICategoryNode categoryNode = launchTypeNode.getCategoryNode();
 
-		List<ILaunchConfigurationNode> nodes = new ArrayList<ILaunchConfigurationNode>();
-		for (ILaunchConfigurationNode node : category.getLaunchConfigurationNodes()) {
+		List<ILaunchNode> launchNodes = new ArrayList<ILaunchNode>();
+		for (ILaunchNode launchNode : categoryNode.getLaunchNodes()) {
 			try {
-				if (type.getType().equals(node.getLaunchConfiguration().getType())) {
-					nodes.add(node);
+				if (launchTypeNode.getLaunchConfigurationType().equals(launchNode.getLaunchConfiguration().getType())) {
+					launchNodes.add(launchNode);
 				}
 			} catch (CoreException e) {
 			}
 		}
-		return nodes.toArray();
+		return launchNodes.toArray();
 	}
 
-	private Object[] getChildrenByCategory(ILaunchConfigurationCategory launchConfigrationCategory) {
-		List<LaunchConfigurationTypeNode> types = new ArrayList<LaunchConfigurationTypeNode>();
-		for (ILaunchConfigurationNode node : launchConfigrationCategory.getLaunchConfigurationNodes()) {
+	private Object[] getChildrenByCategoryNode(ICategoryNode categoryNode) {
+		List<LaunchTypeNode> launchTypeNodes = new ArrayList<LaunchTypeNode>();
+		for (ILaunchNode launchNode : categoryNode.getLaunchNodes()) {
 			try {
-				ILaunchConfigurationType type = node.getLaunchConfiguration().getType();
-				if (!isTypeOnTheList(type, types)) {
-					LaunchConfigurationTypeNode typeNode = new LaunchConfigurationTypeNode();
-					typeNode.setParentCategory(launchConfigrationCategory);
-					typeNode.setType(type);
+				ILaunchConfigurationType type = launchNode.getLaunchConfiguration().getType();
+				if (!isTypeOnTheList(type, launchTypeNodes)) {
+					LaunchTypeNode launchNodeType = new LaunchTypeNode();
+					launchNodeType.setCategoryNode(categoryNode);
+					launchNodeType.setLaunchConfigurationType(type);
 
-					types.add(typeNode);
+					launchTypeNodes.add(launchNodeType);
 				}
 			} catch (CoreException e) {
 			}
 		}
-		return types.toArray();
+		return launchTypeNodes.toArray();
 	}
 
-	private boolean isTypeOnTheList(ILaunchConfigurationType type,	List<LaunchConfigurationTypeNode> types) {
-		for (LaunchConfigurationTypeNode node : types) {
-			if (node.getType().equals(type)) {
+	private boolean isTypeOnTheList(ILaunchConfigurationType type,	List<LaunchTypeNode> launchTypeNodes) {
+		for (LaunchTypeNode launchTypeNode : launchTypeNodes) {
+			if (launchTypeNode.getLaunchConfigurationType().equals(type)) {
 				return true;
 			}
 		}
