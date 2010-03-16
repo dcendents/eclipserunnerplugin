@@ -12,16 +12,21 @@ public interface IRunnerModel {
 	ICategoryNode addCategoryNode(String categoryNodeName);
 	void removeCategoryNode(ICategoryNode categoryNode);
 
+	// TODO remove
 	ICategoryNode getCategoryNode(String categoryNodeName);
 	Collection<ICategoryNode> getCategoryNodes();
 
 	void addModelChangeListener(IModelChangeListener modelChangeListener);
 	void removeModelChangeListener(IModelChangeListener modelChangeListener);
 
+	// TODO remove
 	boolean isDefaultCategoryNodeVisible();
+
+	// TODO remove
 	void setDefaultCategoryNodeVisible(boolean visible);
 	ICategoryNode getDefaultCategoryNode();
 
+	// TODO remove
 	ILaunchNode findLaunchNodeBy(ILaunchConfiguration launchConfiguration);
 
 }
