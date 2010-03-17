@@ -15,11 +15,6 @@ public interface IRunnerModel {
 	void addModelChangeListener(IModelChangeListener modelChangeListener);
 	void removeModelChangeListener(IModelChangeListener modelChangeListener);
 
-	// TODO remove
-	boolean isDefaultCategoryNodeVisible();
-
-	// TODO remove
-	void setDefaultCategoryNodeVisible(boolean visible);
 	ICategoryNode getDefaultCategoryNode();
 
 }

@@ -9,6 +9,7 @@ import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.INodeFilter;
 import com.eclipserunner.model.INodeFilterChain;
 import com.eclipserunner.model.IRunnerModel;
+import com.eclipserunner.model.impl.CategoryNode;
 
 public class RunnerModelFilteringDecorator extends RunnerModelDecoratorAdapter implements INodeFilterChain {
 
@@ -40,7 +41,12 @@ public class RunnerModelFilteringDecorator extends RunnerModelDecoratorAdapter i
 				filteredNodes.add(launchNode);
 			}
 		}
-		return null;
+		// TODO LWA new method ??
+		// we need category node decorator hier, because now drop does not work
+		CategoryNode node = new CategoryNode();
+		node.setLaunchNodes(filteredNodes);
+		node.setName(category.getName());
+		return node;
 	}
 
 	private boolean filterLaunchNode(ILaunchNode launchNode) {

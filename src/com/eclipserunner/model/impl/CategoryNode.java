@@ -1,5 +1,6 @@
 package com.eclipserunner.model.impl;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,10 +12,13 @@ import com.eclipserunner.model.ILaunchNodeChangeListener;
 
 /**
  * Container of launch configurations presented in RunnerView tree.
- * 
+ *
  * @author vachacz
  */
 public class CategoryNode implements ICategoryNode, ILaunchNodeChangeListener, IActionEnablement {
+
+	private static final int PRIME_MULTIPLYER = 11;
+	private static final int PRIME_BASE       = 17;
 
 	private String name;
 	private Set<ILaunchNode> launchNodes = new HashSet<ILaunchNode>();
@@ -34,6 +38,11 @@ public class CategoryNode implements ICategoryNode, ILaunchNodeChangeListener, I
 
 	public final Set<ILaunchNode> getLaunchNodes() {
 		return launchNodes;
+	}
+
+	// TODO LWA fix it
+	public final void setLaunchNodes(Collection<ILaunchNode> launchNodes) {
+		this.launchNodes = new HashSet<ILaunchNode>(launchNodes);
 	}
 
 	public void add(ILaunchNode launchNode) {
@@ -102,4 +111,20 @@ public class CategoryNode implements ICategoryNode, ILaunchNodeChangeListener, I
 		this.renameable = renameable;
 	}
 
+	// TODO LWA add uniqe category identifier
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof CategoryNode) {
+			CategoryNode categoryNode = (CategoryNode) obj;
+			return name.equals(categoryNode.getName());
+		}
+		return super.equals(obj);
+	}
+
+	@Override
+	public int hashCode () {
+		int code = PRIME_BASE;
+		code = PRIME_MULTIPLYER * code + name.hashCode();
+		return code;
+	}
 }

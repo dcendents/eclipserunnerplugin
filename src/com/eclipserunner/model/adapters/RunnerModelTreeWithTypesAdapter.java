@@ -1,7 +1,6 @@
 package com.eclipserunner.model.adapters;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -64,11 +63,7 @@ public class RunnerModelTreeWithTypesAdapter implements ITreeContentProvider {
 	public Object[] getElements(Object parent) {
 		if (parent instanceof IViewSite) {
 			Collection<ICategoryNode> categoryNodes = runnerModel.getCategoryNodes();
-			Object[] objects = categoryNodes.toArray();
-			if (! runnerModel.isDefaultCategoryNodeVisible()) {
-				objects = Arrays.asList(objects).subList(1, objects.length).toArray();
-			}
-			return objects;
+			return categoryNodes.toArray();
 		}
 		return getChildren(parent);
 	}

@@ -96,10 +96,6 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 			"org.eclipse.ui.navigator.ProjectExplorer"
 	};
 
-	public RunnerView() {
-		super();
-	}
-
 	@Override
 	public void createPartControl(Composite parent) {
 		initializeModel();

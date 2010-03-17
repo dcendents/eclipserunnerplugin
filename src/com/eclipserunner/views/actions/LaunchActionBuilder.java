@@ -48,7 +48,7 @@ import com.eclipserunner.views.TreeMode;
 
 /**
  * Builder creates Actions related to test launching
- * 
+ *
  * @author vachacz
  */
 public final class LaunchActionBuilder {
@@ -173,7 +173,7 @@ public final class LaunchActionBuilder {
 	}
 
 	public Action createToggleDefaultCategoryAction() {
-		Action action = new ToggleDefaultCategoryAction(runnerModel);
+		Action action = new ToggleDefaultCategoryAction();
 		configureAction(action, Message_createToggleDefaultCategory, Message_createToggleDefaultCategoryTooltip, IMG_DEFAULT_CATEGORY);
 		return action;
 	}

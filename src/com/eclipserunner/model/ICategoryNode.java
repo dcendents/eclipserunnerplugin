@@ -2,10 +2,9 @@ package com.eclipserunner.model;
 
 import java.util.Collection;
 
-
 /**
  * Launch configuration category interface.
- * 
+ *
  * @author vachacz
  */
 public interface ICategoryNode {

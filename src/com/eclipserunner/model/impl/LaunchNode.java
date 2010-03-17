@@ -7,13 +7,16 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 
 import com.eclipserunner.model.IActionEnablement;
 import com.eclipserunner.model.ICategoryNode;
-import com.eclipserunner.model.ILaunchNodeChangeListener;
 import com.eclipserunner.model.ILaunchNode;
+import com.eclipserunner.model.ILaunchNodeChangeListener;
 
 /**
  * @author vachacz
  */
 public class LaunchNode implements ILaunchNode, IActionEnablement {
+
+	private static final int PRIME_MULTIPLYER = 11;
+	private static final int PRIME_BASE       = 17;
 
 	private ILaunchConfiguration launchConfiguration;
 	private ICategoryNode categoryNode;
@@ -71,4 +74,20 @@ public class LaunchNode implements ILaunchNode, IActionEnablement {
 		return true;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof LaunchNode) {
+			LaunchNode launchNode = (LaunchNode) obj;
+			return launchConfiguration.equals(launchNode.getLaunchConfiguration());
+		}
+		return super.equals(obj);
+	}
+
+	@Override
+	public int hashCode () {
+		int code = PRIME_BASE;
+		code = PRIME_MULTIPLYER * code + launchConfiguration.hashCode();
+		code = PRIME_MULTIPLYER * code + categoryNode.hashCode();
+		return code;
+	}
 }

@@ -41,10 +41,6 @@ public class RunnerModelDecoratorAdapter implements IRunnerModel {
 		return runnerModel.getDefaultCategoryNode();
 	}
 
-	public boolean isDefaultCategoryNodeVisible() {
-		return runnerModel.isDefaultCategoryNodeVisible();
-	}
-
 	public void removeCategoryNode(ICategoryNode categoryNode) {
 		runnerModel.removeCategoryNode(categoryNode);
 	}
@@ -55,10 +51,6 @@ public class RunnerModelDecoratorAdapter implements IRunnerModel {
 
 	public void removeModelChangeListener(IModelChangeListener modelChangeListener) {
 		runnerModel.removeModelChangeListener(modelChangeListener);
-	}
-
-	public void setDefaultCategoryNodeVisible(boolean visible) {
-		runnerModel.setDefaultCategoryNodeVisible(visible);
 	}
 
 }
