@@ -5,6 +5,8 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationListener;
 import org.eclipse.debug.core.ILaunchManager;
 
+import com.eclipserunner.model.ICategoryNode;
+import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.model.impl.LaunchNode;
 
@@ -27,7 +29,7 @@ public class RunnerModelLaunchConfigurationListenerAdapter implements ILaunchCon
 		ILaunchConfiguration oldLaunchConfiguration = getLaunchManager().getMovedFrom(newConfiguration);
 		if (oldLaunchConfiguration != null) {
 
-			launchNode = (LaunchNode) runnerModel.findLaunchNodeBy(oldLaunchConfiguration);
+			launchNode = (LaunchNode) findLaunchNodeBy(oldLaunchConfiguration);
 			if (launchNode != null) {
 				launchNode.setLaunchConfiguration(newConfiguration);
 				return;
@@ -46,7 +48,7 @@ public class RunnerModelLaunchConfigurationListenerAdapter implements ILaunchCon
 	}
 
 	public void launchConfigurationRemoved(ILaunchConfiguration oldConfiguration) {
-		LaunchNode launchNode = (LaunchNode) runnerModel.findLaunchNodeBy(oldConfiguration);
+		LaunchNode launchNode = (LaunchNode) findLaunchNodeBy(oldConfiguration);
 		if (launchNode != null) {
 			runnerModel.removeLaunchNode(launchNode);
 		}
@@ -56,4 +58,15 @@ public class RunnerModelLaunchConfigurationListenerAdapter implements ILaunchCon
 		return DebugPlugin.getDefault().getLaunchManager();
 	}
 
+	private ILaunchNode findLaunchNodeBy(ILaunchConfiguration launchConfiguration) {
+		for (ICategoryNode launchConfigurationCategory : runnerModel.getCategoryNodes()) {
+			for (ILaunchNode launchConfigurationNode : launchConfigurationCategory.getLaunchNodes()) {
+				if (launchConfigurationNode.getLaunchConfiguration().equals(launchConfiguration)) {
+					return launchConfigurationNode;
+				}
+			}
+		}
+		return null;
+	}
+	
 }

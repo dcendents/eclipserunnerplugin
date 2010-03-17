@@ -101,15 +101,6 @@ public class RunnerModel implements IRunnerModel, ICategoryNodeChangeListener {
 		return defaultCategoryNode;
 	}
 
-	public ICategoryNode getCategoryNode(String name) {
-		for (ICategoryNode categoryNode : categoryNodes) {
-			if (categoryNode.getName().equals(name)) {
-				return categoryNode;
-			}
-		}
-		return null;
-	}
-
 	public void addModelChangeListener(IModelChangeListener modelChangeListener) {
 		modelChangeListeners.add(modelChangeListener);
 	}
@@ -137,18 +128,6 @@ public class RunnerModel implements IRunnerModel, ICategoryNodeChangeListener {
 	// for test only
 	protected void setLaunchConfigurationCategories(Set<ICategoryNode> categoryNodes) {
 		this.categoryNodes = categoryNodes;
-	}
-
-	public ILaunchNode findLaunchNodeBy(ILaunchConfiguration launchConfiguration) {
-		for (ICategoryNode launchConfigurationCategory : categoryNodes) {
-			// TODO LWA BARY: maybe category.contains() could check also ILaunchConfigs ??
-			for (ILaunchNode launchConfigurationNode : launchConfigurationCategory.getLaunchNodes()) {
-				if (launchConfigurationNode.getLaunchConfiguration().equals(launchConfiguration)) {
-					return launchConfigurationNode;
-				}
-			}
-		}
-		return null;
 	}
 
 	public void categoryNodeChanged() {

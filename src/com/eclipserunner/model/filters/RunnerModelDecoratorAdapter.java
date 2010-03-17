@@ -2,8 +2,6 @@ package com.eclipserunner.model.filters;
 
 import java.util.Collection;
 
-import org.eclipse.debug.core.ILaunchConfiguration;
-
 import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.IModelChangeListener;
@@ -33,14 +31,6 @@ public class RunnerModelDecoratorAdapter implements IRunnerModel {
 
 	public void addModelChangeListener(IModelChangeListener modelChangeListener) {
 		runnerModel.addModelChangeListener(modelChangeListener);
-	}
-
-	public ILaunchNode findLaunchNodeBy(ILaunchConfiguration launchConfiguration) {
-		return runnerModel.findLaunchNodeBy(launchConfiguration);
-	}
-
-	public ICategoryNode getCategoryNode(String categoryNodeName) {
-		return runnerModel.getCategoryNode(categoryNodeName);
 	}
 
 	public Collection<ICategoryNode> getCategoryNodes() {

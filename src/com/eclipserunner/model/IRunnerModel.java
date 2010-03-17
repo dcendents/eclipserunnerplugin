@@ -2,8 +2,6 @@ package com.eclipserunner.model;
 
 import java.util.Collection;
 
-import org.eclipse.debug.core.ILaunchConfiguration;
-
 public interface IRunnerModel {
 
 	void addLaunchNode(ILaunchNode launchNode);
@@ -12,8 +10,6 @@ public interface IRunnerModel {
 	ICategoryNode addCategoryNode(String categoryNodeName);
 	void removeCategoryNode(ICategoryNode categoryNode);
 
-	// TODO remove
-	ICategoryNode getCategoryNode(String categoryNodeName);
 	Collection<ICategoryNode> getCategoryNodes();
 
 	void addModelChangeListener(IModelChangeListener modelChangeListener);
@@ -25,8 +21,5 @@ public interface IRunnerModel {
 	// TODO remove
 	void setDefaultCategoryNodeVisible(boolean visible);
 	ICategoryNode getDefaultCategoryNode();
-
-	// TODO remove
-	ILaunchNode findLaunchNodeBy(ILaunchConfiguration launchConfiguration);
 
 }

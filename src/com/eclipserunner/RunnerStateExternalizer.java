@@ -93,7 +93,7 @@ public class RunnerStateExternalizer {
 			String categoryName = categoryElement.getAttribute(NAME_ATTR);
 
 			// create category if not exists
-			ICategoryNode categoryNode = runnerModel.getCategoryNode(categoryName);
+			ICategoryNode categoryNode = getCategoryNodeByName(categoryName);
 			if (categoryNode == null) {
 				categoryNode = runnerModel.addCategoryNode(categoryName);
 			}
@@ -222,7 +222,7 @@ public class RunnerStateExternalizer {
 		}
 	}
 
-	public static Element createCategoryElement(ICategoryNode category, Document document) {
+	private static Element createCategoryElement(ICategoryNode category, Document document) {
 		Element categoryElement = document.createElement(CATEGORY_NODE_NAME);
 		categoryElement.setAttribute(NAME_ATTR, category.getName());
 		for (ILaunchNode launchNode : category.getLaunchNodes()) {
@@ -233,7 +233,7 @@ public class RunnerStateExternalizer {
 		return categoryElement;
 	}
 
-	public static Element createLaunchElement(ILaunchNode launchNode, Document document) {
+	private static Element createLaunchElement(ILaunchNode launchNode, Document document) {
 		Element launchElement = document.createElement(LAUNCH_NODE_NAME);
 		ILaunchConfiguration launchConfiguration = launchNode.getLaunchConfiguration();
 		launchElement.setAttribute(NAME_ATTR, launchConfiguration.getName());
@@ -254,4 +254,14 @@ public class RunnerStateExternalizer {
 		}
 	}
 
+	private static ICategoryNode getCategoryNodeByName(String name) {
+		IRunnerModel runnerModel = RunnerModelProvider.getDefaultModel();
+		for (ICategoryNode categoryNode : runnerModel.getCategoryNodes()) {
+			if (categoryNode.getName().equals(name)) {
+				return categoryNode;
+			}
+		}
+		return null;
+	}
+	
 }

@@ -23,7 +23,7 @@ public class LaunchTreeLabelProvider extends LabelProvider {
 
 	private static final String IMG_CATEGORY         = "category.gif";
 	private static final String IMG_DEFAULT_CATEGORY = "category-archive.gif";
-	private static final String IMG_DECORATION       = "bookmark_star.gif";
+	private static final String IMG_DECORATION       = "star_min.gif";
 
 	private IDebugModelPresentation debugModelPresentation;
 	private final IRunnerModel runnerModel;
