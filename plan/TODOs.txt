@@ -4,8 +4,9 @@
 [ ----- ] drag and drop to launch configuration type
 [ ----- ] open tree nodes are closed while performing some tree operations
 [ FIXED ] toggle bookmark icon covers base icon
-[ ----- ] delete about action? 
-
+[ ----- ] delete about action?
+[ ----- ] one toggle bookmark button is enough
+[ ----- ] bookmark on launch type node does not work
 
 ---[ FEATURES ]-----------------------------------------------------------------
 [ ----- ] toggle bookmarks button

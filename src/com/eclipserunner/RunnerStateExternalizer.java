@@ -59,6 +59,8 @@ public class RunnerStateExternalizer {
 	private static final String LAUNCH_NODE_NAME    = "launchConfiguration";
 
 
+	// TODO BARY never write so long methods !! :)
+	// i wanted to write in points what's being done, but it was too difficult
 	/**
 	 * Load plugin state from given file.
 	 *
@@ -66,6 +68,7 @@ public class RunnerStateExternalizer {
 	 * @throws CoreException
 	 */
 	public static void readStateFromFile(File inputFile) throws CoreException {
+
 		if (!inputFile.exists()) {
 			throw new CoreException(new Status(IStatus.ERROR, RunnerPlugin.PLUGIN_ID, "File not found '" + inputFile.getAbsolutePath() + "'"));
 		}
@@ -152,6 +155,10 @@ public class RunnerStateExternalizer {
 		}
 	}
 
+	// TODO BARY
+	// method name    : open file
+	// implementation : open file + create + document + parse it
+	// method always does ONE thing
 	private static Document openStateFile(File inputFile) throws CoreException {
 		InputStream inputStream = null;
 		try {
@@ -254,6 +261,8 @@ public class RunnerStateExternalizer {
 		}
 	}
 
+	// TODO BARY move to RunnerModelUtils (or something like that)
+	// add model as parameter and write tests ;)
 	private static ICategoryNode getCategoryNodeByName(String name) {
 		IRunnerModel runnerModel = RunnerModelProvider.getInstance().getDefaultModel();
 		for (ICategoryNode categoryNode : runnerModel.getCategoryNodes()) {
@@ -263,5 +272,5 @@ public class RunnerStateExternalizer {
 		}
 		return null;
 	}
-	
+
 }
