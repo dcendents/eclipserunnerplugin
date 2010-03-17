@@ -84,7 +84,7 @@ public class RunnerStateExternalizer {
 		Map<String, ILaunchNode> launchNodes = new HashMap<String, ILaunchNode>();
 
 		// populating model
-		IRunnerModel runnerModel = RunnerModelProvider.getDefaultModel();
+		IRunnerModel runnerModel = RunnerModelProvider.getInstance().getDefaultModel();
 
 		// read categories
 		NodeList categoryNodeList = runnerNode.getElementsByTagName(CATEGORY_NODE_NAME);
@@ -143,7 +143,7 @@ public class RunnerStateExternalizer {
 	 * @throws CoreException
 	 */
 	public static void readDefaultState() throws CoreException {
-		IRunnerModel runnerModel = RunnerModelProvider.getDefaultModel();
+		IRunnerModel runnerModel = RunnerModelProvider.getInstance().getDefaultModel();
 		ILaunchManager launchManager = getLaunchManager();
 		for (ILaunchConfiguration launchConfiguration : launchManager.getLaunchConfigurations()) {
 			LaunchNode launchNode = new LaunchNode();
@@ -180,7 +180,7 @@ public class RunnerStateExternalizer {
 	 */
 	public static void writeStateToFile(File outputFile) throws CoreException {
 		try {
-			IRunnerModel runnerModel = RunnerModelProvider.getDefaultModel();
+			IRunnerModel runnerModel = RunnerModelProvider.getInstance().getDefaultModel();
 			FileOutputStream outputStream = new FileOutputStream(outputFile);
 			try {
 				Document document = createCategorDocument(runnerModel.getCategoryNodes());
@@ -255,7 +255,7 @@ public class RunnerStateExternalizer {
 	}
 
 	private static ICategoryNode getCategoryNodeByName(String name) {
-		IRunnerModel runnerModel = RunnerModelProvider.getDefaultModel();
+		IRunnerModel runnerModel = RunnerModelProvider.getInstance().getDefaultModel();
 		for (ICategoryNode categoryNode : runnerModel.getCategoryNodes()) {
 			if (categoryNode.getName().equals(name)) {
 				return categoryNode;

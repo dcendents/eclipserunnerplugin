@@ -3,7 +3,7 @@
 [ FIXED ] drag and drop does not persist tree expanded elements
 [ ----- ] drag and drop to launch configuration type
 [ ----- ] open tree nodes are closed while performing some tree operations
-[ ----- ] toggle bookmark icon covers base icon
+[ FIXED ] toggle bookmark icon covers base icon
 [ ----- ] delete about action? 
 
 
@@ -16,7 +16,7 @@
 [ ----- ] interface for LaunchConfigurationTypeNode (for LabelProvider)
 [ ----- ] reduce number of TODOs and FIXMEs in code
 [ ----- ] FlatTreeAdpaters jUnit tests
-[ ----- ] ICategory instead of ILaunchConfigurationCategory
+[ FIXED ] ICategoryNode instead of ILaunchConfigurationCategory
 
 ----[ TODO ]--------------------------------------------------------------------
 [ ----- ] release

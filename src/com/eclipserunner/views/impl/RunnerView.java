@@ -115,7 +115,7 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 	}
 
 	private void initializeModel() {
-		runnerModel = RunnerModelProvider.getDefaultModel();
+		runnerModel = RunnerModelProvider.getInstance().getDefaultModel();
 		runnerModel.addModelChangeListener(this);
 	}
 
@@ -129,11 +129,11 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 
 		// TODO LWA BARY code should be in state serializer ??
 		String treeMode = JavaPlugin.getDefault().getPreferenceStore().getString(RunnerPluginPrererenceConstants.TREE_MODE);
-		RunnerModelProvider.setTreeMode(TreeMode.fromString(treeMode));
+		RunnerModelProvider.getInstance().setTreeMode(TreeMode.fromString(treeMode));
 
 		// TODO LWA Method, duplicated code. see at the end
 		viewer.setContentProvider(
-			RunnerModelProvider.getTreeContentProvider()
+			RunnerModelProvider.getInstance().getTreeContentProvider()
 		);
 
 		viewer.setLabelProvider(new LaunchTreeLabelProvider(runnerModel));
@@ -409,9 +409,9 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 			toggleTypeModeAction.setChecked(false);
 		}
 
-		RunnerModelProvider.setTreeMode(mode);
+		RunnerModelProvider.getInstance().setTreeMode(mode);
 		viewer.setContentProvider(
-			RunnerModelProvider.getTreeContentProvider()
+			RunnerModelProvider.getInstance().getTreeContentProvider()
 		);
 
 		refresh();
