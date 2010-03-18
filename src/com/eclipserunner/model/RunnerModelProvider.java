@@ -9,7 +9,9 @@ import com.eclipserunner.model.adapters.RunnerModelTreeAdapter;
 import com.eclipserunner.model.adapters.RunnerModelTreeWithTypesAdapter;
 import com.eclipserunner.model.filters.BookmarkFilter;
 import com.eclipserunner.model.filters.DefaultCategoryFilter;
+import com.eclipserunner.model.filters.ProjectFilter;
 import com.eclipserunner.model.filters.RunnerModelFilteringDecorator;
+import com.eclipserunner.model.filters.WorkingSetFilter;
 import com.eclipserunner.model.impl.RunnerModel;
 import com.eclipserunner.views.TreeMode;
 
@@ -20,7 +22,7 @@ import com.eclipserunner.views.TreeMode;
  */
 public class RunnerModelProvider {
 
-	private static final RunnerModelProvider INSTANCE = new RunnerModelProvider();
+	private static RunnerModelProvider INSTANCE;
 
 	private IRunnerModel runnerModel;
 	private IRunnerModel filteredRunnerModel;
@@ -34,6 +36,8 @@ public class RunnerModelProvider {
 
 	private ITreeContentProvider contentProvider;
 
+	private TreeMode treeMode;
+
 	// Singleton pattern
 	private RunnerModelProvider() {
 		runnerModel = new RunnerModel();
@@ -44,28 +48,22 @@ public class RunnerModelProvider {
 
 		bookmarkFilter = new BookmarkFilter();
 		defaultCategoryFilter = new DefaultCategoryFilter();
-
-		// TODO BARY LWA filter implementation
-		projectFilter = new INodeFilter() {
-			public boolean filter(ILaunchNode launchNode) {
-				return false;
-			}
-			public boolean filter(ICategoryNode categoryNode) {
-				return false;
-			}
-		};
-
-		// TODO BARY LWA filter implementation
-		workingSetFilter = new INodeFilter() {
-			public boolean filter(ILaunchNode launchNode) {
-				return false;
-			}
-			public boolean filter(ICategoryNode categoryNode) {
-				return false;
-			}
-		};
+		projectFilter = new ProjectFilter();
+		workingSetFilter = new WorkingSetFilter();
 
 		initializeFilterChain();
+		initializeTreeModeAdapter();
+	}
+
+	private void initializeTreeModeAdapter() {
+		String treeModeString = RunnerPlugin.getDefault().getPreferenceStore().getString(PrererenceConstants.TREE_MODE);
+		TreeMode treeMode = null;
+		try {
+			treeMode = TreeMode.valueOf(treeModeString);
+		} catch (Exception e) {
+			treeMode = TreeMode.FLAT_MODE;
+		}
+		setTreeMode(treeMode);
 	}
 
 	private void initializeFilterChain() {
@@ -77,6 +75,9 @@ public class RunnerModelProvider {
 	}
 
 	public static RunnerModelProvider getInstance() {
+		if (INSTANCE == null) {
+			INSTANCE = new RunnerModelProvider();
+		}
 		return INSTANCE;
 	}
 
@@ -97,20 +98,18 @@ public class RunnerModelProvider {
 	}
 
 	public void setTreeMode(TreeMode treeMode) {
-		boolean treeModeState = false;
+		this.treeMode = treeMode;
 		switch (treeMode) {
 			case FLAT_MODE:
 				contentProvider = new RunnerModelTreeAdapter(filteredRunnerModel);
-				treeModeState = false;
 				break;
 			case HIERARCHICAL_MODE:
 				contentProvider = new RunnerModelTreeWithTypesAdapter(filteredRunnerModel);
-				treeModeState = true;
 				break;
 			default:
 				break;
 		}
-		setPreferenceValue(PrererenceConstants.DEFAULT_CATEGORY_VISIBLE, treeModeState);
+		setPreferenceValue(PrererenceConstants.TREE_MODE, treeMode.toString());
 	}
 
 	public IContentProvider getTreeContentProvider() {
@@ -152,20 +151,28 @@ public class RunnerModelProvider {
 		}
 	}
 
-	private void setPreferenceValue(String property, boolean value) {
-		RunnerPlugin.getDefault().getPreferenceStore().setValue(property, value);
-	}
-
-	private boolean getPreferenceBoolean(String property) {
-		return RunnerPlugin.getDefault().getPreferenceStore().getBoolean(property);
-	}
-
 	public boolean isBookmarkFilterActive() {
 		return filterChain.isFilterActive(bookmarkFilter);
 	}
 
 	public boolean isDefaultCategoryFilterActive() {
 		return filterChain.isFilterActive(defaultCategoryFilter);
+	}
+
+	public TreeMode getCurrentTreeMode() {
+		return treeMode;
+	}
+
+	private void setPreferenceValue(String property, boolean value) {
+		RunnerPlugin.getDefault().getPreferenceStore().setValue(property, value);
+	}
+
+	private void setPreferenceValue(String property, String value) {
+		RunnerPlugin.getDefault().getPreferenceStore().setValue(property, value);
+	}
+
+	private boolean getPreferenceBoolean(String property) {
+		return RunnerPlugin.getDefault().getPreferenceStore().getBoolean(property);
 	}
 
 }

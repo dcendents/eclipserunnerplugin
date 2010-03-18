@@ -13,10 +13,4 @@ public enum TreeMode {
 		return this.equals(HIERARCHICAL_MODE);
 	}
 
-	public static TreeMode fromString(String treeMode) {
-		if (HIERARCHICAL_MODE.toString().equals(treeMode)) {
-			return HIERARCHICAL_MODE;
-		}
-		return FLAT_MODE;
-	}
 }

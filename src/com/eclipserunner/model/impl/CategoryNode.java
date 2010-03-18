@@ -1,6 +1,5 @@
 package com.eclipserunner.model.impl;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,11 +35,6 @@ public class CategoryNode extends AbstractCategoryNode implements ICategoryNode,
 
 	public final Set<ILaunchNode> getLaunchNodes() {
 		return launchNodes;
-	}
-
-	// TODO LWA fix it
-	public final void setLaunchNodes(Collection<ILaunchNode> launchNodes) {
-		this.launchNodes = new HashSet<ILaunchNode>(launchNodes);
 	}
 
 	public void add(ILaunchNode launchNode) {

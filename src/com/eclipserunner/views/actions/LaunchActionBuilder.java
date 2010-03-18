@@ -202,7 +202,7 @@ public final class LaunchActionBuilder {
 		return PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(image);
 	}
 
-	// TODO LWA BARY
+	// TODO LWA BARY do we need about like that ?
 	public Action createAboutAction() {
 		Action action = new Action() {
 			@Override

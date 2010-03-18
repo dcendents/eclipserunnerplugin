@@ -32,7 +32,6 @@ import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.part.ViewPart;
 
-import com.eclipserunner.PrererenceConstants;
 import com.eclipserunner.model.IActionEnablement;
 import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
@@ -122,15 +121,7 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 		FilteredTree tree = new FilteredTree(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL, patternFilter, true);
 
 		viewer = tree.getViewer();
-
-		// TODO LWA BARY code should be in state serializer ??
-		String treeMode = JavaPlugin.getDefault().getPreferenceStore().getString(PrererenceConstants.TREE_MODE);
-		RunnerModelProvider.getInstance().setTreeMode(TreeMode.fromString(treeMode));
-
-		// TODO LWA Method, duplicated code. see at the end
-		viewer.setContentProvider(
-			RunnerModelProvider.getInstance().getTreeContentProvider()
-		);
+		setupTreeContentProvider();
 
 		viewer.setLabelProvider(new LaunchTreeLabelProvider(runnerModel));
 		viewer.addDoubleClickListener(this);
@@ -166,8 +157,9 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 		getLaunchManager().addLaunchConfigurationListener(modelLaunchConfigurationListener);
 	}
 
+	// TODO do we need this ?
 	private void initializePropertyChangeListeners() {
-		propertyChangeListener= new IPropertyChangeListener() {
+		propertyChangeListener = new IPropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent event) {
 				System.out.println("RunnerView.RunnerView().new IPropertyChangeListener() {...}.propertyChange()");
 			}
@@ -395,8 +387,13 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 		return DebugPlugin.getDefault().getLaunchManager();
 	}
 
-	// TODO LWA TreeContentProviderFactory would hide implementations
 	public void setTreeMode(TreeMode mode) {
+		setupTreeModeActions(mode);
+		setupTreeContentProvider();
+		refresh();
+	}
+
+	protected void setupTreeModeActions(TreeMode mode) {
 		if (mode.isHierarchical()) {
 			toggleFlatModeAction.setChecked(false);
 			toggleTypeModeAction.setChecked(true);
@@ -404,13 +401,12 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 			toggleFlatModeAction.setChecked(true);
 			toggleTypeModeAction.setChecked(false);
 		}
+	}
 
-		RunnerModelProvider.getInstance().setTreeMode(mode);
+	protected void setupTreeContentProvider() {
 		viewer.setContentProvider(
-			RunnerModelProvider.getInstance().getTreeContentProvider()
+				RunnerModelProvider.getInstance().getTreeContentProvider()
 		);
-
-		refresh();
 	}
 
 	public void refresh() {

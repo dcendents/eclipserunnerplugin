@@ -61,8 +61,6 @@ public class TreeWithTypesAdapterTest {
 
 		when(model.getDefaultCategoryNode()).thenReturn(defaultCategory);
 		when(model.getCategoryNodes()).thenReturn(categories);
-		// TODO LWA fix the test
-		// when(model.isDefaultCategoryNodeVisible()).thenReturn(true);
 
 		configureLaunch(defaultLaunch, type1, "c");
 		configureLaunch(cat1launch1, type1, "a");

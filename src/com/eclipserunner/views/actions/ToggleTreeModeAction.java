@@ -1,6 +1,6 @@
 package com.eclipserunner.views.actions;
 
-import com.eclipserunner.PrererenceConstants;
+import com.eclipserunner.model.RunnerModelProvider;
 import com.eclipserunner.views.IRunnerView;
 import com.eclipserunner.views.TreeMode;
 
@@ -16,8 +16,8 @@ public class ToggleTreeModeAction extends AbstractToggleAction {
 		this.mode = mode;
 		this.runnerView = runnerView;
 
-		String treeMode = getPreferenceStore().getString(PrererenceConstants.TREE_MODE);
-		if (mode.toString().equals(treeMode)) {
+		TreeMode currentTreeMode = RunnerModelProvider.getInstance().getCurrentTreeMode();
+		if (mode.equals(currentTreeMode)) {
 			setChecked(true);
 		} else {
 			setChecked(false);
@@ -26,8 +26,7 @@ public class ToggleTreeModeAction extends AbstractToggleAction {
 
 	@Override
 	public void run() {
-		// TODO LWA implement like toggle actions
-		getPreferenceStore().setValue(PrererenceConstants.TREE_MODE, mode.toString());
+		RunnerModelProvider.getInstance().setTreeMode(mode);
 		runnerView.setTreeMode(mode);
 	}
 
