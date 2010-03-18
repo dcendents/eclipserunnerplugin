@@ -7,7 +7,7 @@ import java.util.Collection;
  *
  * @author vachacz
  */
-public interface ICategoryNode {
+public interface ICategoryNode extends IActionEnablement {
 
 	String getName();
 	void setName(String name);

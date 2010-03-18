@@ -58,4 +58,12 @@ public class CategoryDelegatingDecorator extends AbstractCategoryNode implements
 		return category.size();
 	}
 
+	public boolean isRemovable() {
+		return category.isRemovable();
+	}
+
+	public boolean isRenamable() {
+		return category.isRenamable();
+	}
+
 }

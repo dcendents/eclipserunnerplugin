@@ -1,12 +1,13 @@
----[ BUGS ]---------------------------------------------------------------------
+\---[ BUGS ]---------------------------------------------------------------------
 [ FIXED ] expand all + tree with types does not work
 [ FIXED ] drag and drop does not persist tree expanded elements
 [ ----- ] drag and drop to launch configuration type
-[ ----- ] open tree nodes are closed while performing some tree operations
+[ FIXED ] open tree nodes are closed while performing some tree operations
 [ FIXED ] toggle bookmark icon covers base icon
 [ ----- ] delete about action?
 [ ----- ] one toggle bookmark button is enough
 [ ----- ] bookmark on launch type node does not work
+[ FIXED ] remove/rename actions on cotegory are disabled
 
 ---[ FEATURES ]-----------------------------------------------------------------
 [ ----- ] toggle bookmarks button
@@ -14,12 +15,12 @@
 [ ----- ] launch configuration filter by active project/working set
 
 ---[ REFACTORING & IMPROVEMENTS ]-----------------------------------------------
-[ ----- ] interface for LaunchConfigurationTypeNode (for LabelProvider)
+[ ----- ] interface for LaunchConfigurationTypeNode (needed in LabelProvider?)
 [ ----- ] reduce number of TODOs and FIXMEs in code
 [ ----- ] FlatTreeAdpaters jUnit tests
 [ FIXED ] ICategoryNode instead of ILaunchConfigurationCategory
 
 ----[ TODO ]--------------------------------------------------------------------
 [ ----- ] release
-[ ----- ] update site on google.code
-[ ----- ] wiki tutorial
+[ ----- ] eclipse update site on google.code
+[ ----- ] wiki usage tutorial
