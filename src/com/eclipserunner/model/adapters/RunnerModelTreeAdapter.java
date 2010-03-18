@@ -41,7 +41,7 @@ public class RunnerModelTreeAdapter implements ITreeContentProvider {
 	public boolean hasChildren(Object parent) {
 		if (parent instanceof ICategoryNode) {
 			ICategoryNode categoryNode = (ICategoryNode) parent;
-			return !categoryNode.isEmpty();
+			return !categoryNode.getLaunchNodes().isEmpty();
 		}
 		return false;
 	}

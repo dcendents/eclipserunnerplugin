@@ -57,18 +57,6 @@ public class CategoryNode extends AbstractCategoryNode implements ICategoryNode,
 		fireCategoryNodeChangedEvent();
 	}
 
-	public boolean contains(ILaunchNode launchNode) {
-		return launchNodes.contains(launchNode);
-	}
-
-	public boolean isEmpty() {
-		return launchNodes.isEmpty();
-	}
-
-	public int size() {
-		return launchNodes.size();
-	}
-
 	public void addCategoryNodeChangeListener(ICategoryNodeChangeListener categoryNodeChangeListener) {
 		categoryNodeChangeListeners.add(categoryNodeChangeListener);
 	}

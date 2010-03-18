@@ -22,20 +22,12 @@ public class CategoryDelegatingDecorator extends AbstractCategoryNode implements
 		category.addCategoryNodeChangeListener(categoryNodeChangeListener);
 	}
 
-	public boolean contains(ILaunchNode launchNode) {
-		return category.contains(launchNode);
-	}
-
 	public Collection<ILaunchNode> getLaunchNodes() {
 		return category.getLaunchNodes();
 	}
 
 	public String getName() {
 		return category.getName();
-	}
-
-	public boolean isEmpty() {
-		return category.isEmpty();
 	}
 
 	public void remove(ILaunchNode launchNode) {
@@ -52,10 +44,6 @@ public class CategoryDelegatingDecorator extends AbstractCategoryNode implements
 
 	public void setName(String name) {
 		category.setName(name);
-	}
-
-	public int size() {
-		return category.size();
 	}
 
 	public boolean isRemovable() {

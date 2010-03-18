@@ -22,8 +22,4 @@ public interface ICategoryNode extends IActionEnablement {
 
 	void setBookmarked(boolean state);
 
-	boolean contains(ILaunchNode launchNode);
-	boolean isEmpty();
-	int size();
-
 }

@@ -266,11 +266,6 @@ public class TreeWithTypesAdapterTest {
 	private void configureCategory(ICategoryNode category, ILaunchConfiguration ...launches) {
 		Collection<ILaunchNode> launchNodes = createLaunchNodes(category, launches);
 		when(category.getLaunchNodes()).thenReturn(launchNodes);
-		if (launches.length == 0) {
-			when(category.isEmpty()).thenReturn(true);
-		} else {
-			when(category.isEmpty()).thenReturn(false);
-		}
 	}
 
 	private Object[] asTypeNodeArray(ICategoryNode category, ILaunchConfigurationType ...types) {
