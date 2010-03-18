@@ -3,8 +3,8 @@ package com.eclipserunner.model;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 
+import com.eclipserunner.PrererenceConstants;
 import com.eclipserunner.RunnerPlugin;
-import com.eclipserunner.RunnerPluginPrererenceConstants;
 import com.eclipserunner.model.adapters.RunnerModelTreeAdapter;
 import com.eclipserunner.model.adapters.RunnerModelTreeWithTypesAdapter;
 import com.eclipserunner.model.filters.BookmarkFilter;
@@ -64,6 +64,16 @@ public class RunnerModelProvider {
 				return false;
 			}
 		};
+
+		initializeFilterChain();
+	}
+
+	private void initializeFilterChain() {
+		boolean defaultCategoryFilter = getPreferenceBoolean(PrererenceConstants.DEFAULT_CATEGORY_VISIBLE);
+		useDefaultCategoryFilter(defaultCategoryFilter);
+
+		boolean bookmarkFilter = getPreferenceBoolean(PrererenceConstants.BOOKMARK_FILTER_ENABLE);
+		useBookmarkFilter(bookmarkFilter);
 	}
 
 	public static RunnerModelProvider getInstance() {
@@ -100,19 +110,20 @@ public class RunnerModelProvider {
 			default:
 				break;
 		}
-		setPreferenceValue(RunnerPluginPrererenceConstants.DEFAULT_CATEGORY_VISIBLE, treeModeState);
+		setPreferenceValue(PrererenceConstants.DEFAULT_CATEGORY_VISIBLE, treeModeState);
 	}
 
 	public IContentProvider getTreeContentProvider() {
 		return contentProvider;
 	}
 
-	public void useBookmarkFilter(boolean flag) {
-		if (flag) {
+	public void useBookmarkFilter(boolean useBookmarkFilter) {
+		if (useBookmarkFilter) {
 			filterChain.addFilter(bookmarkFilter);
 		} else {
 			filterChain.removeFilter(bookmarkFilter);
 		}
+		setPreferenceValue(PrererenceConstants.BOOKMARK_FILTER_ENABLE, useBookmarkFilter);
 	}
 
 	public void useDefaultCategoryFilter(boolean flag) {
@@ -142,7 +153,19 @@ public class RunnerModelProvider {
 	}
 
 	private void setPreferenceValue(String property, boolean value) {
-		RunnerPlugin.getDefault().getPreferenceStore().setValue(RunnerPluginPrererenceConstants.DEFAULT_CATEGORY_VISIBLE, value);
+		RunnerPlugin.getDefault().getPreferenceStore().setValue(property, value);
+	}
+
+	private boolean getPreferenceBoolean(String property) {
+		return RunnerPlugin.getDefault().getPreferenceStore().getBoolean(property);
+	}
+
+	public boolean isBookmarkFilterActive() {
+		return filterChain.isFilterActive(bookmarkFilter);
+	}
+
+	public boolean isDefaultCategoryFilterActive() {
+		return filterChain.isFilterActive(defaultCategoryFilter);
 	}
 
 }

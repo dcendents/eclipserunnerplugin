@@ -9,9 +9,9 @@ import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.INodeFilter;
 import com.eclipserunner.model.INodeFilterChain;
 import com.eclipserunner.model.IRunnerModel;
-import com.eclipserunner.model.impl.CategoryNode;
+import com.eclipserunner.model.common.RunnerModelDelegatingDecorator;
 
-public class RunnerModelFilteringDecorator extends RunnerModelDecoratorAdapter implements INodeFilterChain {
+public class RunnerModelFilteringDecorator extends RunnerModelDelegatingDecorator implements INodeFilterChain, INodeFilter {
 
 	private List<INodeFilter> nodeFilterList = new ArrayList<INodeFilter>();
 
@@ -23,6 +23,9 @@ public class RunnerModelFilteringDecorator extends RunnerModelDecoratorAdapter i
 	public Collection<ICategoryNode> getCategoryNodes() {
 		Collection<ICategoryNode> decoratedCategories = new ArrayList<ICategoryNode>();
 		for (ICategoryNode categoryNode : runnerModel.getCategoryNodes()) {
+			if (filter(categoryNode)) {
+				continue;
+			}
 			decoratedCategories.add(decorateCategory(categoryNode));
 		}
 		return decoratedCategories;
@@ -34,28 +37,9 @@ public class RunnerModelFilteringDecorator extends RunnerModelDecoratorAdapter i
 	}
 
 	private ICategoryNode decorateCategory(ICategoryNode category) {
-		Collection<ILaunchNode> filteredNodes = new ArrayList<ILaunchNode>();
-		for (ILaunchNode launchNode : category.getLaunchNodes()) {
-			boolean filtered = filterLaunchNode(launchNode);
-			if (!filtered) {
-				filteredNodes.add(launchNode);
-			}
-		}
-		// TODO LWA new method ??
-		// we need category node decorator hier, because now drop does not work
-		CategoryNode node = new CategoryNode();
-		node.setLaunchNodes(filteredNodes);
-		node.setName(category.getName());
-		return node;
-	}
-
-	private boolean filterLaunchNode(ILaunchNode launchNode) {
-		for (INodeFilter nodeFilter : nodeFilterList) {
-			if (nodeFilter.filter(launchNode)) {
-				return true;
-			}
-		}
-		return false;
+		CategoryFilteringDecorator filteredCategory = new CategoryFilteringDecorator(category);
+		filteredCategory.setNodeFilter(this);
+		return filteredCategory;
 	}
 
 	public void addFilter(INodeFilter filter) {
@@ -64,6 +48,28 @@ public class RunnerModelFilteringDecorator extends RunnerModelDecoratorAdapter i
 
 	public void removeFilter(INodeFilter filter) {
 		nodeFilterList.remove(filter);
+	}
+
+	public boolean filter(ILaunchNode launchNode) {
+		for (INodeFilter nodeFilter : nodeFilterList) {
+			if (nodeFilter.filter(launchNode)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean filter(ICategoryNode categoryNode) {
+		for (INodeFilter nodeFilter : nodeFilterList) {
+			if (nodeFilter.filter(categoryNode)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean isFilterActive(INodeFilter bookmarkFilter) {
+		return nodeFilterList.contains(bookmarkFilter);
 	}
 
 }

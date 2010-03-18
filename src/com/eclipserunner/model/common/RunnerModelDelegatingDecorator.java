@@ -1,4 +1,4 @@
-package com.eclipserunner.model.filters;
+package com.eclipserunner.model.common;
 
 import java.util.Collection;
 
@@ -13,11 +13,11 @@ import com.eclipserunner.model.IRunnerModel;
  *
  * @author vachacz
  */
-public class RunnerModelDecoratorAdapter implements IRunnerModel {
+public class RunnerModelDelegatingDecorator implements IRunnerModel {
 
 	protected final IRunnerModel runnerModel;
 
-	public RunnerModelDecoratorAdapter(IRunnerModel runnerModel) {
+	public RunnerModelDelegatingDecorator(IRunnerModel runnerModel) {
 		this.runnerModel = runnerModel;
 	}
 

@@ -1,20 +1,20 @@
 package com.eclipserunner.views.actions;
 
-import com.eclipserunner.RunnerPluginPrererenceConstants;
 import com.eclipserunner.model.RunnerModelProvider;
+import com.eclipserunner.views.IRunnerView;
 
 /**
  * @author vachacz
  */
 public class ToggleDefaultCategoryAction extends AbstractToggleAction {
 
-	public ToggleDefaultCategoryAction() {
+	private final IRunnerView view;
 
-		// TODO LWA BARY replace with one RunnerModelProvider getter method
-		boolean checked = getPreferenceStore().getBoolean(RunnerPluginPrererenceConstants.DEFAULT_CATEGORY_VISIBLE);
-		RunnerModelProvider.getInstance().useDefaultCategoryFilter(checked);
-
-		setChecked(checked);
+	public ToggleDefaultCategoryAction(IRunnerView view) {
+		this.view = view;
+		setChecked(
+			RunnerModelProvider.getInstance().isDefaultCategoryFilterActive()
+		);
 	}
 
 	@Override
@@ -24,6 +24,7 @@ public class ToggleDefaultCategoryAction extends AbstractToggleAction {
 		} else {
 			RunnerModelProvider.getInstance().useDefaultCategoryFilter(false);
 		}
+		view.refresh();
 	}
 
 }

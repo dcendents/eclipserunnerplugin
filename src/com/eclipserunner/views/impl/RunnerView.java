@@ -32,7 +32,7 @@ import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.part.ViewPart;
 
-import com.eclipserunner.RunnerPluginPrererenceConstants;
+import com.eclipserunner.PrererenceConstants;
 import com.eclipserunner.model.IActionEnablement;
 import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
@@ -111,7 +111,7 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 	}
 
 	private void initializeModel() {
-		runnerModel = RunnerModelProvider.getInstance().getDefaultModel();
+		runnerModel = RunnerModelProvider.getInstance().getFilteredModel();
 		runnerModel.addModelChangeListener(this);
 	}
 
@@ -124,7 +124,7 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 		viewer = tree.getViewer();
 
 		// TODO LWA BARY code should be in state serializer ??
-		String treeMode = JavaPlugin.getDefault().getPreferenceStore().getString(RunnerPluginPrererenceConstants.TREE_MODE);
+		String treeMode = JavaPlugin.getDefault().getPreferenceStore().getString(PrererenceConstants.TREE_MODE);
 		RunnerModelProvider.getInstance().setTreeMode(TreeMode.fromString(treeMode));
 
 		// TODO LWA Method, duplicated code. see at the end

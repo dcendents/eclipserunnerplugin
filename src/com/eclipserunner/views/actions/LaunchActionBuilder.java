@@ -173,7 +173,7 @@ public final class LaunchActionBuilder {
 	}
 
 	public Action createToggleDefaultCategoryAction() {
-		Action action = new ToggleDefaultCategoryAction();
+		Action action = new ToggleDefaultCategoryAction(runnerView);
 		configureAction(action, Message_createToggleDefaultCategory, Message_createToggleDefaultCategoryTooltip, IMG_DEFAULT_CATEGORY);
 		return action;
 	}
