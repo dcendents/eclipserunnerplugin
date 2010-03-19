@@ -6,7 +6,10 @@ import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ICategoryNodeChangeListener;
 import com.eclipserunner.model.ILaunchNode;
 
-public class CategoryDelegatingDecorator extends AbstractCategoryNode implements ICategoryNode {
+/**
+ * @author vachacz
+ */
+public class CategoryDelegatingDecorator implements ICategoryNode {
 
 	protected final ICategoryNode category;
 
@@ -54,4 +57,14 @@ public class CategoryDelegatingDecorator extends AbstractCategoryNode implements
 		return category.isRenamable();
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		return category.equals(obj);
+	}
+
+	@Override
+	public int hashCode () {
+		return category.hashCode();
+	}
+	
 }

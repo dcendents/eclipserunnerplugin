@@ -8,15 +8,17 @@ import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ICategoryNodeChangeListener;
 import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.ILaunchNodeChangeListener;
-import com.eclipserunner.model.common.AbstractCategoryNode;
 
 /**
  * Container of launch configurations presented in RunnerView tree.
  *
  * @author vachacz
  */
-public class CategoryNode extends AbstractCategoryNode implements ICategoryNode, ILaunchNodeChangeListener, IActionEnablement {
+public class CategoryNode implements ICategoryNode, ILaunchNodeChangeListener, IActionEnablement {
 
+	private static final int PRIME_MULTIPLYER = 11;
+	private static final int PRIME_BASE       = 17;
+	
 	private String name;
 	private Set<ILaunchNode> launchNodes = new HashSet<ILaunchNode>();
 	private Set<ICategoryNodeChangeListener> categoryNodeChangeListeners = new HashSet<ICategoryNodeChangeListener>();
@@ -91,4 +93,20 @@ public class CategoryNode extends AbstractCategoryNode implements ICategoryNode,
 		this.renameable = renameable;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof ICategoryNode) {
+			ICategoryNode categoryNode = (ICategoryNode) obj;
+			return getName().equals(categoryNode.getName());
+		}
+		return super.equals(obj);
+	}
+
+	@Override
+	public int hashCode () {
+		int code = PRIME_BASE;
+		code = PRIME_MULTIPLYER * code + getName().hashCode();
+		return code;
+	}
+	
 }
