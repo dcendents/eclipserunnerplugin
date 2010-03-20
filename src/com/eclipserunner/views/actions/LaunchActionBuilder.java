@@ -40,7 +40,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
-import com.eclipserunner.PrererenceConstants;
+import com.eclipserunner.PreferenceConstants;
 import com.eclipserunner.RunnerPlugin;
 import com.eclipserunner.model.INodeSelection;
 import com.eclipserunner.model.IRunnerModel;
@@ -174,37 +174,37 @@ public final class LaunchActionBuilder {
 	}
 
 	public Action createToggleDefaultCategoryAction() {
-		Action action = new ToggleDefaultCategoryAction(runnerView);
+		Action action = new ToggleFilterAction(PreferenceConstants.FILTER_DEFAULT_CATEGORY, runnerView);
 		configureAction(action, Message_createToggleDefaultCategory, Message_createToggleDefaultCategoryTooltip, IMG_DEFAULT_CATEGORY);
 		return action;
 	}
 
 	public Action createToggleBookmarkModeAction() {
-		Action action = new ToggleBookmarkModeAction(runnerView);
+		Action action = new ToggleFilterAction(PreferenceConstants.FILTER_BOOKMARKED, runnerView);
 		configureAction(action, Message_toggleBookmarkMode, Message_toggleBookmarkModeTooltip, IMG_BOOKMARK);
 		return action;
 	}
 
 	public Action createToggleClosedProjectFilterAction() {
-		Action action = new ToggleFilterAction(PrererenceConstants.CLOSED_PROJECT_FILTER, runnerView);
+		Action action = new ToggleFilterAction(PreferenceConstants.FILTER_CLOSED_PROJECT, runnerView);
 		configureAction(action, "Filter closed projects", "Filter closed projects");
 		return action;
 	}
 
 	public Action createDelectedProjectFilterAction() {
-		Action action = new ToggleFilterAction(PrererenceConstants.DELETED_PROJECT_FILTER, runnerView);
+		Action action = new ToggleFilterAction(PreferenceConstants.FILTER_DELETED_PROJECT, runnerView);
 		configureAction(action, "Filter deleted projects", "Filter deleted projects");
 		return action;
 	}
 
 	public Action createActiveWorkingSetFilterAction() {
-		Action action = new ToggleFilterAction(PrererenceConstants.ACTIVE_WORKING_SET_FILTER, runnerView);
+		Action action = new ToggleFilterAction(PreferenceConstants.FILTER_ACTIVE_WORKING_SET, runnerView);
 		configureAction(action, "Filter currect working set", "Filter currect working set");
 		return action;
 	}
 
 	public Action createActiveProjektFilterAction() {
-		Action action = new ToggleFilterAction(PrererenceConstants.ACTIVE_PROJECT_FILTER, runnerView);
+		Action action = new ToggleFilterAction(PreferenceConstants.FILTER_ACTIVE_PROJECT, runnerView);
 		configureAction(action, "Filter current project", "Filter current project");
 		return action;
 	}

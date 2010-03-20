@@ -2,15 +2,21 @@ package com.eclipserunner.model.filters;
 
 import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
-import com.eclipserunner.model.INodeFilter;
+import com.eclipserunner.model.common.AbstractFilter;
 
-public class BookmarkFilter implements INodeFilter {
+public class BookmarkFilter extends AbstractFilter {
 
-	public boolean filter(ILaunchNode launchNode) {
+	public BookmarkFilter(String propery) {
+		super(propery);
+	}
+
+	@Override
+	public boolean filterWhenActive(ILaunchNode launchNode) {
 		return !launchNode.isBookmarked();
 	}
 
-	public boolean filter(ICategoryNode categoryNode) {
+	@Override
+	public boolean filterWhenActive(ICategoryNode categoryNode) {
 		boolean filterCategoryNode = true;
 		for(ILaunchNode launchNode : categoryNode.getLaunchNodes()) {
 			if (launchNode.isBookmarked()) {
