@@ -17,12 +17,12 @@ import org.mockito.MockitoAnnotations;
 import com.eclipserunner.Messages;
 import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.IRunnerModel;
-import com.eclipserunner.model.impl.CategoryNode;
 
 public class CategoryNameValidatorTest {
 
 	private static final String INITIAL_CATEGORY_NAME = "category";
-	private static final String EXISTING_CATEGORY_NAME = "exists";
+	private static final String EXISTING_CATEGORY_NAME1 = "exists1";
+	private static final String EXISTING_CATEGORY_NAME2 = "exists2";
 	private static final String NOT_EXISTING_CATEGORY_NAME = "not_exists";
 
 	static {
@@ -33,13 +33,24 @@ public class CategoryNameValidatorTest {
 	@Mock
 	private IRunnerModel runnerModelMock;
 
+	@Mock
+	private ICategoryNode categoryNode1Mock;
+
+	@Mock
+	private ICategoryNode categoryNode2Mock;
+
 	@Before
 	public void initMocks() throws CoreException {
 		MockitoAnnotations.initMocks(this);
 
-		Collection<ICategoryNode> categoryNodes = new HashSet<ICategoryNode>();
-		categoryNodes.add(new CategoryNode(EXISTING_CATEGORY_NAME));
-		when(runnerModelMock.getCategoryNodes()).thenReturn(categoryNodes);
+		when(categoryNode1Mock.getName()).thenReturn(EXISTING_CATEGORY_NAME1);
+		when(categoryNode2Mock.getName()).thenReturn(EXISTING_CATEGORY_NAME2);
+
+		Collection<ICategoryNode> categoryMockNodes = new HashSet<ICategoryNode>();
+		categoryMockNodes.add(categoryNode1Mock);
+		categoryMockNodes.add(categoryNode2Mock);
+
+		when(runnerModelMock.getCategoryNodes()).thenReturn(categoryMockNodes);
 	}
 
 
@@ -61,7 +72,7 @@ public class CategoryNameValidatorTest {
 	public void testIsValidCategoryNameExists() throws Exception {
 		CategoryNameValidator validator = new CategoryNameValidator(INITIAL_CATEGORY_NAME, runnerModelMock);
 
-		assertTrue(Messages.Message_errorCategoryAlreadyExists.equals(validator.isValid(EXISTING_CATEGORY_NAME)));
+		assertTrue(Messages.Message_errorCategoryAlreadyExists.equals(validator.isValid(EXISTING_CATEGORY_NAME1)));
 		verify(runnerModelMock).getCategoryNodes();
 	}
 
