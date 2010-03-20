@@ -52,7 +52,12 @@ public class CategoryNode implements ICategoryNode, ILaunchNodeChangeListener, I
 	}
 
 	public void remove(ILaunchNode launchNode) {
-		launchNodes.remove(launchNode);
+		if (launchNodes.contains(launchNode)) {
+			launchNodes.remove(launchNode);
+
+			launchNode.setCategoryNode(null);
+			launchNode.removeLaunchNodeChangeListener(this);
+		}
 		fireCategoryNodeChangedEvent();
 	}
 

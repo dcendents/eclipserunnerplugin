@@ -22,7 +22,7 @@ public class LaunchConfigurationNameValidatorTest {
 	private static final String NOT_EXISTING_CATEGORY_NAME = "not_exists";
 
 	static {
-		Messages.Message_catogoryNameNotValid = "aaaa";
+		Messages.Message_errorCatogoryEmptyName = "aaaa";
 		Messages.Message_errorLaunchConfigurationAlreadyExists = "bbbb";
 	}
 

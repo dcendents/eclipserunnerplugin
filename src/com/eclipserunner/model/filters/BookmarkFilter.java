@@ -11,7 +11,14 @@ public class BookmarkFilter implements INodeFilter {
 	}
 
 	public boolean filter(ICategoryNode categoryNode) {
-		return false;
+		boolean filterCategoryNode = true;
+		for(ILaunchNode launchNode : categoryNode.getLaunchNodes()) {
+			if (launchNode.isBookmarked()) {
+				filterCategoryNode = false;
+				break;
+			}
+		}
+		return filterCategoryNode;
 	}
 
 }

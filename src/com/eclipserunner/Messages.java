@@ -34,7 +34,6 @@ public class Messages extends NLS {
 
 	public static String Message_uncategorized;
 
-	public static String Message_catogoryNameNotValid;
 	public static String Message_categoryDialogTitle;
 	public static String Message_categoryDialogMessage;
 
@@ -65,6 +64,9 @@ public class Messages extends NLS {
 	public static String Message_toggleBookmarkModeTooltip;
 
 	public static String Message_error;
+	public static String Message_errorCatogoryEmptyName;
+	public static String Message_errorCategoryAlreadyExists;
+	public static String Message_errorLaunchConfigurationEmptyName;
 	public static String Message_errorLaunchConfigurationAlreadyExists;
 
 	public static String Message_treeModeFlat;

@@ -1,44 +1,53 @@
 package com.eclipserunner.views.validators;
 
-import static com.eclipserunner.Messages.Message_catogoryNameNotValid;
 import static com.eclipserunner.Messages.Message_errorLaunchConfigurationAlreadyExists;
+import static com.eclipserunner.Messages.Message_errorLaunchConfigurationEmptyName;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.dialogs.IInputValidator;
 
+/**
+ * 
+ * @author vachacz
+ */
 public class LaunchConfigurationNameValidator implements IInputValidator {
-	
+
 	private ILaunchManager launchManager = null;
 	private String initialValue = null;
-	
-	public LaunchConfigurationNameValidator(String initialName) {
+
+	public LaunchConfigurationNameValidator() {
+		this.initialValue  = null;
 		this.launchManager = DebugPlugin.getDefault().getLaunchManager();
-		this.initialValue = initialName;
+	}
+
+	public LaunchConfigurationNameValidator(String initialName) {
+		this.initialValue  = initialName;
+		this.launchManager = DebugPlugin.getDefault().getLaunchManager();
 	}
 
 	// FOR TESTS ONLY
 	protected LaunchConfigurationNameValidator(String initialName, ILaunchManager launchManager) {
+		this.initialValue  = initialName;
 		this.launchManager = launchManager;
-		this.initialValue = initialName;
 	}
-	
+
 	public String isValid(String input) {
 		String name = input.trim();
-		
-		if (initialValue.equals(input)) {
+
+		if (initialValue != null && initialValue.equals(input)) {
 			return null;
 		}
 		else if (name.length() == 0) {
-			return Message_catogoryNameNotValid;
+			return Message_errorLaunchConfigurationEmptyName;
 		}
 		else if (isExistingLaunchConfigurationName(name)) {
 			return Message_errorLaunchConfigurationAlreadyExists;
 		}
 		return null;
 	}
-	
+
 	private boolean isExistingLaunchConfigurationName(String name) {
 		try {
 			return launchManager.isExistingLaunchConfigurationName(name);
@@ -46,4 +55,5 @@ public class LaunchConfigurationNameValidator implements IInputValidator {
 			return false;
 		}
 	}
+
 }

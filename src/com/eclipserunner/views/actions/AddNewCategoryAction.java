@@ -28,7 +28,8 @@ public class AddNewCategoryAction extends Action {
 
 	@Override
 	public void run() {
-		InputDialog dialog = new InputDialog(RunnerPlugin.getRunnerShell(), Message_categoryDialogTitle, Message_categoryDialogMessage, "", new CategoryNameValidator());
+		String initialValue = "";
+		InputDialog dialog = new InputDialog(RunnerPlugin.getRunnerShell(), Message_categoryDialogTitle, Message_categoryDialogMessage, initialValue, new CategoryNameValidator());
 
 		dialog.open();
 		if (dialog.getReturnCode() == Window.OK) {
