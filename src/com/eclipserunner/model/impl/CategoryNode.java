@@ -18,13 +18,17 @@ public class CategoryNode implements ICategoryNode, ILaunchNodeChangeListener, I
 
 	private static final int PRIME_MULTIPLYER = 11;
 	private static final int PRIME_BASE       = 17;
-	
+
 	private String name;
 	private Set<ILaunchNode> launchNodes = new HashSet<ILaunchNode>();
 	private Set<ICategoryNodeChangeListener> categoryNodeChangeListeners = new HashSet<ICategoryNodeChangeListener>();
 
 	private boolean removable  = true;
 	private boolean renameable = true;
+
+	public CategoryNode(String name) {
+		this.name = name;
+	}
 
 	public String getName() {
 		return name;
@@ -108,5 +112,5 @@ public class CategoryNode implements ICategoryNode, ILaunchNodeChangeListener, I
 		code = PRIME_MULTIPLYER * code + getName().hashCode();
 		return code;
 	}
-	
+
 }

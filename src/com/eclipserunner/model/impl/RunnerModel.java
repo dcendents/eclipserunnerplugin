@@ -46,8 +46,7 @@ public class RunnerModel implements IRunnerModel, ICategoryNodeChangeListener {
 
 	public RunnerModel() {
 
-		CategoryNode category = new CategoryNode();
-		category.setName(Message_uncategorized);
+		CategoryNode category = new CategoryNode(Message_uncategorized);
 		category.addCategoryNodeChangeListener(this);
 		category.setRemovable(false);
 		category.setRenameable(false);
@@ -75,14 +74,11 @@ public class RunnerModel implements IRunnerModel, ICategoryNodeChangeListener {
 		fireModelChangedEvent();
 	}
 
-	public ICategoryNode addCategoryNode(String categoryNodeName) {
-		ICategoryNode category = new CategoryNode();
-		category.setName(categoryNodeName);
-		category.addCategoryNodeChangeListener(this);
+	public void addCategoryNode(ICategoryNode categoryNode) {
+		categoryNode.addCategoryNodeChangeListener(this);
 
-		categoryNodes.add(category);
+		categoryNodes.add(categoryNode);
 		fireModelChangedEvent();
-		return category;
 	}
 
 	public void removeCategoryNode(ICategoryNode categoryNode) {

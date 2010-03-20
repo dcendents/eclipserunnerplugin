@@ -44,7 +44,7 @@ public class RunnerPlugin extends AbstractUIPlugin {
 		public void saving(ISaveContext context) throws CoreException {
 			String newFileName = fileName(context.getSaveNumber());
 			File newFile = RunnerPlugin.this.getStateLocation().append(newFileName).toFile();
-			RunnerStateExternalizer.writeStateToFile(newFile);
+			RunnerStateExternalizer.writeRunnerModelToFile(newFile);
 			context.map(new Path(PLUGIN_STATE_FILE), new Path(newFileName));
 			context.needSaveNumber();
 		}
@@ -123,15 +123,15 @@ public class RunnerPlugin extends AbstractUIPlugin {
 				IPath location = state.lookup(new Path(PLUGIN_STATE_FILE));
 				if (location != null) {
 					File file = getStateLocation().append(location).toFile();
-					RunnerStateExternalizer.readStateFromFile(file);
+					RunnerStateExternalizer.readRunnerModelFromFile(file);
 				}
 			} catch (CoreException e) {
 				e.printStackTrace();
-				RunnerStateExternalizer.readDefaultState();
+				RunnerStateExternalizer.readDefaultRunnerModel();
 			}
 		}
 		else {
-			RunnerStateExternalizer.readDefaultState();
+			RunnerStateExternalizer.readDefaultRunnerModel();
 		}
 	}
 

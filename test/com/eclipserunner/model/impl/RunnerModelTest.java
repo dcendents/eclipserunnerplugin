@@ -17,7 +17,6 @@ import org.mockito.MockitoAnnotations;
 import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.IModelChangeListener;
-import com.eclipserunner.model.impl.RunnerModel;
 
 public class RunnerModelTest {
 
@@ -56,7 +55,8 @@ public class RunnerModelTest {
 		runnerModel.setLaunchConfigurationCategories(launchConfigurationSetMock);
 
 		// test
-		runnerModel.addCategoryNode("test");
+		ICategoryNode testCategoryNode = new CategoryNode("test");
+		runnerModel.addCategoryNode(testCategoryNode);
 
 		verify(launchConfigurationSetMock).add(anyLaunchConfigurationCotegory());
 		verify(modelListenerMock).modelChanged();

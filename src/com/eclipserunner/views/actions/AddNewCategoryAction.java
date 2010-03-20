@@ -8,7 +8,9 @@ import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 
 import com.eclipserunner.RunnerPlugin;
+import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.IRunnerModel;
+import com.eclipserunner.model.impl.CategoryNode;
 import com.eclipserunner.views.validators.CategoryNameValidator;
 
 /**
@@ -30,7 +32,8 @@ public class AddNewCategoryAction extends Action {
 
 		dialog.open();
 		if (dialog.getReturnCode() == Window.OK) {
-			runnerModel.addCategoryNode(dialog.getValue());
+			ICategoryNode categoryNode = new CategoryNode(dialog.getValue());
+			runnerModel.addCategoryNode(categoryNode);
 		}
 	}
 

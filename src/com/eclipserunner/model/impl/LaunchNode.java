@@ -90,4 +90,5 @@ public class LaunchNode implements ILaunchNode, IActionEnablement {
 		code = PRIME_MULTIPLYER * code + categoryNode.hashCode();
 		return code;
 	}
+
 }

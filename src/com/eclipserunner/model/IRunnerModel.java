@@ -7,7 +7,7 @@ public interface IRunnerModel {
 	void addLaunchNode(ILaunchNode launchNode);
 	void removeLaunchNode(ILaunchNode launchNode);
 
-	ICategoryNode addCategoryNode(String categoryNodeName);
+	void addCategoryNode(ICategoryNode categoryNode);
 	void removeCategoryNode(ICategoryNode categoryNode);
 
 	Collection<ICategoryNode> getCategoryNodes();

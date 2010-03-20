@@ -1,14 +1,18 @@
 package com.eclipserunner;
 
+import static com.eclipserunner.Messages.Message_uncategorized;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -36,6 +40,7 @@ import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.model.RunnerModelProvider;
+import com.eclipserunner.model.impl.CategoryNode;
 import com.eclipserunner.model.impl.LaunchNode;
 
 /**
@@ -59,16 +64,13 @@ public class RunnerStateExternalizer {
 	private static final String LAUNCH_NODE_NAME    = "launchConfiguration";
 
 
-	// TODO BARY never write so long methods !! :)
-	// i wanted to write in points what's being done, but it was too difficult
 	/**
 	 * Load plugin state from given file.
 	 *
 	 * @param inputFile Plugin state file.
 	 * @throws CoreException
 	 */
-	public static void readStateFromFile(File inputFile) throws CoreException {
-
+	public static void readRunnerModelFromFile(File inputFile) throws CoreException {
 		if (!inputFile.exists()) {
 			throw new CoreException(new Status(IStatus.ERROR, RunnerPlugin.PLUGIN_ID, "File not found '" + inputFile.getAbsolutePath() + "'"));
 		}
@@ -76,90 +78,15 @@ public class RunnerStateExternalizer {
 			throw new CoreException(new Status(IStatus.ERROR, RunnerPlugin.PLUGIN_ID, "File contains no data '" + inputFile.getAbsolutePath() + "'"));
 		}
 
-		Document document = openStateFile(inputFile);
-		Element runnerNode = document.getDocumentElement();
-		String readVersion = runnerNode.getAttribute(VERSION_ATTR);
-		if (!readVersion.equals(VERSION_VALUE)) {
-			throw new CoreException(new Status(IStatus.ERROR, RunnerPlugin.PLUGIN_ID, "State file version '" + readVersion + "' not supported"));
-		}
-
-		// configuration name to node maping
-		Map<String, ILaunchNode> launchNodes = new HashMap<String, ILaunchNode>();
-
-		// populating model
+		Document runnerModelDocument = createDocumentFromRunnerModelFile(inputFile);
 		IRunnerModel runnerModel = RunnerModelProvider.getInstance().getDefaultModel();
 
-		// read categories
-		NodeList categoryNodeList = runnerNode.getElementsByTagName(CATEGORY_NODE_NAME);
-		for (int categoryIndex = 0; categoryIndex < categoryNodeList.getLength(); categoryIndex++) {
-			Element categoryElement = (Element) categoryNodeList.item(categoryIndex);
-			String categoryName = categoryElement.getAttribute(NAME_ATTR);
+		populateRunnerModelFromDocument(runnerModel, runnerModelDocument);
+		populateRunnerModelWithRemainingUncategorizedLaunchConfigurations(runnerModel);
 
-			// create category if not exists
-			ICategoryNode categoryNode = getCategoryNodeByName(categoryName);
-			if (categoryNode == null) {
-				categoryNode = runnerModel.addCategoryNode(categoryName);
-			}
-
-			// read configurations and map them to categories
-			NodeList launchNodeList = categoryElement.getElementsByTagName(LAUNCH_NODE_NAME);
-			for (int j = 0; j < launchNodeList.getLength(); j++) {
-				Element launchElement = (Element) launchNodeList.item(j);
-				String launchName = launchElement.getAttribute(NAME_ATTR);
-				boolean isBookmarked = Boolean.valueOf(launchElement.getAttribute(BOOKMARK_ATTR));
-
-				// create empty Node
-				ILaunchNode launchNode = new LaunchNode();
-				launchNode.setCategoryNode(categoryNode);
-				launchNode.setBookmarked(isBookmarked);
-
-				launchNodes.put(launchName, launchNode);
-			}
-		}
-
-		// get all configurations from launch manager
-		for (ILaunchConfiguration launchConfiguration : getLaunchManager().getLaunchConfigurations()) {
-
-			// get configuration metadata
-			String launchName = launchConfiguration.getName();
-
-			ILaunchNode launchNode = launchNodes.get(launchName);
-			if (launchNode == null) {
-				launchNode = new LaunchNode();
-				launchNode.setCategoryNode(runnerModel.getDefaultCategoryNode());
-			}
-			launchNode.setLaunchConfiguration(launchConfiguration);
-
-			ICategoryNode categoryNode = launchNode.getCategoryNode();
-			categoryNode.add(launchNode);
-		}
 	}
 
-	private static ILaunchManager getLaunchManager() {
-		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
-		return launchManager;
-	}
-
-	/**
-	 * Load plugin default state.
-	 *
-	 * @throws CoreException
-	 */
-	public static void readDefaultState() throws CoreException {
-		IRunnerModel runnerModel = RunnerModelProvider.getInstance().getDefaultModel();
-		ILaunchManager launchManager = getLaunchManager();
-		for (ILaunchConfiguration launchConfiguration : launchManager.getLaunchConfigurations()) {
-			LaunchNode launchNode = new LaunchNode();
-			launchNode.setLaunchConfiguration(launchConfiguration);
-			runnerModel.getDefaultCategoryNode().add(launchNode);
-		}
-	}
-
-	// TODO BARY
-	// method name    : open file
-	// implementation : open file + create + document + parse it
-	// method always does ONE thing
-	private static Document openStateFile(File inputFile) throws CoreException {
+	private static Document createDocumentFromRunnerModelFile(File inputFile) throws CoreException {
 		InputStream inputStream = null;
 		try {
 			inputStream = new FileInputStream(inputFile);
@@ -179,19 +106,101 @@ public class RunnerStateExternalizer {
 		}
 	}
 
+	private static void populateRunnerModelFromDocument(IRunnerModel runnerModel, Document document) throws CoreException {
+		Element runnerNode = document.getDocumentElement();
+		String readVersion = runnerNode.getAttribute(VERSION_ATTR);
+		if (!readVersion.equals(VERSION_VALUE)) {
+			throw new CoreException(new Status(IStatus.ERROR, RunnerPlugin.PLUGIN_ID, "State file version '" + readVersion + "' not supported"));
+		}
+
+		NodeList categoryNodeList = runnerNode.getElementsByTagName(CATEGORY_NODE_NAME);
+		for (int categoryIndex = 0; categoryIndex < categoryNodeList.getLength(); categoryIndex++) {
+			Element categoryElement = (Element) categoryNodeList.item(categoryIndex);
+			String categoryNodeName = categoryElement.getAttribute(NAME_ATTR);
+
+			ICategoryNode categoryNode = null;
+			if (Message_uncategorized.equals(categoryNodeName)) {
+				categoryNode = runnerModel.getDefaultCategoryNode();
+			}
+			else {
+				categoryNode = new CategoryNode(categoryNodeName);
+				runnerModel.addCategoryNode(categoryNode);
+			}
+
+			NodeList launchNodeList = categoryElement.getElementsByTagName(LAUNCH_NODE_NAME);
+			for (int j = 0; j < launchNodeList.getLength(); j++) {
+				Element launchElement = (Element) launchNodeList.item(j);
+				ILaunchConfiguration launchConfiguration = getLaunchConfigurationByName(launchElement.getAttribute(NAME_ATTR));
+
+				if (launchConfiguration != null) {
+					boolean isBookmarked = Boolean.valueOf(launchElement.getAttribute(BOOKMARK_ATTR));
+
+					ILaunchNode launchNode = new LaunchNode();
+					launchNode.setLaunchConfiguration(launchConfiguration);
+					launchNode.setBookmarked(isBookmarked);
+
+					categoryNode.add(launchNode);
+				}
+			}
+		}
+	}
+
+	private static void populateRunnerModelWithRemainingUncategorizedLaunchConfigurations(IRunnerModel runnerModel) throws CoreException {
+		Collection<ICategoryNode> categoryNodes = runnerModel.getCategoryNodes();
+
+		// Get all launch configurations
+		List<ILaunchConfiguration> launchConfigurations = new ArrayList<ILaunchConfiguration>(Arrays.asList(getLaunchManager().getLaunchConfigurations()));
+
+		// Skip configurations which are already in model
+		for(ICategoryNode categoryNode : categoryNodes) {
+			for (ILaunchNode launchNode : categoryNode.getLaunchNodes()) {
+				for (Iterator<ILaunchConfiguration> launchConfigurationIterator = launchConfigurations.iterator(); launchConfigurationIterator.hasNext();) {
+					ILaunchConfiguration launchConfiguration = launchConfigurationIterator.next();
+					if (launchConfiguration.equals(launchNode.getLaunchConfiguration())) {
+						launchConfigurationIterator.remove();
+						break;
+					}
+				}
+			}
+		}
+
+		// add remaining configurations
+		for(ILaunchConfiguration launchConfiguration : launchConfigurations) {
+			ILaunchNode launchNode = new LaunchNode();
+			launchNode.setLaunchConfiguration(launchConfiguration);
+			runnerModel.addLaunchNode(launchNode);
+		}
+	}
+
+
+	/**
+	 * Load plugin default state.
+	 *
+	 * @throws CoreException
+	 */
+	public static void readDefaultRunnerModel() throws CoreException {
+		IRunnerModel runnerModel = RunnerModelProvider.getInstance().getDefaultModel();
+		ILaunchManager launchManager = getLaunchManager();
+		for (ILaunchConfiguration launchConfiguration : launchManager.getLaunchConfigurations()) {
+			LaunchNode launchNode = new LaunchNode();
+			launchNode.setLaunchConfiguration(launchConfiguration);
+			runnerModel.getDefaultCategoryNode().add(launchNode);
+		}
+	}
+
 	/**
 	 * Save plugin state into given file.
 	 *
 	 * @param outputFile Plugin state file.
 	 * @throws CoreException
 	 */
-	public static void writeStateToFile(File outputFile) throws CoreException {
+	public static void writeRunnerModelToFile(File outputFile) throws CoreException {
 		try {
 			IRunnerModel runnerModel = RunnerModelProvider.getInstance().getDefaultModel();
 			FileOutputStream outputStream = new FileOutputStream(outputFile);
 			try {
-				Document document = createCategorDocument(runnerModel.getCategoryNodes());
-				writeDocument(document, outputStream);
+				Document document = createDocumentFromRunnerModel(runnerModel);
+				writeDocumentToStream(document, outputStream);
 				outputStream.flush();
 			} finally {
 				outputStream.close();
@@ -201,7 +210,7 @@ public class RunnerStateExternalizer {
 		}
 	}
 
-	private static Document createCategorDocument(Collection<ICategoryNode> categoryNodes) throws CoreException {
+	private static Document createDocumentFromRunnerModel(IRunnerModel runnerModel) throws CoreException {
 		Document document = createDocument();
 
 		Element runnerElement = document.createElement(ROOT_NODE_NAME);
@@ -209,7 +218,7 @@ public class RunnerStateExternalizer {
 		document.appendChild(runnerElement);
 
 		// create the category nodes
-		for (ICategoryNode categoryNode : categoryNodes) {
+		for (ICategoryNode categoryNode : runnerModel.getCategoryNodes()) {
 			runnerElement.appendChild(
 					createCategoryElement(categoryNode, document)
 			);
@@ -248,7 +257,7 @@ public class RunnerStateExternalizer {
 		return launchElement;
 	}
 
-	private static void writeDocument(Document document, OutputStream outputStream) throws CoreException {
+	private static void writeDocumentToStream(Document document, OutputStream outputStream) throws CoreException {
 		Source source = new DOMSource(document);
 		Result result = new StreamResult(outputStream);
 		try {
@@ -261,13 +270,15 @@ public class RunnerStateExternalizer {
 		}
 	}
 
-	// TODO BARY move to RunnerModelUtils (or something like that)
-	// add model as parameter and write tests ;)
-	private static ICategoryNode getCategoryNodeByName(String name) {
-		IRunnerModel runnerModel = RunnerModelProvider.getInstance().getDefaultModel();
-		for (ICategoryNode categoryNode : runnerModel.getCategoryNodes()) {
-			if (categoryNode.getName().equals(name)) {
-				return categoryNode;
+	private static ILaunchManager getLaunchManager() {
+		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
+		return launchManager;
+	}
+
+	private static ILaunchConfiguration getLaunchConfigurationByName(String name) throws CoreException {
+		for(ILaunchConfiguration launchConfiguration : getLaunchManager().getLaunchConfigurations()) {
+			if (launchConfiguration.getName().equals(name)) {
+				return launchConfiguration;
 			}
 		}
 		return null;

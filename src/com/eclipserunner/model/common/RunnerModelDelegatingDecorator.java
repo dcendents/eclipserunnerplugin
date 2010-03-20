@@ -21,8 +21,8 @@ public class RunnerModelDelegatingDecorator implements IRunnerModel {
 		this.runnerModel = runnerModel;
 	}
 
-	public ICategoryNode addCategoryNode(String categoryNodeName) {
-		return runnerModel.addCategoryNode(categoryNodeName);
+	public void addCategoryNode(ICategoryNode categoryNode) {
+		runnerModel.addCategoryNode(categoryNode);
 	}
 
 	public void addLaunchNode(ILaunchNode launchNode) {
