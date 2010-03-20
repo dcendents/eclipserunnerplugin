@@ -1,7 +1,7 @@
 package com.eclipserunner.views.validators;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -17,12 +17,12 @@ import com.eclipserunner.Messages;
 
 public class LaunchConfigurationNameValidatorTest {
 
-	private static final String EXISTING_NAME = "config";
-	private static final String EXISTING_CATEGORY_NAME = "exists";
-	private static final String NOT_EXISTING_CATEGORY_NAME = "not_exists";
+	private static final String INITIAL_LAUNCH_CONFIGURATION_NAME = "config";
+	private static final String EXISTING_LAUNCH_CONFIGURATION_NAME = "exists";
+	private static final String NOT_EXISTING_LAUNCH_CONFIGURATION_NAME = "not_exists";
 
 	static {
-		Messages.Message_errorCatogoryEmptyName = "aaaa";
+		Messages.Message_errorLaunchConfigurationEmptyName = "aaaa";
 		Messages.Message_errorLaunchConfigurationAlreadyExists = "bbbb";
 	}
 
@@ -33,46 +33,45 @@ public class LaunchConfigurationNameValidatorTest {
 	public void initMocks() throws CoreException {
 		MockitoAnnotations.initMocks(this);
 
-		when(luanchManagerMock.isExistingLaunchConfigurationName(EXISTING_CATEGORY_NAME)).thenReturn(true);
-		when(luanchManagerMock.isExistingLaunchConfigurationName(NOT_EXISTING_CATEGORY_NAME)).thenReturn(false);
+		when(luanchManagerMock.isExistingLaunchConfigurationName(EXISTING_LAUNCH_CONFIGURATION_NAME)).thenReturn(true);
+		when(luanchManagerMock.isExistingLaunchConfigurationName(NOT_EXISTING_LAUNCH_CONFIGURATION_NAME)).thenReturn(false);
 	}
 
 	@Test
 	public void testIsValidEmptyString() throws Exception {
-		LaunchConfigurationNameValidator validator = new LaunchConfigurationNameValidator(EXISTING_NAME, luanchManagerMock);
+		LaunchConfigurationNameValidator validator = new LaunchConfigurationNameValidator(INITIAL_LAUNCH_CONFIGURATION_NAME, luanchManagerMock);
 
-		assertFalse(validator.isValid("").length() == 0);
+		assertTrue(Messages.Message_errorLaunchConfigurationEmptyName.equals(validator.isValid("")));
 	}
 
 	@Test
-	public void testIsValidTrimString() throws Exception {
-		LaunchConfigurationNameValidator validator = new LaunchConfigurationNameValidator(EXISTING_NAME, luanchManagerMock);
+	public void testIsValidWhitespaceString() throws Exception {
+		LaunchConfigurationNameValidator validator = new LaunchConfigurationNameValidator(INITIAL_LAUNCH_CONFIGURATION_NAME, luanchManagerMock);
 
-		assertFalse(validator.isValid("    ").length() == 0);
+		assertTrue(Messages.Message_errorLaunchConfigurationEmptyName.equals(validator.isValid("    ")));
 	}
 
 	@Test
-	public void testIsValidConfigurationExists() throws Exception {
-		LaunchConfigurationNameValidator validator = new LaunchConfigurationNameValidator(EXISTING_NAME, luanchManagerMock);
+	public void testIsValidLaunchConfigurationNameExists() throws Exception {
+		LaunchConfigurationNameValidator validator = new LaunchConfigurationNameValidator(INITIAL_LAUNCH_CONFIGURATION_NAME, luanchManagerMock);
 
-		assertFalse(validator.isValid(EXISTING_CATEGORY_NAME).length() == 0);
-
+		assertTrue(Messages.Message_errorLaunchConfigurationAlreadyExists.equals(validator.isValid(EXISTING_LAUNCH_CONFIGURATION_NAME)));
 		verify(luanchManagerMock).isExistingLaunchConfigurationName(anyString());
 	}
 
 	@Test
-	public void testIsValidSunnyDayScenario() throws Exception {
-		LaunchConfigurationNameValidator validator = new LaunchConfigurationNameValidator(EXISTING_NAME, luanchManagerMock);
+	public void testIsValidLaunchConfigurationNameNotExists() throws Exception {
+		LaunchConfigurationNameValidator validator = new LaunchConfigurationNameValidator(INITIAL_LAUNCH_CONFIGURATION_NAME, luanchManagerMock);
 
-		assertNull(validator.isValid(NOT_EXISTING_CATEGORY_NAME));
-
+		assertNull(validator.isValid(NOT_EXISTING_LAUNCH_CONFIGURATION_NAME));
 		verify(luanchManagerMock).isExistingLaunchConfigurationName(anyString());
 	}
 
 	@Test
 	public void testIsValidInitialValue() throws Exception {
-		LaunchConfigurationNameValidator validator = new LaunchConfigurationNameValidator(EXISTING_NAME, luanchManagerMock);
+		LaunchConfigurationNameValidator validator = new LaunchConfigurationNameValidator(INITIAL_LAUNCH_CONFIGURATION_NAME, luanchManagerMock);
 
-		assertNull(validator.isValid(EXISTING_NAME));
+		assertNull(validator.isValid(INITIAL_LAUNCH_CONFIGURATION_NAME));
 	}
+
 }

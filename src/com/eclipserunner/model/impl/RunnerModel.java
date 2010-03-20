@@ -3,6 +3,7 @@ package com.eclipserunner.model.impl;
 import static com.eclipserunner.Messages.Message_uncategorized;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -57,7 +58,7 @@ public class RunnerModel implements IRunnerModel, ICategoryNodeChangeListener {
 		categoryNodes.add(defaultCategoryNode);
 	}
 
-	public Set<ICategoryNode> getCategoryNodes() {
+	public Collection<ICategoryNode> getCategoryNodes() {
 		return categoryNodes;
 	}
 
