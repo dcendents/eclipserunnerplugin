@@ -78,14 +78,6 @@ public class RunnerModelProvider {
 		return filteredRunnerModel;
 	}
 
-	public void useFlatTreeType() {
-		setTreeMode(TreeMode.FLAT_MODE);
-	}
-
-	public void useHierarchicalTreeType() {
-		setTreeMode(TreeMode.HIERARCHICAL_MODE);
-	}
-
 	public void setTreeMode(TreeMode treeMode) {
 		this.treeMode = treeMode;
 		switch (treeMode) {

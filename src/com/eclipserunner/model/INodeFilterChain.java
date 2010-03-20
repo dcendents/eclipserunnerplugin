@@ -6,8 +6,5 @@ package com.eclipserunner.model;
 public interface INodeFilterChain {
 
 	void addFilter(INodeFilter filter);
-	void removeFilter(INodeFilter filter);
-
-	boolean isFilterActive(INodeFilter bookmarkFilter);
 
 }

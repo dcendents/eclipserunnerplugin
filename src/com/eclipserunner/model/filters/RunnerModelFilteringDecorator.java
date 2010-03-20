@@ -46,10 +46,6 @@ public class RunnerModelFilteringDecorator extends RunnerModelDelegatingDecorato
 		nodeFilterList.add(filter);
 	}
 
-	public void removeFilter(INodeFilter filter) {
-		nodeFilterList.remove(filter);
-	}
-
 	public boolean filter(ILaunchNode launchNode) {
 		for (INodeFilter nodeFilter : nodeFilterList) {
 			if (nodeFilter.filter(launchNode)) {
@@ -66,10 +62,6 @@ public class RunnerModelFilteringDecorator extends RunnerModelDelegatingDecorato
 			}
 		}
 		return false;
-	}
-
-	public boolean isFilterActive(INodeFilter bookmarkFilter) {
-		return nodeFilterList.contains(bookmarkFilter);
 	}
 
 }
