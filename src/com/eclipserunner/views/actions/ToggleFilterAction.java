@@ -1,9 +1,11 @@
 package com.eclipserunner.views.actions;
 
+import org.eclipse.jface.action.Action;
+
 import com.eclipserunner.RunnerPlugin;
 import com.eclipserunner.views.IRunnerView;
 
-public class ToggleFilterAction extends AbstractToggleAction {
+public class ToggleFilterAction extends Action {
 
 	private final String preferenceProperty;
 	private final IRunnerView runnerView;

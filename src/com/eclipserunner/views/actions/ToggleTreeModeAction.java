@@ -1,5 +1,7 @@
 package com.eclipserunner.views.actions;
 
+import org.eclipse.jface.action.Action;
+
 import com.eclipserunner.model.RunnerModelProvider;
 import com.eclipserunner.views.IRunnerView;
 import com.eclipserunner.views.TreeMode;
@@ -7,7 +9,7 @@ import com.eclipserunner.views.TreeMode;
 /**
  * @author vachacz
  */
-public class ToggleTreeModeAction extends AbstractToggleAction {
+public class ToggleTreeModeAction extends Action {
 
 	private final IRunnerView runnerView;
 	private final TreeMode mode;
