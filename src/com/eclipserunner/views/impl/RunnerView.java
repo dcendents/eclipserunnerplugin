@@ -86,8 +86,12 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 	private Action toggleFlatModeAction;
 	private Action toggleTypeModeAction;
 	private Action toggleDefaultCategoryAction;
-
 	private Action toggleBookmarkModeAction;
+
+	private Action toggleClosedProjectFilterAction;
+	private Action toggleDelectedProjectFilterAction;
+	private Action toggleActiveWorkingSetFilterAction;
+	private Action toggleActiveProjektFilterAction;
 
 	// we are listening only from this selection providers
 	private final String[] selectonProviders = new String[] {
@@ -229,6 +233,10 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 		toggleTypeModeAction                = builder.createToggleTypeModeAction();
 		toggleDefaultCategoryAction         = builder.createToggleDefaultCategoryAction();
 		toggleBookmarkModeAction            = builder.createToggleBookmarkModeAction();
+		toggleClosedProjectFilterAction     = builder.createToggleClosedProjectFilterAction();
+		toggleDelectedProjectFilterAction   = builder.createDelectedProjectFilterAction();
+		toggleActiveWorkingSetFilterAction  = builder.createActiveWorkingSetFilterAction();
+		toggleActiveProjektFilterAction     = builder.createActiveProjektFilterAction();
 	}
 
 	private void setupContextMenu() {
@@ -252,6 +260,11 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 		manager.add(new Separator());
 		manager.add(toggleFlatModeAction);
 		manager.add(toggleTypeModeAction);
+		manager.add(new Separator());
+		manager.add(toggleClosedProjectFilterAction);
+		manager.add(toggleDelectedProjectFilterAction);
+		manager.add(toggleActiveWorkingSetFilterAction);
+		manager.add(toggleActiveProjektFilterAction);
 		manager.add(new Separator());
 		manager.add(showRunConfigurationsDialogAction);
 		manager.add(showDebugConfigurationsDialogAction);

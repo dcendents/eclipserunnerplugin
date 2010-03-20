@@ -40,6 +40,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
+import com.eclipserunner.PrererenceConstants;
 import com.eclipserunner.RunnerPlugin;
 import com.eclipserunner.model.INodeSelection;
 import com.eclipserunner.model.IRunnerModel;
@@ -181,6 +182,30 @@ public final class LaunchActionBuilder {
 	public Action createToggleBookmarkModeAction() {
 		Action action = new ToggleBookmarkModeAction(runnerView);
 		configureAction(action, Message_toggleBookmarkMode, Message_toggleBookmarkModeTooltip, IMG_BOOKMARK);
+		return action;
+	}
+
+	public Action createToggleClosedProjectFilterAction() {
+		Action action = new ToggleFilterAction(PrererenceConstants.CLOSED_PROJECT_FILTER, runnerView);
+		configureAction(action, "Filter closed projects", "Filter closed projects");
+		return action;
+	}
+
+	public Action createDelectedProjectFilterAction() {
+		Action action = new ToggleFilterAction(PrererenceConstants.DELETED_PROJECT_FILTER, runnerView);
+		configureAction(action, "Filter deleted projects", "Filter deleted projects");
+		return action;
+	}
+
+	public Action createActiveWorkingSetFilterAction() {
+		Action action = new ToggleFilterAction(PrererenceConstants.ACTIVE_WORKING_SET_FILTER, runnerView);
+		configureAction(action, "Filter currect working set", "Filter currect working set");
+		return action;
+	}
+
+	public Action createActiveProjektFilterAction() {
+		Action action = new ToggleFilterAction(PrererenceConstants.ACTIVE_PROJECT_FILTER, runnerView);
+		configureAction(action, "Filter current project", "Filter current project");
 		return action;
 	}
 

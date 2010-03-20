@@ -8,7 +8,9 @@ import com.eclipserunner.RunnerPlugin;
 import com.eclipserunner.model.adapters.RunnerModelTreeAdapter;
 import com.eclipserunner.model.adapters.RunnerModelTreeWithTypesAdapter;
 import com.eclipserunner.model.filters.BookmarkFilter;
+import com.eclipserunner.model.filters.ClosedProjectsFilter;
 import com.eclipserunner.model.filters.DefaultCategoryFilter;
+import com.eclipserunner.model.filters.DeletedProjectsFilter;
 import com.eclipserunner.model.filters.ProjectFilter;
 import com.eclipserunner.model.filters.RunnerModelFilteringDecorator;
 import com.eclipserunner.model.filters.WorkingSetFilter;
@@ -31,8 +33,6 @@ public class RunnerModelProvider {
 
 	private INodeFilter bookmarkFilter;
 	private INodeFilter defaultCategoryFilter;
-	private INodeFilter projectFilter;
-	private INodeFilter workingSetFilter;
 
 	private ITreeContentProvider contentProvider;
 
@@ -45,11 +45,13 @@ public class RunnerModelProvider {
 		RunnerModelFilteringDecorator runnerModelDecorator = new RunnerModelFilteringDecorator(runnerModel);
 		filteredRunnerModel = runnerModelDecorator;
 		filterChain = runnerModelDecorator;
+		filterChain.addFilter(new ClosedProjectsFilter());
+		filterChain.addFilter(new DeletedProjectsFilter());
+		filterChain.addFilter(new WorkingSetFilter());
+		filterChain.addFilter(new ProjectFilter());
 
 		bookmarkFilter = new BookmarkFilter();
 		defaultCategoryFilter = new DefaultCategoryFilter();
-		projectFilter = new ProjectFilter();
-		workingSetFilter = new WorkingSetFilter();
 
 		initializeFilterChain();
 		initializeTreeModeAdapter();
@@ -123,20 +125,7 @@ public class RunnerModelProvider {
 
 	public void useDefaultCategoryFilter(boolean flag) {
 		setFilterEnablement(defaultCategoryFilter, flag);
-	}
-
-	public void useProjectFilter(boolean flag) {
-		setFilterEnablement(projectFilter, flag);
-		if (flag) {
-			disableFilter(workingSetFilter);
-		}
-	}
-
-	public void useWorkingSetFilter(boolean flag) {
-		setFilterEnablement(workingSetFilter, flag);
-		if (flag) {
-			disableFilter(projectFilter);
-		}
+		setPreferenceValue(PrererenceConstants.DEFAULT_CATEGORY_VISIBLE, flag);
 	}
 
 	private void setFilterEnablement(INodeFilter filter, boolean active) {
@@ -145,10 +134,6 @@ public class RunnerModelProvider {
 		} else {
 			filterChain.removeFilter(filter);
 		}
-	}
-
-	private void disableFilter(INodeFilter filter) {
-		setFilterEnablement(filter, false);
 	}
 
 	public boolean isBookmarkFilterActive() {

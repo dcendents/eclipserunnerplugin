@@ -21,6 +21,8 @@ import com.eclipserunner.views.validators.CategoryNameValidator;
 public class AddNewCategoryAction extends Action {
 
 	private IRunnerModel runnerModel;
+	
+	private static final String INITIAL_CATEGORY_NAME = "";
 
 	public AddNewCategoryAction(IRunnerModel runnerModel) {
 		this.runnerModel = runnerModel;
@@ -28,8 +30,7 @@ public class AddNewCategoryAction extends Action {
 
 	@Override
 	public void run() {
-		String initialValue = "";
-		InputDialog dialog = new InputDialog(RunnerPlugin.getRunnerShell(), Message_categoryDialogTitle, Message_categoryDialogMessage, initialValue, new CategoryNameValidator());
+		InputDialog dialog = new InputDialog(RunnerPlugin.getRunnerShell(), Message_categoryDialogTitle, Message_categoryDialogMessage, INITIAL_CATEGORY_NAME, new CategoryNameValidator());
 
 		dialog.open();
 		if (dialog.getReturnCode() == Window.OK) {

@@ -67,42 +67,34 @@ public class RunnerStateExternalizer {
 	/**
 	 * Load plugin state from given file.
 	 *
-	 * @param inputFile Plugin state file.
+	 * @param file Plugin state file.
 	 * @throws CoreException
 	 */
-	public static void readRunnerModelFromFile(File inputFile) throws CoreException {
-		if (!inputFile.exists()) {
-			throw new CoreException(new Status(IStatus.ERROR, RunnerPlugin.PLUGIN_ID, "File not found '" + inputFile.getAbsolutePath() + "'"));
+	public static void readRunnerModelFromFile(File file) throws CoreException {
+		if (!file.exists()) {
+			throw coreException("File not found '" + file.getAbsolutePath() + "'");
 		}
-		if (inputFile.length() == 0) {
-			throw new CoreException(new Status(IStatus.ERROR, RunnerPlugin.PLUGIN_ID, "File contains no data '" + inputFile.getAbsolutePath() + "'"));
+		if (file.length() == 0) {
+			throw coreException("File contains no data '" + file.getAbsolutePath() + "'");
 		}
 
-		Document runnerModelDocument = createDocumentFromRunnerModelFile(inputFile);
+		Document runnerModelDocument = createDocumentFromRunnerModelFile(file);
 		IRunnerModel runnerModel = RunnerModelProvider.getInstance().getDefaultModel();
 
 		populateRunnerModelFromDocument(runnerModel, runnerModelDocument);
 		populateRunnerModelWithRemainingUncategorizedLaunchConfigurations(runnerModel);
-
 	}
 
 	private static Document createDocumentFromRunnerModelFile(File inputFile) throws CoreException {
 		InputStream inputStream = null;
 		try {
 			inputStream = new FileInputStream(inputFile);
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder builder = factory.newDocumentBuilder();
+			DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			return builder.parse(inputStream);
 		} catch (Exception e) {
-			throw new CoreException(new Status(IStatus.ERROR, RunnerPlugin.PLUGIN_ID, "Failed to load runner state", e));
+			throw coreException("Failed to load runner state");
 		} finally {
-			if (inputStream != null) {
-				try {
-					inputStream.close();
-				} catch (IOException exception) {
-					exception.printStackTrace();
-				}
-			}
+			closeInputStream(inputStream);
 		}
 	}
 
@@ -110,7 +102,7 @@ public class RunnerStateExternalizer {
 		Element runnerNode = document.getDocumentElement();
 		String readVersion = runnerNode.getAttribute(VERSION_ATTR);
 		if (!readVersion.equals(VERSION_VALUE)) {
-			throw new CoreException(new Status(IStatus.ERROR, RunnerPlugin.PLUGIN_ID, "State file version '" + readVersion + "' not supported"));
+			throw coreException("State file version '" + readVersion + "' not supported");
 		}
 
 		NodeList categoryNodeList = runnerNode.getElementsByTagName(CATEGORY_NODE_NAME);
@@ -128,18 +120,16 @@ public class RunnerStateExternalizer {
 			}
 
 			NodeList launchNodeList = categoryElement.getElementsByTagName(LAUNCH_NODE_NAME);
-			for (int j = 0; j < launchNodeList.getLength(); j++) {
-				Element launchElement = (Element) launchNodeList.item(j);
-				ILaunchConfiguration launchConfiguration = getLaunchConfigurationByName(launchElement.getAttribute(NAME_ATTR));
+			for (int i = 0; i < launchNodeList.getLength(); i++) {
+				Element launchElement = (Element) launchNodeList.item(i);
+				ILaunchConfiguration launchConfiguration = findLaunchConfigurationByName(launchElement.getAttribute(NAME_ATTR));
 
 				if (launchConfiguration != null) {
 					boolean isBookmarked = Boolean.valueOf(launchElement.getAttribute(BOOKMARK_ATTR));
 
-					ILaunchNode launchNode = new LaunchNode();
-					launchNode.setLaunchConfiguration(launchConfiguration);
-					launchNode.setBookmarked(isBookmarked);
-
-					categoryNode.add(launchNode);
+					categoryNode.add(
+						createLaunchCategory(launchConfiguration, isBookmarked)
+					);
 				}
 			}
 		}
@@ -206,7 +196,7 @@ public class RunnerStateExternalizer {
 				outputStream.close();
 			}
 		} catch (IOException e) {
-			throw new CoreException(new Status(IStatus.ERROR, RunnerPlugin.PLUGIN_ID, "Failed to save runner state", e));
+			throw coreException("Failed to save runner state");
 		}
 	}
 
@@ -220,7 +210,7 @@ public class RunnerStateExternalizer {
 		// create the category nodes
 		for (ICategoryNode categoryNode : runnerModel.getCategoryNodes()) {
 			runnerElement.appendChild(
-					createCategoryElement(categoryNode, document)
+				createCategoryElement(categoryNode, document)
 			);
 		}
 
@@ -234,7 +224,7 @@ public class RunnerStateExternalizer {
 			documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			return documentBuilder.newDocument();
 		} catch (ParserConfigurationException e) {
-			throw new CoreException(new Status(IStatus.ERROR, RunnerPlugin.PLUGIN_ID, "Failed to create document", e));
+			throw coreException("Failed to create document");
 		}
 	}
 
@@ -243,7 +233,7 @@ public class RunnerStateExternalizer {
 		categoryElement.setAttribute(NAME_ATTR, category.getName());
 		for (ILaunchNode launchNode : category.getLaunchNodes()) {
 			categoryElement.appendChild(
-					createLaunchElement(launchNode, document)
+				createLaunchElement(launchNode, document)
 			);
 		}
 		return categoryElement;
@@ -266,7 +256,7 @@ public class RunnerStateExternalizer {
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.transform(source, result);
 		} catch (TransformerException e) {
-			throw new CoreException(new Status(IStatus.ERROR, RunnerPlugin.PLUGIN_ID, "Failed to write document", e));
+			throw coreException("Failed to write document");
 		}
 	}
 
@@ -275,13 +265,34 @@ public class RunnerStateExternalizer {
 		return launchManager;
 	}
 
-	private static ILaunchConfiguration getLaunchConfigurationByName(String name) throws CoreException {
+	private static ILaunchConfiguration findLaunchConfigurationByName(String name) throws CoreException {
 		for(ILaunchConfiguration launchConfiguration : getLaunchManager().getLaunchConfigurations()) {
 			if (launchConfiguration.getName().equals(name)) {
 				return launchConfiguration;
 			}
 		}
 		return null;
+	}
+
+	private static ILaunchNode createLaunchCategory(ILaunchConfiguration launchConfiguration, boolean isBookmarked) {
+		LaunchNode launchNode = new LaunchNode();
+		launchNode.setLaunchConfiguration(launchConfiguration);
+		launchNode.setBookmarked(isBookmarked);
+		return launchNode;
+	}
+
+	private static CoreException coreException(String message) throws CoreException {
+		return new CoreException(new Status(IStatus.ERROR, RunnerPlugin.PLUGIN_ID, message));
+	}
+
+	private static void closeInputStream(InputStream inputStream) {
+		if (inputStream != null) {
+			try {
+				inputStream.close();
+			} catch (IOException exception) {
+				exception.printStackTrace();
+			}
+		}
 	}
 
 }

@@ -1,6 +1,6 @@
 package com.eclipserunner.model.filters;
 
-import org.eclipse.debug.internal.ui.launchConfigurations.WorkingSetsFilter;
+import org.eclipse.debug.internal.ui.launchConfigurations.DeletedProjectFilter;
 
 import com.eclipserunner.PrererenceConstants;
 import com.eclipserunner.RunnerPlugin;
@@ -9,13 +9,13 @@ import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.INodeFilter;
 
 @SuppressWarnings("restriction")
-public class WorkingSetFilter implements INodeFilter {
+public class DeletedProjectsFilter implements INodeFilter {
 
 	public boolean filter(ILaunchNode launchNode) {
-		boolean active = RunnerPlugin.getDefault().getPreferenceStore().getBoolean(PrererenceConstants.ACTIVE_WORKING_SET_FILTER);
+		boolean active = RunnerPlugin.getDefault().getPreferenceStore().getBoolean(PrererenceConstants.DELETED_PROJECT_FILTER);
 
 		if (active) {
-			return !new WorkingSetsFilter().select(null, null, launchNode.getLaunchConfiguration());
+			return !new DeletedProjectFilter().select(null, null, launchNode.getLaunchConfiguration());
 		} else {
 			return false;
 		}
