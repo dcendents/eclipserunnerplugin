@@ -4,7 +4,7 @@ import org.eclipse.osgi.util.NLS;
 
 /**
  * Eclipse runner property constants.
- * 
+ *
  * @author vachacz
  */
 public class Messages extends NLS {
@@ -56,9 +56,6 @@ public class Messages extends NLS {
 
 	public static String Message_bookmark;
 	public static String Message_bookmarkTooltip;
-
-	public static String Message_unbookmark;
-	public static String Message_unbookmarkTooltip;
 
 	public static String Message_toggleBookmarkMode;
 	public static String Message_toggleBookmarkModeTooltip;

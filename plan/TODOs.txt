@@ -5,13 +5,12 @@
 [ FIXED ] open tree nodes are closed while performing some tree operations
 [ FIXED ] toggle bookmark icon covers base icon
 [ ----- ] delete about action?
-[ ----- ] one toggle bookmark button is enough
+[ FIXED ] one toggle bookmark button is enough
 [ ----- ] bookmark on launch type node does not work
 [ FIXED ] remove/rename actions on cotegory are disabled
 
 ---[ FEATURES ]-----------------------------------------------------------------
-[ ----- ] toggle bookmarks button
-[ ----- ] one bookmark/unbookmark button in context menu
+[ FIXED ] toggle bookmarks button
 [ ----- ] launch configuration filter by active project/working set
 
 ---[ REFACTORING & IMPROVEMENTS ]-----------------------------------------------
