@@ -2,6 +2,7 @@ package com.eclipserunner;
 
 import static com.eclipserunner.Messages.Message_uncategorized;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -63,7 +64,6 @@ public class RunnerStateExternalizer {
 	private static final String CATEGORY_NODE_NAME  = "category";
 	private static final String LAUNCH_NODE_NAME    = "launchConfiguration";
 
-
 	/**
 	 * Load plugin state from given file.
 	 *
@@ -79,7 +79,7 @@ public class RunnerStateExternalizer {
 		}
 
 		Document runnerModelDocument = createDocumentFromRunnerModelFile(file);
-		IRunnerModel runnerModel = RunnerModelProvider.getInstance().getDefaultModel();
+		IRunnerModel runnerModel = getDefaultModel();
 
 		populateRunnerModelFromDocument(runnerModel, runnerModelDocument);
 		populateRunnerModelWithRemainingUncategorizedLaunchConfigurations(runnerModel);
@@ -94,7 +94,7 @@ public class RunnerStateExternalizer {
 		} catch (Exception e) {
 			throw coreException("Failed to load runner state");
 		} finally {
-			closeInputStream(inputStream);
+			closeStream(inputStream);
 		}
 	}
 
@@ -162,14 +162,13 @@ public class RunnerStateExternalizer {
 		}
 	}
 
-
 	/**
 	 * Load plugin default state.
 	 *
 	 * @throws CoreException
 	 */
 	public static void readDefaultRunnerModel() throws CoreException {
-		IRunnerModel runnerModel = RunnerModelProvider.getInstance().getDefaultModel();
+		IRunnerModel runnerModel = getDefaultModel();
 		ILaunchManager launchManager = getLaunchManager();
 		for (ILaunchConfiguration launchConfiguration : launchManager.getLaunchConfigurations()) {
 			LaunchNode launchNode = new LaunchNode();
@@ -185,35 +184,27 @@ public class RunnerStateExternalizer {
 	 * @throws CoreException
 	 */
 	public static void writeRunnerModelToFile(File outputFile) throws CoreException {
+		FileOutputStream outputStream = null;
 		try {
-			IRunnerModel runnerModel = RunnerModelProvider.getInstance().getDefaultModel();
-			FileOutputStream outputStream = new FileOutputStream(outputFile);
-			try {
-				Document document = createDocumentFromRunnerModel(runnerModel);
-				writeDocumentToStream(document, outputStream);
-				outputStream.flush();
-			} finally {
-				outputStream.close();
-			}
+			outputStream = new FileOutputStream(outputFile);
+			Document document = createDocumentFromRunnerModel(getDefaultModel());
+			writeDocumentToStream(document, outputStream);
+			outputStream.flush();
 		} catch (IOException e) {
 			throw coreException("Failed to save runner state");
+		} finally {
+			closeStream(outputStream);
 		}
 	}
 
 	private static Document createDocumentFromRunnerModel(IRunnerModel runnerModel) throws CoreException {
 		Document document = createDocument();
 
-		Element runnerElement = document.createElement(ROOT_NODE_NAME);
-		runnerElement.setAttribute(VERSION_ATTR, VERSION_VALUE);
-		document.appendChild(runnerElement);
+		Element rootElement = document.createElement(ROOT_NODE_NAME);
+		rootElement.setAttribute(VERSION_ATTR, VERSION_VALUE);
+		document.appendChild(rootElement);
 
-		// create the category nodes
-		for (ICategoryNode categoryNode : runnerModel.getCategoryNodes()) {
-			runnerElement.appendChild(
-				createCategoryElement(categoryNode, document)
-			);
-		}
-
+		appendCategoryNodes(document, rootElement, runnerModel);
 		return document;
 	}
 
@@ -225,6 +216,14 @@ public class RunnerStateExternalizer {
 			return documentBuilder.newDocument();
 		} catch (ParserConfigurationException e) {
 			throw coreException("Failed to create document");
+		}
+	}
+
+	private static void appendCategoryNodes(Document document, Element rootElement, IRunnerModel runnerModel) {
+		for (ICategoryNode categoryNode : runnerModel.getCategoryNodes()) {
+			rootElement.appendChild(
+				createCategoryElement(categoryNode, document)
+			);
 		}
 	}
 
@@ -285,14 +284,18 @@ public class RunnerStateExternalizer {
 		return new CoreException(new Status(IStatus.ERROR, RunnerPlugin.PLUGIN_ID, message));
 	}
 
-	private static void closeInputStream(InputStream inputStream) {
-		if (inputStream != null) {
+	private static void closeStream(Closeable closable) {
+		if (closable != null) {
 			try {
-				inputStream.close();
+				closable.close();
 			} catch (IOException exception) {
 				exception.printStackTrace();
 			}
 		}
+	}
+
+	private static IRunnerModel getDefaultModel() {
+		return RunnerModelProvider.getInstance().getDefaultModel();
 	}
 
 }
