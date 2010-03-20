@@ -117,38 +117,38 @@ public class RunnerModelProvider {
 	}
 
 	public void useBookmarkFilter(boolean useBookmarkFilter) {
-		if (useBookmarkFilter) {
-			filterChain.addFilter(bookmarkFilter);
-		} else {
-			filterChain.removeFilter(bookmarkFilter);
-		}
+		setFilterEnablement(bookmarkFilter, useBookmarkFilter);
 		setPreferenceValue(PrererenceConstants.BOOKMARK_FILTER_ENABLE, useBookmarkFilter);
 	}
 
 	public void useDefaultCategoryFilter(boolean flag) {
-		if (flag) {
-			filterChain.addFilter(defaultCategoryFilter);
-		} else {
-			filterChain.removeFilter(defaultCategoryFilter);
-		}
+		setFilterEnablement(defaultCategoryFilter, flag);
 	}
 
 	public void useProjectFilter(boolean flag) {
+		setFilterEnablement(projectFilter, flag);
 		if (flag) {
-			filterChain.removeFilter(workingSetFilter);
-			filterChain.addFilter(projectFilter);
-		} else {
-			filterChain.removeFilter(projectFilter);
+			disableFilter(workingSetFilter);
 		}
 	}
 
 	public void useWorkingSetFilter(boolean flag) {
+		setFilterEnablement(workingSetFilter, flag);
 		if (flag) {
-			filterChain.removeFilter(projectFilter);
-			filterChain.addFilter(workingSetFilter);
-		} else {
-			filterChain.removeFilter(workingSetFilter);
+			disableFilter(projectFilter);
 		}
+	}
+
+	private void setFilterEnablement(INodeFilter filter, boolean active) {
+		if (active) {
+			filterChain.addFilter(filter);
+		} else {
+			filterChain.removeFilter(filter);
+		}
+	}
+
+	private void disableFilter(INodeFilter filter) {
+		setFilterEnablement(filter, false);
 	}
 
 	public boolean isBookmarkFilterActive() {
