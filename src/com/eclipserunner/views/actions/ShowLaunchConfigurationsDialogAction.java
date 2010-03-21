@@ -11,7 +11,7 @@ import com.eclipserunner.model.INodeSelection;
 
 /**
  * Action responsible for showing LaunchConfigurationsDialog.
- * 
+ *
  * @author bary
  */
 @SuppressWarnings("restriction")
@@ -33,7 +33,7 @@ public class ShowLaunchConfigurationsDialogAction extends AbstractLaunchAction {
 
 		if (nodeSelection.isSingleSelection() && nodeSelection.isLaunchNodeSelected()) {
 			dialog.setOpenMode(LAUNCH_CONFIGURATION_DIALOG_OPEN_ON_SELECTION);
-			dialog.setInitialSelection(asStructuredSelection(nodeSelection.getSelectedLaunchNode()));
+			dialog.setInitialSelection(asStructuredSelection(nodeSelection.getSelectedLaunchNode().getLaunchConfiguration()));
 		}
 		else {
 			dialog.setOpenMode(LAUNCH_CONFIGURATION_DIALOG_OPEN_ON_LAST_LAUNCHED);

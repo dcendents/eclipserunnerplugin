@@ -27,3 +27,4 @@
 ----[ RELEASE 2 ]---------------------------------------------------------------
 [ ----- ] refactoring of rename/delete/bookamrk actions. redisign to avoid if's
 [ ----- ] StateExternalizer -> Serializer + Deserilizer
+[ ----- ] key bindings
