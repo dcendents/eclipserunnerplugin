@@ -3,6 +3,9 @@ package com.eclipserunner.views.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationListener;
@@ -110,6 +113,7 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 		initializeSelectionListeners();
 		initializeLaunchConfigurationListeners();
 		initializePropertyChangeListeners();
+		initializeResourceChangeListener();
 		initializeDragAndDrop();
 
 		setupLaunchActions();
@@ -165,7 +169,17 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 		getLaunchManager().addLaunchConfigurationListener(modelLaunchConfigurationListener);
 	}
 
-	// TODO do we need this ?
+	private void initializeResourceChangeListener() {
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(new IResourceChangeListener() {
+			public void resourceChanged(IResourceChangeEvent event) {
+				refresh();
+			}
+		}, IResourceChangeEvent.POST_CHANGE);
+
+	}
+
+	// TODO BARY do we need this ?
+	// LWA: we can delete this, right ?
 	private void initializePropertyChangeListeners() {
 		propertyChangeListener = new IPropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent event) {
