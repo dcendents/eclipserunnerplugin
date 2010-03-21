@@ -12,18 +12,18 @@ import com.eclipserunner.model.INodeSelection;
 @SuppressWarnings("restriction")
 public class LaunchConfigurationAction extends AbstractLaunchAction {
 
-	private INodeSelection launchConfigurationSelection;
+	private INodeSelection nodeSelection;
 
 	public LaunchConfigurationAction(INodeSelection launchConfigurationSelection, String launchGroupId) {
 		super(launchGroupId);
-		this.launchConfigurationSelection = launchConfigurationSelection;
+		this.nodeSelection = launchConfigurationSelection;
 	}
 
 	@Override
 	public void run() {
-		if (launchConfigurationSelection.isLaunchNodeSelected()) {
+		if (nodeSelection.isSingleNodeSelection() && nodeSelection.isLaunchNodeSelected()) {
 			DebugUITools.launch(
-					launchConfigurationSelection.getSelectedLaunchNode().getLaunchConfiguration(),
+					nodeSelection.getSelectedLaunchNode().getLaunchConfiguration(),
 					getLaunchConfigurationManager().getLaunchGroup(getLaunchGroupId()).getMode()
 			);
 		}

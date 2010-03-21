@@ -1,7 +1,6 @@
 package com.eclipserunner.utils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -19,14 +18,14 @@ public class SelectionUtils {
 	public static IStructuredSelection asStructuredSelection(Object object) {
 		return new StructuredSelection(object);
 	}
-	
+
 	public static <T> T getFirstSelectedItemByType(ISelection selection, Class<T> instanceClass) {
 		if (selection instanceof IStructuredSelection) {
 			return getFirstSelectedItemByType((IStructuredSelection) selection, instanceClass);
 		}
 		return null;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public static <T> T getFirstSelectedItemByType(IStructuredSelection selection, Class<T> instanceClass) {
 		Iterator<?> iterator = selection.iterator();
@@ -38,14 +37,14 @@ public class SelectionUtils {
 		}
 		return null;
 	}
-	
+
 	public static <T> List<T> getAllSelectedItemsByType(ISelection selection, Class<T> instanceClass) {
 		if (selection instanceof IStructuredSelection) {
 			return getAllSelectedItemsByType((IStructuredSelection) selection, instanceClass);
 		}
 		return new ArrayList<T>();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public static <T> List<T> getAllSelectedItemsByType(IStructuredSelection selection, Class<T> instanceClass) {
 		List<T> selectedOfType = new ArrayList<T>();
@@ -58,9 +57,18 @@ public class SelectionUtils {
 		}
 		return selectedOfType;
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public static List selectionAsList(IStructuredSelection selection) {
-		return Arrays.asList(selection.toArray());
-	} 
+	public static List<Class> getSelectedItemTypes(IStructuredSelection selection) {
+		List<Class> selectedItemTypes = new ArrayList<Class>();
+		Iterator<?> iterator = selection.iterator();
+		while (iterator.hasNext()) {
+			Object item = iterator.next();
+			if (!selectedItemTypes.contains(item.getClass())) {
+				selectedItemTypes.add(item.getClass());
+			}
+		}
+		return selectedItemTypes;
+	}
+
 }

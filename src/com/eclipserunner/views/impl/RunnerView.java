@@ -1,5 +1,8 @@
 package com.eclipserunner.views.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationListener;
@@ -44,6 +47,7 @@ import com.eclipserunner.model.adapters.RunnerModelJdtSelectionListenerAdapter;
 import com.eclipserunner.model.adapters.RunnerModelLaunchConfigurationListenerAdapter;
 import com.eclipserunner.ui.dnd.RunnerViewDragListener;
 import com.eclipserunner.ui.dnd.RunnerViewDropListener;
+import com.eclipserunner.utils.SelectionUtils;
 import com.eclipserunner.views.IRunnerView;
 import com.eclipserunner.views.TreeMode;
 import com.eclipserunner.views.actions.LaunchActionBuilder;
@@ -279,13 +283,9 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 		manager.add(expandAllAction);
 	}
 
-	// TODO LWA BARY: define which actions should be visible/enable for category and configuration,
-	// do we plan some restrictions when user selects multiple items or selects simultaneously catagory and configuration item?
 	public void menuAboutToShow(IMenuManager manager) {
-
 		setupMenuItems(manager);
 		setupActionEnablement();
-
 	}
 
 	private void setupMenuItems(IMenuManager manager) {
@@ -297,25 +297,13 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 			manager.add(launchDebugConfigurationAction);
 		}
 
-		if (isLaunchNodeSelected() || isCategoryNodeSelected()) {
-			manager.add(new Separator());
-			manager.add(renameAction);
-			manager.add(removeAction);
-		}
+		manager.add(new Separator());
+		manager.add(renameAction);
+		manager.add(removeAction);
 
 		manager.add(new Separator());
-		if (isLaunchNodeSelected()) {
-			if (getSelectedLaunchNode().isBookmarked()) {
-				manager.add(unbookmarkAction);
-			}
-			else {
-				manager.add(bookmarkAction);
-			}
-		}
-		else {
-			manager.add(bookmarkAction);
-			manager.add(unbookmarkAction);
-		}
+		manager.add(bookmarkAction);
+		manager.add(unbookmarkAction);
 
 		manager.add(new Separator());
 		manager.add(showRunConfigurationsDialogAction);
@@ -323,49 +311,78 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 	}
 
 	private void setupActionEnablement() {
-		IActionEnablement provider = getActionEnablementProvider();
-		if (provider != null) {
-			renameAction.setEnabled(provider.isRenamable());
-			removeAction.setEnabled(provider.isRemovable());
-		}
-		else {
-			renameAction.setEnabled(false);
-			removeAction.setEnabled(false);
-		}
+		launchRunConfigurationAction.setEnabled(canLaunchConfiguration());
+		launchDebugConfigurationAction.setEnabled(canLaunchConfiguration());
+		renameAction.setEnabled(canRenameSelection());
+		removeAction.setEnabled(canRemoveSelection());
+		bookmarkAction.setEnabled(canBookmarkSelection());
+		unbookmarkAction.setEnabled(canBookmarkSelection());
 	}
 
-	private IActionEnablement getActionEnablementProvider() {
-		Object selectedObject = getSelectedObject();
-		if (getSelectedObject() instanceof IActionEnablement) {
-			return (IActionEnablement) selectedObject;
+	private boolean canLaunchConfiguration() {
+		if (isSingleNodeSelection() && isLaunchNodeSelected()) {
+			return true;
 		}
-		return null;
+		return false;
 	}
 
-	public void doubleClick(DoubleClickEvent event) {
-		this.launchRunConfigurationAction.run();
+	private boolean canRenameSelection() {
+		if (isSameTypeNodeSelection() && isSingleNodeSelection()) {
+			Object selectedObject = getFirstSelectedObject();
+			if (selectedObject instanceof IActionEnablement) {
+				return ((IActionEnablement) selectedObject).isRenamable();
+			}
+		}
+		return false;
 	}
 
-	public Object getSelectedObject() {
+	private boolean canRemoveSelection() {
+		if (isSameTypeNodeSelection()) {
+			List<Object> selectedObjects = getAllSelectedObjects();
+			for (Object selectedObject : selectedObjects) {
+				if (selectedObject instanceof IActionEnablement) {
+					if (!((IActionEnablement) selectedObject).isRemovable()) {
+						return false;
+					}
+					else {
+						// check next object
+					}
+				}
+				else {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
+	private boolean canBookmarkSelection() {
+		if (isSameTypeNodeSelection()) {
+			return true;
+		}
+		return false;
+	}
+
+	public Object getFirstSelectedObject() {
 		return ((IStructuredSelection) getViewer().getSelection()).getFirstElement();
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Object> getAllSelectedObjects() {
+		return ((IStructuredSelection) getViewer().getSelection()).toList();
+	}
+
+	public boolean isSameTypeNodeSelection() {
+		return SelectionUtils.getSelectedItemTypes((IStructuredSelection) getViewer().getSelection()).size() == 1;
+	}
+
+	public boolean isSingleNodeSelection() {
+		return ((IStructuredSelection) getViewer().getSelection()).size() == 1;
+	}
+
 	public boolean isLaunchNodeSelected() {
-		if (getSelectedObject() instanceof ILaunchNode) {
-			return true;
-		}
-		return false;
-	}
-
-	public boolean isLaunchTypeNodeSelected() {
-		if (getSelectedObject() instanceof ILaunchTypeNode) {
-			return true;
-		}
-		return false;
-	}
-
-	public boolean isCategoryNodeSelected() {
-		if (getSelectedObject() instanceof ICategoryNode) {
+		if (getFirstSelectedObject() instanceof ILaunchNode) {
 			return true;
 		}
 		return false;
@@ -373,23 +390,65 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 
 	public ILaunchNode getSelectedLaunchNode() {
 		if (isLaunchNodeSelected()) {
-			return (ILaunchNode) getSelectedObject();
+			return (ILaunchNode) getFirstSelectedObject();
 		}
 		return null;
+	}
+
+	public List<ILaunchNode> getSelectedLaunchNodes() {
+		List<ILaunchNode> selectedNodes = new ArrayList<ILaunchNode>();
+		if (isSameTypeNodeSelection() && isLaunchNodeSelected()) {
+			selectedNodes = SelectionUtils.getAllSelectedItemsByType(getViewer().getSelection(), ILaunchNode.class);
+		}
+		return selectedNodes;
+	}
+
+	public boolean isLaunchTypeNodeSelected() {
+		if (getFirstSelectedObject() instanceof ILaunchTypeNode) {
+			return true;
+		}
+		return false;
 	}
 
 	public ILaunchTypeNode getSelectedLaunchTypeNode() {
 		if (isLaunchTypeNodeSelected()) {
-			return (ILaunchTypeNode) getSelectedObject();
+			return (ILaunchTypeNode) getFirstSelectedObject();
 		}
 		return null;
 	}
 
+	public List<ILaunchTypeNode> getSelectedLaunchTypeNodes() {
+		List<ILaunchTypeNode> selectedNodes = new ArrayList<ILaunchTypeNode>();
+		if (isSameTypeNodeSelection() && isLaunchTypeNodeSelected()) {
+			selectedNodes = SelectionUtils.getAllSelectedItemsByType(getViewer().getSelection(), ILaunchTypeNode.class);
+		}
+		return selectedNodes;
+	}
+
+	public boolean isCategoryNodeSelected() {
+		if (getFirstSelectedObject() instanceof ICategoryNode) {
+			return true;
+		}
+		return false;
+	}
+
 	public ICategoryNode getSelectedCategoryNode() {
 		if (isCategoryNodeSelected()) {
-			return (ICategoryNode) getSelectedObject();
+			return (ICategoryNode) getFirstSelectedObject();
 		}
 		return null;
+	}
+
+	public List<ICategoryNode> getSelectedCategoryNodes() {
+		List<ICategoryNode> selectedNodes = new ArrayList<ICategoryNode>();
+		if (isSameTypeNodeSelection() && isCategoryNodeSelected()) {
+			selectedNodes = SelectionUtils.getAllSelectedItemsByType(getViewer().getSelection(), ICategoryNode.class);
+		}
+		return selectedNodes;
+	}
+
+	public void doubleClick(DoubleClickEvent event) {
+		this.launchRunConfigurationAction.run();
 	}
 
 	public void modelChanged() {

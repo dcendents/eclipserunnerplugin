@@ -55,7 +55,8 @@ public class CategoryNode implements ICategoryNode, ILaunchNodeChangeListener, I
 		if (launchNodes.contains(launchNode)) {
 			launchNodes.remove(launchNode);
 
-			launchNode.setCategoryNode(null);
+			// TODO BARY investigate why this causes NullPointerException on RunnerModelTreeWithTypesAdapter line 80
+			//launchNode.setCategoryNode(null);
 			launchNode.removeLaunchNodeChangeListener(this);
 		}
 		fireCategoryNodeChangedEvent();

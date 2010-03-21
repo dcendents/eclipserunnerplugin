@@ -17,11 +17,11 @@ import com.eclipserunner.model.INodeSelection;
 @SuppressWarnings("restriction")
 public class ShowLaunchConfigurationsDialogAction extends AbstractLaunchAction {
 
-	private INodeSelection selection;
+	private INodeSelection nodeSelection;
 
 	public ShowLaunchConfigurationsDialogAction(INodeSelection launchConfigurationSelection, String launchGroupId) {
 		super(launchGroupId);
-		this.selection = launchConfigurationSelection;
+		this.nodeSelection = launchConfigurationSelection;
 	}
 
 	@Override
@@ -31,9 +31,9 @@ public class ShowLaunchConfigurationsDialogAction extends AbstractLaunchAction {
 				getLaunchConfigurationManager().getLaunchGroup(getLaunchGroupId())
 		);
 
-		if (selection.isLaunchNodeSelected()) {
+		if (nodeSelection.isSingleNodeSelection() && nodeSelection.isLaunchNodeSelected()) {
 			dialog.setOpenMode(LAUNCH_CONFIGURATION_DIALOG_OPEN_ON_SELECTION);
-			dialog.setInitialSelection(asStructuredSelection(selection.getSelectedLaunchNode()));
+			dialog.setInitialSelection(asStructuredSelection(nodeSelection.getSelectedLaunchNode()));
 		}
 		else {
 			dialog.setOpenMode(LAUNCH_CONFIGURATION_DIALOG_OPEN_ON_LAST_LAUNCHED);

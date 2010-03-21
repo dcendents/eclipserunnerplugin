@@ -22,41 +22,33 @@ import com.eclipserunner.views.validators.CategoryNameValidator;
 import com.eclipserunner.views.validators.LaunchConfigurationNameValidator;
 
 /**
- * @author vachacz
+ * @author vachacz, bary
  */
 public class RenameConfigOrCategoryAction extends Action {
 
-	private INodeSelection launchConfigurationSelection;
+	private INodeSelection nodeSelection;
 
 	@SuppressWarnings("unused")
 	private IRunnerModel runnerModel;
 
 	public RenameConfigOrCategoryAction(INodeSelection launchConfigurationSelection, IRunnerModel runnerModel) {
-		this.launchConfigurationSelection = launchConfigurationSelection;
+		this.nodeSelection = launchConfigurationSelection;
 		this.runnerModel = runnerModel;
 	}
 
 	@Override
 	public void run() {
-		Object selectedObject = launchConfigurationSelection.getSelectedObject();
-
-		if (selectedObject instanceof ILaunchNode) {
-			renameLaunchConfiguration((ILaunchNode) selectedObject);
-		} else if (selectedObject instanceof ICategoryNode) {
-			renameLaunchConfigurationCategory((ICategoryNode) selectedObject);
-		}
-		// else do nothing
-	}
-
-	private void renameLaunchConfigurationCategory(ICategoryNode category) {
-		String initialValue = category.getName();
-		InputDialog dialog = openRenameDialog(Message_rename, Message_renameCategory, initialValue, new CategoryNameValidator(initialValue));
-		if (dialog.getReturnCode() == Window.OK) {
-			category.setName(dialog.getValue());
+		if (nodeSelection.isSingleNodeSelection()) {
+			if (nodeSelection.isLaunchNodeSelected()) {
+				renameLaunchNode(nodeSelection.getSelectedLaunchNode());
+			}
+			else if (nodeSelection.isCategoryNodeSelected()) {
+				renameCategoryNode(nodeSelection.getSelectedCategoryNode());
+			}
 		}
 	}
 
-	private void renameLaunchConfiguration(ILaunchNode node) {
+	private void renameLaunchNode(ILaunchNode node) {
 		try {
 			String initialValue = node.getLaunchConfiguration().getName();
 			InputDialog dialog = openRenameDialog(Message_rename, Message_renameLaunchConfiguration, initialValue, new LaunchConfigurationNameValidator(initialValue));
@@ -67,6 +59,14 @@ public class RenameConfigOrCategoryAction extends Action {
 			}
 		} catch (CoreException e) {
 			MessageDialog.openError(getRunnerShell(), Message_error, e.getMessage());
+		}
+	}
+
+	private void renameCategoryNode(ICategoryNode category) {
+		String initialValue = category.getName();
+		InputDialog dialog = openRenameDialog(Message_rename, Message_renameCategory, initialValue, new CategoryNameValidator(initialValue));
+		if (dialog.getReturnCode() == Window.OK) {
+			category.setName(dialog.getValue());
 		}
 	}
 

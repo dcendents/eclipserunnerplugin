@@ -15,26 +15,31 @@ import com.eclipserunner.model.INodeSelection;
 public class BookmarkAction extends Action {
 
 	private boolean state;
-	private INodeSelection launchConfigurationSelection;
+	private INodeSelection nodeSelection;
 
 	public BookmarkAction(INodeSelection launchConfigurationSelection, boolean state) {
-		this.launchConfigurationSelection = launchConfigurationSelection;
+		this.nodeSelection = launchConfigurationSelection;
 		this.state = state;
 	}
 
 	@Override
 	public void run() {
-		if (launchConfigurationSelection.isLaunchNodeSelected()) {
-			ILaunchNode launchNode = launchConfigurationSelection.getSelectedLaunchNode();
-			launchNode.setBookmarked(state);
-		}
-		else if (launchConfigurationSelection.isLaunchTypeNodeSelected()) {
-			ILaunchTypeNode launchTypeNode = launchConfigurationSelection.getSelectedLaunchTypeNode();
-			launchTypeNode.setBookmarked(state);
-		}
-		else if (launchConfigurationSelection.isCategoryNodeSelected()) {
-			ICategoryNode categoryNode = launchConfigurationSelection.getSelectedCategoryNode();
-			categoryNode.setBookmarked(state);
+		if (nodeSelection.isSameTypeNodeSelection()) {
+			if (nodeSelection.isLaunchNodeSelected()) {
+				for (ILaunchNode launchNode : nodeSelection.getSelectedLaunchNodes()) {
+					launchNode.setBookmarked(state);
+				}
+			}
+			else if (nodeSelection.isLaunchTypeNodeSelected()) {
+				for (ILaunchTypeNode launchTypeNode : nodeSelection.getSelectedLaunchTypeNodes()) {
+					launchTypeNode.setBookmarked(state);
+				}
+			}
+			else if (nodeSelection.isCategoryNodeSelected()) {
+				for (ICategoryNode categoryNode : nodeSelection.getSelectedCategoryNodes()) {
+					categoryNode.setBookmarked(state);
+				}
+			}
 		}
 	}
 

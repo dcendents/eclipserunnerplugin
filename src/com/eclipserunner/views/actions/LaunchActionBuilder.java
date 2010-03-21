@@ -66,7 +66,7 @@ public final class LaunchActionBuilder {
 	private static final String IMG_TYPE_TREE            = "hierarchical.gif";
 
 
-	private INodeSelection launchConfigurationSelection;
+	private INodeSelection nodeSelection;
 	private IRunnerModel runnerModel;
 	private IRunnerView runnerView;
 
@@ -79,7 +79,7 @@ public final class LaunchActionBuilder {
 	}
 
 	public LaunchActionBuilder withLaunchConfigurationSelection(INodeSelection launchConfigurationSelection) {
-		this.launchConfigurationSelection = launchConfigurationSelection;
+		this.nodeSelection = launchConfigurationSelection;
 		return this;
 	}
 
@@ -94,25 +94,25 @@ public final class LaunchActionBuilder {
 	}
 
 	public Action createShowRunConfigurationDialogAction() {
-		Action action = new ShowLaunchConfigurationsDialogAction(launchConfigurationSelection, ID_RUN_LAUNCH_GROUP);
+		Action action = new ShowLaunchConfigurationsDialogAction(nodeSelection, ID_RUN_LAUNCH_GROUP);
 		configureAction(action, Message_openRunConfigurationsDialog, Message_openRunConfigurationsDialogTooltip, IMG_RUN_CONFIGURATIONS);
 		return action;
 	}
 
 	public Action createShowDebugConfigurationDialogAction() {
-		Action action = new ShowLaunchConfigurationsDialogAction(launchConfigurationSelection, ID_DEBUG_LAUNCH_GROUP);
+		Action action = new ShowLaunchConfigurationsDialogAction(nodeSelection, ID_DEBUG_LAUNCH_GROUP);
 		configureAction(action, Message_openDebugConfigurationsDialog, Message_openDebugConfigurationsDialogTooltip, IMG_DEBUG_CONFIGURATIONS);
 		return action;
 	}
 
 	public Action createRunConfigurationAction() {
-		Action action = new LaunchConfigurationAction(launchConfigurationSelection, ID_RUN_LAUNCH_GROUP);
+		Action action = new LaunchConfigurationAction(nodeSelection, ID_RUN_LAUNCH_GROUP);
 		configureAction(action, Message_runConfiguration, Message_runConfigurationTooltip, IMG_RUN);
 		return action;
 	}
 
 	public Action createDebugConfigurationAction() {
-		Action action = new LaunchConfigurationAction(launchConfigurationSelection, ID_DEBUG_LAUNCH_GROUP);
+		Action action = new LaunchConfigurationAction(nodeSelection, ID_DEBUG_LAUNCH_GROUP);
 		configureAction(action, Message_debugConfiguration, Message_debugConfigurationTooltip, IMG_DEBUG);
 		return action;
 	}
@@ -136,25 +136,25 @@ public final class LaunchActionBuilder {
 	}
 
 	public Action createRenameAction() {
-		Action action = new RenameConfigOrCategoryAction(launchConfigurationSelection, runnerModel);
+		Action action = new RenameConfigOrCategoryAction(nodeSelection, runnerModel);
 		configureAction(action, Message_rename, Message_renameTooltip);
 		return action;
 	}
 
 	public Action createRemoveAction() {
-		Action action = new RemoveConfigOrCategoryAction(launchConfigurationSelection, runnerModel);
+		Action action = new RemoveConfigOrCategoryAction(nodeSelection, runnerModel);
 		configureAction(action, Message_remove, Message_removeTooltip, getSharedImage(ISharedImages.IMG_ETOOL_DELETE));
 		return action;
 	}
 
 	public Action createBookmarkAction() {
-		Action action = new BookmarkAction(launchConfigurationSelection, true);
+		Action action = new BookmarkAction(nodeSelection, true);
 		configureAction(action, Message_bookmark, Message_bookmarkTooltip, IMG_BOOKMARK);
 		return action;
 	}
 
 	public Action createUnbookmarkAction() {
-		Action action = new BookmarkAction(launchConfigurationSelection, false);
+		Action action = new BookmarkAction(nodeSelection, false);
 		configureAction(action, Message_unbookmark, Message_unbookmarkTooltip, IMG_UNBOOKMARK);
 		return action;
 	}

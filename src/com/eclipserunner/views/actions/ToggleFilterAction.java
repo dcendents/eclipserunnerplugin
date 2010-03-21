@@ -5,6 +5,9 @@ import org.eclipse.jface.action.Action;
 import com.eclipserunner.RunnerPlugin;
 import com.eclipserunner.views.IRunnerView;
 
+/**
+ * @author vachacz
+ */
 public class ToggleFilterAction extends Action {
 
 	private final String preferenceProperty;

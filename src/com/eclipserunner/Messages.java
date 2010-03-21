@@ -50,9 +50,8 @@ public class Messages extends NLS {
 
 	public static String Message_remove;
 	public static String Message_removeTooltip;
-	public static String Message_removeConfirm;
-	public static String Message_removeCategoryConfirm;
-	public static String Message_removeConfigurationConfirm;
+	public static String Message_removeConfirmTitle;
+	public static String Message_removeConfirmPrompt;
 
 	public static String Message_bookmark;
 	public static String Message_bookmarkTooltip;

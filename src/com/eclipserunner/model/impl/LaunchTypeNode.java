@@ -61,7 +61,7 @@ public class LaunchTypeNode implements ILaunchTypeNode, IActionEnablement {
 	}
 
 	public boolean isRemovable() {
-		return false;
+		return true;
 	}
 
 	public boolean isRenamable() {
