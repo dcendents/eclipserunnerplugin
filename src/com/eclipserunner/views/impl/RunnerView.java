@@ -35,6 +35,7 @@ import org.eclipse.ui.part.ViewPart;
 import com.eclipserunner.model.IActionEnablement;
 import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
+import com.eclipserunner.model.ILaunchTypeNode;
 import com.eclipserunner.model.IModelChangeListener;
 import com.eclipserunner.model.INodeSelection;
 import com.eclipserunner.model.IRunnerModel;
@@ -77,6 +78,7 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 	private Action expandAllAction;
 
 	private Action bookmarkAction;
+	private Action unbookmarkAction;
 
 	private Action renameAction;
 	private Action removeAction;
@@ -223,6 +225,7 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 		collapseAllAction                   = builder.createCollapseAllAction(viewer);
 		expandAllAction                     = builder.createExpandAllAction(viewer);
 		bookmarkAction                      = builder.createBookmarkAction();
+		unbookmarkAction                    = builder.createUnbookmarkAction();
 		renameAction                        = builder.createRenameAction();
 		removeAction                        = builder.createRemoveAction();
 		toggleFlatModeAction                = builder.createToggleFlatModeAction();
@@ -301,7 +304,19 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 		}
 
 		manager.add(new Separator());
-		manager.add(bookmarkAction);
+		if (isLaunchNodeSelected()) {
+			if (getSelectedLaunchNode().isBookmarked()) {
+				manager.add(unbookmarkAction);
+			}
+			else {
+				manager.add(bookmarkAction);
+			}
+		}
+		else {
+			manager.add(bookmarkAction);
+			manager.add(unbookmarkAction);
+		}
+
 		manager.add(new Separator());
 		manager.add(showRunConfigurationsDialogAction);
 		manager.add(showDebugConfigurationsDialogAction);
@@ -342,6 +357,13 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 		return false;
 	}
 
+	public boolean isLaunchTypeNodeSelected() {
+		if (getSelectedObject() instanceof ILaunchTypeNode) {
+			return true;
+		}
+		return false;
+	}
+
 	public boolean isCategoryNodeSelected() {
 		if (getSelectedObject() instanceof ICategoryNode) {
 			return true;
@@ -350,23 +372,24 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 	}
 
 	public ILaunchNode getSelectedLaunchNode() {
-		return (ILaunchNode) getSelectedObject();
+		if (isLaunchNodeSelected()) {
+			return (ILaunchNode) getSelectedObject();
+		}
+		return null;
+	}
+
+	public ILaunchTypeNode getSelectedLaunchTypeNode() {
+		if (isLaunchTypeNodeSelected()) {
+			return (ILaunchTypeNode) getSelectedObject();
+		}
+		return null;
 	}
 
 	public ICategoryNode getSelectedCategoryNode() {
-		Object selectedObject = getSelectedObject();
-		ICategoryNode category = null;
-
-		if (selectedObject instanceof ILaunchNode) {
-			category = (ICategoryNode) getTreeContentProvider().getParent(selectedObject);
+		if (isCategoryNodeSelected()) {
+			return (ICategoryNode) getSelectedObject();
 		}
-		else if (selectedObject instanceof ICategoryNode) {
-			category = (ICategoryNode) selectedObject;
-		}
-		else {
-			assert true; // unreachable code
-		}
-		return category;
+		return null;
 	}
 
 	public void modelChanged() {

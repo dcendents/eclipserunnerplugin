@@ -4,9 +4,9 @@
 [ ----- ] drag and drop to launch configuration type
 [ FIXED ] open tree nodes are closed while performing some tree operations
 [ FIXED ] toggle bookmark icon covers base icon
-[ ----- ] delete about action?
+[ FIXED ] delete about action?
 [ FIXED ] one toggle bookmark button is enough
-[ ----- ] bookmark on launch type node does not work
+[ FIXED ] bookmark on launch type node does not work
 [ FIXED ] remove/rename actions on cotegory are disabled
 
 ---[ FEATURES ]-----------------------------------------------------------------
@@ -14,7 +14,7 @@
 [ ----- ] launch configuration filter by active project/working set
 
 ---[ REFACTORING & IMPROVEMENTS ]-----------------------------------------------
-[ ----- ] interface for LaunchConfigurationTypeNode (needed in LabelProvider?)
+[ FIXED ] interface for LaunchConfigurationTypeNode (needed in LabelProvider?)
 [ ----- ] reduce number of TODOs and FIXMEs in code
 [ ----- ] FlatTreeAdpaters jUnit tests
 [ FIXED ] ICategoryNode instead of ILaunchConfigurationCategory

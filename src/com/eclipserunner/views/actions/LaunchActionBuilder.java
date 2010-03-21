@@ -4,6 +4,8 @@ import static com.eclipserunner.Messages.Message_addNewCategory;
 import static com.eclipserunner.Messages.Message_addNewCategoryTooltip;
 import static com.eclipserunner.Messages.Message_bookmark;
 import static com.eclipserunner.Messages.Message_bookmarkTooltip;
+import static com.eclipserunner.Messages.Message_unbookmark;
+import static com.eclipserunner.Messages.Message_unbookmarkTooltip;
 import static com.eclipserunner.Messages.Message_collapseAll;
 import static com.eclipserunner.Messages.Message_collapseAllTooltip;
 import static com.eclipserunner.Messages.Message_createToggleDefaultCategory;
@@ -59,6 +61,7 @@ public final class LaunchActionBuilder {
 	private static final String IMG_DEFAULT_CATEGORY     = "category-archive.gif";
 	private static final String IMG_EXPAND_ALL           = "expandall.gif";
 	private static final String IMG_BOOKMARK             = "bookmark_star.gif";
+	private static final String IMG_UNBOOKMARK           = "unbookmark.gif";
 	private static final String IMG_FLAT_TREE            = "flat.gif";
 	private static final String IMG_TYPE_TREE            = "hierarchical.gif";
 
@@ -145,8 +148,14 @@ public final class LaunchActionBuilder {
 	}
 
 	public Action createBookmarkAction() {
-		Action action = new BookmarkLaunchAction(launchConfigurationSelection);
+		Action action = new BookmarkAction(launchConfigurationSelection, true);
 		configureAction(action, Message_bookmark, Message_bookmarkTooltip, IMG_BOOKMARK);
+		return action;
+	}
+
+	public Action createUnbookmarkAction() {
+		Action action = new BookmarkAction(launchConfigurationSelection, false);
+		configureAction(action, Message_unbookmark, Message_unbookmarkTooltip, IMG_UNBOOKMARK);
 		return action;
 	}
 
