@@ -71,4 +71,12 @@ public class SelectionUtils {
 		return selectedItemTypes;
 	}
 
+	public static boolean isSameTypeNodeSelection(IStructuredSelection selection) {
+		return getSelectedItemTypes(selection).size() == 1;
+	}
+
+	public static boolean isSingleNodeSelection(IStructuredSelection selection) {
+		return selection.size() == 1;
+	}
+
 }

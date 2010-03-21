@@ -2,20 +2,14 @@ package com.eclipserunner.ui.dnd;
 
 import static com.eclipserunner.utils.SelectionUtils.getFirstSelectedItemByType;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
-import org.eclipse.swt.dnd.FileTransfer;
 
 import com.eclipserunner.model.ICategoryNode;
-import com.eclipserunner.utils.ImportExportUtil;
 
 /**
  * Listener for handling drag events.
@@ -35,7 +29,7 @@ public class RunnerViewDragListener implements DragSourceListener {
 	public void dragStart(DragSourceEvent event) {
 		ISelection selection = selectionProvider.getSelection();
 		if (selection instanceof IStructuredSelection && !selection.isEmpty()) {
-			
+
 			currentSelection = (IStructuredSelection) selection;
 			ICategoryNode categoryNode = getFirstSelectedItemByType(currentSelection, ICategoryNode.class);
 			if (categoryNode != null) {
@@ -55,25 +49,6 @@ public class RunnerViewDragListener implements DragSourceListener {
 
 		if (LocalSelectionTransfer.getTransfer().isSupportedType(event.dataType)) {
 			LocalSelectionTransfer.getTransfer().setSelection(currentSelection);
-		}
-
-		// TODO BARY: dummy code
-		else if (FileTransfer.getInstance().isSupportedType(event.dataType)) {
-			try {
-				File file = File.createTempFile("eclipse-", ".launch");
-				file.deleteOnExit();
-				ImportExportUtil.export(file, currentSelection);
-
-				String[] paths = new String[1];
-				paths[0] = file.getAbsolutePath();
-				event.data = paths;
-			} catch (CoreException e) {
-				// TODO BARY: exception handling
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO BARY: exception handling
-				e.printStackTrace();
-			}
 		}
 	}
 

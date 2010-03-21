@@ -360,21 +360,25 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 		return false;
 	}
 
+	private IStructuredSelection getViewerSelection() {
+		return (IStructuredSelection) getViewer().getSelection();
+	}
+
 	public Object getFirstSelectedObject() {
-		return ((IStructuredSelection) getViewer().getSelection()).getFirstElement();
+		return getViewerSelection().getFirstElement();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Object> getAllSelectedObjects() {
-		return ((IStructuredSelection) getViewer().getSelection()).toList();
+		return getViewerSelection().toList();
 	}
 
 	public boolean isSelectionOfOneClass() {
-		return SelectionUtils.getSelectedItemTypes((IStructuredSelection) getViewer().getSelection()).size() == 1;
+		return SelectionUtils.isSameTypeNodeSelection(getViewerSelection());
 	}
 
 	public boolean isSingleSelection() {
-		return ((IStructuredSelection) getViewer().getSelection()).size() == 1;
+		return SelectionUtils.isSingleNodeSelection(getViewerSelection());
 	}
 
 	public boolean isLaunchNodeSelected() {
@@ -394,7 +398,7 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 	public List<ILaunchNode> getSelectedLaunchNodes() {
 		List<ILaunchNode> selectedNodes = new ArrayList<ILaunchNode>();
 		if (isSelectionOfOneClass() && isLaunchNodeSelected()) {
-			selectedNodes = SelectionUtils.getAllSelectedItemsByType(getViewer().getSelection(), ILaunchNode.class);
+			selectedNodes = SelectionUtils.getAllSelectedItemsByType(getViewerSelection(), ILaunchNode.class);
 		}
 		return selectedNodes;
 	}
@@ -416,7 +420,7 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 	public List<ILaunchTypeNode> getSelectedLaunchTypeNodes() {
 		List<ILaunchTypeNode> selectedNodes = new ArrayList<ILaunchTypeNode>();
 		if (isSelectionOfOneClass() && isLaunchTypeNodeSelected()) {
-			selectedNodes = SelectionUtils.getAllSelectedItemsByType(getViewer().getSelection(), ILaunchTypeNode.class);
+			selectedNodes = SelectionUtils.getAllSelectedItemsByType(getViewerSelection(), ILaunchTypeNode.class);
 		}
 		return selectedNodes;
 	}
@@ -438,7 +442,7 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 	public List<ICategoryNode> getSelectedCategoryNodes() {
 		List<ICategoryNode> selectedNodes = new ArrayList<ICategoryNode>();
 		if (isSelectionOfOneClass() && isCategoryNodeSelected()) {
-			selectedNodes = SelectionUtils.getAllSelectedItemsByType(getViewer().getSelection(), ICategoryNode.class);
+			selectedNodes = SelectionUtils.getAllSelectedItemsByType(getViewerSelection(), ICategoryNode.class);
 		}
 		return selectedNodes;
 	}
