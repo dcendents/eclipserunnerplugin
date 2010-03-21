@@ -80,7 +80,6 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 
 	private Action renameAction;
 	private Action removeAction;
-	private Action aboutAction;
 
 	private Action toggleFlatModeAction;
 	private Action toggleTypeModeAction;
@@ -226,7 +225,6 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 		bookmarkAction                      = builder.createBookmarkAction();
 		renameAction                        = builder.createRenameAction();
 		removeAction                        = builder.createRemoveAction();
-		aboutAction                         = builder.createAboutAction();
 		toggleFlatModeAction                = builder.createToggleFlatModeAction();
 		toggleTypeModeAction                = builder.createToggleTypeModeAction();
 		toggleDefaultCategoryAction         = builder.createToggleDefaultCategoryAction();
@@ -266,8 +264,6 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 		manager.add(new Separator());
 		manager.add(showRunConfigurationsDialogAction);
 		manager.add(showDebugConfigurationsDialogAction);
-		manager.add(new Separator());
-		manager.add(aboutAction);
 	}
 
 	private void setupLocalToolBar(IToolBarManager manager) {

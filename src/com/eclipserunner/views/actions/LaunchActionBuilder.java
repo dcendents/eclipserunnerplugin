@@ -32,7 +32,6 @@ import static org.eclipse.debug.ui.IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP;
 import static org.eclipse.debug.ui.IDebugUIConstants.ID_RUN_LAUNCH_GROUP;
 
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.ISharedImages;
@@ -56,7 +55,6 @@ public final class LaunchActionBuilder {
 	private static final String IMG_RUN_CONFIGURATIONS   = "run_configuration.gif";
 	private static final String IMG_DEBUG                = "debug.gif";
 	private static final String IMG_DEBUG_CONFIGURATIONS = "debug_configuration.gif";
-	private static final String IMG_HELP                 = "help.gif";
 	private static final String IMG_NEW_CATEGORY         = "category_new.gif";
 	private static final String IMG_DEFAULT_CATEGORY     = "category-archive.gif";
 	private static final String IMG_EXPAND_ALL           = "expandall.gif";
@@ -216,20 +214,6 @@ public final class LaunchActionBuilder {
 
 	private ImageDescriptor getSharedImage(String image) {
 		return PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(image);
-	}
-
-	// TODO LWA BARY do we need about like that ?
-	public Action createAboutAction() {
-		Action action = new Action() {
-			@Override
-			public void run() {
-				MessageDialog.openInformation(
-						RunnerPlugin.getRunnerShell(), "Eclipse Runner View", "About action executed!"
-				);
-			}
-		};
-		configureAction(action, "About ...", "About ...", IMG_HELP);
-		return action;
 	}
 
 }
