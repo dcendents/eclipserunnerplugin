@@ -16,7 +16,7 @@
 ---[ REFACTORING & IMPROVEMENTS ]-----------------------------------------------
 [ FIXED ] interface for LaunchConfigurationTypeNode (needed in LabelProvider?)
 [ ----- ] reduce number of TODOs and FIXMEs in code
-[ ----- ] FlatTreeAdpaters jUnit tests
+[ FIXED ] FlatTreeAdpaters jUnit tests
 [ FIXED ] ICategoryNode instead of ILaunchConfigurationCategory
 
 ----[ TODO ]--------------------------------------------------------------------

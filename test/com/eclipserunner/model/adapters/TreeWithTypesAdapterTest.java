@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
@@ -21,14 +20,13 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.eclipserunner.model.ICategoryNode;
-import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.model.impl.LaunchTypeNode;
 
 /**
  * @author vachacz
  */
-public class TreeWithTypesAdapterTest {
+public class TreeWithTypesAdapterTest extends BaseAdapterTest {
 
 	@Mock IViewPart viewPart;
 	@Mock IViewSite viewSite;
@@ -62,16 +60,16 @@ public class TreeWithTypesAdapterTest {
 		when(model.getDefaultCategoryNode()).thenReturn(defaultCategory);
 		when(model.getCategoryNodes()).thenReturn(categories);
 
-		configureLaunch(defaultLaunch, type1, "c");
-		configureLaunch(cat1launch1, type1, "a");
-		configureLaunch(cat1launch2, type2, "g");
-		configureLaunch(cat1launch3, type2, "w");
-		configureLaunch(cat2launch1, type1, "e");
+		setupLaunchConfigurationMock(defaultLaunch, type1, "c");
+		setupLaunchConfigurationMock(cat1launch1, type1, "a");
+		setupLaunchConfigurationMock(cat1launch2, type2, "g");
+		setupLaunchConfigurationMock(cat1launch3, type2, "w");
+		setupLaunchConfigurationMock(cat2launch1, type1, "e");
 
-		configureCategory(defaultCategory, defaultLaunch);
-		configureCategory(category1, cat1launch1, cat1launch2, cat1launch3);
-		configureCategory(category2, cat2launch1);
-		configureCategory(category3);
+		setupCategoryNodeMock(defaultCategory, defaultLaunch);
+		setupCategoryNodeMock(category1, cat1launch1, cat1launch2, cat1launch3);
+		setupCategoryNodeMock(category2, cat2launch1);
+		setupCategoryNodeMock(category3);
 	}
 
 	// getElements tests
@@ -156,7 +154,7 @@ public class TreeWithTypesAdapterTest {
 	public void testGetParentLaunchConfiguration() throws Exception {
 		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model);
 
-		Object parent = adapter.getParent(createLaunchConfigurationNode(cat1launch2, category1));
+		Object parent = adapter.getParent(setupLaunchNodeMock(cat1launch2, category1));
 
 		assertConfigurationTypeNode((LaunchTypeNode) parent, asLaunchConfigurationTypeNode(type2, category1));
 	}
@@ -185,7 +183,7 @@ public class TreeWithTypesAdapterTest {
 	public void testGetChildrenLaunchConfiguration() throws Exception {
 		RunnerModelTreeWithTypesAdapter adapter = new RunnerModelTreeWithTypesAdapter(model);
 
-		Object children[] = adapter.getChildren(createLaunchConfigurationNode(cat1launch2, category1));
+		Object children[] = adapter.getChildren(setupLaunchNodeMock(cat1launch2, category1));
 
 		Assert.assertNull(children);
 	}
@@ -210,19 +208,7 @@ public class TreeWithTypesAdapterTest {
 
 	// custom asserts
 
-	private void assertEqualsLaunchConfigurationNodeArray(Object[] elements, ILaunchConfiguration ...configs) {
-		if (elements.length != configs.length) {
-			Assert.fail();
-		}
-		for (int i = 0; i < elements.length; i++) {
-			ILaunchNode node = (ILaunchNode) elements[i];
-			if (!node.getLaunchConfiguration().equals(configs[i])) {
-				Assert.fail();
-			}
-		}
-	}
-
-	private void assertEqualsTypeNodeArrays(Object[] elements, Object[] typeNodes) {
+	protected void assertEqualsTypeNodeArrays(Object[] elements, Object[] typeNodes) {
 		if (elements.length != typeNodes.length) {
 			Assert.fail();
 		}
@@ -236,39 +222,12 @@ public class TreeWithTypesAdapterTest {
 		}
 	}
 
-	private void assertConfigurationTypeNode(LaunchTypeNode parent, LaunchTypeNode typeNode) {
+	protected void assertConfigurationTypeNode(LaunchTypeNode parent, LaunchTypeNode typeNode) {
 		Assert.assertEquals(parent.getLaunchConfigurationType(), typeNode.getLaunchConfigurationType());
 		Assert.assertEquals(parent.getCategoryNode(), typeNode.getCategoryNode());
 	}
 
-	// helpers
-
-	private void configureLaunch(ILaunchConfiguration config, ILaunchConfigurationType type, String name) throws CoreException {
-		when(config.getType()).thenReturn(type);
-		when(config.getName()).thenReturn(name);
-	}
-
-	private Collection<ILaunchNode> createLaunchNodes(ICategoryNode category, ILaunchConfiguration ...configurations) {
-		List<ILaunchNode> nodes = new ArrayList<ILaunchNode>(configurations.length);
-		for (ILaunchConfiguration configuration : configurations) {
-			nodes.add(createLaunchConfigurationNode(configuration, category));
-		}
-		return nodes;
-	}
-
-	private ILaunchNode createLaunchConfigurationNode(ILaunchConfiguration configuration, ICategoryNode category) {
-		ILaunchNode node = mock(ILaunchNode.class);
-		when(node.getLaunchConfiguration()).thenReturn(configuration);
-		when(node.getCategoryNode()).thenReturn(category);
-		return node;
-	}
-
-	private void configureCategory(ICategoryNode category, ILaunchConfiguration ...launches) {
-		Collection<ILaunchNode> launchNodes = createLaunchNodes(category, launches);
-		when(category.getLaunchNodes()).thenReturn(launchNodes);
-	}
-
-	private Object[] asTypeNodeArray(ICategoryNode category, ILaunchConfigurationType ...types) {
+	protected Object[] asTypeNodeArray(ICategoryNode category, ILaunchConfigurationType ...types) {
 		List<LaunchTypeNode> typeNode = new ArrayList<LaunchTypeNode>();
 		for (ILaunchConfigurationType type : types) {
 			typeNode.add(asLaunchConfigurationTypeNode(type, category));
@@ -276,10 +235,11 @@ public class TreeWithTypesAdapterTest {
 		return typeNode.toArray();
 	}
 
-	private LaunchTypeNode asLaunchConfigurationTypeNode(ILaunchConfigurationType type, ICategoryNode category) {
+	protected LaunchTypeNode asLaunchConfigurationTypeNode(ILaunchConfigurationType type, ICategoryNode category) {
 		LaunchTypeNode node = mock(LaunchTypeNode.class);
 		when(node.getLaunchConfigurationType()).thenReturn(type);
 		when(node.getCategoryNode()).thenReturn(category);
 		return node;
 	}
+
 }
