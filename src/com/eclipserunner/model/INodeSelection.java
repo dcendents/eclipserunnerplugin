@@ -7,8 +7,8 @@ import java.util.List;
  */
 public interface INodeSelection {
 
-	boolean isSameTypeNodeSelection();
-	boolean isSingleNodeSelection();
+	boolean isSelectionOfOneClass();
+	boolean isSingleSelection();
 
 	Object getFirstSelectedObject();
 	List<Object> getAllSelectedObjects();

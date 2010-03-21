@@ -22,7 +22,7 @@ public class CategoryFilteringDecorator extends CategoryDelegatingDecorator {
 
 	@Override
 	public Collection<ILaunchNode> getLaunchNodes() {
-		Collection <ILaunchNode> filteredLaunchNodes= new ArrayList<ILaunchNode>();
+		Collection <ILaunchNode> filteredLaunchNodes = new ArrayList<ILaunchNode>();
 		for (ILaunchNode launchNode : category.getLaunchNodes()) {
 			if (nodeFilter.filter(launchNode)) {
 				continue;

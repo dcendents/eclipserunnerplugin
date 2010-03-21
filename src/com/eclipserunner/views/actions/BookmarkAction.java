@@ -24,7 +24,7 @@ public class BookmarkAction extends Action {
 
 	@Override
 	public void run() {
-		if (nodeSelection.isSameTypeNodeSelection()) {
+		if (nodeSelection.isSelectionOfOneClass()) {
 			if (nodeSelection.isLaunchNodeSelected()) {
 				for (ILaunchNode launchNode : nodeSelection.getSelectedLaunchNodes()) {
 					launchNode.setBookmarked(state);

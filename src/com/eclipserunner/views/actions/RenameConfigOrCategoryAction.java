@@ -38,7 +38,7 @@ public class RenameConfigOrCategoryAction extends Action {
 
 	@Override
 	public void run() {
-		if (nodeSelection.isSingleNodeSelection()) {
+		if (nodeSelection.isSingleSelection()) {
 			if (nodeSelection.isLaunchNodeSelected()) {
 				renameLaunchNode(nodeSelection.getSelectedLaunchNode());
 			}

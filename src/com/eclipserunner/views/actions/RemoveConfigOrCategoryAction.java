@@ -30,7 +30,7 @@ public class RemoveConfigOrCategoryAction extends Action {
 
 	@Override
 	public void run() {
-		if (nodeSelection.isSameTypeNodeSelection()) {
+		if (nodeSelection.isSelectionOfOneClass()) {
 			if (nodeSelection.isLaunchNodeSelected()) {
 				removeLaunchNodes(nodeSelection.getSelectedLaunchNodes());
 			}

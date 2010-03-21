@@ -211,7 +211,7 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 	private void disposePropertyChangeListeners() {
 		if (propertyChangeListener != null) {
 			JavaPlugin.getDefault().getPreferenceStore().removePropertyChangeListener(propertyChangeListener);
-			propertyChangeListener= null;
+			propertyChangeListener = null;
 		}
 	}
 
@@ -320,14 +320,14 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 	}
 
 	private boolean canLaunchConfiguration() {
-		if (isSingleNodeSelection() && isLaunchNodeSelected()) {
+		if (isSingleSelection() && isLaunchNodeSelected()) {
 			return true;
 		}
 		return false;
 	}
 
 	private boolean canRenameSelection() {
-		if (isSameTypeNodeSelection() && isSingleNodeSelection()) {
+		if (isSelectionOfOneClass() && isSingleSelection()) {
 			Object selectedObject = getFirstSelectedObject();
 			if (selectedObject instanceof IActionEnablement) {
 				return ((IActionEnablement) selectedObject).isRenamable();
@@ -337,28 +337,24 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 	}
 
 	private boolean canRemoveSelection() {
-		if (isSameTypeNodeSelection()) {
-			List<Object> selectedObjects = getAllSelectedObjects();
-			for (Object selectedObject : selectedObjects) {
-				if (selectedObject instanceof IActionEnablement) {
-					if (!((IActionEnablement) selectedObject).isRemovable()) {
-						return false;
-					}
-					else {
-						// check next object
-					}
-				}
-				else {
+		if (!isSelectionOfOneClass()) {
+			return false;
+		}
+		for (Object selectedObject : getAllSelectedObjects()) {
+			if (selectedObject instanceof IActionEnablement) {
+				if (!((IActionEnablement) selectedObject).isRemovable()) {
 					return false;
 				}
 			}
-			return true;
+			else {
+				return false;
+			}
 		}
-		return false;
+		return true;
 	}
 
 	private boolean canBookmarkSelection() {
-		if (isSameTypeNodeSelection()) {
+		if (isSelectionOfOneClass()) {
 			return true;
 		}
 		return false;
@@ -373,11 +369,11 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 		return ((IStructuredSelection) getViewer().getSelection()).toList();
 	}
 
-	public boolean isSameTypeNodeSelection() {
+	public boolean isSelectionOfOneClass() {
 		return SelectionUtils.getSelectedItemTypes((IStructuredSelection) getViewer().getSelection()).size() == 1;
 	}
 
-	public boolean isSingleNodeSelection() {
+	public boolean isSingleSelection() {
 		return ((IStructuredSelection) getViewer().getSelection()).size() == 1;
 	}
 
@@ -397,7 +393,7 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 
 	public List<ILaunchNode> getSelectedLaunchNodes() {
 		List<ILaunchNode> selectedNodes = new ArrayList<ILaunchNode>();
-		if (isSameTypeNodeSelection() && isLaunchNodeSelected()) {
+		if (isSelectionOfOneClass() && isLaunchNodeSelected()) {
 			selectedNodes = SelectionUtils.getAllSelectedItemsByType(getViewer().getSelection(), ILaunchNode.class);
 		}
 		return selectedNodes;
@@ -419,7 +415,7 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 
 	public List<ILaunchTypeNode> getSelectedLaunchTypeNodes() {
 		List<ILaunchTypeNode> selectedNodes = new ArrayList<ILaunchTypeNode>();
-		if (isSameTypeNodeSelection() && isLaunchTypeNodeSelected()) {
+		if (isSelectionOfOneClass() && isLaunchTypeNodeSelected()) {
 			selectedNodes = SelectionUtils.getAllSelectedItemsByType(getViewer().getSelection(), ILaunchTypeNode.class);
 		}
 		return selectedNodes;
@@ -441,7 +437,7 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 
 	public List<ICategoryNode> getSelectedCategoryNodes() {
 		List<ICategoryNode> selectedNodes = new ArrayList<ICategoryNode>();
-		if (isSameTypeNodeSelection() && isCategoryNodeSelected()) {
+		if (isSelectionOfOneClass() && isCategoryNodeSelected()) {
 			selectedNodes = SelectionUtils.getAllSelectedItemsByType(getViewer().getSelection(), ICategoryNode.class);
 		}
 		return selectedNodes;

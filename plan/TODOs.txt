@@ -23,3 +23,7 @@
 [ ----- ] release
 [ ----- ] eclipse update site on google.code
 [ ----- ] wiki usage tutorial
+
+----[ RELEASE 2 ]---------------------------------------------------------------
+[ ----- ] refactoring of rename/delete/bookamrk actions. redisign to avoid if's
+[ ----- ] StateExternalizer -> Serializer + Deserilizer
