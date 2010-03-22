@@ -16,6 +16,9 @@ import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.IRunnerModel;
 
+/**
+ * @author vachacz
+ */
 public class DefaultCategoryFilterTest {
 
 	private static final String PROPERTY_NAME = "test";

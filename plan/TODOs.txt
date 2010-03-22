@@ -25,6 +25,9 @@
 [ ----- ] wiki usage tutorial
 
 ----[ RELEASE 2 ]---------------------------------------------------------------
-[ ----- ] refactoring of rename/delete/bookamrk actions. redisign to avoid if's
+[ ----- ] refactoring of rename/delete/bookamrk actions. redesign to avoid if's
 [ ----- ] StateExternalizer -> Serializer + Deserilizer
 [ ----- ] key bindings
+[ ----- ] cleanup in repository (all projects in root directory) (+maven?)
+[ ----- ] dependometer, component definitions
+[ ----- ] TypeNode + interfaces -> refactoring

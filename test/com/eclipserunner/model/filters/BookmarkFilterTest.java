@@ -17,6 +17,9 @@ import org.mockito.MockitoAnnotations;
 import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
 
+/**
+ * @author vachacz
+ */
 public class BookmarkFilterTest {
 
 	private static final String PROPERTY_NAME = "test";
