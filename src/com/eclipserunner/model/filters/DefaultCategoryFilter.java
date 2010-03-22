@@ -4,13 +4,16 @@ import org.eclipse.jface.preference.IPreferenceStore;
 
 import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
-import com.eclipserunner.model.RunnerModelProvider;
+import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.model.common.AbstractFilter;
 
 public class DefaultCategoryFilter extends AbstractFilter {
 
-	public DefaultCategoryFilter(String propery, IPreferenceStore preferenceStore) {
+	private final IRunnerModel runnerModel;
+
+	public DefaultCategoryFilter(String propery, IRunnerModel runnerModel, IPreferenceStore preferenceStore) {
 		super(propery, preferenceStore);
+		this.runnerModel = runnerModel;
 	}
 
 	@Override
@@ -20,7 +23,7 @@ public class DefaultCategoryFilter extends AbstractFilter {
 
 	@Override
 	public boolean filterWhenActive(ICategoryNode categoryNode) {
-		ICategoryNode defaultCategoryNode = RunnerModelProvider.getInstance().getDefaultModel().getDefaultCategoryNode();
+		ICategoryNode defaultCategoryNode = runnerModel.getDefaultCategoryNode();
 		if (defaultCategoryNode.equals(categoryNode)) {
 			return true;
 		}

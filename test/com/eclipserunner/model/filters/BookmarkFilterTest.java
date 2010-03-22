@@ -19,6 +19,8 @@ import com.eclipserunner.model.ILaunchNode;
 
 public class BookmarkFilterTest {
 
+	private static final String PROPERTY_NAME = "test";
+
 	@Mock IPreferenceStore enabledPreferenceStoreMock;
 	@Mock IPreferenceStore disabledPreferenceStoreMock;
 
@@ -44,73 +46,73 @@ public class BookmarkFilterTest {
 
 	@Test
 	public void testFilterBookmarkedLaunchNodeWhenEnabled() throws Exception {
-		BookmarkFilter filter = new BookmarkFilter("test", enabledPreferenceStoreMock);
+		BookmarkFilter filter = new BookmarkFilter(PROPERTY_NAME, enabledPreferenceStoreMock);
 
 		boolean filtered = filter.filter(bookmarkedLaunchNodeMock);
 
 		assertFalse(filtered);
 
-		verify(enabledPreferenceStoreMock).getBoolean("test");
+		verify(enabledPreferenceStoreMock).getBoolean(PROPERTY_NAME);
 		verify(bookmarkedLaunchNodeMock).isBookmarked();
 	}
 
 	@Test
 	public void testFilterBookmarkedCategoryNodeWhenEnabled() throws Exception {
-		BookmarkFilter filter = new BookmarkFilter("test", enabledPreferenceStoreMock);
+		BookmarkFilter filter = new BookmarkFilter(PROPERTY_NAME, enabledPreferenceStoreMock);
 
 		boolean filtered = filter.filter(bookmarkedCategoryNodeMock);
 
 		assertFalse(filtered);
 
-		verify(enabledPreferenceStoreMock).getBoolean("test");
+		verify(enabledPreferenceStoreMock).getBoolean(PROPERTY_NAME);
 		verify(bookmarkedCategoryNodeMock).getLaunchNodes();
 		verify(bookmarkedLaunchNodeMock).isBookmarked();
 	}
 
 	@Test
 	public void testFilterNotBookmarkedCategoryNodeWhenEnabled() throws Exception {
-		BookmarkFilter filter = new BookmarkFilter("test", enabledPreferenceStoreMock);
+		BookmarkFilter filter = new BookmarkFilter(PROPERTY_NAME, enabledPreferenceStoreMock);
 
 		boolean filtered = filter.filter(notBookmarkedLaunchNodeMock);
 
 		assertTrue(filtered);
 
-		verify(enabledPreferenceStoreMock).getBoolean("test");
+		verify(enabledPreferenceStoreMock).getBoolean(PROPERTY_NAME);
 		verify(notBookmarkedLaunchNodeMock).isBookmarked();
 	}
 
 	@Test
 	public void testFilterNotBookmarkedLaunchNodeWhenEnabled() throws Exception {
-		BookmarkFilter filter = new BookmarkFilter("test", enabledPreferenceStoreMock);
+		BookmarkFilter filter = new BookmarkFilter(PROPERTY_NAME, enabledPreferenceStoreMock);
 
 		boolean filtered = filter.filter(notBookmarkedCategoryNodeMock);
 
 		assertTrue(filtered);
 
-		verify(enabledPreferenceStoreMock).getBoolean("test");
+		verify(enabledPreferenceStoreMock).getBoolean(PROPERTY_NAME);
 		verify(notBookmarkedCategoryNodeMock).getLaunchNodes();
 		verify(notBookmarkedLaunchNodeMock).isBookmarked();
 	}
 
 	@Test
 	public void testFilterCategoryNodeWhenDisabled() throws Exception {
-		BookmarkFilter filter = new BookmarkFilter("test", disabledPreferenceStoreMock);
+		BookmarkFilter filter = new BookmarkFilter(PROPERTY_NAME, disabledPreferenceStoreMock);
 		boolean filtered = filter.filter(bookmarkedCategoryNodeMock);
 
 		assertFalse(filtered);
 
-		verify(disabledPreferenceStoreMock).getBoolean("test");
+		verify(disabledPreferenceStoreMock).getBoolean(PROPERTY_NAME);
 	}
 
 	@Test
 	public void testFilterLaunchNodeWhenDisabled() throws Exception {
-		BookmarkFilter filter = new BookmarkFilter("test", disabledPreferenceStoreMock);
+		BookmarkFilter filter = new BookmarkFilter(PROPERTY_NAME, disabledPreferenceStoreMock);
 
 		boolean filtered = filter.filter(bookmarkedLaunchNodeMock);
 
 		assertFalse(filtered);
 
-		verify(disabledPreferenceStoreMock).getBoolean("test");
+		verify(disabledPreferenceStoreMock).getBoolean(PROPERTY_NAME);
 	}
 
 }
