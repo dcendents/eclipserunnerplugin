@@ -1,13 +1,15 @@
 package com.eclipserunner.model.filters;
 
+import org.eclipse.jface.preference.IPreferenceStore;
+
 import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.common.AbstractFilter;
 
 public class BookmarkFilter extends AbstractFilter {
 
-	public BookmarkFilter(String propery) {
-		super(propery);
+	public BookmarkFilter(String propery, IPreferenceStore preferenceStore) {
+		super(propery, preferenceStore);
 	}
 
 	@Override
@@ -17,14 +19,12 @@ public class BookmarkFilter extends AbstractFilter {
 
 	@Override
 	public boolean filterWhenActive(ICategoryNode categoryNode) {
-		boolean filterCategoryNode = true;
-		for(ILaunchNode launchNode : categoryNode.getLaunchNodes()) {
+		for (ILaunchNode launchNode : categoryNode.getLaunchNodes()) {
 			if (launchNode.isBookmarked()) {
-				filterCategoryNode = false;
-				break;
+				return false;
 			}
 		}
-		return filterCategoryNode;
+		return true;
 	}
 
 }

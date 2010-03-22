@@ -1,6 +1,7 @@
 package com.eclipserunner.model.filters;
 
 import org.eclipse.debug.internal.ui.launchConfigurations.ClosedProjectFilter;
+import org.eclipse.jface.preference.IPreferenceStore;
 
 import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
@@ -9,8 +10,8 @@ import com.eclipserunner.model.common.AbstractFilter;
 @SuppressWarnings("restriction")
 public class ClosedProjectsFilter extends AbstractFilter {
 
-	public ClosedProjectsFilter(String propery) {
-		super(propery);
+	public ClosedProjectsFilter(String propery, IPreferenceStore preferenceStore) {
+		super(propery, preferenceStore);
 	}
 
 	@Override

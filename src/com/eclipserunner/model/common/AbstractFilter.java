@@ -1,6 +1,7 @@
 package com.eclipserunner.model.common;
 
-import com.eclipserunner.RunnerPlugin;
+import org.eclipse.jface.preference.IPreferenceStore;
+
 import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.INodeFilter;
@@ -8,12 +9,14 @@ import com.eclipserunner.model.INodeFilter;
 public abstract class AbstractFilter implements INodeFilter {
 
 	private final String propery;
+	private final IPreferenceStore preferenceStore;
 
 	public abstract boolean filterWhenActive(ILaunchNode launchNode);
 	public abstract boolean filterWhenActive(ICategoryNode categoryNode);
 
-	public AbstractFilter(String propery) {
+	public AbstractFilter(String propery, IPreferenceStore preferenceStore) {
 		this.propery = propery;
+		this.preferenceStore = preferenceStore;
 	}
 
 	public boolean filter(ILaunchNode launchNode) {
@@ -31,7 +34,7 @@ public abstract class AbstractFilter implements INodeFilter {
 	}
 
 	private boolean isActive() {
-		return RunnerPlugin.getDefault().getPreferenceStore().getBoolean(propery);
+		return preferenceStore.getBoolean(propery);
 	}
 
 }

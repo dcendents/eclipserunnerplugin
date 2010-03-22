@@ -1,5 +1,7 @@
 package com.eclipserunner.model.filters;
 
+import org.eclipse.jface.preference.IPreferenceStore;
+
 import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.RunnerModelProvider;
@@ -7,8 +9,8 @@ import com.eclipserunner.model.common.AbstractFilter;
 
 public class DefaultCategoryFilter extends AbstractFilter {
 
-	public DefaultCategoryFilter(String propery) {
-		super(propery);
+	public DefaultCategoryFilter(String propery, IPreferenceStore preferenceStore) {
+		super(propery, preferenceStore);
 	}
 
 	@Override

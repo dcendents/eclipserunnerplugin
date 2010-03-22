@@ -1,5 +1,6 @@
 package com.eclipserunner.model;
 
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 
@@ -39,14 +40,16 @@ public class RunnerModelProvider {
 	private RunnerModelProvider() {
 		runnerModel = new RunnerModel();
 
+		IPreferenceStore preferenceStore = RunnerPlugin.getDefault().getPreferenceStore();
+
 		RunnerModelFilteringDecorator runnerModelDecorator = new RunnerModelFilteringDecorator(runnerModel);
 		filteredRunnerModel = runnerModelDecorator;
 		filterChain = runnerModelDecorator;
-		filterChain.addFilter(new ClosedProjectsFilter(PreferenceConstants.FILTER_CLOSED_PROJECT));
-		filterChain.addFilter(new DeletedProjectsFilter(PreferenceConstants.FILTER_DELETED_PROJECT));
-		filterChain.addFilter(new WorkingSetFilter(PreferenceConstants.FILTER_ACTIVE_WORKING_SET));
-		filterChain.addFilter(new BookmarkFilter(PreferenceConstants.FILTER_BOOKMARKED));
-		filterChain.addFilter(new DefaultCategoryFilter(PreferenceConstants.FILTER_DEFAULT_CATEGORY));
+		filterChain.addFilter(new ClosedProjectsFilter(PreferenceConstants.FILTER_CLOSED_PROJECT ,preferenceStore));
+		filterChain.addFilter(new DeletedProjectsFilter(PreferenceConstants.FILTER_DELETED_PROJECT ,preferenceStore));
+		filterChain.addFilter(new WorkingSetFilter(PreferenceConstants.FILTER_ACTIVE_WORKING_SET ,preferenceStore));
+		filterChain.addFilter(new BookmarkFilter(PreferenceConstants.FILTER_BOOKMARKED ,preferenceStore));
+		filterChain.addFilter(new DefaultCategoryFilter(PreferenceConstants.FILTER_DEFAULT_CATEGORY ,preferenceStore));
 		filterChain.addFilter(new ProjectFilter());
 
 		initializeTreeModeAdapter();

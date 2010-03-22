@@ -1,6 +1,7 @@
 package com.eclipserunner.model.filters;
 
 import org.eclipse.debug.internal.ui.launchConfigurations.WorkingSetsFilter;
+import org.eclipse.jface.preference.IPreferenceStore;
 
 import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
@@ -9,8 +10,8 @@ import com.eclipserunner.model.common.AbstractFilter;
 @SuppressWarnings("restriction")
 public class WorkingSetFilter extends AbstractFilter {
 
-	public WorkingSetFilter(String propery) {
-		super(propery);
+	public WorkingSetFilter(String propery, IPreferenceStore preferenceStore) {
+		super(propery, preferenceStore);
 	}
 
 	@Override

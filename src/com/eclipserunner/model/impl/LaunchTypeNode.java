@@ -78,7 +78,7 @@ public class LaunchTypeNode implements ILaunchTypeNode, IActionEnablement {
 	}
 
 	@Override
-	// TODO LWA Are we realy need this all the place (danger of NullPointerException), wy not use just return 1;
+	// TODO LWA Are we realy need this all the place (danger of NullPointerException), wy not use just return 1
 	public int hashCode () {
 		int code = PRIME_BASE;
 		code = PRIME_MULTIPLYER * code + launchConfigurationType.hashCode();
