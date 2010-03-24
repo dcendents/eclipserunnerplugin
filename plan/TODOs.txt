@@ -8,6 +8,7 @@
 [ FIXED ] one toggle bookmark button is enough
 [ FIXED ] bookmark on launch type node does not work
 [ FIXED ] remove/rename actions on cotegory are disabled
+[ FIXED ] order of categories and launch nodes 
 
 ---[ FEATURES ]-----------------------------------------------------------------
 [ FIXED ] toggle bookmarks button

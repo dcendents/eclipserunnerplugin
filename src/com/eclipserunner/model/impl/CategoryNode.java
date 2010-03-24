@@ -1,7 +1,9 @@
 package com.eclipserunner.model.impl;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import com.eclipserunner.model.IActionEnablement;
 import com.eclipserunner.model.ICategoryNode;
@@ -19,8 +21,14 @@ public class CategoryNode implements ICategoryNode, ILaunchNodeChangeListener, I
 	private static final int PRIME_MULTIPLYER = 11;
 	private static final int PRIME_BASE       = 17;
 
+	class LaunchNodeComparator implements Comparator<ILaunchNode> {
+		public int compare(ILaunchNode o1, ILaunchNode o2) {
+			return o1.getLaunchConfiguration().getName().compareTo(o2.getLaunchConfiguration().getName());
+		}
+	}
+
 	private String name;
-	private Set<ILaunchNode> launchNodes = new HashSet<ILaunchNode>();
+	private Set<ILaunchNode> launchNodes = new TreeSet<ILaunchNode>(new LaunchNodeComparator());
 	private Set<ICategoryNodeChangeListener> categoryNodeChangeListeners = new HashSet<ICategoryNodeChangeListener>();
 
 	private boolean removable  = true;
