@@ -6,8 +6,8 @@
       provider-name="EclipseRunner"
       plugin="com.eclipserunner.plugin">
 
-   <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
+   <description url="http://code.google.com/p/eclipserunnerplugin">
+      Eclipse Runner plugin extends capability of running launch configurations in Eclipse IDE. User gets a new &quot;Runner&quot; view, which allows to categorize and bookmark launch configurations in groups, run them directly from the view by double clicking on the launch configuration icon. It speeds up developement in projects containing many small java applications or many test suits.
    </description>
 
    <copyright url="http://www.example.com/copyright">
@@ -24,9 +24,9 @@
 
    <plugin
          id="com.eclipserunner.plugin"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
+         download-size="100"
+         install-size="100"
+         version="0.9.0"
          unpack="false"/>
 
 </feature>
