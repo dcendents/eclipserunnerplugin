@@ -2,7 +2,7 @@
 <feature
       id="EclipseRunnerFeature"
       label="EclipseRunnerFeature"
-      version="0.9.0"
+      version="1.0.0"
       provider-name="EclipseRunner"
       plugin="com.eclipserunner.plugin">
 
@@ -18,15 +18,11 @@
       [Enter License Description here.]
    </license>
 
-   <url>
-      <update label="EclipseRunner update site"/>
-   </url>
-
    <plugin
          id="com.eclipserunner.plugin"
-         download-size="100"
-         install-size="100"
-         version="0.9.0"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
          unpack="false"/>
 
 </feature>
