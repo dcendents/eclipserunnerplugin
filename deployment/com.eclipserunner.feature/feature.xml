@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="EclipseRunnerFeature"
-      label="Feature"
-      version="1.0.0.0"
-      provider-name="EclipseRunner">
+      label="EclipseRunnerFeature"
+      version="0.9.0"
+      provider-name="EclipseRunner"
+      plugin="com.eclipserunner.plugin">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
@@ -16,6 +17,10 @@
    <license url="http://www.example.com/license">
       [Enter License Description here.]
    </license>
+
+   <url>
+      <update label="EclipseRunner update site"/>
+   </url>
 
    <plugin
          id="com.eclipserunner.plugin"
