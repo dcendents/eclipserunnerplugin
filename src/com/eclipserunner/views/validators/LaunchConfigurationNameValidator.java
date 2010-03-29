@@ -9,7 +9,6 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.dialogs.IInputValidator;
 
 /**
- * 
  * @author vachacz
  */
 public class LaunchConfigurationNameValidator implements IInputValidator {
@@ -18,13 +17,11 @@ public class LaunchConfigurationNameValidator implements IInputValidator {
 	private String initialValue = null;
 
 	public LaunchConfigurationNameValidator() {
-		this.initialValue  = null;
-		this.launchManager = DebugPlugin.getDefault().getLaunchManager();
+		this(null);
 	}
 
 	public LaunchConfigurationNameValidator(String initialName) {
-		this.initialValue  = initialName;
-		this.launchManager = DebugPlugin.getDefault().getLaunchManager();
+		this(initialName, DebugPlugin.getDefault().getLaunchManager());
 	}
 
 	// FOR TESTS ONLY
