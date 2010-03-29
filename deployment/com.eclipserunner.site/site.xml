@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/com.eclipserunner.feature_1.0.0.201003222254.jar" id="com.eclipserunner.feature" version="1.0.0.201003222254">
-      <category name="com.eclipserunner.category"/>
+   <feature url="features/EclipseRunnerFeature_1.0.0.0.jar" id="EclipseRunnerFeature" version="1.0.0.0">
+      <category name="EclipseRunnerCategory"/>
    </feature>
-   <category-def name="com.eclipserunner.category" label="Eclipse Runner Plugin"/>
+   <category-def name="EclipseRunnerCategory" label="Eclipse Runner Plugin"/>
 </site>
