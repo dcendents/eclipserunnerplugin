@@ -30,6 +30,8 @@ import static com.eclipserunner.Messages.Message_treeModeFlat;
 import static com.eclipserunner.Messages.Message_treeModeFlatTooltip;
 import static com.eclipserunner.Messages.Message_treeModeWithTypes;
 import static com.eclipserunner.Messages.Message_treeModeWithTypesTooltip;
+import static com.eclipserunner.Messages.Message_createToggleDefaultRunMode;
+import static com.eclipserunner.Messages.Message_createToggleDefaultRunModeTooltip;
 import static org.eclipse.debug.ui.IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP;
 import static org.eclipse.debug.ui.IDebugUIConstants.ID_RUN_LAUNCH_GROUP;
 
@@ -170,7 +172,11 @@ public final class LaunchActionBuilder {
 		configureAction(action, Message_treeModeWithTypes, Message_treeModeWithTypesTooltip, IMG_TYPE_TREE);
 		return action;
 	}
-
+	public Action createToggleRunModeAction() {
+		Action action = new ToggleRunModeAction(PreferenceConstants.RUN_MODE);
+		configureAction(action, Message_createToggleDefaultRunMode, Message_createToggleDefaultRunModeTooltip, IMG_DEBUG);
+		return action;
+	}
 	public Action createToggleDefaultCategoryAction() {
 		Action action = new ToggleFilterAction(PreferenceConstants.FILTER_DEFAULT_CATEGORY, runnerView);
 		configureAction(action, Message_createToggleDefaultCategory, Message_createToggleDefaultCategoryTooltip, IMG_DEFAULT_CATEGORY);

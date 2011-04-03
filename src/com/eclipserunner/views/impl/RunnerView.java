@@ -38,6 +38,8 @@ import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.part.ViewPart;
 
+import com.eclipserunner.PreferenceConstants;
+import com.eclipserunner.RunnerPlugin;
 import com.eclipserunner.model.IActionEnablement;
 import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
@@ -93,6 +95,7 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 	private Action toggleFlatModeAction;
 	private Action toggleTypeModeAction;
 	private Action toggleDefaultCategoryAction;
+	private Action toggleDefaultRunModeAction;
 	private Action toggleBookmarkModeAction;
 
 	private Action toggleClosedProjectFilterAction;
@@ -249,6 +252,7 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 		toggleFlatModeAction                = builder.createToggleFlatModeAction();
 		toggleTypeModeAction                = builder.createToggleTypeModeAction();
 		toggleDefaultCategoryAction         = builder.createToggleDefaultCategoryAction();
+		toggleDefaultRunModeAction			= builder.createToggleRunModeAction();
 		toggleBookmarkModeAction            = builder.createToggleBookmarkModeAction();
 		toggleClosedProjectFilterAction     = builder.createToggleClosedProjectFilterAction();
 		toggleDelectedProjectFilterAction   = builder.createDelectedProjectFilterAction();
@@ -290,6 +294,7 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 	private void setupLocalToolBar(IToolBarManager manager) {
 		manager.add(toggleBookmarkModeAction);
 		manager.add(toggleDefaultCategoryAction);
+		manager.add(toggleDefaultRunModeAction);
 		manager.add(new Separator());
 		manager.add(addNewCategoryAction);
 		manager.add(new Separator());
@@ -461,8 +466,17 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 		return selectedNodes;
 	}
 
+
+	public boolean isDefaultDebugMode(){
+		return RunnerPlugin.getDefault().getPreferenceStore().getBoolean(
+				PreferenceConstants.RUN_MODE);
+	}
+
 	public void doubleClick(DoubleClickEvent event) {
-		this.launchRunConfigurationAction.run();
+		if(isDefaultDebugMode())
+			this.launchDebugConfigurationAction.run();
+		else
+			this.launchRunConfigurationAction.run();
 	}
 
 	public void modelChanged() {
