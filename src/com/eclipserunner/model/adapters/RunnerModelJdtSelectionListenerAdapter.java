@@ -45,6 +45,7 @@ public class RunnerModelJdtSelectionListenerAdapter implements ISelectionListene
 				Object selectedElement = structuredSelection.getFirstElement();
 				if (selectedElement != null) {
 					if (selectedElement instanceof IResource) {
+						System.out.println("DEBUG: handle JDT selection selectedElement:" + selectedElement.getClass().getSimpleName());
 						IResource resource = (IResource) selectedElement;
 						while (resource != null) {
 							if (IResource.PROJECT == resource.getType()) {
@@ -57,11 +58,13 @@ public class RunnerModelJdtSelectionListenerAdapter implements ISelectionListene
 					}
 					else {
 						// TODO: BARY How to get IProject from selectedElement other than IResource?
+						System.out.println("DEBUG: TODO handle JDT selection selectedElement:" + selectedElement.getClass().getSimpleName());
 					}
 				}
 			}
 			else {
 				// TODO: BARY How to get IProject from selection other than IStructuredSelection?
+				System.out.println("DEBUG: TODO handle JDT selection change part:" + part.getClass().getSimpleName() + ", selection: " + selection.getClass().getSimpleName());
 			}
 		}
 	}
