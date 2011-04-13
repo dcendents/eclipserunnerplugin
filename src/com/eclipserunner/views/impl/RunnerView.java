@@ -19,7 +19,6 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.LocalSelectionTransfer;
-import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -42,11 +41,11 @@ import com.eclipserunner.PreferenceConstants;
 import com.eclipserunner.RunnerPlugin;
 import com.eclipserunner.model.IActionEnablement;
 import com.eclipserunner.model.ICategoryNode;
+import com.eclipserunner.model.IFilteredRunnerModel;
 import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.ILaunchTypeNode;
 import com.eclipserunner.model.IModelChangeListener;
 import com.eclipserunner.model.INodeSelection;
-import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.model.RunnerModelProvider;
 import com.eclipserunner.model.adapters.RunnerModelJdtSelectionListenerAdapter;
 import com.eclipserunner.model.adapters.RunnerModelLaunchConfigurationListenerAdapter;
@@ -66,7 +65,7 @@ import com.eclipserunner.views.actions.LaunchActionBuilder;
 public class RunnerView extends ViewPart 
 	implements INodeSelection, IMenuListener, IDoubleClickListener, IModelChangeListener, IRunnerView {
 
-	private IRunnerModel runnerModel;
+	private IFilteredRunnerModel runnerModel;
 
 	private TreeViewer viewer;
 
@@ -116,7 +115,6 @@ public class RunnerView extends ViewPart
 		initializeViewer(parent);
 		initializeSelectionListeners();
 		initializeLaunchConfigurationListeners();
-		initializePropertyChangeListeners();
 		initializeResourceChangeListener();
 		initializeDragAndDrop();
 
@@ -180,17 +178,6 @@ public class RunnerView extends ViewPart
 			}
 		}, IResourceChangeEvent.POST_CHANGE);
 
-	}
-
-	// TODO BARY do we need this ?
-	// LWA: we can delete this, right ?
-	private void initializePropertyChangeListeners() {
-		propertyChangeListener = new IPropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent event) {
-				System.out.println("RunnerView.RunnerView().new IPropertyChangeListener() {...}.propertyChange()");
-			}
-		};
-		JavaPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(propertyChangeListener);
 	}
 
 	private void initializeDragAndDrop() {
@@ -502,7 +489,11 @@ public class RunnerView extends ViewPart
 	}
 
 	public void refresh() {
-		getViewer().refresh();
+		RunnerPlugin.getDisplay().syncExec(new Runnable() {
+			public void run() {
+				getViewer().refresh();
+			}
+		});
 	}
 	
 	void setTreeViewerForTesting(TreeViewer viewer) {

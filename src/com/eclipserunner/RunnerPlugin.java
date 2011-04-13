@@ -111,8 +111,19 @@ public class RunnerPlugin extends AbstractUIPlugin {
 	public static Shell getRunnerShell() {
 		return Display.getCurrent().getActiveShell();
 	}
+	
+	/**
+	 * @return Display instance
+	 */
+	public static Display getDisplay() {
+		Display display = Display.getCurrent();
+		// may be null if outside the UI thread
+		if (display == null) {
+			display = Display.getDefault();
+		}
+		return display;
+	}
 
-	// TODO BARY: find better solution to populate model
 	private void restoreSavedState(ISavedState state) throws CoreException {
 		if (state != null) {
 			try {

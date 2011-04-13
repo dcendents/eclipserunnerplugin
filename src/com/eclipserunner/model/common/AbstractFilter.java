@@ -1,5 +1,8 @@
 package com.eclipserunner.model.common;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.jface.preference.IPreferenceStore;
 
 import com.eclipserunner.model.ICategoryNode;
@@ -8,6 +11,8 @@ import com.eclipserunner.model.INodeFilter;
 
 public abstract class AbstractFilter implements INodeFilter {
 
+	private final Map<String, String> filterProperties = new HashMap<String,String>();
+	
 	private final String propery;
 	private final IPreferenceStore preferenceStore;
 
@@ -35,6 +40,14 @@ public abstract class AbstractFilter implements INodeFilter {
 
 	private boolean isActive() {
 		return preferenceStore.getBoolean(propery);
+	}
+	
+	public void setFilterProperty(String key, String value) {
+		filterProperties.put(key, value);		
+	}
+	
+	public String getFilterProperty(String key) {
+		return filterProperties.get(key);
 	}
 
 }

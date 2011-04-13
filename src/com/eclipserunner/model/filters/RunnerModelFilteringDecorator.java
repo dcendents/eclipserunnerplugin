@@ -5,13 +5,14 @@ import java.util.Collection;
 import java.util.List;
 
 import com.eclipserunner.model.ICategoryNode;
+import com.eclipserunner.model.IFilteredRunnerModel;
 import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.INodeFilter;
 import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.model.common.RunnerModelDelegatingDecorator;
 
 public class RunnerModelFilteringDecorator extends RunnerModelDelegatingDecorator 
-		implements INodeFilter {
+		implements IFilteredRunnerModel, INodeFilter {
 
 	private List<INodeFilter> nodeFilterList = new ArrayList<INodeFilter>();
 
@@ -45,6 +46,10 @@ public class RunnerModelFilteringDecorator extends RunnerModelDelegatingDecorato
 	public void addFilter(INodeFilter filter) {
 		nodeFilterList.add(filter);
 	}
+	
+	public List<INodeFilter> getFilters() {
+		return nodeFilterList;
+	}
 
 	public boolean filter(ILaunchNode launchNode) {
 		for (INodeFilter nodeFilter : nodeFilterList) {
@@ -62,6 +67,14 @@ public class RunnerModelFilteringDecorator extends RunnerModelDelegatingDecorato
 			}
 		}
 		return false;
+	}
+
+	public void setFilterProperty(String key, String value) {
+		throw new UnsupportedOperationException("Can not set filter property on RunnerModelFilteringDecorator!");		
+	}
+
+	public String getFilterProperty(String key) {
+		throw new UnsupportedOperationException("Can not get filter property from RunnerModelFilteringDecorator!");
 	}
 
 }

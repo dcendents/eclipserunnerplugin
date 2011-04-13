@@ -28,27 +28,23 @@ public class RunnerModelProvider {
 	private static final RunnerModelProvider INSTANCE = new RunnerModelProvider();
 
 	private IRunnerModel runnerModel;
-	private IRunnerModel filteredRunnerModel;
+	private IFilteredRunnerModel filteredRunnerModel;
 
 	private ITreeContentProvider contentProvider;
 
 	private TreeMode treeMode;
 
-	private RunnerModelFilteringDecorator decorator;
-
 	// Singleton pattern
 	private RunnerModelProvider() {
 		runnerModel = new RunnerModel();
 		
-		decorator = new RunnerModelFilteringDecorator(runnerModel);
-		decorator.addFilter(new ClosedProjectsFilter(PreferenceConstants.FILTER_CLOSED_PROJECT, getPreferenceStore()));
-		decorator.addFilter(new DeletedProjectsFilter(PreferenceConstants.FILTER_DELETED_PROJECT, getPreferenceStore()));
-		decorator.addFilter(new WorkingSetFilter(PreferenceConstants.FILTER_ACTIVE_WORKING_SET, getPreferenceStore()));
-		decorator.addFilter(new BookmarkFilter(PreferenceConstants.FILTER_BOOKMARKED, getPreferenceStore()));
-		decorator.addFilter(new DefaultCategoryFilter(PreferenceConstants.FILTER_DEFAULT_CATEGORY, runnerModel, getPreferenceStore()));
-		decorator.addFilter(new ProjectFilter());
-		
-		filteredRunnerModel = decorator;
+		filteredRunnerModel = new RunnerModelFilteringDecorator(runnerModel);
+		filteredRunnerModel.addFilter(new ClosedProjectsFilter(PreferenceConstants.FILTER_CLOSED_PROJECT, getPreferenceStore()));
+		filteredRunnerModel.addFilter(new DeletedProjectsFilter(PreferenceConstants.FILTER_DELETED_PROJECT, getPreferenceStore()));
+		filteredRunnerModel.addFilter(new WorkingSetFilter(PreferenceConstants.FILTER_ACTIVE_WORKING_SET, getPreferenceStore()));
+		filteredRunnerModel.addFilter(new BookmarkFilter(PreferenceConstants.FILTER_BOOKMARKED, getPreferenceStore()));
+		filteredRunnerModel.addFilter(new DefaultCategoryFilter(PreferenceConstants.FILTER_DEFAULT_CATEGORY, runnerModel, getPreferenceStore()));
+		filteredRunnerModel.addFilter(new ProjectFilter(PreferenceConstants.FILTER_ACTIVE_PROJECT, getPreferenceStore()));
 
 		initializeTreeModeAdapter();
 	}
@@ -86,7 +82,7 @@ public class RunnerModelProvider {
 		return runnerModel;
 	}
 	
-	public IRunnerModel getFilteredModel() {
+	public IFilteredRunnerModel getFilteredModel() {
 		return filteredRunnerModel;
 	}
 
