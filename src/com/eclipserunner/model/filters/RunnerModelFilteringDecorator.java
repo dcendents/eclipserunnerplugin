@@ -7,11 +7,11 @@ import java.util.List;
 import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.INodeFilter;
-import com.eclipserunner.model.INodeFilterChain;
 import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.model.common.RunnerModelDelegatingDecorator;
 
-public class RunnerModelFilteringDecorator extends RunnerModelDelegatingDecorator implements INodeFilterChain, INodeFilter {
+public class RunnerModelFilteringDecorator extends RunnerModelDelegatingDecorator 
+		implements INodeFilter {
 
 	private List<INodeFilter> nodeFilterList = new ArrayList<INodeFilter>();
 

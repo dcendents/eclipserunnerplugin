@@ -13,6 +13,8 @@ public interface IRunnerModel {
 	Collection<ICategoryNode> getCategoryNodes();
 
 	void addModelChangeListener(IModelChangeListener modelChangeListener);
+	
+	// FIXME: do we need this remove? garbage collector will do it anyway ;)
 	void removeModelChangeListener(IModelChangeListener modelChangeListener);
 
 	ICategoryNode getDefaultCategoryNode();

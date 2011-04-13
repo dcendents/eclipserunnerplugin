@@ -23,6 +23,7 @@ public class BookmarkAction extends Action {
 	}
 
 	@Override
+	// TODO: IBookmarkable and three simple method calls
 	public void run() {
 		if (nodeSelection.isSelectionOfOneClass()) {
 			if (nodeSelection.isLaunchNodeSelected()) {

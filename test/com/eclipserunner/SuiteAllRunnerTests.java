@@ -10,6 +10,7 @@ import com.eclipserunner.model.filters.BookmarkFilterTest;
 import com.eclipserunner.model.filters.DefaultCategoryFilterTest;
 import com.eclipserunner.model.impl.RunnerModelTest;
 import com.eclipserunner.utils.SelectionUtilsTest;
+import com.eclipserunner.views.impl.RunnerViewTest;
 import com.eclipserunner.views.validators.CategoryNameValidatorTest;
 import com.eclipserunner.views.validators.LaunchConfigurationNameValidatorTest;
 
@@ -22,7 +23,8 @@ import com.eclipserunner.views.validators.LaunchConfigurationNameValidatorTest;
 	TreeWithTypesAdapterTest.class,
 	RunnerModelTreeAdapterTest.class,
 	BookmarkFilterTest.class,
-	DefaultCategoryFilterTest.class
+	DefaultCategoryFilterTest.class,
+	RunnerViewTest.class
 })
 public class SuiteAllRunnerTests {
 

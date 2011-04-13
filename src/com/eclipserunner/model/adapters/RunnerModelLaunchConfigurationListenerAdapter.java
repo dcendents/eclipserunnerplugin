@@ -14,7 +14,6 @@ import com.eclipserunner.model.impl.LaunchNode;
  * Adapter listening for Launch manager event.
  * 
  * @author bary
- *
  */
 public class RunnerModelLaunchConfigurationListenerAdapter implements ILaunchConfigurationListener {
 

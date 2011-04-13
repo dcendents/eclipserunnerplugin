@@ -10,7 +10,6 @@ import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.model.RunnerModelProvider;
 
 /**
- * 
  * @author vachacz
  */
 public class CategoryNameValidator implements IInputValidator {

@@ -63,7 +63,8 @@ import com.eclipserunner.views.actions.LaunchActionBuilder;
  * @author vachacz, bary
  */
 @SuppressWarnings("restriction")
-public class RunnerView extends ViewPart implements INodeSelection, IMenuListener, IDoubleClickListener, IModelChangeListener, IRunnerView {
+public class RunnerView extends ViewPart 
+	implements INodeSelection, IMenuListener, IDoubleClickListener, IModelChangeListener, IRunnerView {
 
 	private IRunnerModel runnerModel;
 
@@ -105,8 +106,8 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 
 	// we are listening only from this selection providers
 	private final String[] selectonProviders = new String[] {
-			"org.eclipse.jdt.ui.PackageExplorer",
-			"org.eclipse.ui.navigator.ProjectExplorer"
+		"org.eclipse.jdt.ui.PackageExplorer",
+		"org.eclipse.ui.navigator.ProjectExplorer"
 	};
 
 	@Override
@@ -234,9 +235,9 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 
 	private void setupLaunchActions() {
 		LaunchActionBuilder builder = LaunchActionBuilder.newInstance()
-		.withLaunchConfigurationSelection(this)
-		.withRunnerModel(runnerModel)
-		.withRunnerView(this);
+			.withLaunchConfigurationSelection(this)
+			.withRunnerModel(runnerModel)
+			.withRunnerView(this);
 
 		showRunConfigurationsDialogAction   = builder.createShowRunConfigurationDialogAction();
 		showDebugConfigurationsDialogAction = builder.createShowDebugConfigurationDialogAction();
@@ -339,10 +340,7 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 	}
 
 	private boolean canLaunchConfiguration() {
-		if (isSingleSelection() && isLaunchNodeSelected()) {
-			return true;
-		}
-		return false;
+		return isSingleSelection() && isLaunchNodeSelected();
 	}
 
 	private boolean canRenameSelection() {
@@ -373,10 +371,7 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 	}
 
 	private boolean canBookmarkSelection() {
-		if (isSelectionOfOneClass()) {
-			return true;
-		}
-		return false;
+		return isSelectionOfOneClass();
 	}
 
 	private IStructuredSelection getViewerSelection() {
@@ -400,83 +395,63 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 		return SelectionUtils.isSingleNodeSelection(getViewerSelection());
 	}
 
-	public boolean isLaunchNodeSelected() {
-		if (getFirstSelectedObject() instanceof ILaunchNode) {
-			return true;
-		}
-		return false;
-	}
-
-	public ILaunchNode getSelectedLaunchNode() {
-		if (isLaunchNodeSelected()) {
-			return (ILaunchNode) getFirstSelectedObject();
-		}
-		return null;
-	}
-
 	public List<ILaunchNode> getSelectedLaunchNodes() {
-		List<ILaunchNode> selectedNodes = new ArrayList<ILaunchNode>();
 		if (isSelectionOfOneClass() && isLaunchNodeSelected()) {
-			selectedNodes = SelectionUtils.getAllSelectedItemsByType(getViewerSelection(), ILaunchNode.class);
+			return SelectionUtils.getAllSelectedItemsByType(getViewerSelection(), ILaunchNode.class);
 		}
-		return selectedNodes;
-	}
-
-	public boolean isLaunchTypeNodeSelected() {
-		if (getFirstSelectedObject() instanceof ILaunchTypeNode) {
-			return true;
-		}
-		return false;
-	}
-
-	public ILaunchTypeNode getSelectedLaunchTypeNode() {
-		if (isLaunchTypeNodeSelected()) {
-			return (ILaunchTypeNode) getFirstSelectedObject();
-		}
-		return null;
+		return new ArrayList<ILaunchNode>();
 	}
 
 	public List<ILaunchTypeNode> getSelectedLaunchTypeNodes() {
-		List<ILaunchTypeNode> selectedNodes = new ArrayList<ILaunchTypeNode>();
 		if (isSelectionOfOneClass() && isLaunchTypeNodeSelected()) {
-			selectedNodes = SelectionUtils.getAllSelectedItemsByType(getViewerSelection(), ILaunchTypeNode.class);
+			return SelectionUtils.getAllSelectedItemsByType(getViewerSelection(), ILaunchTypeNode.class);
 		}
-		return selectedNodes;
+		return new ArrayList<ILaunchTypeNode>();
 	}
-
-	public boolean isCategoryNodeSelected() {
-		if (getFirstSelectedObject() instanceof ICategoryNode) {
-			return true;
-		}
-		return false;
+	
+	public ILaunchNode getSelectedLaunchNode() {
+		assert getFirstSelectedObject() instanceof ILaunchNode;
+		return (ILaunchNode) getFirstSelectedObject();
 	}
 
 	public ICategoryNode getSelectedCategoryNode() {
-		if (isCategoryNodeSelected()) {
-			return (ICategoryNode) getFirstSelectedObject();
-		}
-		return null;
+		assert getFirstSelectedObject() instanceof ICategoryNode;
+		return (ICategoryNode) getFirstSelectedObject();
+	}
+	
+	public boolean isLaunchNodeSelected() {
+		return isFirstSelectedObjectOfType(ILaunchNode.class);
+	}
+	
+	public boolean isLaunchTypeNodeSelected() {
+		return isFirstSelectedObjectOfType(ILaunchTypeNode.class);
+	}
+	
+	public boolean isCategoryNodeSelected() {
+		return isFirstSelectedObjectOfType(ICategoryNode.class);
 	}
 
+	private boolean isFirstSelectedObjectOfType(Class<?> clazz) {
+		return clazz.isAssignableFrom(getFirstSelectedObject().getClass());
+	}
+	
 	public List<ICategoryNode> getSelectedCategoryNodes() {
-		List<ICategoryNode> selectedNodes = new ArrayList<ICategoryNode>();
 		if (isSelectionOfOneClass() && isCategoryNodeSelected()) {
-			selectedNodes = SelectionUtils.getAllSelectedItemsByType(getViewerSelection(), ICategoryNode.class);
+			return SelectionUtils.getAllSelectedItemsByType(getViewerSelection(), ICategoryNode.class);
 		}
-		return selectedNodes;
-	}
-
-
-	public boolean isDefaultDebugMode(){
-		return RunnerPlugin.getDefault().getPreferenceStore().getBoolean(
-				PreferenceConstants.RUN_MODE);
+		return new ArrayList<ICategoryNode>();
 	}
 
 	public void doubleClick(DoubleClickEvent event) {
-		if(isDefaultDebugMode())
-			this.launchDebugConfigurationAction.run();
-		else
-			this.launchRunConfigurationAction.run();
+		if (shouldRunInDebugMode()) {
+			launchDebugConfigurationAction.run();
+		} else {
+			launchRunConfigurationAction.run();
+		}
+	}
+	
+	public boolean shouldRunInDebugMode() {
+		return RunnerPlugin.getDefault().getPreferenceStore().getBoolean(PreferenceConstants.RUN_MODE);
 	}
 
 	public void modelChanged() {
@@ -522,12 +497,16 @@ public class RunnerView extends ViewPart implements INodeSelection, IMenuListene
 
 	protected void setupTreeContentProvider() {
 		viewer.setContentProvider(
-				RunnerModelProvider.getInstance().getTreeContentProvider()
+			RunnerModelProvider.getInstance().getTreeContentProvider()
 		);
 	}
 
 	public void refresh() {
 		getViewer().refresh();
+	}
+	
+	void setTreeViewerForTesting(TreeViewer viewer) {
+		this.viewer = viewer;
 	}
 
 }

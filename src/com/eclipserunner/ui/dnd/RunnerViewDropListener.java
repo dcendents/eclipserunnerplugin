@@ -48,14 +48,13 @@ public class RunnerViewDropListener extends ViewerDropAdapter {
 		if (localTransfer) {
 			ISelection selection = LocalSelectionTransfer.getTransfer().getSelection();
 			launchNodesToMove.addAll(
-					getAllSelectedItemsByType(selection, ILaunchNode.class)
+				getAllSelectedItemsByType(selection, ILaunchNode.class)
 			);
 		}
 
 		Object currentTarget = getCurrentTarget();
 		if (currentTarget instanceof ICategoryNode && getCurrentLocation() == LOCATION_ON) {
 			for (ILaunchNode launchNode : launchNodesToMove) {
-
 				ICategoryNode sourceCategoryNode = launchNode.getCategoryNode();
 				ICategoryNode destinationCategoryNode = (ICategoryNode) getCurrentTarget();
 
@@ -67,7 +66,6 @@ public class RunnerViewDropListener extends ViewerDropAdapter {
 		if (launchNodesToMove.size() == 1) {
 			getViewer().setSelection(new StructuredSelection(launchNodesToMove.get(0)));
 		}
-
 		return true;
 	}
 

@@ -84,9 +84,7 @@ public class RunnerPlugin extends AbstractUIPlugin {
 	}
 
 	/**
-	 * Returns the shared instance.
-	 *
-	 * @return the shared instance.
+	 * @return the shared plugin instance.
 	 */
 	public static RunnerPlugin getDefault() {
 		return plugin;
@@ -108,8 +106,6 @@ public class RunnerPlugin extends AbstractUIPlugin {
 	}
 
 	/**
-	 * Returns the SWT active Shell.
-	 * 
 	 * @return SWT active Shell.
 	 */
 	public static Shell getRunnerShell() {

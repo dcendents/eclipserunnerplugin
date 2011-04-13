@@ -35,8 +35,7 @@ public class RunnerViewDragListener implements DragSourceListener {
 			if (categoryNode != null) {
 				event.doit = false;
 			}
-		}
-		else {
+		} else {
 			this.currentSelection = null;
 			event.doit = false;
 		}
@@ -47,14 +46,14 @@ public class RunnerViewDragListener implements DragSourceListener {
 			return;
 		}
 
-		if (LocalSelectionTransfer.getTransfer().isSupportedType(event.dataType)) {
-			LocalSelectionTransfer.getTransfer().setSelection(currentSelection);
+		if (getSelectionTransfer().isSupportedType(event.dataType)) {
+			getSelectionTransfer().setSelection(currentSelection);
 		}
 	}
 
 	public void dragFinished(DragSourceEvent event) {
-		if (LocalSelectionTransfer.getTransfer().isSupportedType(event.dataType)) {
-			LocalSelectionTransfer.getTransfer().setSelection(null);
+		if (getSelectionTransfer().isSupportedType(event.dataType)) {
+			getSelectionTransfer().setSelection(null);
 		}
 	}
 
@@ -62,4 +61,8 @@ public class RunnerViewDragListener implements DragSourceListener {
 		return currentSelection == null || currentSelection.isEmpty();
 	}
 
+	private LocalSelectionTransfer getSelectionTransfer() {
+		return LocalSelectionTransfer.getTransfer();
+	}
+	
 }

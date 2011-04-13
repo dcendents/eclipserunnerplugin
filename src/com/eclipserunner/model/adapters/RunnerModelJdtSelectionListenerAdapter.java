@@ -11,7 +11,6 @@ import com.eclipserunner.model.IRunnerModel;
  * Adapter listening for JDT selection events.
  * 
  * @author bary
- *
  */
 public class RunnerModelJdtSelectionListenerAdapter implements ISelectionListener {
 

@@ -58,7 +58,7 @@ public class SelectionUtils {
 		return selectedOfType;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public static List<Class> getSelectedItemTypes(IStructuredSelection selection) {
 		List<Class> selectedItemTypes = new ArrayList<Class>();
 		Iterator<?> iterator = selection.iterator();

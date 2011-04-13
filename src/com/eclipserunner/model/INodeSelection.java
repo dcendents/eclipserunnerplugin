@@ -18,7 +18,6 @@ public interface INodeSelection {
 	List<ILaunchNode> getSelectedLaunchNodes();
 
 	boolean isLaunchTypeNodeSelected();
-	ILaunchTypeNode getSelectedLaunchTypeNode();
 	List<ILaunchTypeNode> getSelectedLaunchTypeNodes();
 
 	boolean isCategoryNodeSelected();

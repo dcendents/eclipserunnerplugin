@@ -265,7 +265,7 @@ public class RunnerStateExternalizer {
 	}
 
 	private static ILaunchConfiguration findLaunchConfigurationByName(String name) throws CoreException {
-		for(ILaunchConfiguration launchConfiguration : getLaunchManager().getLaunchConfigurations()) {
+		for (ILaunchConfiguration launchConfiguration : getLaunchManager().getLaunchConfigurations()) {
 			if (launchConfiguration.getName().equals(name)) {
 				return launchConfiguration;
 			}

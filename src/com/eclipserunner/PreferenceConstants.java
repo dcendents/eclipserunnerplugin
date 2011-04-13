@@ -5,8 +5,8 @@ package com.eclipserunner;
  */
 public interface PreferenceConstants {
 
-	public static final String TREE_MODE                = "treeMode";
-	public static final String RUN_MODE         		= "runMode";
+	public static final String TREE_MODE = "treeMode";
+	public static final String RUN_MODE  = "runMode";
 
 	public static final String FILTER_BOOKMARKED         = "bookmarkFilterEnable";
 	public static final String FILTER_DEFAULT_CATEGORY   = "defaultCategoryVisible";

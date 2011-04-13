@@ -25,75 +25,69 @@ import com.eclipserunner.views.TreeMode;
  */
 public class RunnerModelProvider {
 
-	private static RunnerModelProvider INSTANCE;
+	private static final RunnerModelProvider INSTANCE = new RunnerModelProvider();
 
 	private IRunnerModel runnerModel;
 	private IRunnerModel filteredRunnerModel;
-
-	private INodeFilterChain filterChain;
 
 	private ITreeContentProvider contentProvider;
 
 	private TreeMode treeMode;
 
+	private RunnerModelFilteringDecorator decorator;
+
 	// Singleton pattern
 	private RunnerModelProvider() {
 		runnerModel = new RunnerModel();
-
-		IPreferenceStore preferenceStore = RunnerPlugin.getDefault().getPreferenceStore();
-
-		RunnerModelFilteringDecorator runnerModelDecorator = new RunnerModelFilteringDecorator(runnerModel);
-		filteredRunnerModel = runnerModelDecorator;
-		filterChain = runnerModelDecorator;
-		filterChain.addFilter(new ClosedProjectsFilter(PreferenceConstants.FILTER_CLOSED_PROJECT, preferenceStore));
-		filterChain.addFilter(new DeletedProjectsFilter(PreferenceConstants.FILTER_DELETED_PROJECT, preferenceStore));
-		filterChain.addFilter(new WorkingSetFilter(PreferenceConstants.FILTER_ACTIVE_WORKING_SET, preferenceStore));
-		filterChain.addFilter(new BookmarkFilter(PreferenceConstants.FILTER_BOOKMARKED, preferenceStore));
-		filterChain.addFilter(new DefaultCategoryFilter(PreferenceConstants.FILTER_DEFAULT_CATEGORY, runnerModel, preferenceStore));
-		filterChain.addFilter(new ProjectFilter());
+		
+		decorator = new RunnerModelFilteringDecorator(runnerModel);
+		decorator.addFilter(new ClosedProjectsFilter(PreferenceConstants.FILTER_CLOSED_PROJECT, getPreferenceStore()));
+		decorator.addFilter(new DeletedProjectsFilter(PreferenceConstants.FILTER_DELETED_PROJECT, getPreferenceStore()));
+		decorator.addFilter(new WorkingSetFilter(PreferenceConstants.FILTER_ACTIVE_WORKING_SET, getPreferenceStore()));
+		decorator.addFilter(new BookmarkFilter(PreferenceConstants.FILTER_BOOKMARKED, getPreferenceStore()));
+		decorator.addFilter(new DefaultCategoryFilter(PreferenceConstants.FILTER_DEFAULT_CATEGORY, runnerModel, getPreferenceStore()));
+		decorator.addFilter(new ProjectFilter());
+		
+		filteredRunnerModel = decorator;
 
 		initializeTreeModeAdapter();
 	}
 
 	private void initializeTreeModeAdapter() {
-		String treeModeString = RunnerPlugin.getDefault().getPreferenceStore().getString(PreferenceConstants.TREE_MODE);
 		TreeMode treeMode = null;
 		try {
-			treeMode = TreeMode.valueOf(treeModeString);
+			treeMode = TreeMode.valueOf(getPreferenceValue(PreferenceConstants.TREE_MODE));
 		} catch (Exception e) {
 			treeMode = TreeMode.FLAT_MODE;
 		}
 		setTreeMode(treeMode);
 	}
 
-	public static RunnerModelProvider getInstance() {
-		if (INSTANCE == null) {
-			INSTANCE = new RunnerModelProvider();
-		}
-		return INSTANCE;
+	public void setTreeMode(TreeMode treeMode) {
+		this.treeMode = treeMode;
+		this.contentProvider = createContentProviderForTreeType(treeMode);
+		setPreferenceValue(PreferenceConstants.TREE_MODE, treeMode.toString());
 	}
 
+	private ITreeContentProvider createContentProviderForTreeType(TreeMode treeMode) {
+		switch (treeMode) {
+			case HIERARCHICAL_MODE:
+				return new RunnerModelTreeWithTypesAdapter(filteredRunnerModel);
+			default: // FLAT_MODE
+				return new RunnerModelTreeAdapter(filteredRunnerModel);
+		}
+	}
+	
+	public static RunnerModelProvider getInstance() {
+		return INSTANCE;
+	}
+	
 	public IRunnerModel getDefaultModel() {
 		return runnerModel;
 	}
-
+	
 	public IRunnerModel getFilteredModel() {
 		return filteredRunnerModel;
-	}
-
-	public void setTreeMode(TreeMode treeMode) {
-		this.treeMode = treeMode;
-		switch (treeMode) {
-			case FLAT_MODE:
-				contentProvider = new RunnerModelTreeAdapter(filteredRunnerModel);
-				break;
-			case HIERARCHICAL_MODE:
-				contentProvider = new RunnerModelTreeWithTypesAdapter(filteredRunnerModel);
-				break;
-			default:
-				break;
-		}
-		setPreferenceValue(PreferenceConstants.TREE_MODE, treeMode.toString());
 	}
 
 	public IContentProvider getTreeContentProvider() {
@@ -105,7 +99,15 @@ public class RunnerModelProvider {
 	}
 
 	private void setPreferenceValue(String property, String value) {
-		RunnerPlugin.getDefault().getPreferenceStore().setValue(property, value);
+		getPreferenceStore().setValue(property, value);
+	}
+	
+	private String getPreferenceValue(String preferenceValue) {
+		return getPreferenceStore().getString(preferenceValue);
 	}
 
+	private IPreferenceStore getPreferenceStore() {
+		return RunnerPlugin.getDefault().getPreferenceStore();
+	}
+	
 }
