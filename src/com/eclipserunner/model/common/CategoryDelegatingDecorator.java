@@ -66,5 +66,9 @@ public class CategoryDelegatingDecorator implements ICategoryNode {
 	public int hashCode () {
 		return category.hashCode();
 	}
+
+	public boolean isBookmarked() {
+		throw new UnsupportedOperationException("Category cannot be bookmarked.");
+	}
 	
 }

@@ -1,16 +1,16 @@
 package com.eclipserunner.views.actions;
 
+import java.util.List;
+
 import org.eclipse.jface.action.Action;
 
-import com.eclipserunner.model.ICategoryNode;
-import com.eclipserunner.model.ILaunchNode;
-import com.eclipserunner.model.ILaunchTypeNode;
+import com.eclipserunner.model.IBookmarkable;
 import com.eclipserunner.model.INodeSelection;
 
 /**
  * Bookmark launch configuration.
  *
- * @author bary
+ * @author bary, vachacz
  */
 public class BookmarkAction extends Action {
 
@@ -23,24 +23,23 @@ public class BookmarkAction extends Action {
 	}
 
 	@Override
-	// TODO: IBookmarkable and three simple method calls
 	public void run() {
 		if (nodeSelection.isSelectionOfOneClass()) {
 			if (nodeSelection.isLaunchNodeSelected()) {
-				for (ILaunchNode launchNode : nodeSelection.getSelectedLaunchNodes()) {
-					launchNode.setBookmarked(state);
-				}
+				updateBookmark(nodeSelection.getSelectedLaunchNodes());
 			}
 			else if (nodeSelection.isLaunchTypeNodeSelected()) {
-				for (ILaunchTypeNode launchTypeNode : nodeSelection.getSelectedLaunchTypeNodes()) {
-					launchTypeNode.setBookmarked(state);
-				}
+				updateBookmark(nodeSelection.getSelectedLaunchTypeNodes());
 			}
 			else if (nodeSelection.isCategoryNodeSelected()) {
-				for (ICategoryNode categoryNode : nodeSelection.getSelectedCategoryNodes()) {
-					categoryNode.setBookmarked(state);
-				}
+				updateBookmark(nodeSelection.getSelectedCategoryNodes());
 			}
+		}
+	}
+
+	private <T extends IBookmarkable> void updateBookmark(List<T> bookmarkables) {
+		for (IBookmarkable bookmarkable : bookmarkables) {
+			bookmarkable.setBookmarked(state);
 		}
 	}
 

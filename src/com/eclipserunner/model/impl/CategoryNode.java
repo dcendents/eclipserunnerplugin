@@ -127,4 +127,8 @@ public class CategoryNode implements ICategoryNode, ILaunchNodeChangeListener, I
 		return code;
 	}
 
+	public boolean isBookmarked() {
+		throw new UnsupportedOperationException("Category cannot be bookmarked.");
+	}
+
 }

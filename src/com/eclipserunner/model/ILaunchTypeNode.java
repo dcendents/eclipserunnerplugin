@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.eclipse.debug.core.ILaunchConfigurationType;
 
-public interface ILaunchTypeNode {
+public interface ILaunchTypeNode extends IBookmarkable {
 
 	ILaunchConfigurationType getLaunchConfigurationType();
 	void setLaunchConfigurationType(ILaunchConfigurationType launchConfigurationType);
@@ -13,7 +13,5 @@ public interface ILaunchTypeNode {
 	void setCategoryNode(ICategoryNode categoryNode);
 
 	Collection<ILaunchNode> getLaunchNodes();
-
-	void setBookmarked(boolean state);
 
 }

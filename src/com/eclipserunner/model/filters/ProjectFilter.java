@@ -13,6 +13,8 @@ import com.eclipserunner.model.common.AbstractFilter;
 
 public class ProjectFilter extends AbstractFilter {
 
+	private String projectName;
+
 	public ProjectFilter(String propery, IPreferenceStore preferenceStore) {
 		super(propery, preferenceStore);
 	}
@@ -40,10 +42,6 @@ public class ProjectFilter extends AbstractFilter {
 		return true;
 	}	
 	
-	private String getFilterProjectName() {
-		return getFilterProperty("projectName");
-	}
-	
 	private String getLaunchConfigurationProjectName(ILaunchConfiguration launchConfiguration) {
 		try {
 			IResource[] resources = launchConfiguration.getMappedResources();
@@ -64,6 +62,14 @@ public class ProjectFilter extends AbstractFilter {
 			return null;
 		}
 		return null;
+	}
+	
+	private String getFilterProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 	
 }

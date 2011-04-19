@@ -27,7 +27,7 @@ public class RunnerModelJdtSelectionListenerAdapter implements ISelectionListene
 	@SuppressWarnings("unused")
 	private IFilteredRunnerModel model;
 	private RunnerView view;
-	private INodeFilter projectFilter;
+	private ProjectFilter projectFilter;
 
 	public RunnerModelJdtSelectionListenerAdapter(IFilteredRunnerModel model, RunnerView view) {
 		this.model = model;
@@ -35,7 +35,7 @@ public class RunnerModelJdtSelectionListenerAdapter implements ISelectionListene
 		// Find ProjectFilter filter ;)
 		for (INodeFilter filter : model.getFilters()) {
 			if (filter instanceof ProjectFilter) {
-				projectFilter = filter;
+				projectFilter = (ProjectFilter) filter;
 				break;
 			}
 		}
@@ -60,7 +60,7 @@ public class RunnerModelJdtSelectionListenerAdapter implements ISelectionListene
 	private void handleProjectExplorerSelection(ISelection selection) {
 		Object selectedElement = getSelectedElement(selection);
 		if (selectedElement instanceof IResource) {
-			projectFilter.setFilterProperty("projectName", getProjectName((IResource)selectedElement));
+			projectFilter.setProjectName(getProjectName((IResource)selectedElement));
 		}
 		// TODO: Implement or remove
 		else {
@@ -82,10 +82,10 @@ public class RunnerModelJdtSelectionListenerAdapter implements ISelectionListene
 	private void handlePackageExplorerSelection(ISelection selection) {
 		Object selectedElement = getSelectedElement(selection);
 		if (selectedElement instanceof WorkingSet) {
-			projectFilter.setFilterProperty("projectName", null);   // clear project filter
+			projectFilter.setProjectName(null);   // clear project filter
 		}
 		else if (selectedElement instanceof JavaProject) {
-			projectFilter.setFilterProperty("projectName", getProjectName((JavaProject)selectedElement));			
+			projectFilter.setProjectName(getProjectName((JavaProject) selectedElement));			
 		}
 		// TODO: Implement or remove
 		else {

@@ -16,7 +16,8 @@ public class ClosedProjectsFilter extends AbstractFilter {
 
 	@Override
 	public boolean filterWhenActive(ILaunchNode launchNode) {
-		return !new ClosedProjectFilter().select(null, null, launchNode.getLaunchConfiguration());
+		return ! new ClosedProjectFilter()
+			.select(null, null, launchNode.getLaunchConfiguration());
 	}
 
 	@Override

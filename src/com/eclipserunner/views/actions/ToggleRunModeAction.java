@@ -1,6 +1,7 @@
 package com.eclipserunner.views.actions;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.preference.IPreferenceStore;
 
 import com.eclipserunner.RunnerPlugin;
 
@@ -13,13 +14,17 @@ public class ToggleRunModeAction extends Action {
 
 	public ToggleRunModeAction(String preferenceProperty) {
 		this.preferenceProperty = preferenceProperty;
-		boolean active = RunnerPlugin.getDefault().getPreferenceStore().getBoolean(preferenceProperty);
+		boolean active = getPreferenceStore().getBoolean(preferenceProperty);
 		setChecked(active);
 	}
 
 	@Override
 	public void run() {
-		RunnerPlugin.getDefault().getPreferenceStore().setValue(preferenceProperty, isChecked());
+		getPreferenceStore().setValue(preferenceProperty, isChecked());
+	}
+
+	private IPreferenceStore getPreferenceStore() {
+		return RunnerPlugin.getDefault().getPreferenceStore();
 	}
 
 }

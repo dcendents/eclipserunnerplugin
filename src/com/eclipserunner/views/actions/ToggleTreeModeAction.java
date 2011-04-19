@@ -28,6 +28,7 @@ public class ToggleTreeModeAction extends Action {
 
 	@Override
 	public void run() {
+		// TODO LWA why this is done twice?
 		RunnerModelProvider.getInstance().setTreeMode(mode);
 		runnerView.setTreeMode(mode);
 	}

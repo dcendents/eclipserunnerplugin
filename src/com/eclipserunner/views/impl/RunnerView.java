@@ -1,6 +1,6 @@
 package com.eclipserunner.views.impl;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.resources.IResourceChangeEvent;
@@ -91,7 +91,7 @@ public class RunnerView extends ViewPart
 
 	private Action renameAction;
 	private Action removeAction;
-
+	
 	private Action toggleFlatModeAction;
 	private Action toggleTypeModeAction;
 	private Action toggleDefaultCategoryAction;
@@ -182,7 +182,9 @@ public class RunnerView extends ViewPart
 
 	private void initializeDragAndDrop() {
 		int operations = DND.DROP_COPY | DND.DROP_MOVE;
-		Transfer[] transferTypes = new Transfer[]{ LocalSelectionTransfer.getTransfer(), FileTransfer.getInstance() };
+		Transfer[] transferTypes = new Transfer[]{ 
+			LocalSelectionTransfer.getTransfer(), FileTransfer.getInstance()
+		};
 
 		getViewer().addDragSupport(operations, transferTypes, new RunnerViewDragListener(getViewer()));
 		getViewer().addDropSupport(operations, transferTypes, new RunnerViewDropListener(getViewer()));
@@ -386,14 +388,21 @@ public class RunnerView extends ViewPart
 		if (isSelectionOfOneClass() && isLaunchNodeSelected()) {
 			return SelectionUtils.getAllSelectedItemsByType(getViewerSelection(), ILaunchNode.class);
 		}
-		return new ArrayList<ILaunchNode>();
+		return Collections.emptyList();
 	}
 
 	public List<ILaunchTypeNode> getSelectedLaunchTypeNodes() {
 		if (isSelectionOfOneClass() && isLaunchTypeNodeSelected()) {
 			return SelectionUtils.getAllSelectedItemsByType(getViewerSelection(), ILaunchTypeNode.class);
 		}
-		return new ArrayList<ILaunchTypeNode>();
+		return Collections.emptyList();
+	}
+	
+	public List<ICategoryNode> getSelectedCategoryNodes() {
+		if (isSelectionOfOneClass() && isCategoryNodeSelected()) {
+			return SelectionUtils.getAllSelectedItemsByType(getViewerSelection(), ICategoryNode.class);
+		}
+		return Collections.emptyList();
 	}
 	
 	public ILaunchNode getSelectedLaunchNode() {
@@ -420,13 +429,6 @@ public class RunnerView extends ViewPart
 
 	private boolean isFirstSelectedObjectOfType(Class<?> clazz) {
 		return clazz.isAssignableFrom(getFirstSelectedObject().getClass());
-	}
-	
-	public List<ICategoryNode> getSelectedCategoryNodes() {
-		if (isSelectionOfOneClass() && isCategoryNodeSelected()) {
-			return SelectionUtils.getAllSelectedItemsByType(getViewerSelection(), ICategoryNode.class);
-		}
-		return new ArrayList<ICategoryNode>();
 	}
 
 	public void doubleClick(DoubleClickEvent event) {

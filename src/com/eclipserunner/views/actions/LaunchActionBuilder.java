@@ -51,6 +51,9 @@ import com.eclipserunner.views.TreeMode;
 /**
  * Builder creates Actions related to test launching
  *
+ * TODO LWA BARY why do we pass PreferenceProperty to Actions? Actions should
+ * 	know that internally.
+ *
  * @author vachacz
  */
 public final class LaunchActionBuilder {
@@ -66,7 +69,6 @@ public final class LaunchActionBuilder {
 	private static final String IMG_UNBOOKMARK           = "unbookmark.gif";
 	private static final String IMG_FLAT_TREE            = "flat.gif";
 	private static final String IMG_TYPE_TREE            = "hierarchical.gif";
-
 
 	private INodeSelection nodeSelection;
 	private IRunnerModel runnerModel;

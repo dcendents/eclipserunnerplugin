@@ -7,7 +7,7 @@ import java.util.Collection;
  *
  * @author vachacz
  */
-public interface ICategoryNode extends IActionEnablement {
+public interface ICategoryNode extends IActionEnablement, IBookmarkable {
 
 	String getName();
 	void setName(String name);
@@ -19,7 +19,5 @@ public interface ICategoryNode extends IActionEnablement {
 
 	void addCategoryNodeChangeListener(ICategoryNodeChangeListener categoryNodeChangeListener);
 	void removeCategoryNodeChangeListener(ICategoryNodeChangeListener categoryNodeChangeListener);
-
-	void setBookmarked(boolean state);
 
 }

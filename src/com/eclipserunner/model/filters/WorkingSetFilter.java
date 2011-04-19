@@ -16,7 +16,8 @@ public class WorkingSetFilter extends AbstractFilter {
 
 	@Override
 	public boolean filterWhenActive(ILaunchNode launchNode) {
-		return !new WorkingSetsFilter().select(null, null, launchNode.getLaunchConfiguration());
+		return ! new WorkingSetsFilter()
+			.select(null, null, launchNode.getLaunchConfiguration());
 	}
 
 	@Override

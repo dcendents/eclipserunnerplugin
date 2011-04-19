@@ -78,12 +78,17 @@ public class LaunchTypeNode implements ILaunchTypeNode, IActionEnablement {
 	}
 
 	@Override
-	// TODO LWA Are we realy need this all the place (danger of NullPointerException), wy not use just return 1
+	// TODO LWA danger of NullPointerException
+	// integrate commons HashCodeBuilder
 	public int hashCode () {
 		int code = PRIME_BASE;
 		code = PRIME_MULTIPLYER * code + launchConfigurationType.hashCode();
 		code = PRIME_MULTIPLYER * code + categoryNode.hashCode();
 		return code;
+	}
+
+	public boolean isBookmarked() {
+		throw new UnsupportedOperationException("LaunchType cannot be bookmarked.");
 	}
 
 }
