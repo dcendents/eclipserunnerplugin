@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: EclipseRunner
-Bundle-SymbolicName: EclipseRunner
+Bundle-SymbolicName: EclipseRunner;singleton:=true
 Bundle-Version: 1.1.0
-Bundle-Activator: eclipserunner.Activator
+Bundle-Activator: com.eclipserunner.RunnerPlugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.debug.core;bundle-version="3.5.0",
@@ -15,3 +15,16 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.navigator.resources;bundle-version="3.4.202"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: com.eclipserunner,
+ com.eclipserunner.model,
+ com.eclipserunner.model.adapters,
+ com.eclipserunner.model.common,
+ com.eclipserunner.model.filters,
+ com.eclipserunner.model.impl,
+ com.eclipserunner.ui.dnd,
+ com.eclipserunner.utils,
+ com.eclipserunner.views,
+ com.eclipserunner.views.actions,
+ com.eclipserunner.views.impl,
+ com.eclipserunner.views.validators,
+ eclipserunner

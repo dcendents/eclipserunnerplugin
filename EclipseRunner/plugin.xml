@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+	<extension point="org.eclipse.ui.views">
+		<category name="General" id="org.eclipse.ui"/>
+		<view name="Runner" icon="icons/run.gif" category="org.eclipse.ui"
+            class="com.eclipserunner.views.impl.RunnerView" id="com.eclipserunner.views.RunnerView" />
+	</extension>
+	
+	<extension point="org.eclipse.ui.perspectiveExtensions">
+		<perspectiveExtension targetID="org.eclipse.jdt.ui.JavaPerspective">
+			<view ratio="0.5" relative="org.eclipse.ui.views.TaskList"
+               relationship="right" id="com.eclipserunner.views.impl.RunnerView" />
+		</perspectiveExtension>
+	</extension>
+	
+</plugin>
