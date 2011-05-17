@@ -2,6 +2,7 @@ package com.eclipserunner.model.impl;
 
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -10,6 +11,7 @@ import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ICategoryNodeChangeListener;
 import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.ILaunchNodeChangeListener;
+import com.eclipserunner.ui.dnd.RunnerViewDropListener;
 
 /**
  * Container of launch configurations presented in RunnerView tree.
@@ -129,6 +131,19 @@ public class CategoryNode implements ICategoryNode, ILaunchNodeChangeListener, I
 
 	public boolean isBookmarked() {
 		throw new UnsupportedOperationException("Category cannot be bookmarked.");
+	}
+
+	public boolean validateDrop(int currentLocation) {
+		return currentLocation == RunnerViewDropListener.LOCATION_ON;
+	}
+
+	public boolean performDrop(List<ILaunchNode> launchNodesToMove) {
+		for (ILaunchNode launchNode : launchNodesToMove) {
+			ICategoryNode sourceCategoryNode = launchNode.getCategoryNode();
+			sourceCategoryNode.remove(launchNode);
+			this.add(launchNode);
+		}
+		return true;
 	}
 
 }

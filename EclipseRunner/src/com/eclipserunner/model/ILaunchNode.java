@@ -5,7 +5,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 /**
  * @author vachacz
  */
-public interface ILaunchNode extends IBookmarkable {
+public interface ILaunchNode extends IBookmarkable, IDroppable {
 
 	ILaunchConfiguration getLaunchConfiguration();
 	void setLaunchConfiguration(ILaunchConfiguration launchConfiguration);

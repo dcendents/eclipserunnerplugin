@@ -1,6 +1,7 @@
 package com.eclipserunner.model.impl;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -9,6 +10,7 @@ import com.eclipserunner.model.IActionEnablement;
 import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.ILaunchNodeChangeListener;
+import com.eclipserunner.ui.dnd.RunnerViewDropListener;
 
 /**
  * @author vachacz
@@ -88,6 +90,14 @@ public class LaunchNode implements ILaunchNode, IActionEnablement {
 		int code = PRIME_BASE;
 		code = PRIME_MULTIPLYER * code + launchConfiguration.hashCode();
 		return code;
+	}
+
+	public boolean validateDrop(int currentLocation) {
+		return categoryNode.validateDrop(RunnerViewDropListener.LOCATION_ON);
+	}
+
+	public boolean performDrop(List<ILaunchNode> launchNodesToMove) {
+		return categoryNode.performDrop(launchNodesToMove);
 	}
 
 }

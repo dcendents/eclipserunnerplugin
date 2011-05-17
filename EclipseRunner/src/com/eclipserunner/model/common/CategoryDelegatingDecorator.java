@@ -1,6 +1,7 @@
 package com.eclipserunner.model.common;
 
 import java.util.Collection;
+import java.util.List;
 
 import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ICategoryNodeChangeListener;
@@ -70,5 +71,13 @@ public class CategoryDelegatingDecorator implements ICategoryNode {
 	public boolean isBookmarked() {
 		throw new UnsupportedOperationException("Category cannot be bookmarked.");
 	}
-	
+
+	public boolean validateDrop(int currentLocation) {
+		return category.validateDrop(currentLocation);
+	}
+
+	public boolean performDrop(List<ILaunchNode> launchNodesToMove) {
+		return category.performDrop(launchNodesToMove);
+	}
+
 }

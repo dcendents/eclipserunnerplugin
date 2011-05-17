@@ -7,7 +7,7 @@ import java.util.Collection;
  *
  * @author vachacz
  */
-public interface ICategoryNode extends IActionEnablement, IBookmarkable {
+public interface ICategoryNode extends IActionEnablement, IBookmarkable, IDroppable {
 
 	String getName();
 	void setName(String name);

@@ -12,7 +12,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerDropAdapter;
 import org.eclipse.swt.dnd.TransferData;
 
-import com.eclipserunner.model.ICategoryNode;
+import com.eclipserunner.model.IDroppable;
 import com.eclipserunner.model.ILaunchNode;
 
 /**
@@ -34,9 +34,9 @@ public class RunnerViewDropListener extends ViewerDropAdapter {
 		localTransfer = false;
 		if (LocalSelectionTransfer.getTransfer().isSupportedType(transferType)) {
 			localTransfer = true;
-			if (getCurrentTarget() instanceof ICategoryNode) {
-				return true;
-			}
+			Object curTarget = getCurrentTarget();
+			if (curTarget instanceof IDroppable)
+				return ((IDroppable) curTarget).validateDrop(getCurrentLocation());
 		}
 		return false;
 	}
@@ -53,15 +53,9 @@ public class RunnerViewDropListener extends ViewerDropAdapter {
 		}
 
 		Object currentTarget = getCurrentTarget();
-		if (currentTarget instanceof ICategoryNode && getCurrentLocation() == LOCATION_ON) {
-			for (ILaunchNode launchNode : launchNodesToMove) {
-				ICategoryNode sourceCategoryNode = launchNode.getCategoryNode();
-				ICategoryNode destinationCategoryNode = (ICategoryNode) getCurrentTarget();
+		if (currentTarget instanceof IDroppable ) //move the location detect to validateDrop
+			return ((IDroppable) currentTarget).performDrop(launchNodesToMove);
 
-				sourceCategoryNode.remove(launchNode);
-				destinationCategoryNode.add(launchNode);
-			}
-		}
 
 		if (launchNodesToMove.size() == 1) {
 			getViewer().setSelection(new StructuredSelection(launchNodesToMove.get(0)));

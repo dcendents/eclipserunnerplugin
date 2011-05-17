@@ -2,6 +2,7 @@ package com.eclipserunner.model.impl;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
@@ -11,6 +12,7 @@ import com.eclipserunner.model.IActionEnablement;
 import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.ILaunchTypeNode;
+import com.eclipserunner.ui.dnd.RunnerViewDropListener;
 
 /**
  * @author vachacz
@@ -89,6 +91,14 @@ public class LaunchTypeNode implements ILaunchTypeNode, IActionEnablement {
 
 	public boolean isBookmarked() {
 		throw new UnsupportedOperationException("LaunchType cannot be bookmarked.");
+	}
+
+	public boolean validateDrop(int currentLocation) {
+		return categoryNode.validateDrop(RunnerViewDropListener.LOCATION_ON);
+	}
+
+	public boolean performDrop(List<ILaunchNode> launchNodesToMove) {
+		return categoryNode.performDrop(launchNodesToMove);
 	}
 
 }
