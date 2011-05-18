@@ -92,12 +92,12 @@ public class LaunchNode implements ILaunchNode, IActionEnablement {
 		return code;
 	}
 
-	public boolean validateDrop(int currentLocation) {
-		return categoryNode.validateDrop(RunnerViewDropListener.LOCATION_ON);
+	public boolean supportsDrop(int currentLocation) {
+		return categoryNode.supportsDrop(RunnerViewDropListener.LOCATION_ON);
 	}
 
-	public boolean performDrop(List<ILaunchNode> launchNodesToMove) {
-		return categoryNode.performDrop(launchNodesToMove);
+	public boolean drop(List<ILaunchNode> launchNodesToMove) {
+		return categoryNode.drop(launchNodesToMove);
 	}
 
 }

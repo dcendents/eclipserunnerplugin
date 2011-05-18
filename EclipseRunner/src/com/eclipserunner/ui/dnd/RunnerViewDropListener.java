@@ -32,11 +32,13 @@ public class RunnerViewDropListener extends ViewerDropAdapter {
 	@Override
 	public boolean validateDrop(Object target, int operation, TransferData transferType) {
 		localTransfer = false;
-		if (LocalSelectionTransfer.getTransfer().isSupportedType(transferType)) {
+		if (LocalSelectionTransfer.getTransfer().isSupportedType(transferType)
+				&& getCurrentTarget() instanceof IDroppable) {
 			localTransfer = true;
-			Object curTarget = getCurrentTarget();
-			if (curTarget instanceof IDroppable)
-				return ((IDroppable) curTarget).validateDrop(getCurrentLocation());
+			IDroppable droppableTarget = (IDroppable) getCurrentTarget();
+
+			return droppableTarget.supportsDrop(getCurrentLocation());
+
 		}
 		return false;
 	}
@@ -53,8 +55,9 @@ public class RunnerViewDropListener extends ViewerDropAdapter {
 		}
 
 		Object currentTarget = getCurrentTarget();
-		if (currentTarget instanceof IDroppable ) //move the location detect to validateDrop
-			return ((IDroppable) currentTarget).performDrop(launchNodesToMove);
+		if (currentTarget instanceof IDroppable ) { //move the location detect to validateDrop
+			return ((IDroppable) currentTarget).drop(launchNodesToMove);
+		}
 
 
 		if (launchNodesToMove.size() == 1) {

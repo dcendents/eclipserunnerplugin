@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface IDroppable {
 
-	public boolean validateDrop(int currentLocation) ;
+	public boolean supportsDrop(int currentLocation) ;
 
-	public boolean performDrop(List<ILaunchNode> launchNodesToMove);
+	public boolean drop(List<ILaunchNode> launchNodesToMove);
 }

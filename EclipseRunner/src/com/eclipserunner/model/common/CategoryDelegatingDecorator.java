@@ -72,12 +72,12 @@ public class CategoryDelegatingDecorator implements ICategoryNode {
 		throw new UnsupportedOperationException("Category cannot be bookmarked.");
 	}
 
-	public boolean validateDrop(int currentLocation) {
-		return category.validateDrop(currentLocation);
+	public boolean supportsDrop(int currentLocation) {
+		return category.supportsDrop(currentLocation);
 	}
 
-	public boolean performDrop(List<ILaunchNode> launchNodesToMove) {
-		return category.performDrop(launchNodesToMove);
+	public boolean drop(List<ILaunchNode> launchNodesToMove) {
+		return category.drop(launchNodesToMove);
 	}
 
 }

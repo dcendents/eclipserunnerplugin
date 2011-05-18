@@ -133,11 +133,11 @@ public class CategoryNode implements ICategoryNode, ILaunchNodeChangeListener, I
 		throw new UnsupportedOperationException("Category cannot be bookmarked.");
 	}
 
-	public boolean validateDrop(int currentLocation) {
+	public boolean supportsDrop(int currentLocation) {
 		return currentLocation == RunnerViewDropListener.LOCATION_ON;
 	}
 
-	public boolean performDrop(List<ILaunchNode> launchNodesToMove) {
+	public boolean drop(List<ILaunchNode> launchNodesToMove) {
 		for (ILaunchNode launchNode : launchNodesToMove) {
 			ICategoryNode sourceCategoryNode = launchNode.getCategoryNode();
 			sourceCategoryNode.remove(launchNode);
