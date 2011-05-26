@@ -63,18 +63,6 @@ import com.eclipserunner.views.TreeMode;
  */
 public final class LaunchActionBuilder {
 
-	private static final String IMG_RUN                  = "run.gif";
-	private static final String IMG_RUN_CONFIGURATIONS   = "run_configuration.gif";
-	private static final String IMG_DEBUG                = "debug.gif";
-	private static final String IMG_DEBUG_CONFIGURATIONS = "debug_configuration.gif";
-	private static final String IMG_NEW_CATEGORY         = "category_new.gif";
-	private static final String IMG_DEFAULT_CATEGORY     = "category-archive.gif";
-	private static final String IMG_EXPAND_ALL           = "expandall.gif";
-	private static final String IMG_BOOKMARK             = "bookmark_star.gif";
-	private static final String IMG_UNBOOKMARK           = "unbookmark.gif";
-	private static final String IMG_FLAT_TREE            = "flat.gif";
-	private static final String IMG_TYPE_TREE            = "hierarchical.gif";
-
 	private INodeSelection nodeSelection;
 	private IRunnerModel runnerModel;
 	private IRunnerView runnerView;
@@ -106,7 +94,7 @@ public final class LaunchActionBuilder {
 		return decorate(new ShowLaunchConfigurationsDialogAction(nodeSelection, ID_RUN_LAUNCH_GROUP))
 			.withTitle(Message_openRunConfigurationsDialog)
 			.withTooltip(Message_openRunConfigurationsDialogTooltip)
-			.withImage(IMG_RUN_CONFIGURATIONS)
+			.withImage(Image.RUN_CONFIGURATIONS)
 			.andReleaseAction();
 	}
 	
@@ -114,7 +102,7 @@ public final class LaunchActionBuilder {
 		return decorate(new ShowLaunchConfigurationsDialogAction(nodeSelection, ID_DEBUG_LAUNCH_GROUP))
 			.withTitle(Message_openDebugConfigurationsDialog)
 			.withTooltip(Message_openDebugConfigurationsDialogTooltip)
-			.withImage(IMG_DEBUG_CONFIGURATIONS)
+			.withImage(Image.DEBUG_CONFIGURATIONS)
 			.andReleaseAction();
 	}
 
@@ -122,7 +110,7 @@ public final class LaunchActionBuilder {
 		return decorate(new LaunchConfigurationAction(nodeSelection, ID_RUN_LAUNCH_GROUP))
 			.withTitle(Message_runConfiguration)
 			.withTooltip(Message_runConfigurationTooltip)
-			.withImage(IMG_RUN)
+			.withImage(Image.RUN)
 			.andReleaseAction();
 	}
 	
@@ -130,7 +118,7 @@ public final class LaunchActionBuilder {
 		return decorate(new LaunchConfigurationAction(nodeSelection, ID_DEBUG_LAUNCH_GROUP))
 			.withTitle(Message_debugConfiguration)
 			.withTooltip(Message_debugConfigurationTooltip)
-			.withImage(IMG_DEBUG)
+			.withImage(Image.DEBUG)
 			.andReleaseAction();
 	}
 
@@ -138,7 +126,7 @@ public final class LaunchActionBuilder {
 		return decorate(new AddNewCategoryAction(runnerModel))
 			.withTitle(Message_addNewCategory)
 			.withTooltip(Message_addNewCategoryTooltip)
-			.withImage(IMG_NEW_CATEGORY)
+			.withImage(Image.NEW_CATEGORY)
 			.andReleaseAction();
 	}
 
@@ -154,7 +142,7 @@ public final class LaunchActionBuilder {
 		return decorate(new ExpandAllAction(viewer))
 			.withTitle(Message_expandAll)
 			.withTooltip(Message_expandAllTooltip)
-			.withImage(IMG_EXPAND_ALL)
+			.withImage(Image.EXPAND_ALL)
 			.andReleaseAction();
 	}
 
@@ -177,7 +165,7 @@ public final class LaunchActionBuilder {
 		return decorate(new BookmarkAction(nodeSelection, true))
 			.withTitle(Message_bookmark)
 			.withTooltip(Message_bookmarkTooltip)
-			.withImage(IMG_BOOKMARK)
+			.withImage(Image.BOOKMARK)
 			.andReleaseAction();
 	}
 
@@ -185,7 +173,7 @@ public final class LaunchActionBuilder {
 		return decorate(new BookmarkAction(nodeSelection, false))
 			.withTitle(Message_unbookmark)
 			.withTooltip(Message_unbookmarkTooltip)
-			.withImage(IMG_UNBOOKMARK)
+			.withImage(Image.UNBOOKMARK)
 			.andReleaseAction();
 	}
 
@@ -193,7 +181,7 @@ public final class LaunchActionBuilder {
 		return decorate(new ToggleTreeModeAction(runnerView, TreeMode.FLAT_MODE))
 			.withTitle(Message_treeModeFlat)
 			.withTooltip(Message_treeModeFlatTooltip)
-			.withImage(IMG_FLAT_TREE)
+			.withImage(Image.FLAT_TREE)
 			.andReleaseAction();
 	}
 
@@ -201,7 +189,7 @@ public final class LaunchActionBuilder {
 		return decorate(new ToggleTreeModeAction(runnerView, TreeMode.HIERARCHICAL_MODE))
 			.withTitle(Message_treeModeWithTypes)
 			.withTooltip(Message_treeModeWithTypesTooltip)
-			.withImage(IMG_TYPE_TREE)
+			.withImage(Image.TYPE_TREE)
 			.andReleaseAction();
 	}
 	
@@ -209,7 +197,7 @@ public final class LaunchActionBuilder {
 		return decorate(new ToggleRunModeAction(PreferenceConstants.RUN_MODE))
 			.withTitle(Message_createToggleDefaultRunMode)
 			.withTooltip(Message_createToggleDefaultRunModeTooltip)
-			.withImage(IMG_DEBUG)
+			.withImage(Image.DEBUG)
 			.andReleaseAction();
 	}
 	
@@ -217,7 +205,7 @@ public final class LaunchActionBuilder {
 		return decorate(new ToggleFilterAction(PreferenceConstants.FILTER_DEFAULT_CATEGORY, runnerView))
 			.withTitle(Message_createToggleDefaultCategory)
 			.withTooltip(Message_createToggleDefaultCategoryTooltip)
-			.withImage(IMG_DEFAULT_CATEGORY)
+			.withImage(Image.DEFAULT_CATEGORY)
 			.andReleaseAction();
 	}
 
@@ -225,7 +213,7 @@ public final class LaunchActionBuilder {
 		return decorate(new ToggleFilterAction(PreferenceConstants.FILTER_BOOKMARKED, runnerView))
 			.withTitle(Message_toggleBookmarkMode)
 			.withTooltip(Message_toggleBookmarkModeTooltip)
-			.withImage(IMG_BOOKMARK)
+			.withImage(Image.BOOKMARK)
 			.andReleaseAction();
 	}
 
@@ -286,8 +274,8 @@ public final class LaunchActionBuilder {
 			action.setToolTipText(tooltip);
 			return this;
 		}
-		public ActionDecorator withImage(String image) {
-			return withImageDescriptor(RunnerPlugin.getDefault().getImageDescriptor(image));
+		public ActionDecorator withImage(Image image) {
+			return withImageDescriptor(RunnerPlugin.getDefault().getImageDescriptor(image.getPath()));
 		}
 		public ActionDecorator withSharedImage(String sharedImage) {
 			return withImageDescriptor(getSharedImage(sharedImage));
