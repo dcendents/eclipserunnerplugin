@@ -77,5 +77,7 @@ public class Messages extends NLS {
 
 	public static String Message_createToggleDefaultCategory;
 	public static String Message_createToggleDefaultCategoryTooltip;
+	
+	public static String Message_moveToSubMenu;
 
 }

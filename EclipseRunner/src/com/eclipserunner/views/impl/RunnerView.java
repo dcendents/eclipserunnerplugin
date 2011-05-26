@@ -1,5 +1,6 @@
 package com.eclipserunner.views.impl;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import org.eclipse.debug.core.ILaunchConfigurationListener;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
@@ -37,6 +39,7 @@ import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.part.ViewPart;
 
+import com.eclipserunner.Messages;
 import com.eclipserunner.PreferenceConstants;
 import com.eclipserunner.RunnerPlugin;
 import com.eclipserunner.model.IActionEnablement;
@@ -109,6 +112,8 @@ public class RunnerView extends ViewPart
 		"org.eclipse.ui.navigator.ProjectExplorer"
 	};
 
+	private LaunchActionBuilder builder;
+
 	@Override
 	public void createPartControl(Composite parent) {
 		initializeModel();
@@ -118,6 +123,7 @@ public class RunnerView extends ViewPart
 		initializeResourceChangeListener();
 		initializeDragAndDrop();
 
+		setupActionBuilder();
 		setupLaunchActions();
 		setupContextMenu();
 		setupActionBars();
@@ -223,11 +229,6 @@ public class RunnerView extends ViewPart
 	}
 
 	private void setupLaunchActions() {
-		LaunchActionBuilder builder = LaunchActionBuilder.newInstance()
-			.withLaunchConfigurationSelection(this)
-			.withRunnerModel(runnerModel)
-			.withRunnerView(this);
-
 		showRunConfigurationsDialogAction   = builder.createShowRunConfigurationDialogAction();
 		showDebugConfigurationsDialogAction = builder.createShowDebugConfigurationDialogAction();
 		launchRunConfigurationAction        = builder.createRunConfigurationAction();
@@ -248,6 +249,13 @@ public class RunnerView extends ViewPart
 		toggleDelectedProjectFilterAction   = builder.createDelectedProjectFilterAction();
 		toggleActiveWorkingSetFilterAction  = builder.createActiveWorkingSetFilterAction();
 		toggleActiveProjektFilterAction     = builder.createActiveProjektFilterAction();
+	}
+
+	private void setupActionBuilder() {
+		builder = LaunchActionBuilder.newInstance()
+			.withLaunchConfigurationSelection(this)
+			.withRunnerModel(runnerModel)
+			.withRunnerView(this);
 	}
 
 	private void setupContextMenu() {
@@ -304,6 +312,9 @@ public class RunnerView extends ViewPart
 			manager.add(new Separator());
 			manager.add(launchRunConfigurationAction);
 			manager.add(launchDebugConfigurationAction);
+			
+			manager.add(new Separator());
+	        manager.add(moveToCategorySubMenu());
 		}
 
 		manager.add(new Separator());
@@ -317,6 +328,20 @@ public class RunnerView extends ViewPart
 		manager.add(new Separator());
 		manager.add(showRunConfigurationsDialogAction);
 		manager.add(showDebugConfigurationsDialogAction);
+	}
+
+	private MenuManager moveToCategorySubMenu() {
+		MenuManager managet = new MenuManager(Messages.Message_moveToSubMenu, null);
+		Collection<ICategoryNode> categories = 
+			RunnerModelProvider.getInstance().getDefaultModel().getCategoryNodes();
+		for (ICategoryNode category : categories) {
+			managet.add(moveToCategoryAction(category));
+		}
+		return managet;
+	}
+
+	private IAction moveToCategoryAction(ICategoryNode category) {
+		return builder.createMoveToCategoryAction(getSelectedLaunchNodes(), category);
 	}
 
 	private void setupActionEnablement() {

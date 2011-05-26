@@ -35,7 +35,10 @@ import static com.eclipserunner.Messages.Message_createToggleDefaultRunModeToolt
 import static org.eclipse.debug.ui.IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP;
 import static org.eclipse.debug.ui.IDebugUIConstants.ID_RUN_LAUNCH_GROUP;
 
+import java.util.List;
+
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.ISharedImages;
@@ -43,6 +46,8 @@ import org.eclipse.ui.PlatformUI;
 
 import com.eclipserunner.PreferenceConstants;
 import com.eclipserunner.RunnerPlugin;
+import com.eclipserunner.model.ICategoryNode;
+import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.INodeSelection;
 import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.views.IRunnerView;
@@ -212,6 +217,12 @@ public final class LaunchActionBuilder {
 	public Action createActiveProjektFilterAction() {
 		Action action = new ToggleFilterAction(PreferenceConstants.FILTER_ACTIVE_PROJECT, runnerView);
 		configureAction(action, "Filter current project", "Filter current project");
+		return action;
+	}
+	
+	public IAction createMoveToCategoryAction(List<ILaunchNode> selectedLaunchNodes, ICategoryNode node) {
+		Action action = new MoveToCategoryAction(selectedLaunchNodes, node);
+		configureAction(action, node.getName(), "Move selected run configuration to " + node.getName());
 		return action;
 	}
 
