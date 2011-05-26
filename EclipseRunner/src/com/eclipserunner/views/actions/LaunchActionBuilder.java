@@ -103,145 +103,205 @@ public final class LaunchActionBuilder {
 	}
 
 	public Action createShowRunConfigurationDialogAction() {
-		Action action = new ShowLaunchConfigurationsDialogAction(nodeSelection, ID_RUN_LAUNCH_GROUP);
-		configureAction(action, Message_openRunConfigurationsDialog, Message_openRunConfigurationsDialogTooltip, IMG_RUN_CONFIGURATIONS);
-		return action;
+		return decorate(new ShowLaunchConfigurationsDialogAction(nodeSelection, ID_RUN_LAUNCH_GROUP))
+			.withTitle(Message_openRunConfigurationsDialog)
+			.withTooltip(Message_openRunConfigurationsDialogTooltip)
+			.withImage(IMG_RUN_CONFIGURATIONS)
+			.andReleaseAction();
 	}
-
+	
 	public Action createShowDebugConfigurationDialogAction() {
-		Action action = new ShowLaunchConfigurationsDialogAction(nodeSelection, ID_DEBUG_LAUNCH_GROUP);
-		configureAction(action, Message_openDebugConfigurationsDialog, Message_openDebugConfigurationsDialogTooltip, IMG_DEBUG_CONFIGURATIONS);
-		return action;
+		return decorate(new ShowLaunchConfigurationsDialogAction(nodeSelection, ID_DEBUG_LAUNCH_GROUP))
+			.withTitle(Message_openDebugConfigurationsDialog)
+			.withTooltip(Message_openDebugConfigurationsDialogTooltip)
+			.withImage(IMG_DEBUG_CONFIGURATIONS)
+			.andReleaseAction();
 	}
 
 	public Action createRunConfigurationAction() {
-		Action action = new LaunchConfigurationAction(nodeSelection, ID_RUN_LAUNCH_GROUP);
-		configureAction(action, Message_runConfiguration, Message_runConfigurationTooltip, IMG_RUN);
-		return action;
+		return decorate(new LaunchConfigurationAction(nodeSelection, ID_RUN_LAUNCH_GROUP))
+			.withTitle(Message_runConfiguration)
+			.withTooltip(Message_runConfigurationTooltip)
+			.withImage(IMG_RUN)
+			.andReleaseAction();
 	}
-
+	
 	public Action createDebugConfigurationAction() {
-		Action action = new LaunchConfigurationAction(nodeSelection, ID_DEBUG_LAUNCH_GROUP);
-		configureAction(action, Message_debugConfiguration, Message_debugConfigurationTooltip, IMG_DEBUG);
-		return action;
+		return decorate(new LaunchConfigurationAction(nodeSelection, ID_DEBUG_LAUNCH_GROUP))
+			.withTitle(Message_debugConfiguration)
+			.withTooltip(Message_debugConfigurationTooltip)
+			.withImage(IMG_DEBUG)
+			.andReleaseAction();
 	}
 
 	public Action createAddNewCategoryAction() {
-		Action action = new AddNewCategoryAction(runnerModel);
-		configureAction(action, Message_addNewCategory, Message_addNewCategoryTooltip, IMG_NEW_CATEGORY);
-		return action;
+		return decorate(new AddNewCategoryAction(runnerModel))
+			.withTitle(Message_addNewCategory)
+			.withTooltip(Message_addNewCategoryTooltip)
+			.withImage(IMG_NEW_CATEGORY)
+			.andReleaseAction();
 	}
 
 	public Action createCollapseAllAction(TreeViewer viewer) {
-		Action action = new CollapseAllAction(viewer);
-		configureAction(action, Message_collapseAll, Message_collapseAllTooltip, getSharedImage(ISharedImages.IMG_ELCL_COLLAPSEALL));
-		return action;
+		return decorate(new CollapseAllAction(viewer))
+			.withTitle(Message_collapseAll)
+			.withTooltip(Message_collapseAllTooltip)
+			.withSharedImage(ISharedImages.IMG_ELCL_COLLAPSEALL)
+			.andReleaseAction();
 	}
 
 	public Action createExpandAllAction(TreeViewer viewer) {
-		Action action = new ExpandAllAction(viewer);
-		configureAction(action, Message_expandAll, Message_expandAllTooltip, IMG_EXPAND_ALL);
-		return action;
+		return decorate(new ExpandAllAction(viewer))
+			.withTitle(Message_expandAll)
+			.withTooltip(Message_expandAllTooltip)
+			.withImage(IMG_EXPAND_ALL)
+			.andReleaseAction();
 	}
 
 	public Action createRenameAction() {
-		Action action = new RenameConfigOrCategoryAction(nodeSelection, runnerModel);
-		configureAction(action, Message_rename, Message_renameTooltip);
-		return action;
+		return decorate(new RenameConfigOrCategoryAction(nodeSelection, runnerModel))
+			.withTitle(Message_rename)
+			.withTooltip(Message_renameTooltip)
+			.andReleaseAction();
 	}
 
 	public Action createRemoveAction() {
-		Action action = new RemoveConfigOrCategoryAction(nodeSelection, runnerModel);
-		configureAction(action, Message_remove, Message_removeTooltip, getSharedImage(ISharedImages.IMG_ETOOL_DELETE));
-		return action;
+		return decorate(new RemoveConfigOrCategoryAction(nodeSelection, runnerModel))
+			.withTitle(Message_remove)
+			.withTooltip(Message_removeTooltip)
+			.withSharedImage(ISharedImages.IMG_ETOOL_DELETE)
+			.andReleaseAction();
 	}
 
 	public Action createBookmarkAction() {
-		Action action = new BookmarkAction(nodeSelection, true);
-		configureAction(action, Message_bookmark, Message_bookmarkTooltip, IMG_BOOKMARK);
-		return action;
+		return decorate(new BookmarkAction(nodeSelection, true))
+			.withTitle(Message_bookmark)
+			.withTooltip(Message_bookmarkTooltip)
+			.withImage(IMG_BOOKMARK)
+			.andReleaseAction();
 	}
 
 	public Action createUnbookmarkAction() {
-		Action action = new BookmarkAction(nodeSelection, false);
-		configureAction(action, Message_unbookmark, Message_unbookmarkTooltip, IMG_UNBOOKMARK);
-		return action;
+		return decorate(new BookmarkAction(nodeSelection, false))
+			.withTitle(Message_unbookmark)
+			.withTooltip(Message_unbookmarkTooltip)
+			.withImage(IMG_UNBOOKMARK)
+			.andReleaseAction();
 	}
 
 	public Action createToggleFlatModeAction() {
-		Action action = new ToggleTreeModeAction(runnerView, TreeMode.FLAT_MODE);
-		configureAction(action, Message_treeModeFlat, Message_treeModeFlatTooltip, IMG_FLAT_TREE);
-		return action;
+		return decorate(new ToggleTreeModeAction(runnerView, TreeMode.FLAT_MODE))
+			.withTitle(Message_treeModeFlat)
+			.withTooltip(Message_treeModeFlatTooltip)
+			.withImage(IMG_FLAT_TREE)
+			.andReleaseAction();
 	}
 
 	public Action createToggleTypeModeAction() {
-		Action action = new ToggleTreeModeAction(runnerView, TreeMode.HIERARCHICAL_MODE);
-		configureAction(action, Message_treeModeWithTypes, Message_treeModeWithTypesTooltip, IMG_TYPE_TREE);
-		return action;
+		return decorate(new ToggleTreeModeAction(runnerView, TreeMode.HIERARCHICAL_MODE))
+			.withTitle(Message_treeModeWithTypes)
+			.withTooltip(Message_treeModeWithTypesTooltip)
+			.withImage(IMG_TYPE_TREE)
+			.andReleaseAction();
 	}
+	
 	public Action createToggleRunModeAction() {
-		Action action = new ToggleRunModeAction(PreferenceConstants.RUN_MODE);
-		configureAction(action, Message_createToggleDefaultRunMode, Message_createToggleDefaultRunModeTooltip, IMG_DEBUG);
-		return action;
+		return decorate(new ToggleRunModeAction(PreferenceConstants.RUN_MODE))
+			.withTitle(Message_createToggleDefaultRunMode)
+			.withTooltip(Message_createToggleDefaultRunModeTooltip)
+			.withImage(IMG_DEBUG)
+			.andReleaseAction();
 	}
+	
 	public Action createToggleDefaultCategoryAction() {
-		Action action = new ToggleFilterAction(PreferenceConstants.FILTER_DEFAULT_CATEGORY, runnerView);
-		configureAction(action, Message_createToggleDefaultCategory, Message_createToggleDefaultCategoryTooltip, IMG_DEFAULT_CATEGORY);
-		return action;
+		return decorate(new ToggleFilterAction(PreferenceConstants.FILTER_DEFAULT_CATEGORY, runnerView))
+			.withTitle(Message_createToggleDefaultCategory)
+			.withTooltip(Message_createToggleDefaultCategoryTooltip)
+			.withImage(IMG_DEFAULT_CATEGORY)
+			.andReleaseAction();
 	}
 
 	public Action createToggleBookmarkModeAction() {
-		Action action = new ToggleFilterAction(PreferenceConstants.FILTER_BOOKMARKED, runnerView);
-		configureAction(action, Message_toggleBookmarkMode, Message_toggleBookmarkModeTooltip, IMG_BOOKMARK);
-		return action;
+		return decorate(new ToggleFilterAction(PreferenceConstants.FILTER_BOOKMARKED, runnerView))
+			.withTitle(Message_toggleBookmarkMode)
+			.withTooltip(Message_toggleBookmarkModeTooltip)
+			.withImage(IMG_BOOKMARK)
+			.andReleaseAction();
 	}
 
 	public Action createToggleClosedProjectFilterAction() {
-		Action action = new ToggleFilterAction(PreferenceConstants.FILTER_CLOSED_PROJECT, runnerView);
-		configureAction(action, "Filter closed projects", "Filter closed projects");
-		return action;
+		return decorate(new ToggleFilterAction(PreferenceConstants.FILTER_CLOSED_PROJECT, runnerView))
+			.withTitle("Filter closed projects")
+			.withTooltip("Filter closed projects")
+			.andReleaseAction();
 	}
 
 	public Action createDelectedProjectFilterAction() {
-		Action action = new ToggleFilterAction(PreferenceConstants.FILTER_DELETED_PROJECT, runnerView);
-		configureAction(action, "Filter deleted projects", "Filter deleted projects");
-		return action;
+		return decorate(new ToggleFilterAction(PreferenceConstants.FILTER_DELETED_PROJECT, runnerView))
+			.withTitle("Filter deleted projects")
+			.withTooltip("Filter deleted projects")
+			.andReleaseAction();
 	}
 
 	public Action createActiveWorkingSetFilterAction() {
-		Action action = new ToggleFilterAction(PreferenceConstants.FILTER_ACTIVE_WORKING_SET, runnerView);
-		configureAction(action, "Filter currect working set", "Filter currect working set");
-		return action;
+		return decorate(new ToggleFilterAction(PreferenceConstants.FILTER_ACTIVE_WORKING_SET, runnerView))
+			.withTitle("Filter currect working set")
+			.withTooltip("Filter currect working set")
+			.andReleaseAction();
 	}
 
 	public Action createActiveProjektFilterAction() {
-		Action action = new ToggleFilterAction(PreferenceConstants.FILTER_ACTIVE_PROJECT, runnerView);
-		configureAction(action, "Filter current project", "Filter current project");
-		return action;
+		return decorate(new ToggleFilterAction(PreferenceConstants.FILTER_ACTIVE_PROJECT, runnerView))
+			.withTitle("Filter current project")
+			.withTooltip("Filter current project")
+			.andReleaseAction();
 	}
 	
 	public IAction createMoveToCategoryAction(List<ILaunchNode> selectedLaunchNodes, ICategoryNode node) {
-		Action action = new MoveToCategoryAction(selectedLaunchNodes, node);
-		configureAction(action, node.getName(), "Move selected run configuration to " + node.getName());
-		return action;
+		return decorate(new MoveToCategoryAction(selectedLaunchNodes, node))
+			.withTitle(node.getName())
+			.withTooltip("Move selected run configuration to " + node.getName())
+			.andReleaseAction();
 	}
 
-	private final void configureAction(Action action, String title, String tooltip, String imageFileName) {
-		configureAction(action, title, tooltip, RunnerPlugin.getDefault().getImageDescriptor(imageFileName));
+	private ActionDecorator decorate(Action action) {
+		return new ActionDecorator(action);
 	}
-
-	private final void configureAction(Action action, String title, String tooltip, ImageDescriptor imageDescriptor) {
-		action.setImageDescriptor(imageDescriptor);
-		configureAction(action, title, tooltip);
+	
+	/**
+	 * Simple decorator class, that simplifies the way we customize an action.
+	 * 
+	 * @author lwachowi
+	 */
+	private class ActionDecorator {
+		Action action;
+		public ActionDecorator(Action action) {
+			this.action = action;
+		}
+		public ActionDecorator withTitle(String title) {
+			action.setText(title);
+			return this;
+		}
+		public ActionDecorator withTooltip(String tooltip) {
+			action.setToolTipText(tooltip);
+			return this;
+		}
+		public ActionDecorator withImage(String image) {
+			return withImageDescriptor(RunnerPlugin.getDefault().getImageDescriptor(image));
+		}
+		public ActionDecorator withSharedImage(String sharedImage) {
+			return withImageDescriptor(getSharedImage(sharedImage));
+		}
+		public Action andReleaseAction() {
+			return action;
+		}
+		private ActionDecorator withImageDescriptor(ImageDescriptor imageDescriptor) {
+			action.setImageDescriptor(imageDescriptor);
+			return this;
+		}
+		private ImageDescriptor getSharedImage(String image) {
+			return PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(image);
+		}
 	}
-
-	private final void configureAction(Action action, String title, String tooltip) {
-		action.setText(title);
-		action.setToolTipText(tooltip);
-	}
-
-	private ImageDescriptor getSharedImage(String image) {
-		return PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(image);
-	}
-
+	
 }
