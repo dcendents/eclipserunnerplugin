@@ -1,14 +1,11 @@
 package com.eclipserunner.views.actions;
 
-import org.eclipse.jface.action.Action;
-
-import com.eclipserunner.RunnerPlugin;
 import com.eclipserunner.views.IRunnerView;
 
 /**
  * @author vachacz
  */
-public class ToggleFilterAction extends Action {
+public class ToggleFilterAction extends BaseRunnerAction {
 
 	private final String preferenceProperty;
 	private final IRunnerView runnerView;
@@ -17,13 +14,13 @@ public class ToggleFilterAction extends Action {
 		this.preferenceProperty = preferenceProperty;
 		this.runnerView = runnerView;
 
-		boolean active = RunnerPlugin.getDefault().getPreferenceStore().getBoolean(preferenceProperty);
+		boolean active = getPreferenceStore().getBoolean(preferenceProperty);
 		setChecked(active);
 	}
 
 	@Override
 	public void run() {
-		RunnerPlugin.getDefault().getPreferenceStore().setValue(preferenceProperty, isChecked());
+		getPreferenceStore().setValue(preferenceProperty, isChecked());
 
 		runnerView.refresh();
 	}

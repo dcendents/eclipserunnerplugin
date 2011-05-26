@@ -3,11 +3,9 @@ package com.eclipserunner.views.actions;
 import static com.eclipserunner.Messages.Message_categoryDialogMessage;
 import static com.eclipserunner.Messages.Message_categoryDialogTitle;
 
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 
-import com.eclipserunner.RunnerPlugin;
 import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.model.impl.CategoryNode;
@@ -18,7 +16,7 @@ import com.eclipserunner.views.validators.CategoryNameValidator;
  * 
  * @author vachacz
  */
-public class AddNewCategoryAction extends Action {
+public class AddNewCategoryAction extends BaseRunnerAction {
 
 	private IRunnerModel runnerModel;
 	
@@ -30,7 +28,7 @@ public class AddNewCategoryAction extends Action {
 
 	@Override
 	public void run() {
-		InputDialog dialog = new InputDialog(RunnerPlugin.getRunnerShell(), Message_categoryDialogTitle, Message_categoryDialogMessage, INITIAL_CATEGORY_NAME, new CategoryNameValidator());
+		InputDialog dialog = openInputDialog(Message_categoryDialogTitle, Message_categoryDialogMessage, INITIAL_CATEGORY_NAME, new CategoryNameValidator());
 
 		dialog.open();
 		if (dialog.getReturnCode() == Window.OK) {

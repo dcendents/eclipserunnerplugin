@@ -3,12 +3,9 @@ package com.eclipserunner.views.actions;
 import static com.eclipserunner.Messages.Message_removeConfirmPrompt;
 import static com.eclipserunner.Messages.Message_removeConfirmTitle;
 
+import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.dialogs.MessageDialog;
-
-import com.eclipserunner.RunnerPlugin;
 import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.ILaunchTypeNode;
@@ -18,7 +15,7 @@ import com.eclipserunner.model.IRunnerModel;
 /**
  * @author vachacz, bary
  */
-public class RemoveConfigOrCategoryAction extends Action {
+public class RemoveConfigOrCategoryAction extends BaseRunnerAction {
 
 	private INodeSelection nodeSelection;
 	private IRunnerModel runnerModel;
@@ -44,32 +41,35 @@ public class RemoveConfigOrCategoryAction extends Action {
 	}
 
 	private void removeLaunchNodes(List<ILaunchNode> launchNodes) {
-		boolean confirmed = MessageDialog.openConfirm(RunnerPlugin.getRunnerShell(), Message_removeConfirmTitle, Message_removeConfirmPrompt);
-		if (confirmed) {
-			for (ILaunchNode launchNode : launchNodes) {
-				runnerModel.removeLaunchNode(launchNode);
-			}
+		if (userConfirmedDeletion()) {
+			removeLaunchNodesWithoutPrompt(launchNodes);
 		}
 	}
 
 	private void removeLaunchTypeNodes(List<ILaunchTypeNode> launchTypeNodes) {
-		boolean confirmed = MessageDialog.openConfirm(RunnerPlugin.getRunnerShell(), Message_removeConfirmTitle, Message_removeConfirmPrompt);
-		if (confirmed) {
+		if (userConfirmedDeletion()) {
 			for (ILaunchTypeNode launchTypeNode : launchTypeNodes) {
-				for (ILaunchNode launchNode : launchTypeNode.getLaunchNodes()) {
-					runnerModel.removeLaunchNode(launchNode);
-				}
+				removeLaunchNodesWithoutPrompt(launchTypeNode.getLaunchNodes());
 			}
 		}
 	}
 
 	private void removeCategoryNodes(List<ICategoryNode> categoryNodes) {
-		boolean confirmed = MessageDialog.openConfirm(RunnerPlugin.getRunnerShell(), Message_removeConfirmTitle, Message_removeConfirmPrompt);
-		if (confirmed) {
+		if (userConfirmedDeletion()) {
 			for (ICategoryNode categoryNode : categoryNodes) {
 				runnerModel.removeCategoryNode(categoryNode);
 			}
 		}
+	}
+	
+	private void removeLaunchNodesWithoutPrompt(Collection<ILaunchNode> launchNodes) {
+		for (ILaunchNode launchNode : launchNodes) {
+			runnerModel.removeLaunchNode(launchNode);
+		}
+	}
+
+	private boolean userConfirmedDeletion() {
+		return openConfirmDialog(Message_removeConfirmTitle, Message_removeConfirmPrompt);
 	}
 
 }
