@@ -56,9 +56,6 @@ import com.eclipserunner.views.TreeMode;
 /**
  * Builder creates Actions related to test launching
  *
- * TODO LWA BARY why do we pass PreferenceProperty to Actions? Actions should
- * 	know that internally.
- *
  * @author vachacz
  */
 public final class LaunchActionBuilder {
