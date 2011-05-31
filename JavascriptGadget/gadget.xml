@@ -1,4 +1,5 @@
 <Module>
+	<ModulePrefs title="Magic Decoder"/> 
   <Content type="html"><![CDATA[
      <script type="text/javascript">
          url_site = 'http://marketplace.eclipse.org/node/1169'
