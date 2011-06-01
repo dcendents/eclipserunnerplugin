@@ -2,8 +2,8 @@ package com.eclipserunner.views.actions;
 
 import org.eclipse.debug.ui.DebugUITools;
 
+import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.INodeSelection;
-import com.eclipserunner.model.impl.LaunchNode;
 
 /**
  * Action responsible for launching selected configuration.
@@ -22,9 +22,9 @@ public class LaunchConfigurationAction extends AbstractLaunchAction {
 
 	@Override
 	public void run() {
-		if (nodeSelection.ofSingleNode() && nodeSelection.firstElementHasType(LaunchNode.class)) {
+		if (nodeSelection.ofSingleNode() && nodeSelection.firstElementHasType(ILaunchNode.class)) {
 			DebugUITools.launch(
-				nodeSelection.getSelectedLaunchNode().getLaunchConfiguration(),
+				nodeSelection.getFirstElementAs(ILaunchNode.class).getLaunchConfiguration(),
 				getLaunchConfigurationManager().getLaunchGroup(getLaunchGroupId()).getMode()
 			);
 		}

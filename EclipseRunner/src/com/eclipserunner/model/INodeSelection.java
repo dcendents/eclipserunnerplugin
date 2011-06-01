@@ -11,12 +11,10 @@ public interface INodeSelection {
 	boolean ofSingleNode();
 
 	boolean firstElementHasType(Class<?> clazz);
+	<T> T getFirstElementAs(Class<T> clazz);
 	
 	List<ILaunchNode> getSelectedLaunchNodes();
 	List<ILaunchTypeNode> getSelectedLaunchTypeNodes();
 	List<ICategoryNode> getSelectedCategoryNodes();
-
-	ILaunchNode getSelectedLaunchNode();
-	ICategoryNode getSelectedCategoryNode();
 
 }

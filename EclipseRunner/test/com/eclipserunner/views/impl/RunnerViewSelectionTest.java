@@ -43,7 +43,7 @@ public class RunnerViewSelectionTest {
 		
 		when(strucuredSelection.getFirstElement()).thenReturn(expected);
 		
-		Object actual = selection.getFirstElement();
+		String actual = selection.getFirstElementAs(String.class);
 		
 		assertEquals(expected, actual);
 	}

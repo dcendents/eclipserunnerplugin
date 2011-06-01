@@ -5,10 +5,10 @@ import java.util.List;
 import org.eclipse.jface.action.Action;
 
 import com.eclipserunner.model.IBookmarkable;
+import com.eclipserunner.model.ICategoryNode;
+import com.eclipserunner.model.ILaunchNode;
+import com.eclipserunner.model.ILaunchTypeNode;
 import com.eclipserunner.model.INodeSelection;
-import com.eclipserunner.model.impl.CategoryNode;
-import com.eclipserunner.model.impl.LaunchNode;
-import com.eclipserunner.model.impl.LaunchTypeNode;
 
 /**
  * Bookmark launch configuration.
@@ -28,13 +28,13 @@ public class BookmarkAction extends Action {
 	@Override
 	public void run() {
 		if (selection.ofSameNodeType()) {
-			if (selection.firstElementHasType(LaunchNode.class)) {
+			if (selection.firstElementHasType(ILaunchNode.class)) {
 				updateBookmark(selection.getSelectedLaunchNodes());
 			}
-			else if (selection.firstElementHasType(LaunchTypeNode.class)) {
+			else if (selection.firstElementHasType(ILaunchTypeNode.class)) {
 				updateBookmark(selection.getSelectedLaunchTypeNodes());
 			}
-			else if (selection.firstElementHasType(CategoryNode.class)) {
+			else if (selection.firstElementHasType(ICategoryNode.class)) {
 				updateBookmark(selection.getSelectedCategoryNodes());
 			}
 		}

@@ -12,6 +12,7 @@ import org.eclipse.ui.IViewSite;
 
 import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
+import com.eclipserunner.model.ILaunchTypeNode;
 import com.eclipserunner.model.IRunnerModel;
 import com.eclipserunner.model.impl.LaunchTypeNode;
 
@@ -32,8 +33,8 @@ public class RunnerModelTreeWithTypesAdapter implements ITreeContentProvider {
 		if (object instanceof ICategoryNode) {
 			return getChildrenByCategoryNode((ICategoryNode) object);
 		}
-		else if (object instanceof LaunchTypeNode) {
-			return getChildrenByLaunchTypeNode((LaunchTypeNode) object);
+		else if (object instanceof ILaunchTypeNode) {
+			return getChildrenByLaunchTypeNode((ILaunchTypeNode) object);
 		}
 		return null;
 	}
@@ -42,8 +43,8 @@ public class RunnerModelTreeWithTypesAdapter implements ITreeContentProvider {
 		if (object instanceof ILaunchNode) {
 			return getParentByLaunchNode((ILaunchNode) object);
 		}
-		else if (object instanceof LaunchTypeNode) {
-			return ((LaunchTypeNode) object).getCategoryNode();
+		else if (object instanceof ILaunchTypeNode) {
+			return ((ILaunchTypeNode) object).getCategoryNode();
 		}
 		return null;
 	}
@@ -85,7 +86,7 @@ public class RunnerModelTreeWithTypesAdapter implements ITreeContentProvider {
 		return null;
 	}
 
-	private Object[] getChildrenByLaunchTypeNode(LaunchTypeNode launchTypeNode) {
+	private Object[] getChildrenByLaunchTypeNode(ILaunchTypeNode launchTypeNode) {
 		ICategoryNode categoryNode = launchTypeNode.getCategoryNode();
 
 		List<ILaunchNode> launchNodes = new ArrayList<ILaunchNode>();

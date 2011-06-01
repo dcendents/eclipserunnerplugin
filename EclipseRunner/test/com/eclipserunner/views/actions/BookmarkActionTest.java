@@ -14,9 +14,6 @@ import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.ILaunchTypeNode;
 import com.eclipserunner.model.INodeSelection;
-import com.eclipserunner.model.impl.CategoryNode;
-import com.eclipserunner.model.impl.LaunchNode;
-import com.eclipserunner.model.impl.LaunchTypeNode;
 
 /**
  * BookmarkAction tests.
@@ -51,9 +48,9 @@ public class BookmarkActionTest {
 	public void shouldBookmarkLaunchNode() throws Exception {
 		when(selection.ofSameNodeType()).thenReturn(true);
 		
-		when(selection.firstElementHasType(LaunchNode.class)).thenReturn(true);
-		when(selection.firstElementHasType(LaunchTypeNode.class)).thenReturn(false);
-		when(selection.firstElementHasType(CategoryNode.class)).thenReturn(false);
+		when(selection.firstElementHasType(ILaunchNode.class)).thenReturn(true);
+		when(selection.firstElementHasType(ILaunchTypeNode.class)).thenReturn(false);
+		when(selection.firstElementHasType(ICategoryNode.class)).thenReturn(false);
 		
 		when(selection.getSelectedLaunchNodes()).thenReturn(Arrays.asList(launchNode));
 		
@@ -66,9 +63,9 @@ public class BookmarkActionTest {
 	public void shouldBookmarkLaunchTypeNode() throws Exception {
 		when(selection.ofSameNodeType()).thenReturn(true);
 
-		when(selection.firstElementHasType(LaunchNode.class)).thenReturn(false);
-		when(selection.firstElementHasType(LaunchTypeNode.class)).thenReturn(true);
-		when(selection.firstElementHasType(CategoryNode.class)).thenReturn(false);
+		when(selection.firstElementHasType(ILaunchNode.class)).thenReturn(false);
+		when(selection.firstElementHasType(ILaunchTypeNode.class)).thenReturn(true);
+		when(selection.firstElementHasType(ICategoryNode.class)).thenReturn(false);
 		
 		when(selection.getSelectedLaunchTypeNodes()).thenReturn(Arrays.asList(launchTypeNode));
 		
@@ -81,9 +78,9 @@ public class BookmarkActionTest {
 	public void shouldBookmarkCategoryNode() throws Exception {
 		when(selection.ofSameNodeType()).thenReturn(true);
 
-		when(selection.firstElementHasType(LaunchNode.class)).thenReturn(false);
-		when(selection.firstElementHasType(LaunchTypeNode.class)).thenReturn(false);
-		when(selection.firstElementHasType(CategoryNode.class)).thenReturn(true);
+		when(selection.firstElementHasType(ILaunchNode.class)).thenReturn(false);
+		when(selection.firstElementHasType(ILaunchTypeNode.class)).thenReturn(false);
+		when(selection.firstElementHasType(ICategoryNode.class)).thenReturn(true);
 		
 		when(selection.getSelectedCategoryNodes()).thenReturn(Arrays.asList(categoryNode));
 		

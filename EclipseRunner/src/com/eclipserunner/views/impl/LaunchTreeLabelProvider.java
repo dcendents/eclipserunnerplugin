@@ -11,8 +11,8 @@ import org.eclipse.swt.graphics.Image;
 import com.eclipserunner.RunnerPlugin;
 import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
+import com.eclipserunner.model.ILaunchTypeNode;
 import com.eclipserunner.model.IRunnerModel;
-import com.eclipserunner.model.impl.LaunchTypeNode;
 
 /**
  * Launch configuration tree decorator.
@@ -42,8 +42,8 @@ public class LaunchTreeLabelProvider extends LabelProvider {
 			ILaunchNode launchConfiguration = (ILaunchNode) element;
 			return debugModelPresentation.getText(launchConfiguration.getLaunchConfiguration());
 		}
-		else if (element instanceof LaunchTypeNode) {
-			return debugModelPresentation.getText(((LaunchTypeNode) element).getLaunchConfigurationType());
+		else if (element instanceof ILaunchTypeNode) {
+			return debugModelPresentation.getText(((ILaunchTypeNode) element).getLaunchConfigurationType());
 		}
 		return debugModelPresentation.getText(element);
 	}
@@ -56,8 +56,8 @@ public class LaunchTreeLabelProvider extends LabelProvider {
 		else if (element instanceof ILaunchNode) {
 			return getLaunchConfigurationImage((ILaunchNode) element);
 		}
-		else if (element instanceof LaunchTypeNode) {
-			return getLaunchConfigurationTypeImage((LaunchTypeNode) element);
+		else if (element instanceof ILaunchTypeNode) {
+			return getLaunchConfigurationTypeImage((ILaunchTypeNode) element);
 		}
 		return ImageDescriptor.getMissingImageDescriptor().createImage();
 	}
@@ -78,7 +78,7 @@ public class LaunchTreeLabelProvider extends LabelProvider {
 		return image;
 	}
 	
-	private Image getLaunchConfigurationTypeImage(LaunchTypeNode typeNode) {
+	private Image getLaunchConfigurationTypeImage(ILaunchTypeNode typeNode) {
 		return debugModelPresentation.getImage(typeNode.getLaunchConfigurationType());
 	}
 	

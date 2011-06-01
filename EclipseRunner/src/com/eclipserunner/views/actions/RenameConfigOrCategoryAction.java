@@ -14,8 +14,6 @@ import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.INodeSelection;
 import com.eclipserunner.model.IRunnerModel;
-import com.eclipserunner.model.impl.CategoryNode;
-import com.eclipserunner.model.impl.LaunchNode;
 import com.eclipserunner.views.validators.CategoryNameValidator;
 import com.eclipserunner.views.validators.LaunchConfigurationNameValidator;
 
@@ -24,24 +22,24 @@ import com.eclipserunner.views.validators.LaunchConfigurationNameValidator;
  */
 public class RenameConfigOrCategoryAction extends BaseRunnerAction {
 
-	private INodeSelection nodeSelection;
+	private INodeSelection selection;
 
 	@SuppressWarnings("unused")
 	private IRunnerModel runnerModel;
 
-	public RenameConfigOrCategoryAction(INodeSelection launchConfigurationSelection, IRunnerModel runnerModel) {
-		this.nodeSelection = launchConfigurationSelection;
+	public RenameConfigOrCategoryAction(INodeSelection selection, IRunnerModel runnerModel) {
 		this.runnerModel = runnerModel;
+		this.selection = selection;
 	}
 
 	@Override
 	public void run() {
-		if (nodeSelection.ofSingleNode()) {
-			if (nodeSelection.firstElementHasType(LaunchNode.class)) {
-				renameLaunchNode(nodeSelection.getSelectedLaunchNode());
+		if (selection.ofSingleNode()) {
+			if (selection.firstElementHasType(ILaunchNode.class)) {
+				renameLaunchNode(selection.getFirstElementAs(ILaunchNode.class));
 			}
-			else if (nodeSelection.firstElementHasType(CategoryNode.class)) {
-				renameCategoryNode(nodeSelection.getSelectedCategoryNode());
+			else if (selection.firstElementHasType(ICategoryNode.class)) {
+				renameCategoryNode(selection.getFirstElementAs(ICategoryNode.class));
 			}
 		}
 	}

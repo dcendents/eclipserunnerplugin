@@ -11,9 +11,6 @@ import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.ILaunchTypeNode;
 import com.eclipserunner.model.INodeSelection;
-import com.eclipserunner.model.impl.CategoryNode;
-import com.eclipserunner.model.impl.LaunchNode;
-import com.eclipserunner.model.impl.LaunchTypeNode;
 import com.eclipserunner.utils.SelectionUtils;
 
 public class RunnerViewSelection implements INodeSelection {
@@ -24,8 +21,9 @@ public class RunnerViewSelection implements INodeSelection {
 		this.treeViewer = treeViewer;
 	}
 
-	public Object getFirstElement() {
-		return getSelection().getFirstElement();
+	@SuppressWarnings("unchecked")
+	public <T> T getFirstElementAs(Class<T> clazz) {
+		return (T) getSelection().getFirstElement();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -54,21 +52,21 @@ public class RunnerViewSelection implements INodeSelection {
 	}
 	
 	public List<ILaunchNode> getSelectedLaunchNodes() {
-		if (ofSameNodeType() && firstElementHasType(LaunchNode.class)) {
+		if (ofSameNodeType() && firstElementHasType(ILaunchNode.class)) {
 			return byType(ILaunchNode.class);
 		}
 		return Collections.emptyList();
 	}
 
 	public List<ILaunchTypeNode> getSelectedLaunchTypeNodes() {
-		if (ofSameNodeType() && firstElementHasType(LaunchTypeNode.class)) {
+		if (ofSameNodeType() && firstElementHasType(ILaunchTypeNode.class)) {
 			return byType(ILaunchTypeNode.class);
 		}
 		return Collections.emptyList();
 	}
 	
 	public List<ICategoryNode> getSelectedCategoryNodes() {
-		if (ofSameNodeType() && firstElementHasType(CategoryNode.class)) {
+		if (ofSameNodeType() && firstElementHasType(ICategoryNode.class)) {
 			return byType(ICategoryNode.class);
 		}
 		return Collections.emptyList();
@@ -83,12 +81,12 @@ public class RunnerViewSelection implements INodeSelection {
 	}
 
 	public boolean canBeLaunched() {
-		return ofSingleNode() && firstElementHasType(LaunchNode.class);
+		return ofSingleNode() && firstElementHasType(ILaunchNode.class);
 	}
 
 	public boolean canBeRenamed() {
 		if (ofSameNodeType() && ofSingleNode()) {
-			Object selectedObject = getFirstElement();
+			Object selectedObject = getSelection().getFirstElement();
 			if (selectedObject instanceof IActionEnablement) {
 				return ((IActionEnablement) selectedObject).isRenamable();
 			}
