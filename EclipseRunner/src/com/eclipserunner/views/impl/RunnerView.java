@@ -45,6 +45,7 @@ import com.eclipserunner.model.IModelChangeListener;
 import com.eclipserunner.model.RunnerModelProvider;
 import com.eclipserunner.model.adapters.RunnerModelJdtSelectionListenerAdapter;
 import com.eclipserunner.model.adapters.RunnerModelLaunchConfigurationListenerAdapter;
+import com.eclipserunner.model.impl.LaunchNode;
 import com.eclipserunner.ui.dnd.RunnerViewDragListener;
 import com.eclipserunner.ui.dnd.RunnerViewDropListener;
 import com.eclipserunner.views.IRunnerView;
@@ -305,7 +306,7 @@ public class RunnerView extends ViewPart
 	private void setupMenuItems(IMenuManager manager) {
 		manager.add(addNewCategoryAction);
 
-		if (selection.isLaunchNodeSelected()) {
+		if (selection.firstElementHasType(LaunchNode.class)) {
 			manager.add(new Separator());
 			manager.add(launchRunConfigurationAction);
 			manager.add(launchDebugConfigurationAction);

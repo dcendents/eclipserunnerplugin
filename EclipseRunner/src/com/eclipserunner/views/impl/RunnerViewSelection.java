@@ -11,6 +11,9 @@ import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.ILaunchTypeNode;
 import com.eclipserunner.model.INodeSelection;
+import com.eclipserunner.model.impl.CategoryNode;
+import com.eclipserunner.model.impl.LaunchNode;
+import com.eclipserunner.model.impl.LaunchTypeNode;
 import com.eclipserunner.utils.SelectionUtils;
 
 public class RunnerViewSelection implements INodeSelection {
@@ -42,19 +45,7 @@ public class RunnerViewSelection implements INodeSelection {
 		return SelectionUtils.getAllSelectedItemsByType(getSelection(), type);
 	}
 
-	public boolean isLaunchNodeSelected() {
-		return isFirstSelectedObjectOfType(ILaunchNode.class);
-	}
-	
-	public boolean isLaunchTypeNodeSelected() {
-		return isFirstSelectedObjectOfType(ILaunchTypeNode.class);
-	}
-	
-	public boolean isCategoryNodeSelected() {
-		return isFirstSelectedObjectOfType(ICategoryNode.class);
-	}
-	
-	private boolean isFirstSelectedObjectOfType(Class<?> clazz) {
+	public boolean firstElementHasType(Class<?> clazz) {
 		Object firstElement = getSelection().getFirstElement();
 		if (firstElement != null) {
 			return clazz.isAssignableFrom(getSelection().getFirstElement().getClass());
@@ -63,21 +54,21 @@ public class RunnerViewSelection implements INodeSelection {
 	}
 	
 	public List<ILaunchNode> getSelectedLaunchNodes() {
-		if (ofSameNodeType() && isLaunchNodeSelected()) {
+		if (ofSameNodeType() && firstElementHasType(LaunchNode.class)) {
 			return byType(ILaunchNode.class);
 		}
 		return Collections.emptyList();
 	}
 
 	public List<ILaunchTypeNode> getSelectedLaunchTypeNodes() {
-		if (ofSameNodeType() && isLaunchTypeNodeSelected()) {
+		if (ofSameNodeType() && firstElementHasType(LaunchTypeNode.class)) {
 			return byType(ILaunchTypeNode.class);
 		}
 		return Collections.emptyList();
 	}
 	
 	public List<ICategoryNode> getSelectedCategoryNodes() {
-		if (ofSameNodeType() && isCategoryNodeSelected()) {
+		if (ofSameNodeType() && firstElementHasType(CategoryNode.class)) {
 			return byType(ICategoryNode.class);
 		}
 		return Collections.emptyList();
@@ -92,8 +83,7 @@ public class RunnerViewSelection implements INodeSelection {
 	}
 
 	public boolean canBeLaunched() {
-		return ofSingleNode() 
-			&& isLaunchNodeSelected();
+		return ofSingleNode() && firstElementHasType(LaunchNode.class);
 	}
 
 	public boolean canBeRenamed() {

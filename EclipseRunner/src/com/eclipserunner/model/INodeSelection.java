@@ -10,15 +10,13 @@ public interface INodeSelection {
 	boolean ofSameNodeType();
 	boolean ofSingleNode();
 
-	boolean isLaunchNodeSelected();
-	ILaunchNode getSelectedLaunchNode();
+	boolean firstElementHasType(Class<?> clazz);
+	
 	List<ILaunchNode> getSelectedLaunchNodes();
-
-	boolean isLaunchTypeNodeSelected();
 	List<ILaunchTypeNode> getSelectedLaunchTypeNodes();
-
-	boolean isCategoryNodeSelected();
-	ICategoryNode getSelectedCategoryNode();
 	List<ICategoryNode> getSelectedCategoryNodes();
+
+	ILaunchNode getSelectedLaunchNode();
+	ICategoryNode getSelectedCategoryNode();
 
 }

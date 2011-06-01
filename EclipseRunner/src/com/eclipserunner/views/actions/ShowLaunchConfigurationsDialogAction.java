@@ -8,6 +8,7 @@ import org.eclipse.debug.internal.ui.launchConfigurations.LaunchConfigurationsDi
 
 import com.eclipserunner.RunnerPlugin;
 import com.eclipserunner.model.INodeSelection;
+import com.eclipserunner.model.impl.LaunchNode;
 
 /**
  * Action responsible for showing LaunchConfigurationsDialog.
@@ -31,7 +32,7 @@ public class ShowLaunchConfigurationsDialogAction extends AbstractLaunchAction {
 			getLaunchConfigurationManager().getLaunchGroup(getLaunchGroupId())
 		);
 
-		if (nodeSelection.ofSingleNode() && nodeSelection.isLaunchNodeSelected()) {
+		if (nodeSelection.ofSingleNode() && nodeSelection.firstElementHasType(LaunchNode.class)) {
 			dialog.setOpenMode(LAUNCH_CONFIGURATION_DIALOG_OPEN_ON_SELECTION);
 			dialog.setInitialSelection(asStructuredSelection(nodeSelection.getSelectedLaunchNode().getLaunchConfiguration()));
 		}

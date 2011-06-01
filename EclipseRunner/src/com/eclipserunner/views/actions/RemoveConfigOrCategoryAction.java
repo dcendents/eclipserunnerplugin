@@ -11,6 +11,9 @@ import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.ILaunchTypeNode;
 import com.eclipserunner.model.INodeSelection;
 import com.eclipserunner.model.IRunnerModel;
+import com.eclipserunner.model.impl.CategoryNode;
+import com.eclipserunner.model.impl.LaunchNode;
+import com.eclipserunner.model.impl.LaunchTypeNode;
 
 /**
  * @author vachacz, bary
@@ -28,13 +31,13 @@ public class RemoveConfigOrCategoryAction extends BaseRunnerAction {
 	@Override
 	public void run() {
 		if (nodeSelection.ofSameNodeType()) {
-			if (nodeSelection.isLaunchNodeSelected()) {
+			if (nodeSelection.firstElementHasType(LaunchNode.class)) {
 				removeLaunchNodes(nodeSelection.getSelectedLaunchNodes());
 			}
-			else if (nodeSelection.isLaunchTypeNodeSelected()) {
+			else if (nodeSelection.firstElementHasType(LaunchTypeNode.class)) {
 				removeLaunchTypeNodes(nodeSelection.getSelectedLaunchTypeNodes());
 			}
-			else if (nodeSelection.isCategoryNodeSelected()) {
+			else if (nodeSelection.firstElementHasType(CategoryNode.class)) {
 				removeCategoryNodes(nodeSelection.getSelectedCategoryNodes());
 			}
 		}

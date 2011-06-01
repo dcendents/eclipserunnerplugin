@@ -14,6 +14,8 @@ import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.INodeSelection;
 import com.eclipserunner.model.IRunnerModel;
+import com.eclipserunner.model.impl.CategoryNode;
+import com.eclipserunner.model.impl.LaunchNode;
 import com.eclipserunner.views.validators.CategoryNameValidator;
 import com.eclipserunner.views.validators.LaunchConfigurationNameValidator;
 
@@ -35,10 +37,10 @@ public class RenameConfigOrCategoryAction extends BaseRunnerAction {
 	@Override
 	public void run() {
 		if (nodeSelection.ofSingleNode()) {
-			if (nodeSelection.isLaunchNodeSelected()) {
+			if (nodeSelection.firstElementHasType(LaunchNode.class)) {
 				renameLaunchNode(nodeSelection.getSelectedLaunchNode());
 			}
-			else if (nodeSelection.isCategoryNodeSelected()) {
+			else if (nodeSelection.firstElementHasType(CategoryNode.class)) {
 				renameCategoryNode(nodeSelection.getSelectedCategoryNode());
 			}
 		}
