@@ -29,8 +29,6 @@ public class AddNewCategoryAction extends BaseRunnerAction {
 	@Override
 	public void run() {
 		InputDialog dialog = openInputDialog(Message_categoryDialogTitle, Message_categoryDialogMessage, INITIAL_CATEGORY_NAME, new CategoryNameValidator());
-
-		dialog.open();
 		if (dialog.getReturnCode() == Window.OK) {
 			ICategoryNode categoryNode = new CategoryNode(dialog.getValue());
 			runnerModel.addCategoryNode(categoryNode);

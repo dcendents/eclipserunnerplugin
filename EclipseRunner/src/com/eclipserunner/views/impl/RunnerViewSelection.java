@@ -55,7 +55,11 @@ public class RunnerViewSelection implements INodeSelection {
 	}
 	
 	private boolean isFirstSelectedObjectOfType(Class<?> clazz) {
-		return clazz.isAssignableFrom(getSelection().getFirstElement().getClass());
+		Object firstElement = getSelection().getFirstElement();
+		if (firstElement != null) {
+			return clazz.isAssignableFrom(getSelection().getFirstElement().getClass());
+		}
+		return false;
 	}
 	
 	public List<ILaunchNode> getSelectedLaunchNodes() {
