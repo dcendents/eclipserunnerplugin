@@ -194,7 +194,7 @@ public class RunnerViewSelectionTest {
 		when(strucuredSelection.getFirstElement()).thenReturn(launchNode);
 		when(strucuredSelection.iterator()).thenReturn(expected.iterator(), expected.iterator());
 		
-		List<ILaunchNode> nodes = selection.getSelectedLaunchNodes();
+		List<ILaunchNode> nodes = selection.getSelectedNodesByType(ILaunchNode.class);
 		
 		assertEquals(nodes.size(), 1);
 		assertEquals(nodes.get(0), launchNode);
@@ -214,7 +214,7 @@ public class RunnerViewSelectionTest {
 		when(strucuredSelection.getFirstElement()).thenReturn(launchNode);
 		when(strucuredSelection.iterator()).thenReturn(expected.iterator(), expected.iterator());
 		
-		List<ILaunchNode> nodes = selection.getSelectedLaunchNodes();
+		List<ILaunchNode> nodes = selection.getSelectedNodesByType(ILaunchNode.class);
 
 		assertEquals(nodes.size(), 0);
 	}

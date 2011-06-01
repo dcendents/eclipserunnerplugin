@@ -52,7 +52,7 @@ public class BookmarkActionTest {
 		when(selection.firstNodeHasType(ILaunchTypeNode.class)).thenReturn(false);
 		when(selection.firstNodeHasType(ICategoryNode.class)).thenReturn(false);
 		
-		when(selection.getSelectedLaunchNodes()).thenReturn(Arrays.asList(launchNode));
+		when(selection.getSelectedNodesByType(ILaunchNode.class)).thenReturn(Arrays.asList(launchNode));
 		
 		action.run();
 		
@@ -67,7 +67,7 @@ public class BookmarkActionTest {
 		when(selection.firstNodeHasType(ILaunchTypeNode.class)).thenReturn(true);
 		when(selection.firstNodeHasType(ICategoryNode.class)).thenReturn(false);
 		
-		when(selection.getSelectedLaunchTypeNodes()).thenReturn(Arrays.asList(launchTypeNode));
+		when(selection.getSelectedNodesByType(ILaunchTypeNode.class)).thenReturn(Arrays.asList(launchTypeNode));
 		
 		action.run();
 		
@@ -82,7 +82,7 @@ public class BookmarkActionTest {
 		when(selection.firstNodeHasType(ILaunchTypeNode.class)).thenReturn(false);
 		when(selection.firstNodeHasType(ICategoryNode.class)).thenReturn(true);
 		
-		when(selection.getSelectedCategoryNodes()).thenReturn(Arrays.asList(categoryNode));
+		when(selection.getSelectedNodesByType(ICategoryNode.class)).thenReturn(Arrays.asList(categoryNode));
 		
 		action.run();
 		

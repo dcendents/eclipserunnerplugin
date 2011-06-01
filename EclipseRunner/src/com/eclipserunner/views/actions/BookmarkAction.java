@@ -29,13 +29,13 @@ public class BookmarkAction extends Action {
 	public void run() {
 		if (selection.ofSameNodeType()) {
 			if (selection.firstNodeHasType(ILaunchNode.class)) {
-				updateBookmark(selection.getSelectedLaunchNodes());
+				updateBookmark(selection.getSelectedNodesByType(ILaunchNode.class));
 			}
 			else if (selection.firstNodeHasType(ILaunchTypeNode.class)) {
-				updateBookmark(selection.getSelectedLaunchTypeNodes());
+				updateBookmark(selection.getSelectedNodesByType(ILaunchTypeNode.class));
 			}
 			else if (selection.firstNodeHasType(ICategoryNode.class)) {
-				updateBookmark(selection.getSelectedCategoryNodes());
+				updateBookmark(selection.getSelectedNodesByType(ICategoryNode.class));
 			}
 		}
 	}

@@ -29,13 +29,13 @@ public class RemoveConfigOrCategoryAction extends BaseRunnerAction {
 	public void run() {
 		if (nodeSelection.ofSameNodeType()) {
 			if (nodeSelection.firstNodeHasType(ILaunchNode.class)) {
-				removeLaunchNodes(nodeSelection.getSelectedLaunchNodes());
+				removeLaunchNodes(nodeSelection.getSelectedNodesByType(ILaunchNode.class));
 			}
 			else if (nodeSelection.firstNodeHasType(ILaunchTypeNode.class)) {
-				removeLaunchTypeNodes(nodeSelection.getSelectedLaunchTypeNodes());
+				removeLaunchTypeNodes(nodeSelection.getSelectedNodesByType(ILaunchTypeNode.class));
 			}
 			else if (nodeSelection.firstNodeHasType(ICategoryNode.class)) {
-				removeCategoryNodes(nodeSelection.getSelectedCategoryNodes());
+				removeCategoryNodes(nodeSelection.getSelectedNodesByType(ICategoryNode.class));
 			}
 		}
 	}

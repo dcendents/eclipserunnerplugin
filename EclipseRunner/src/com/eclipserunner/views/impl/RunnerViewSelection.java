@@ -7,9 +7,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 
 import com.eclipserunner.model.IActionEnablement;
-import com.eclipserunner.model.ICategoryNode;
 import com.eclipserunner.model.ILaunchNode;
-import com.eclipserunner.model.ILaunchTypeNode;
 import com.eclipserunner.model.INodeSelection;
 import com.eclipserunner.utils.SelectionUtils;
 
@@ -51,27 +49,13 @@ public class RunnerViewSelection implements INodeSelection {
 		return false;
 	}
 	
-	public List<ILaunchNode> getSelectedLaunchNodes() {
-		if (ofSameNodeType() && firstNodeHasType(ILaunchNode.class)) {
-			return byType(ILaunchNode.class);
+	public <T> List<T> getSelectedNodesByType(Class<T> clazz) {
+		if (ofSameNodeType() && firstNodeHasType(clazz)) {
+			return byType(clazz);
 		}
 		return Collections.emptyList();
 	}
 
-	public List<ILaunchTypeNode> getSelectedLaunchTypeNodes() {
-		if (ofSameNodeType() && firstNodeHasType(ILaunchTypeNode.class)) {
-			return byType(ILaunchTypeNode.class);
-		}
-		return Collections.emptyList();
-	}
-	
-	public List<ICategoryNode> getSelectedCategoryNodes() {
-		if (ofSameNodeType() && firstNodeHasType(ICategoryNode.class)) {
-			return byType(ICategoryNode.class);
-		}
-		return Collections.emptyList();
-	}
-	
 	public boolean canBeLaunched() {
 		return ofSingleNode() && firstNodeHasType(ILaunchNode.class);
 	}

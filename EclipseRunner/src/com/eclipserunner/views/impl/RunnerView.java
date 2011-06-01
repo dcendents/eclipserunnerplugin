@@ -339,7 +339,7 @@ public class RunnerView extends ViewPart
 	}
 
 	private IAction moveToCategoryAction(ICategoryNode category) {
-		return builder.createMoveToCategoryAction(selection.getSelectedLaunchNodes(), category);
+		return builder.createMoveToCategoryAction(selection.getSelectedNodesByType(ILaunchNode.class), category);
 	}
 
 	private void setupActionEnablement() {
