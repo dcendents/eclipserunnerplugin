@@ -72,8 +72,8 @@ public final class LaunchActionBuilder {
 		return new LaunchActionBuilder();
 	}
 
-	public LaunchActionBuilder withLaunchConfigurationSelection(INodeSelection launchConfigurationSelection) {
-		this.nodeSelection = launchConfigurationSelection;
+	public LaunchActionBuilder withLaunchConfigurationSelection(INodeSelection nodeSelection) {
+		this.nodeSelection = nodeSelection;
 		return this;
 	}
 

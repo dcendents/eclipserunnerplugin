@@ -39,14 +39,14 @@ public class BookmarkActionTest {
 	
 	@Test
 	public void shouldNotBookmarkWhenSelectionHasMultipleElements() throws Exception {
-		when(selection.isSelectionOfOneClass()).thenReturn(false);
+		when(selection.ofSameNodeType()).thenReturn(false);
 		
 		action.run();
 	}
 	
 	@Test
 	public void shouldBookmarkLaunchNode() throws Exception {
-		when(selection.isSelectionOfOneClass()).thenReturn(true);
+		when(selection.ofSameNodeType()).thenReturn(true);
 		
 		when(selection.isLaunchNodeSelected()).thenReturn(true);
 		when(selection.isLaunchTypeNodeSelected()).thenReturn(false);
@@ -61,7 +61,7 @@ public class BookmarkActionTest {
 
 	@Test
 	public void shouldBookmarkLaunchTypeNode() throws Exception {
-		when(selection.isSelectionOfOneClass()).thenReturn(true);
+		when(selection.ofSameNodeType()).thenReturn(true);
 
 		when(selection.isLaunchNodeSelected()).thenReturn(false);
 		when(selection.isLaunchTypeNodeSelected()).thenReturn(true);
@@ -76,7 +76,7 @@ public class BookmarkActionTest {
 
 	@Test
 	public void shouldBookmarkCategoryNode() throws Exception {
-		when(selection.isSelectionOfOneClass()).thenReturn(true);
+		when(selection.ofSameNodeType()).thenReturn(true);
 
 		when(selection.isLaunchNodeSelected()).thenReturn(false);
 		when(selection.isLaunchTypeNodeSelected()).thenReturn(false);

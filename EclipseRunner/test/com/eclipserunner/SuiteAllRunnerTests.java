@@ -11,7 +11,7 @@ import com.eclipserunner.model.filters.DefaultCategoryFilterTest;
 import com.eclipserunner.model.impl.RunnerModelTest;
 import com.eclipserunner.utils.SelectionUtilsTest;
 import com.eclipserunner.views.actions.BookmarkActionTest;
-import com.eclipserunner.views.impl.RunnerViewTest;
+import com.eclipserunner.views.impl.RunnerViewSelectionTest;
 import com.eclipserunner.views.validators.CategoryNameValidatorTest;
 import com.eclipserunner.views.validators.LaunchConfigurationNameValidatorTest;
 
@@ -25,7 +25,7 @@ import com.eclipserunner.views.validators.LaunchConfigurationNameValidatorTest;
 	RunnerModelTreeAdapterTest.class,
 	BookmarkFilterTest.class,
 	DefaultCategoryFilterTest.class,
-	RunnerViewTest.class,
+	RunnerViewSelectionTest.class,
 	BookmarkActionTest.class
 })
 public class SuiteAllRunnerTests {

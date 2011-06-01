@@ -7,11 +7,8 @@ import java.util.List;
  */
 public interface INodeSelection {
 
-	boolean isSelectionOfOneClass();
-	boolean isSingleSelection();
-
-	Object getFirstSelectedObject();
-	List<Object> getAllSelectedObjects();
+	boolean ofSameNodeType();
+	boolean ofSingleNode();
 
 	boolean isLaunchNodeSelected();
 	ILaunchNode getSelectedLaunchNode();

@@ -27,7 +27,7 @@ public class RemoveConfigOrCategoryAction extends BaseRunnerAction {
 
 	@Override
 	public void run() {
-		if (nodeSelection.isSelectionOfOneClass()) {
+		if (nodeSelection.ofSameNodeType()) {
 			if (nodeSelection.isLaunchNodeSelected()) {
 				removeLaunchNodes(nodeSelection.getSelectedLaunchNodes());
 			}

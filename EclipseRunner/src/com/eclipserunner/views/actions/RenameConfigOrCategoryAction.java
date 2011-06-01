@@ -34,7 +34,7 @@ public class RenameConfigOrCategoryAction extends BaseRunnerAction {
 
 	@Override
 	public void run() {
-		if (nodeSelection.isSingleSelection()) {
+		if (nodeSelection.ofSingleNode()) {
 			if (nodeSelection.isLaunchNodeSelected()) {
 				renameLaunchNode(nodeSelection.getSelectedLaunchNode());
 			}
