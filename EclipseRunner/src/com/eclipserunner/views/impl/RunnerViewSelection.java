@@ -11,6 +11,7 @@ import com.eclipserunner.model.ILaunchNode;
 import com.eclipserunner.model.INodeSelection;
 import com.eclipserunner.utils.SelectionUtils;
 
+// TODO [LW] remove selection utils
 public class RunnerViewSelection implements INodeSelection {
 
 	private final TreeViewer treeViewer;
@@ -22,11 +23,6 @@ public class RunnerViewSelection implements INodeSelection {
 	@SuppressWarnings("unchecked")
 	public <T> T getFirstNodeAs(Class<T> clazz) {
 		return (T) getSelection().getFirstElement();
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<Object> asList() {
-		return getSelection().toList();
 	}
 
 	public boolean ofSameNodeType() {
@@ -74,7 +70,7 @@ public class RunnerViewSelection implements INodeSelection {
 		if (! ofSameNodeType()) {
 			return false;
 		}
-		for (Object selectedObject : asList()) {
+		for (Object selectedObject : getSelection().toList()) {
 			if (selectedObject instanceof IActionEnablement) {
 				if (!((IActionEnablement) selectedObject).isRemovable()) {
 					return false;
@@ -94,5 +90,5 @@ public class RunnerViewSelection implements INodeSelection {
 	private IStructuredSelection getSelection() {
 		return (IStructuredSelection) treeViewer.getSelection();
 	}
-	
+
 }

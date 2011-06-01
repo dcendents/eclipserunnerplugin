@@ -49,17 +49,6 @@ public class RunnerViewSelectionTest {
 	}
 	
 	@Test
-	public void shouldReturnAllSelectedElements() throws Exception {
-		List<String> expected = Arrays.asList( "first element", "second element" );
-		
-		when(strucuredSelection.toList()).thenReturn(expected);
-		
-		List<Object> actual = selection.asList();
-		
-		assertEquals(expected, actual);
-	}
-	
-	@Test
 	public void ensureThatAllElementsAreOfTheSameType() throws Exception {
 		List<String> expected = Arrays.asList( "first element", "second element" );
 		
