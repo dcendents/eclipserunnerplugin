@@ -7,8 +7,8 @@ import java.util.List;
  */
 public interface INodeSelection {
 
-	boolean ofSameNodeType();
-	boolean ofSingleNode();
+	boolean allNodesHaveSameType();
+	boolean hasExactlyOneNode();
 
 	boolean firstNodeHasType(Class<?> clazz);
 	<T> T getFirstNodeAs(Class<T> clazz);

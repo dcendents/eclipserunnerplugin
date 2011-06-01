@@ -54,7 +54,7 @@ public class RunnerViewSelectionTest {
 		
 		when(strucuredSelection.iterator()).thenReturn(expected.iterator());
 		
-		boolean actual = selection.ofSameNodeType();
+		boolean actual = selection.allNodesHaveSameType();
 		
 		assertTrue(actual);
 	}
@@ -65,7 +65,7 @@ public class RunnerViewSelectionTest {
 		
 		when(strucuredSelection.iterator()).thenReturn(expected.iterator());
 		
-		boolean actual = selection.ofSameNodeType();
+		boolean actual = selection.allNodesHaveSameType();
 		
 		assertFalse(actual);
 	}
@@ -74,7 +74,7 @@ public class RunnerViewSelectionTest {
 	public void ensureThatSelectionContainsOnlyOneTyp() throws Exception {
 		when(strucuredSelection.size()).thenReturn(1);
 		
-		boolean actual = selection.ofSingleNode();
+		boolean actual = selection.hasExactlyOneNode();
 		
 		assertTrue(actual);
 	}
@@ -83,7 +83,7 @@ public class RunnerViewSelectionTest {
 	public void ensureThatSelectionContainsDifferentTypes() throws Exception {
 		when(strucuredSelection.size()).thenReturn(2);
 		
-		boolean actual = selection.ofSingleNode();
+		boolean actual = selection.hasExactlyOneNode();
 		
 		assertFalse(actual);
 	}

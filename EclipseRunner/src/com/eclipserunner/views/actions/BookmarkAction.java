@@ -27,7 +27,7 @@ public class BookmarkAction extends Action {
 
 	@Override
 	public void run() {
-		if (selection.ofSameNodeType()) {
+		if (selection.allNodesHaveSameType()) {
 			if (selection.firstNodeHasType(ILaunchNode.class)) {
 				updateBookmark(selection.getSelectedNodesByType(ILaunchNode.class));
 			}

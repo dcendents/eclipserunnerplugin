@@ -18,11 +18,11 @@ import com.eclipserunner.model.INodeSelection;
 @SuppressWarnings("restriction")
 public class ShowLaunchConfigurationsDialogAction extends AbstractLaunchAction {
 
-	private INodeSelection nodeSelection;
+	private INodeSelection selection;
 
-	public ShowLaunchConfigurationsDialogAction(INodeSelection launchConfigurationSelection, String launchGroupId) {
+	public ShowLaunchConfigurationsDialogAction(INodeSelection selection, String launchGroupId) {
 		super(launchGroupId);
-		this.nodeSelection = launchConfigurationSelection;
+		this.selection = selection;
 	}
 
 	@Override
@@ -32,9 +32,9 @@ public class ShowLaunchConfigurationsDialogAction extends AbstractLaunchAction {
 			getLaunchConfigurationManager().getLaunchGroup(getLaunchGroupId())
 		);
 
-		if (nodeSelection.ofSingleNode() && nodeSelection.firstNodeHasType(ILaunchNode.class)) {
+		if (selection.hasExactlyOneNode() && selection.firstNodeHasType(ILaunchNode.class)) {
 			dialog.setOpenMode(LAUNCH_CONFIGURATION_DIALOG_OPEN_ON_SELECTION);
-			dialog.setInitialSelection(asStructuredSelection(nodeSelection.getFirstNodeAs(ILaunchNode.class).getLaunchConfiguration()));
+			dialog.setInitialSelection(asStructuredSelection(selection.getFirstNodeAs(ILaunchNode.class).getLaunchConfiguration()));
 		}
 		else {
 			dialog.setOpenMode(LAUNCH_CONFIGURATION_DIALOG_OPEN_ON_LAST_LAUNCHED);

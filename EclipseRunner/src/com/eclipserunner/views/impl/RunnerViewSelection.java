@@ -25,11 +25,11 @@ public class RunnerViewSelection implements INodeSelection {
 		return (T) getSelection().getFirstElement();
 	}
 
-	public boolean ofSameNodeType() {
+	public boolean allNodesHaveSameType() {
 		return SelectionUtils.isSameTypeNodeSelection(getSelection());
 	}
 
-	public boolean ofSingleNode() {
+	public boolean hasExactlyOneNode() {
 		return SelectionUtils.isSingleNodeSelection(getSelection());
 	}
 
@@ -46,18 +46,18 @@ public class RunnerViewSelection implements INodeSelection {
 	}
 	
 	public <T> List<T> getSelectedNodesByType(Class<T> clazz) {
-		if (ofSameNodeType() && firstNodeHasType(clazz)) {
+		if (allNodesHaveSameType() && firstNodeHasType(clazz)) {
 			return byType(clazz);
 		}
 		return Collections.emptyList();
 	}
 
 	public boolean canBeLaunched() {
-		return ofSingleNode() && firstNodeHasType(ILaunchNode.class);
+		return hasExactlyOneNode() && firstNodeHasType(ILaunchNode.class);
 	}
 
 	public boolean canBeRenamed() {
-		if (ofSameNodeType() && ofSingleNode()) {
+		if (allNodesHaveSameType() && hasExactlyOneNode()) {
 			Object selectedObject = getSelection().getFirstElement();
 			if (selectedObject instanceof IActionEnablement) {
 				return ((IActionEnablement) selectedObject).isRenamable();
@@ -67,7 +67,7 @@ public class RunnerViewSelection implements INodeSelection {
 	}
 
 	public boolean canBeRemoved() {
-		if (! ofSameNodeType()) {
+		if (! allNodesHaveSameType()) {
 			return false;
 		}
 		for (Object selectedObject : getSelection().toList()) {
@@ -84,7 +84,7 @@ public class RunnerViewSelection implements INodeSelection {
 	}
 
 	public boolean canBeBookmarked() {
-		return ofSameNodeType();
+		return allNodesHaveSameType();
 	}
 
 	private IStructuredSelection getSelection() {
