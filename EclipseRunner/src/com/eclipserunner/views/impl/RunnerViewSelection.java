@@ -72,14 +72,6 @@ public class RunnerViewSelection implements INodeSelection {
 		return Collections.emptyList();
 	}
 	
-	public ILaunchNode getSelectedLaunchNode() {
-		return (ILaunchNode) getSelection().getFirstElement();
-	}
-
-	public ICategoryNode getSelectedCategoryNode() {
-		return (ICategoryNode) getSelection().getFirstElement();
-	}
-
 	public boolean canBeLaunched() {
 		return ofSingleNode() && firstElementHasType(ILaunchNode.class);
 	}
