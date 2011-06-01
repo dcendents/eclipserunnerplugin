@@ -1,12 +1,12 @@
 package com.eclipserunner.utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.StructuredSelection;
 
 /**
  * Utility methods related to object selection.
@@ -14,10 +14,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
  * @author vachacz
  */
 public class SelectionUtils {
-
-	public static IStructuredSelection asStructuredSelection(Object object) {
-		return new StructuredSelection(object);
-	}
 
 	public static <T> T getFirstSelectedItemByType(ISelection selection, Class<T> instanceClass) {
 		if (selection instanceof IStructuredSelection) {
@@ -42,7 +38,7 @@ public class SelectionUtils {
 		if (selection instanceof IStructuredSelection) {
 			return getAllSelectedItemsByType((IStructuredSelection) selection, instanceClass);
 		}
-		return new ArrayList<T>();
+		return Collections.emptyList();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -73,10 +69,6 @@ public class SelectionUtils {
 
 	public static boolean isSameTypeNodeSelection(IStructuredSelection selection) {
 		return getSelectedItemTypes(selection).size() == 1;
-	}
-
-	public static boolean isSingleNodeSelection(IStructuredSelection selection) {
-		return selection.size() == 1;
 	}
 
 }

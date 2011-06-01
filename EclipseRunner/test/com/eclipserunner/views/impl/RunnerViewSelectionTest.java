@@ -95,7 +95,7 @@ public class RunnerViewSelectionTest {
 		);
 		when(strucuredSelection.iterator()).thenReturn(expected.iterator());
 
-		List<String> actual = selection.byType(String.class);
+		List<String> actual = selection.findSelectedNodesByType(String.class);
 		
 		assertEquals("first element", actual.get(0));
 		assertEquals("second element", actual.get(1));
@@ -109,7 +109,7 @@ public class RunnerViewSelectionTest {
 		);
 		when(strucuredSelection.iterator()).thenReturn(expected.iterator());
 
-		List<Integer> actual = selection.byType(Integer.class);
+		List<Integer> actual = selection.findSelectedNodesByType(Integer.class);
 		
 		assertEquals(new Integer(1), actual.get(0));
 		assertEquals(1, actual.size());

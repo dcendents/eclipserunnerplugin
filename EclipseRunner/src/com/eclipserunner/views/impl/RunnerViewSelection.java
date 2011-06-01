@@ -30,24 +30,20 @@ public class RunnerViewSelection implements INodeSelection {
 	}
 
 	public boolean hasExactlyOneNode() {
-		return SelectionUtils.isSingleNodeSelection(getSelection());
-	}
-
-	public <T> List<T> byType(Class<T> type) {
-		return SelectionUtils.getAllSelectedItemsByType(getSelection(), type);
+		return getSelection().size() == 1;
 	}
 
 	public boolean firstNodeHasType(Class<?> clazz) {
 		Object firstElement = getSelection().getFirstElement();
 		if (firstElement != null) {
-			return clazz.isAssignableFrom(getSelection().getFirstElement().getClass());
+			return clazz.isAssignableFrom(firstElement.getClass());
 		}
 		return false;
 	}
 	
 	public <T> List<T> getSelectedNodesByType(Class<T> clazz) {
 		if (allNodesHaveSameType() && firstNodeHasType(clazz)) {
-			return byType(clazz);
+			return findSelectedNodesByType(clazz);
 		}
 		return Collections.emptyList();
 	}
@@ -58,9 +54,9 @@ public class RunnerViewSelection implements INodeSelection {
 
 	public boolean canBeRenamed() {
 		if (allNodesHaveSameType() && hasExactlyOneNode()) {
-			Object selectedObject = getSelection().getFirstElement();
-			if (selectedObject instanceof IActionEnablement) {
-				return ((IActionEnablement) selectedObject).isRenamable();
+			Object selectedNode = getSelection().getFirstElement();
+			if (selectedNode instanceof IActionEnablement) {
+				return ((IActionEnablement) selectedNode).isRenamable();
 			}
 		}
 		return false;
@@ -70,9 +66,9 @@ public class RunnerViewSelection implements INodeSelection {
 		if (! allNodesHaveSameType()) {
 			return false;
 		}
-		for (Object selectedObject : getSelection().toList()) {
-			if (selectedObject instanceof IActionEnablement) {
-				if (!((IActionEnablement) selectedObject).isRemovable()) {
+		for (Object selectedNode : getSelection().toList()) {
+			if (selectedNode instanceof IActionEnablement) {
+				if (!((IActionEnablement) selectedNode).isRemovable()) {
 					return false;
 				}
 			}
@@ -87,6 +83,10 @@ public class RunnerViewSelection implements INodeSelection {
 		return allNodesHaveSameType();
 	}
 
+	<T> List<T> findSelectedNodesByType(Class<T> type) {
+		return SelectionUtils.getAllSelectedItemsByType(getSelection(), type);
+	}
+	
 	private IStructuredSelection getSelection() {
 		return (IStructuredSelection) treeViewer.getSelection();
 	}
