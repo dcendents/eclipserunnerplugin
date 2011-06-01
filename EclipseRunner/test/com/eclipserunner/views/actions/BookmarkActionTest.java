@@ -48,9 +48,9 @@ public class BookmarkActionTest {
 	public void shouldBookmarkLaunchNode() throws Exception {
 		when(selection.ofSameNodeType()).thenReturn(true);
 		
-		when(selection.firstElementHasType(ILaunchNode.class)).thenReturn(true);
-		when(selection.firstElementHasType(ILaunchTypeNode.class)).thenReturn(false);
-		when(selection.firstElementHasType(ICategoryNode.class)).thenReturn(false);
+		when(selection.firstNodeHasType(ILaunchNode.class)).thenReturn(true);
+		when(selection.firstNodeHasType(ILaunchTypeNode.class)).thenReturn(false);
+		when(selection.firstNodeHasType(ICategoryNode.class)).thenReturn(false);
 		
 		when(selection.getSelectedLaunchNodes()).thenReturn(Arrays.asList(launchNode));
 		
@@ -63,9 +63,9 @@ public class BookmarkActionTest {
 	public void shouldBookmarkLaunchTypeNode() throws Exception {
 		when(selection.ofSameNodeType()).thenReturn(true);
 
-		when(selection.firstElementHasType(ILaunchNode.class)).thenReturn(false);
-		when(selection.firstElementHasType(ILaunchTypeNode.class)).thenReturn(true);
-		when(selection.firstElementHasType(ICategoryNode.class)).thenReturn(false);
+		when(selection.firstNodeHasType(ILaunchNode.class)).thenReturn(false);
+		when(selection.firstNodeHasType(ILaunchTypeNode.class)).thenReturn(true);
+		when(selection.firstNodeHasType(ICategoryNode.class)).thenReturn(false);
 		
 		when(selection.getSelectedLaunchTypeNodes()).thenReturn(Arrays.asList(launchTypeNode));
 		
@@ -78,9 +78,9 @@ public class BookmarkActionTest {
 	public void shouldBookmarkCategoryNode() throws Exception {
 		when(selection.ofSameNodeType()).thenReturn(true);
 
-		when(selection.firstElementHasType(ILaunchNode.class)).thenReturn(false);
-		when(selection.firstElementHasType(ILaunchTypeNode.class)).thenReturn(false);
-		when(selection.firstElementHasType(ICategoryNode.class)).thenReturn(true);
+		when(selection.firstNodeHasType(ILaunchNode.class)).thenReturn(false);
+		when(selection.firstNodeHasType(ILaunchTypeNode.class)).thenReturn(false);
+		when(selection.firstNodeHasType(ICategoryNode.class)).thenReturn(true);
 		
 		when(selection.getSelectedCategoryNodes()).thenReturn(Arrays.asList(categoryNode));
 		

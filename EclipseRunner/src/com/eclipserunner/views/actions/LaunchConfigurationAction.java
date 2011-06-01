@@ -22,9 +22,9 @@ public class LaunchConfigurationAction extends AbstractLaunchAction {
 
 	@Override
 	public void run() {
-		if (nodeSelection.ofSingleNode() && nodeSelection.firstElementHasType(ILaunchNode.class)) {
+		if (nodeSelection.ofSingleNode() && nodeSelection.firstNodeHasType(ILaunchNode.class)) {
 			DebugUITools.launch(
-				nodeSelection.getFirstElementAs(ILaunchNode.class).getLaunchConfiguration(),
+				nodeSelection.getFirstNodeAs(ILaunchNode.class).getLaunchConfiguration(),
 				getLaunchConfigurationManager().getLaunchGroup(getLaunchGroupId()).getMode()
 			);
 		}

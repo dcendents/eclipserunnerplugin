@@ -43,7 +43,7 @@ public class RunnerViewSelectionTest {
 		
 		when(strucuredSelection.getFirstElement()).thenReturn(expected);
 		
-		String actual = selection.getFirstElementAs(String.class);
+		String actual = selection.getFirstNodeAs(String.class);
 		
 		assertEquals(expected, actual);
 	}
@@ -130,7 +130,7 @@ public class RunnerViewSelectionTest {
 	public void ensureThatLaunchNodeIsSelected() throws Exception {
 		when(strucuredSelection.getFirstElement()).thenReturn(new LaunchNode());
 		
-		boolean launchNodeSelected = selection.firstElementHasType(LaunchNode.class);
+		boolean launchNodeSelected = selection.firstNodeHasType(LaunchNode.class);
 		
 		assertTrue(launchNodeSelected); 
 	}
@@ -139,7 +139,7 @@ public class RunnerViewSelectionTest {
 	public void ensureThatLaunchNodeIsNotSelected() throws Exception {
 		when(strucuredSelection.getFirstElement()).thenReturn("cannot be launched");
 		
-		boolean launchNodeSelected = selection.firstElementHasType(LaunchNode.class);
+		boolean launchNodeSelected = selection.firstNodeHasType(LaunchNode.class);
 		
 		assertFalse(launchNodeSelected); 
 	}
@@ -148,7 +148,7 @@ public class RunnerViewSelectionTest {
 	public void ensureThatLaunchTypeNodeIsSelected() throws Exception {
 		when(strucuredSelection.getFirstElement()).thenReturn(new LaunchTypeNode());
 		
-		boolean launchNodeSelected = selection.firstElementHasType(LaunchTypeNode.class);
+		boolean launchNodeSelected = selection.firstNodeHasType(LaunchTypeNode.class);
 		
 		assertTrue(launchNodeSelected); 
 	}
@@ -157,7 +157,7 @@ public class RunnerViewSelectionTest {
 	public void ensureThatLaunchTypeNodeIsNotSelected() throws Exception {
 		when(strucuredSelection.getFirstElement()).thenReturn("cannot be launched");
 		
-		boolean launchNodeSelected = selection.firstElementHasType(LaunchTypeNode.class);
+		boolean launchNodeSelected = selection.firstNodeHasType(LaunchTypeNode.class);
 		
 		assertFalse(launchNodeSelected); 
 	}
@@ -166,7 +166,7 @@ public class RunnerViewSelectionTest {
 	public void ensureThatCategoryNodeIsSelected() throws Exception {
 		when(strucuredSelection.getFirstElement()).thenReturn(new CategoryNode("test"));
 		
-		boolean launchNodeSelected = selection.firstElementHasType(CategoryNode.class);
+		boolean launchNodeSelected = selection.firstNodeHasType(CategoryNode.class);
 		
 		assertTrue(launchNodeSelected); 
 	}
@@ -175,7 +175,7 @@ public class RunnerViewSelectionTest {
 	public void ensureThatCategoryNodeIsNotSelected() throws Exception {
 		when(strucuredSelection.getFirstElement()).thenReturn("cannot be launched");
 		
-		boolean launchNodeSelected = selection.firstElementHasType(CategoryNode.class);
+		boolean launchNodeSelected = selection.firstNodeHasType(CategoryNode.class);
 		
 		assertFalse(launchNodeSelected); 
 	}

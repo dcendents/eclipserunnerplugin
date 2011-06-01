@@ -28,13 +28,13 @@ public class BookmarkAction extends Action {
 	@Override
 	public void run() {
 		if (selection.ofSameNodeType()) {
-			if (selection.firstElementHasType(ILaunchNode.class)) {
+			if (selection.firstNodeHasType(ILaunchNode.class)) {
 				updateBookmark(selection.getSelectedLaunchNodes());
 			}
-			else if (selection.firstElementHasType(ILaunchTypeNode.class)) {
+			else if (selection.firstNodeHasType(ILaunchTypeNode.class)) {
 				updateBookmark(selection.getSelectedLaunchTypeNodes());
 			}
-			else if (selection.firstElementHasType(ICategoryNode.class)) {
+			else if (selection.firstNodeHasType(ICategoryNode.class)) {
 				updateBookmark(selection.getSelectedCategoryNodes());
 			}
 		}

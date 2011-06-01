@@ -306,7 +306,7 @@ public class RunnerView extends ViewPart
 	private void setupMenuItems(IMenuManager manager) {
 		manager.add(addNewCategoryAction);
 
-		if (selection.firstElementHasType(ILaunchNode.class)) {
+		if (selection.firstNodeHasType(ILaunchNode.class)) {
 			manager.add(new Separator());
 			manager.add(launchRunConfigurationAction);
 			manager.add(launchDebugConfigurationAction);

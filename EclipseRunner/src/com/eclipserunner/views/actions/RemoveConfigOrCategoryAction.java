@@ -28,13 +28,13 @@ public class RemoveConfigOrCategoryAction extends BaseRunnerAction {
 	@Override
 	public void run() {
 		if (nodeSelection.ofSameNodeType()) {
-			if (nodeSelection.firstElementHasType(ILaunchNode.class)) {
+			if (nodeSelection.firstNodeHasType(ILaunchNode.class)) {
 				removeLaunchNodes(nodeSelection.getSelectedLaunchNodes());
 			}
-			else if (nodeSelection.firstElementHasType(ILaunchTypeNode.class)) {
+			else if (nodeSelection.firstNodeHasType(ILaunchTypeNode.class)) {
 				removeLaunchTypeNodes(nodeSelection.getSelectedLaunchTypeNodes());
 			}
-			else if (nodeSelection.firstElementHasType(ICategoryNode.class)) {
+			else if (nodeSelection.firstNodeHasType(ICategoryNode.class)) {
 				removeCategoryNodes(nodeSelection.getSelectedCategoryNodes());
 			}
 		}

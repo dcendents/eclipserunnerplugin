@@ -22,7 +22,7 @@ public class RunnerViewSelection implements INodeSelection {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T getFirstElementAs(Class<T> clazz) {
+	public <T> T getFirstNodeAs(Class<T> clazz) {
 		return (T) getSelection().getFirstElement();
 	}
 
@@ -43,7 +43,7 @@ public class RunnerViewSelection implements INodeSelection {
 		return SelectionUtils.getAllSelectedItemsByType(getSelection(), type);
 	}
 
-	public boolean firstElementHasType(Class<?> clazz) {
+	public boolean firstNodeHasType(Class<?> clazz) {
 		Object firstElement = getSelection().getFirstElement();
 		if (firstElement != null) {
 			return clazz.isAssignableFrom(getSelection().getFirstElement().getClass());
@@ -52,28 +52,28 @@ public class RunnerViewSelection implements INodeSelection {
 	}
 	
 	public List<ILaunchNode> getSelectedLaunchNodes() {
-		if (ofSameNodeType() && firstElementHasType(ILaunchNode.class)) {
+		if (ofSameNodeType() && firstNodeHasType(ILaunchNode.class)) {
 			return byType(ILaunchNode.class);
 		}
 		return Collections.emptyList();
 	}
 
 	public List<ILaunchTypeNode> getSelectedLaunchTypeNodes() {
-		if (ofSameNodeType() && firstElementHasType(ILaunchTypeNode.class)) {
+		if (ofSameNodeType() && firstNodeHasType(ILaunchTypeNode.class)) {
 			return byType(ILaunchTypeNode.class);
 		}
 		return Collections.emptyList();
 	}
 	
 	public List<ICategoryNode> getSelectedCategoryNodes() {
-		if (ofSameNodeType() && firstElementHasType(ICategoryNode.class)) {
+		if (ofSameNodeType() && firstNodeHasType(ICategoryNode.class)) {
 			return byType(ICategoryNode.class);
 		}
 		return Collections.emptyList();
 	}
 	
 	public boolean canBeLaunched() {
-		return ofSingleNode() && firstElementHasType(ILaunchNode.class);
+		return ofSingleNode() && firstNodeHasType(ILaunchNode.class);
 	}
 
 	public boolean canBeRenamed() {

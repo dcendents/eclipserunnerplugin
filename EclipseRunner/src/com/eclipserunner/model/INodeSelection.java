@@ -10,8 +10,8 @@ public interface INodeSelection {
 	boolean ofSameNodeType();
 	boolean ofSingleNode();
 
-	boolean firstElementHasType(Class<?> clazz);
-	<T> T getFirstElementAs(Class<T> clazz);
+	boolean firstNodeHasType(Class<?> clazz);
+	<T> T getFirstNodeAs(Class<T> clazz);
 	
 	List<ILaunchNode> getSelectedLaunchNodes();
 	List<ILaunchTypeNode> getSelectedLaunchTypeNodes();
