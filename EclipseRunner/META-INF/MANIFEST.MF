@@ -17,15 +17,19 @@ Require-Bundle: org.eclipse.ui,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: com.eclipserunner,
- com.eclipserunner.model,
- com.eclipserunner.model.adapters,
- com.eclipserunner.model.common,
- com.eclipserunner.model.filters,
+ com.eclipserunner.model;uses:="org.eclipse.debug.core,com.eclipserunner.views,org.eclipse.jface.viewers",
+ com.eclipserunner.model.adapters;
+  uses:="com.eclipserunner.model,
+   org.eclipse.debug.core,
+   com.eclipserunner.model.impl,
+   org.eclipse.ui",
+ com.eclipserunner.model.common;uses:="com.eclipserunner.model,org.eclipse.jface.preference",
+ com.eclipserunner.model.filters;uses:="com.eclipserunner.model,org.eclipse.jface.preference",
  com.eclipserunner.model.impl,
- com.eclipserunner.ui.dnd,
+ com.eclipserunner.ui.dnd;uses:="org.eclipse.swt.dnd,org.eclipse.jface.viewers",
  com.eclipserunner.utils,
  com.eclipserunner.views,
- com.eclipserunner.views.actions,
+ com.eclipserunner.views.actions;uses:="com.eclipserunner.model",
  com.eclipserunner.views.impl,
  com.eclipserunner.views.validators,
- eclipserunner
+ eclipserunner;uses:="org.eclipse.ui.plugin,org.osgi.framework"
