@@ -3,6 +3,10 @@ package com.eclipserunner.views.impl;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 
@@ -81,6 +85,23 @@ public class RunnerViewSelection implements INodeSelection {
 
 	public boolean canBeBookmarked() {
 		return allNodesHaveSameType();
+	}
+	
+	public boolean canBeOpened() {
+		if (hasExactlyOneNode() && firstNodeHasType(ILaunchNode.class)) {
+			ILaunchNode launchNode = getFirstNodeAs(ILaunchNode.class);
+			ILaunchConfiguration configuration = launchNode.getLaunchConfiguration();
+			try {
+				for (IResource res : configuration.getMappedResources()) {
+					if (res instanceof IFile) {
+						return true;
+					}
+				}
+			} catch (CoreException e) {
+				return false;
+			}
+		}
+		return false;
 	}
 
 	<T> List<T> findSelectedNodesByType(Class<T> type) {

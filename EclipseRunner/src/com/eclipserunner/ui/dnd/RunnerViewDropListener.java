@@ -35,10 +35,7 @@ public class RunnerViewDropListener extends ViewerDropAdapter {
 		if (LocalSelectionTransfer.getTransfer().isSupportedType(transferType)
 				&& getCurrentTarget() instanceof IDroppable) {
 			localTransfer = true;
-			IDroppable droppableTarget = (IDroppable) getCurrentTarget();
-
-			return droppableTarget.supportsDrop(getCurrentLocation());
-
+			return ((IDroppable) getCurrentTarget()).supportsDrop(getCurrentLocation());
 		}
 		return false;
 	}
@@ -55,10 +52,9 @@ public class RunnerViewDropListener extends ViewerDropAdapter {
 		}
 
 		Object currentTarget = getCurrentTarget();
-		if (currentTarget instanceof IDroppable ) { //move the location detect to validateDrop
+		if (currentTarget instanceof IDroppable) { //move the location detect to validateDrop
 			return ((IDroppable) currentTarget).drop(launchNodesToMove);
 		}
-
 
 		if (launchNodesToMove.size() == 1) {
 			getViewer().setSelection(new StructuredSelection(launchNodesToMove.get(0)));

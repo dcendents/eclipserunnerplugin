@@ -28,6 +28,8 @@ public class Messages extends NLS {
 	public static String Message_debugConfigurationTooltip;
 	public static String Message_openDebugConfigurationsDialog;
 	public static String Message_openDebugConfigurationsDialogTooltip;
+	public static String Message_openItem;
+	public static String Message_openItemTooltip;
 
 	public static String Message_addNewCategory;
 	public static String Message_addNewCategoryTooltip;

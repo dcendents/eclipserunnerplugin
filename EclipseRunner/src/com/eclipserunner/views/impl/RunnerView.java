@@ -76,6 +76,7 @@ public class RunnerView extends ViewPart
 
 	private Action launchRunConfigurationAction;
 	private Action launchDebugConfigurationAction;
+	private Action openItemAction;
 
 	private Action addNewCategoryAction;
 
@@ -186,7 +187,7 @@ public class RunnerView extends ViewPart
 
 	private void initializeDragAndDrop() {
 		int operations = DND.DROP_COPY | DND.DROP_MOVE;
-		Transfer[] transferTypes = new Transfer[]{ 
+		Transfer[] transferTypes = new Transfer[] {
 			LocalSelectionTransfer.getTransfer(), FileTransfer.getInstance()
 		};
 
@@ -231,6 +232,7 @@ public class RunnerView extends ViewPart
 		showDebugConfigurationsDialogAction = builder.createShowDebugConfigurationDialogAction();
 		launchRunConfigurationAction        = builder.createRunConfigurationAction();
 		launchDebugConfigurationAction      = builder.createDebugConfigurationAction();
+		openItemAction                      = builder.createOpenItemAction();
 		addNewCategoryAction                = builder.createAddNewCategoryAction();
 		collapseAllAction                   = builder.createCollapseAllAction(viewer);
 		expandAllAction                     = builder.createExpandAllAction(viewer);
@@ -304,25 +306,21 @@ public class RunnerView extends ViewPart
 	}
 
 	private void setupMenuItems(IMenuManager manager) {
-		manager.add(addNewCategoryAction);
-
 		if (selection.firstNodeHasType(ILaunchNode.class)) {
-			manager.add(new Separator());
 			manager.add(launchRunConfigurationAction);
 			manager.add(launchDebugConfigurationAction);
-			
+			manager.add(openItemAction);
 			manager.add(new Separator());
 	        manager.add(moveToCategorySubMenu());
+	        manager.add(new Separator());
 		}
-
+		manager.add(addNewCategoryAction);
 		manager.add(new Separator());
 		manager.add(renameAction);
 		manager.add(removeAction);
-
 		manager.add(new Separator());
 		manager.add(bookmarkAction);
 		manager.add(unbookmarkAction);
-
 		manager.add(new Separator());
 		manager.add(showRunConfigurationsDialogAction);
 		manager.add(showDebugConfigurationsDialogAction);
@@ -349,6 +347,7 @@ public class RunnerView extends ViewPart
 		removeAction.setEnabled(selection.canBeRemoved());
 		bookmarkAction.setEnabled(selection.canBeBookmarked());
 		unbookmarkAction.setEnabled(selection.canBeBookmarked());
+		openItemAction.setEnabled(selection.canBeOpened());
 	}
 
 	public void doubleClick(DoubleClickEvent event) {

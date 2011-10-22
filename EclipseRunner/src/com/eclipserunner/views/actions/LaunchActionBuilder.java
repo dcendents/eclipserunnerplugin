@@ -8,6 +8,8 @@ import static com.eclipserunner.Messages.Message_unbookmark;
 import static com.eclipserunner.Messages.Message_unbookmarkTooltip;
 import static com.eclipserunner.Messages.Message_collapseAll;
 import static com.eclipserunner.Messages.Message_collapseAllTooltip;
+import static com.eclipserunner.Messages.Message_openItem;
+import static com.eclipserunner.Messages.Message_openItemTooltip;
 import static com.eclipserunner.Messages.Message_createToggleDefaultCategory;
 import static com.eclipserunner.Messages.Message_createToggleDefaultCategoryTooltip;
 import static com.eclipserunner.Messages.Message_debugConfiguration;
@@ -116,6 +118,13 @@ public final class LaunchActionBuilder {
 			.withTitle(Message_debugConfiguration)
 			.withTooltip(Message_debugConfigurationTooltip)
 			.withImage(Image.DEBUG)
+			.andReleaseAction();
+	}
+	
+	public Action createOpenItemAction() {
+		return decorate(new OpenItemAction(nodeSelection, ID_DEBUG_LAUNCH_GROUP))
+			.withTitle(Message_openItem)
+			.withTooltip(Message_openItemTooltip)
 			.andReleaseAction();
 	}
 

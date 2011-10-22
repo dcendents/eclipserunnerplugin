@@ -46,7 +46,6 @@ public class RunnerModel implements IRunnerModel, ICategoryNodeChangeListener {
 	private boolean defaultCategoryNodeVisible;
 
 	public RunnerModel() {
-
 		CategoryNode category = new CategoryNode(Message_uncategorized);
 		category.addCategoryNodeChangeListener(this);
 		category.setRemovable(false);
