@@ -39,6 +39,7 @@ import static org.eclipse.debug.ui.IDebugUIConstants.ID_RUN_LAUNCH_GROUP;
 
 import java.util.List;
 
+import org.eclipse.debug.internal.ui.launchConfigurations.LaunchGroupExtension;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -60,6 +61,7 @@ import com.eclipserunner.views.TreeMode;
  *
  * @author vachacz
  */
+@SuppressWarnings("restriction")
 public final class LaunchActionBuilder {
 
 	private INodeSelection nodeSelection;
@@ -96,12 +98,20 @@ public final class LaunchActionBuilder {
 			.withImage(Image.RUN_CONFIGURATIONS)
 			.andReleaseAction();
 	}
-	
+
 	public Action createShowDebugConfigurationDialogAction() {
 		return decorate(new ShowLaunchConfigurationsDialogAction(nodeSelection, ID_DEBUG_LAUNCH_GROUP))
 			.withTitle(Message_openDebugConfigurationsDialog)
 			.withTooltip(Message_openDebugConfigurationsDialogTooltip)
 			.withImage(Image.DEBUG_CONFIGURATIONS)
+			.andReleaseAction();
+	}
+
+	public Action createShowLaunchOtherConfigurationDialogAction(LaunchGroupExtension launchGroupExtension, String title, String tooltip, ImageDescriptor image) {
+		return decorate(new ShowLaunchOtherConfigurationsDialogAction(nodeSelection, launchGroupExtension))
+			.withTitle(title)
+			.withTooltip(tooltip)
+			.withImageDescriptor(image)
 			.andReleaseAction();
 	}
 
@@ -112,7 +122,7 @@ public final class LaunchActionBuilder {
 			.withImage(Image.RUN)
 			.andReleaseAction();
 	}
-	
+
 	public Action createDebugConfigurationAction() {
 		return decorate(new LaunchConfigurationAction(nodeSelection, ID_DEBUG_LAUNCH_GROUP))
 			.withTitle(Message_debugConfiguration)
@@ -120,7 +130,15 @@ public final class LaunchActionBuilder {
 			.withImage(Image.DEBUG)
 			.andReleaseAction();
 	}
-	
+
+	public Action createLaunchOtherConfigurationAction(String mode, String title, String tooltip, ImageDescriptor image) {
+		return decorate(new LaunchOtherConfigurationAction(nodeSelection, mode))
+			.withTitle(title)
+			.withTooltip(tooltip)
+			.withImageDescriptor(image)
+			.andReleaseAction();
+	}
+
 	public Action createOpenItemAction() {
 		return decorate(new OpenItemAction(nodeSelection, ID_DEBUG_LAUNCH_GROUP))
 			.withTitle(Message_openItem)
@@ -198,7 +216,7 @@ public final class LaunchActionBuilder {
 			.withImage(Image.TYPE_TREE)
 			.andReleaseAction();
 	}
-	
+
 	public Action createToggleRunModeAction() {
 		return decorate(new ToggleRunModeAction(PreferenceConstants.RUN_MODE))
 			.withTitle(Message_createToggleDefaultRunMode)
@@ -206,7 +224,7 @@ public final class LaunchActionBuilder {
 			.withImage(Image.DEBUG)
 			.andReleaseAction();
 	}
-	
+
 	public Action createToggleDefaultCategoryAction() {
 		return decorate(new ToggleFilterAction(PreferenceConstants.FILTER_DEFAULT_CATEGORY, runnerView))
 			.withTitle(Message_createToggleDefaultCategory)
@@ -250,7 +268,7 @@ public final class LaunchActionBuilder {
 			.withTooltip("Filter current project")
 			.andReleaseAction();
 	}
-	
+
 	public IAction createMoveToCategoryAction(List<ILaunchNode> selectedLaunchNodes, ICategoryNode node) {
 		return decorate(new MoveToCategoryAction(selectedLaunchNodes, node))
 			.withTitle(node.getName())
@@ -261,10 +279,10 @@ public final class LaunchActionBuilder {
 	private ActionDecorator decorate(Action action) {
 		return new ActionDecorator(action);
 	}
-	
+
 	/**
 	 * Simple decorator class, that simplifies the way we customize an action.
-	 * 
+	 *
 	 * @author lwachowi
 	 */
 	private class ActionDecorator {
@@ -289,7 +307,7 @@ public final class LaunchActionBuilder {
 		public Action andReleaseAction() {
 			return action;
 		}
-		private ActionDecorator withImageDescriptor(ImageDescriptor imageDescriptor) {
+		public ActionDecorator withImageDescriptor(ImageDescriptor imageDescriptor) {
 			action.setImageDescriptor(imageDescriptor);
 			return this;
 		}
@@ -297,5 +315,5 @@ public final class LaunchActionBuilder {
 			return PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(image);
 		}
 	}
-	
+
 }

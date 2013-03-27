@@ -1,14 +1,20 @@
 package com.eclipserunner.views.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationListener;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.internal.ui.launchConfigurations.LaunchGroupExtension;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -17,6 +23,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -58,11 +65,11 @@ import com.eclipserunner.views.actions.LaunchActionBuilder;
  * @author vachacz, bary
  */
 @SuppressWarnings("restriction")
-public class RunnerView extends ViewPart 
+public class RunnerView extends ViewPart
 	implements IMenuListener, IDoubleClickListener, IModelChangeListener, IRunnerView {
 
 	private IFilteredRunnerModel runnerModel;
-	
+
 	private TreeViewer viewer;
 
 	private ILaunchConfigurationListener modelLaunchConfigurationListener;
@@ -73,9 +80,11 @@ public class RunnerView extends ViewPart
 
 	private Action showRunConfigurationsDialogAction;
 	private Action showDebugConfigurationsDialogAction;
+	private List<Action> showLaunchOtherConfigurationActions = new ArrayList<Action>();
 
 	private Action launchRunConfigurationAction;
 	private Action launchDebugConfigurationAction;
+	private List<Action> launchOtherConfigurationActions = new ArrayList<Action>();
 	private Action openItemAction;
 
 	private Action addNewCategoryAction;
@@ -88,7 +97,7 @@ public class RunnerView extends ViewPart
 
 	private Action renameAction;
 	private Action removeAction;
-	
+
 	private Action toggleFlatModeAction;
 	private Action toggleTypeModeAction;
 	private Action toggleDefaultCategoryAction;
@@ -113,9 +122,9 @@ public class RunnerView extends ViewPart
 	public void createPartControl(Composite parent) {
 		initializeModel();
 		initializeViewer(parent);
-		
+
 		selection = new RunnerViewSelection(getViewer());
-		
+
 		initializeSelectionListeners();
 		initializeLaunchConfigurationListeners();
 		initializeResourceChangeListener();
@@ -125,7 +134,7 @@ public class RunnerView extends ViewPart
 		setupLaunchActions();
 		setupContextMenu();
 		setupActionBars();
-		
+
 	}
 
 	private void initializeModel() {
@@ -232,6 +241,37 @@ public class RunnerView extends ViewPart
 		showDebugConfigurationsDialogAction = builder.createShowDebugConfigurationDialogAction();
 		launchRunConfigurationAction        = builder.createRunConfigurationAction();
 		launchDebugConfigurationAction      = builder.createDebugConfigurationAction();
+
+		IExtensionRegistry reg = Platform.getExtensionRegistry();
+		IConfigurationElement[] launchModes = reg.getConfigurationElementsFor("org.eclipse.debug.core.launchModes");
+		IConfigurationElement[] launchGroups = reg.getConfigurationElementsFor("org.eclipse.debug.ui.launchGroups");
+
+		for( int i = 0; i < launchModes.length; i++ ) {
+			// FIXME: Ignore default runners, they all seem to start with &
+			if(!launchModes[i].getAttribute("label").startsWith("&")) {
+				String mode = launchModes[i].getAttribute("mode");
+				LaunchGroupExtension launchGroupExtension = null;
+				ImageDescriptor image = null;
+
+				for( IConfigurationElement launchGroup : launchGroups ) {
+					if( launchGroup.getAttribute("mode").equals(mode) ) {
+						launchGroupExtension = new LaunchGroupExtension(launchGroup);
+						image = launchGroupExtension.getImageDescriptor();
+						break;
+					}
+				}
+
+				launchOtherConfigurationActions.add(builder.createLaunchOtherConfigurationAction(mode,
+						launchModes[i].getAttribute("label"), launchModes[i].getAttribute("label"), image));
+
+				if( launchGroupExtension != null ) {
+					String label = String.format("Open %1$s configurations ...", launchGroupExtension.getMode());
+					showLaunchOtherConfigurationActions.add(builder.createShowLaunchOtherConfigurationDialogAction(launchGroupExtension,
+							label, label, image));
+				}
+			}
+		}
+
 		openItemAction                      = builder.createOpenItemAction();
 		addNewCategoryAction                = builder.createAddNewCategoryAction();
 		collapseAllAction                   = builder.createCollapseAllAction(viewer);
@@ -287,6 +327,9 @@ public class RunnerView extends ViewPart
 		manager.add(new Separator());
 		manager.add(showRunConfigurationsDialogAction);
 		manager.add(showDebugConfigurationsDialogAction);
+		for(Action showLaunchOtherConfigurationAction : showLaunchOtherConfigurationActions) {
+			manager.add(showLaunchOtherConfigurationAction);
+		}
 	}
 
 	private void setupLocalToolBar(IToolBarManager manager) {
@@ -309,6 +352,9 @@ public class RunnerView extends ViewPart
 		if (selection.firstNodeHasType(ILaunchNode.class)) {
 			manager.add(launchRunConfigurationAction);
 			manager.add(launchDebugConfigurationAction);
+			for(Action otherLaunchAction : launchOtherConfigurationActions) {
+				manager.add(otherLaunchAction);
+			}
 			manager.add(openItemAction);
 			manager.add(new Separator());
 	        manager.add(moveToCategorySubMenu());
@@ -324,11 +370,14 @@ public class RunnerView extends ViewPart
 		manager.add(new Separator());
 		manager.add(showRunConfigurationsDialogAction);
 		manager.add(showDebugConfigurationsDialogAction);
+		for(Action showLaunchOtherConfigurationAction : showLaunchOtherConfigurationActions) {
+			manager.add(showLaunchOtherConfigurationAction);
+		}
 	}
 
 	private MenuManager moveToCategorySubMenu() {
 		MenuManager managet = new MenuManager(Messages.Message_moveToSubMenu, null);
-		Collection<ICategoryNode> categories = 
+		Collection<ICategoryNode> categories =
 			RunnerModelProvider.getInstance().getDefaultModel().getCategoryNodes();
 		for (ICategoryNode category : categories) {
 			managet.add(moveToCategoryAction(category));
@@ -343,6 +392,9 @@ public class RunnerView extends ViewPart
 	private void setupActionEnablement() {
 		launchRunConfigurationAction.setEnabled(selection.canBeLaunched());
 		launchDebugConfigurationAction.setEnabled(selection.canBeLaunched());
+		for(Action otherLaunchAction : launchOtherConfigurationActions) {
+			otherLaunchAction.setEnabled(selection.canBeLaunched());
+		}
 		renameAction.setEnabled(selection.canBeRenamed());
 		removeAction.setEnabled(selection.canBeRemoved());
 		bookmarkAction.setEnabled(selection.canBeBookmarked());
@@ -357,7 +409,7 @@ public class RunnerView extends ViewPart
 			launchRunConfigurationAction.run();
 		}
 	}
-	
+
 	public boolean shouldRunInDebugMode() {
 		return RunnerPlugin.getDefault().getPreferenceStore().getBoolean(PreferenceConstants.RUN_MODE);
 	}
@@ -416,7 +468,7 @@ public class RunnerView extends ViewPart
 			}
 		});
 	}
-	
+
 	void setTreeViewerForTesting(TreeViewer viewer) {
 		this.viewer = viewer;
 	}
